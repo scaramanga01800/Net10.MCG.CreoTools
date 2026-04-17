@@ -1,0 +1,146 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.PurchaseOrderFollowUp.View.PurchaseOrderFollowUpExtendedPartView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.View"
+        xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+        mc:Ignorable="d"
+        Title="{DynamicResource POF_TitleWindowExtendedPart}" 
+        Height="450" Width="400"
+                     MaxHeight="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="EXTENDED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check.ico" />
+            <BitmapImage x:Key="NOTEXTENDED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/blue_cross.ico" />
+            <BitmapImage x:Key="NOTAPPLICABLE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Cancel.ico" />
+            <Style x:Key="CenterHeaderStyle" TargetType="DataGridColumnHeader">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <DataGrid x:Name="ItemsDataGrid"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding SelectedRequest.ListItem}"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  SelectionUnit="Cell"
+                  Margin="10"
+                  ColumnHeaderStyle="{StaticResource CenterHeaderStyle}"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Number" Binding="{Binding Material}" Width="*" />
+
+                <DataGridTemplateColumn Header="{DynamicResource POF_ColPurchasingViewStatus}"
+                                        Width="*"
+                                        SortMemberPath="PurchasingViewStatus">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="24" Height="24">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PurchasingViewStatus}" Value="TO_BE_CREATED">
+                                                <Setter Property="Source" Value="{StaticResource NOTEXTENDED}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PurchasingViewStatus}" Value="NOT_APPLICABLE">
+                                                <Setter Property="Source" Value="{StaticResource NOTAPPLICABLE}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PurchasingViewStatus}" Value="CREATED">
+                                                <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{DynamicResource POF_ColMrpViewStatus}"
+                                        Width="*"
+                                        SortMemberPath="MrpViewStatus">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="24" Height="24">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MrpViewStatus}" Value="TO_BE_CREATED">
+                                                <Setter Property="Source" Value="{StaticResource NOTEXTENDED}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MrpViewStatus}" Value="NOT_APPLICABLE">
+                                                <Setter Property="Source" Value="{StaticResource NOTAPPLICABLE}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MrpViewStatus}" Value="CREATED">
+                                                <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{DynamicResource POF_ColStorageViewStatus}"
+                                        Width="*"
+                                        SortMemberPath="StorageViewStatus">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="24" Height="24">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding StorageViewStatus}" Value="TO_BE_CREATED">
+                                                <Setter Property="Source" Value="{StaticResource NOTEXTENDED}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding StorageViewStatus}" Value="NOT_APPLICABLE">
+                                                <Setter Property="Source" Value="{StaticResource NOTAPPLICABLE}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding StorageViewStatus}" Value="CREATED">
+                                                <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{DynamicResource POF_ColQualityViewStatus}"
+                                        Width="*"
+                                        SortMemberPath="QualityViewStatus">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="24" Height="24">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding QualityViewStatus}" Value="TO_BE_CREATED">
+                                                <Setter Property="Source" Value="{StaticResource NOTEXTENDED}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding QualityViewStatus}" Value="NOT_APPLICABLE">
+                                                <Setter Property="Source" Value="{StaticResource NOTAPPLICABLE}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding QualityViewStatus}" Value="CREATED">
+                                                <Setter Property="Source" Value="{StaticResource EXTENDED}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Fluent:RibbonWindow>

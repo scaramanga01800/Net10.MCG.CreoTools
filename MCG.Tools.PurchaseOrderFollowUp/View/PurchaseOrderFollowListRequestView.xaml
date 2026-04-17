@@ -1,0 +1,55 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.PurchaseOrderFollowUp.View.PurchaseOrderFollowListRequestView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:validators="clr-namespace:MCG.CommonLib.WpfComponent.Validator;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:local="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.View"
+                     mc:Ignorable="d"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_new.ico"
+                     Title="{DynamicResource POF_WindowListRequestTitle}" 
+                     Height="450" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="ADD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_new.ico"/>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <DockPanel>
+            <DataGrid AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserSortColumns="True"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding CurrentDataContext.ListSearchedRequest}">
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="{DynamicResource POF_Col16}"
+                                        Binding="{Binding SapPurchaseOrder}">
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="32"
+                                        IsEnabled="{Binding IsAlreadyExist,Converter={StaticResource BoolToInverseBoolConverter}}"
+                                        Command="{Binding DataContext.CommandAddRequestFromSapPoDate, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}" >
+                                    <Image Source="{StaticResource ADD}"  ></Image>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</Fluent:RibbonWindow>

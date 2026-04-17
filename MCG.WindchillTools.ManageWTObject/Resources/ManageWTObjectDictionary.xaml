@@ -1,0 +1,177 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="MWT_UserGuideCreateUpdateWtObj">APP023EN.PDF</system:String>
+    <system:String x:Key="MWT_WindowCreateUpdateWtDocPart">Create/update WtDocument and Part</system:String>
+    <system:String x:Key="MWT_LabelWtDocument">WtDocument</system:String>
+    <system:String x:Key="MWT_LabelWtPart">WtPart</system:String>
+    <system:String x:Key="MWT_LabelNumber">Number</system:String>
+    <system:String x:Key="MWT_LabelDocType">Document Type</system:String>
+    <system:String x:Key="MWT_LabelCurrentRevision">Current Revision</system:String>
+    <system:String x:Key="MWT_LabelLatestRevision">Latest</system:String>
+    <system:String x:Key="MWT_LabelPtcCommonName">PTC COMMON NAME</system:String>
+    <system:String x:Key="MWT_LabelDescription2">DESCRIPTION 2</system:String>
+    <system:String x:Key="MWT_LabelDescription21">DESCRIPTION2 1</system:String>
+    <system:String x:Key="MWT_LabelDescription22">DESCRIPTION2 2</system:String>
+    <system:String x:Key="MWT_LabelGroupCreator">GROUP CREATOR</system:String>
+    <system:String x:Key="MWT_LabelQualInspGrp">QUAL INSP GRP</system:String>
+    <system:String x:Key="MWT_LabelMass">MASS</system:String>
+    <system:String x:Key="MWT_LabelMaterial">MATERIAL</system:String>
+    <system:String x:Key="MWT_LabelPartType">Part Type</system:String>
+    <system:String x:Key="MWT_BtCopyWtDocToPartNumber">Copy number and revision from the WtDocument to the part</system:String>
+    <system:String x:Key="MWT_BtCopyWtDocToPartContext">Copy context and folder from the WtDocument to the part</system:String>
+    <system:String x:Key="MWT_BtCopyWtDocToPartParam">Copy parameters from the WtDocument to the part</system:String>
+    <system:String x:Key="MWT_BtCopyPartToWtDocNumber">Copy number and revision from the part to the WtDocument</system:String>
+    <system:String x:Key="MWT_BtCopyPartToWtDocContext">Copy context and folder from the part to the WtDocument</system:String>
+    <system:String x:Key="MWT_BtCopyPartToWtDocParam">Copy parameters from the part to the WtDocument</system:String>
+    <system:String x:Key="MWT_TooltipBtSearch">Search objects</system:String>
+    <system:String x:Key="MWT_TooltipTextBtSearch">Search WTDocuments and parts in Windchill</system:String>
+    <system:String x:Key="MWT_LabelState">State</system:String>
+    <system:String x:Key="MWT_LabelUnit">Default unit</system:String>
+    <system:String x:Key="MWT_LabelWtPartLink">Link with WtPart</system:String>
+
+    <system:String x:Key="MWT_MsgChangePrimarycontent">The existing primary content will be deleted. Do you want to continue?</system:String>
+    <system:String x:Key="MWT_MsgNotPossibleSecondarytoPrimaryContent">It is not possible to change an existing secondary content to primary content.</system:String>
+    <system:String x:Key="MWT_MsgTitleCreateUpdateItem">Create / Update</system:String>
+    <system:String x:Key="MWT_MsgNoContext">The context or folder is not defined. Please define it and try again.</system:String>
+    <system:String x:Key="MWT_MsgNoPtcCommonName">The PTC COMMON NAME is not defined. Please define it and try again.</system:String>
+    <system:String x:Key="MWT_MsgNoPrimaryContent">No primary content is defined. Do you want to continue?</system:String>
+    <system:String x:Key="MWT_MsgStartCreationWtDoc">Do you want to create or update the WTDocument?</system:String>
+    <system:String x:Key="MWT_MsgStartWtDocCreateUpdate">Starting WTDocument creation / update</system:String>
+    <system:String x:Key="MWT_MsgErrorWtDocCreateUpdate">Unable to create or update the WTDocument.</system:String>
+    <system:String x:Key="MWT_MsgWtObjectCreated">Created</system:String>
+    <system:String x:Key="MWT_MsgWtObjectCheckedOut">Checked out</system:String>
+    <system:String x:Key="MWT_MsgWtObjectUpdated">Updated</system:String>
+    <system:String x:Key="MWT_MsgWtDocContentUpdated">Content updated</system:String>
+    <system:String x:Key="MWT_MsgWtObjectCheckedIn">Checked in</system:String>
+    <system:String x:Key="MWT_MsgWtDocumentCreated">WTDocument {0} has been created.</system:String>
+    <system:String x:Key="MWT_MsgTitleWtDocumentCreated">WTDocument Creation</system:String>
+    <system:String x:Key="MWT_MsgWtDocumentUpdated">WTDocument {0} has been updated.</system:String>
+    <system:String x:Key="MWT_MsgTitleWtDocumentUpdated">WTDocument Update</system:String>
+    <system:String x:Key="MWT_MsgStartCreationWtPart">Start WTPart creation / update?</system:String>
+    <system:String x:Key="MWT_MsgErrorWtPartCreateUpdate">Unable to create or update the WTPart.</system:String>
+    <system:String x:Key="MWT_MsgWtPartCreated">WTPart {0} has been created.</system:String>
+    <system:String x:Key="MWT_MsgTitleWtPartCreated">WTPart Creation</system:String>
+    <system:String x:Key="MWT_MsgNoQualInspGrp">The Quality Inspection Group is not defined. Please define it and try again.</system:String>
+    <system:String x:Key="MWT_MsgNoCheckWtPart">Please start a search to check if the WTPart already exists in Windchill.</system:String>
+    <system:String x:Key="MWT_MsgNoCheckWtDocument">Please start a search to check if the WTDocument already exists in Windchill.</system:String>
+    <system:String x:Key="MWT_MsgWtPartUpdated">WTPart {0} has been updated.</system:String>
+    <system:String x:Key="MWT_MsgCreateNotPossible">Unable to create {0}. Please check access rights.</system:String>
+    <system:String x:Key="MWT_MsgTitleCreateNotPossible">Creation Issue</system:String>
+    <system:String x:Key="MWT_MsgTitleWtPartUpdated">WTPart Updated</system:String>
+    <system:String x:Key="MWT_MsgTitleWtPartWtDocumentLinked">WTPart and WTDocument have been linked.</system:String>
+
+    <system:String x:Key="MWT_MassWtDocumentUpdateAppName">Mass WTDocument Update</system:String>
+    <system:String x:Key="MWT_LabelColNumber">Number</system:String>
+    <system:String x:Key="MWT_LabelColRevision">Revision</system:String>
+    <system:String x:Key="MWT_LabelColWindchillType">WTDocument Type</system:String>
+    <system:String x:Key="MWT_LabelColWindchillPartType">Part Type</system:String>
+    <system:String x:Key="MWT_LabelColPartFound">Part Found?</system:String>
+    <system:String x:Key="MWT_LabelColPartLink">Part Link</system:String>
+    <system:String x:Key="MWT_LabelColStatus">Status</system:String>
+    <system:String x:Key="MWT_LabelColWtDocumentFound">WTDocument Found?</system:String>
+    <system:String x:Key="MWT_LabelColLastRevision">Latest Revision</system:String>
+    <system:String x:Key="MWT_LabelColRequiredAction">Required Action</system:String>
+
+    <system:String x:Key="MWT_LabelColPtcCommonName">PTC COMMON NAME</system:String>
+    <system:String x:Key="MWT_LabelColDescription2">DESCRIPTION 2</system:String>
+    <system:String x:Key="MWT_LabelColDescription21">DESCRIPTION2 1</system:String>
+    <system:String x:Key="MWT_LabelColDescription22">DESCRIPTION2 2</system:String>
+    <system:String x:Key="MWT_LabelColGroupCreator">GROUP CREATOR</system:String>
+    <system:String x:Key="MWT_LabelColQualInspGrp">QUAL. INSP. GRP.</system:String>
+    <system:String x:Key="MWT_LabelColMass">MASS</system:String>
+    <system:String x:Key="MWT_LabelColContext">Context</system:String>
+    <system:String x:Key="MWT_LabelColFolder">Folder</system:String>
+    <system:String x:Key="MWT_LabelGroup">GROUP</system:String>
+    <system:String x:Key="MWT_LabelSubGroup">SUB GROUP</system:String>
+    <system:String x:Key="MWT_LabelBrand">BRAND</system:String>
+    <system:String x:Key="MWT_LabelModel">MODEL</system:String>
+    <system:String x:Key="MWT_LabelOption">OPTION</system:String>
+
+    <system:String x:Key="MWT_LabelMenuDocumentType">WTDocument Type</system:String>
+    <system:String x:Key="MWT_LabelMenuContext">Windchill Context</system:String>
+    <system:String x:Key="MWT_LabelMenuLocalLanguage">Local Language</system:String>
+    <system:String x:Key="MWT_LabelMenuWebterm">Webterm</system:String>
+
+    <system:String x:Key="MWT_MsgRemoveItem">Remove item from the list?</system:String>
+    <system:String x:Key="MWT_MsgRemoveContent">Remove content from the list?</system:String>
+    <system:String x:Key="MWT_MsgTitleRemoveItem">Remove</system:String>
+    <system:String x:Key="MWT_MsgSearchNotDone">Please search for the part and WTDocument first.</system:String>
+    <system:String x:Key="MWT_MsgTitleSearchNotDone">Search not completed</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateDocument">Create / update WTDocument?</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdatePart">Create / update part?</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateLink">Create / update link between part and WTDocument?</system:String>
+    <system:String x:Key="MWT_MsgTitleCreateUpdate">Create / Update</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateNotDone">Unable to create / update / revise the object. Please check your access rights for this context.</system:String>
+    <system:String x:Key="MWT_MsgTitleCreateUpdateNotDone">Create / Update Issue</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateMissingContext">Missing context or folder for {0}. Please select one and try again.</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateMissingDocType">Missing document type for {0}. Please select one and try again.</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateMissingPtcCommonName">Missing PTC_COMMON_NAME for {0}. Please select one and try again.</system:String>
+    <system:String x:Key="MWT_MsgSearchNotDoneWtDoc">Please search for WTDocument {0} first.</system:String>
+    <system:String x:Key="MWT_MsgSearchNotDoneWtPart">Please search for part {0} first.</system:String>
+    <system:String x:Key="MWT_MsgCreateUpdateNoSelection">Please select objects first and try again.</system:String>
+    <system:String x:Key="MWT_MsgReviseNotPossible">Unable to revise {0}. Please check the revision and your access rights.</system:String>
+    <system:String x:Key="MWT_MsgTitleReviseNotPossible">Revision Issue</system:String>
+    <system:String x:Key="MWT_MsgCheckOutNotPossible">Unable to check out {0}. Please verify access rights.</system:String>
+    <system:String x:Key="MWT_MsgCheckInNotPossible">Unable to check in {0}. Please verify the item.</system:String>
+    <system:String x:Key="MWT_MsgTitleCheckOutInNotPossible">Check Out / In Issue</system:String>
+    <system:String x:Key="MWT_MsgUpdateNotPossible">Unable to update {0}. Please verify the item.</system:String>
+    <system:String x:Key="MWT_MsgTitleUpdateNotPossible">Update Issue</system:String>
+    <system:String x:Key="MWT_MsgUpdateContentNotPossible">Unable to update content of {0}. Please verify the item.</system:String>
+    <system:String x:Key="MWT_MsgTitleUpdateContentNotPossible">Content Update Issue</system:String>
+    <system:String x:Key="MWT_MsgLinkNotPossible">Unable to link the WTPart and WTDocument. Please verify the item.</system:String>
+
+    <system:String x:Key="MWT_RibbonGrpCollect">Collect Data</system:String>
+    <system:String x:Key="MWT_RibbonGrpUpdate">Update Data</system:String>
+    <system:String x:Key="MWT_RibbonGrpWindchillUpdate">Windchill Update</system:String>
+    <system:String x:Key="MWT_RibbonGrpTools">Tools</system:String>
+    <system:String x:Key="MWT_RibbonBtDragDropXls">Drag and drop an Excel file to add or update items.</system:String>
+    <system:String x:Key="MWT_RibbonBtDragDropSecondaryContent">Drag and drop secondary content for items.</system:String>
+
+    <system:String x:Key="MWT_UserGuide">NOUSERGUIDE.PDF</system:String>
+
+    <system:String x:Key="MWT_WindowAddDocument">Add WTDocument</system:String>
+    <system:String x:Key="MWT_AddDocumentErrorMsg">Please enter a number and try again.</system:String>
+
+    <system:String x:Key="MWT_StatusBarNbElem">Number of item(s):</system:String>
+    <system:String x:Key="MWT_StatusBarSearchPartInProgress">Searching parts...</system:String>
+    <system:String x:Key="MWT_StatusBarSearchDocInProgress">Searching documents...</system:String>
+    <system:String x:Key="MWT_StatusBarUpdateInProgress">Creating / updating...</system:String>
+    <system:String x:Key="MWT_StatusBarSearchDocDone">WTDocument search completed</system:String>
+    <system:String x:Key="MWT_StatusBarSearchPartDone">WTPart search completed</system:String>
+    <system:String x:Key="MWT_ToolTipWtPartNew">Article nouveau : n’existe pas dans Windchill</system:String>
+
+    <system:String x:Key="MWT_ToolTipWtPartUpdated">WTPart updated</system:String>
+    <system:String x:Key="MWT_ToolTipWtPartCreated">WTPart exists in Windchill and can be updated</system:String>
+    <system:String x:Key="MWT_ToolTipWtPartUnknown">Unknown WTPart – please start a search</system:String>
+    <system:String x:Key="MWT_ToolTipWtPartCreatedRo">WTPart exists in Windchill but cannot be updated</system:String>
+    <system:String x:Key="MWT_ToolTipWtDocumentNew">New WTDocument – does not exist in Windchill</system:String>
+    <system:String x:Key="MWT_ToolTipWtDocumentUpdated">WTDocument updated</system:String>
+ 
+    <system:String x:Key="MWT_ToolTipWtDocumentCreated">WTDocument exists in Windchill and can be updated</system:String>
+    <system:String x:Key="MWT_ToolTipWtDocumentUnknown">Unknown WTDocument – please start a search</system:String>
+    <system:String x:Key="MWT_ToolTipWtDocumentCreatedRo">WTDocument exists in Windchill but cannot be updated</system:String>
+    <system:String x:Key="MWT_BtToolTipCheckWtDocument">Check Document</system:String>
+    <system:String x:Key="MWT_BtToolTipTextCheckWtDocument">Check if the document already exists in Windchill.</system:String>
+
+    <system:String x:Key="MWT_BtToolTipCheckWtPart">Check WTPart</system:String>
+    <system:String x:Key="MWT_BtToolTipTextCheckWtPart">Check if the WTPart already exists in Windchill.</system:String>
+    <system:String x:Key="MWT_BtToolTipUpdateWtDocument">Update / Create Document</system:String>
+    <system:String x:Key="MWT_BtToolTipTextUpdateWtDocument">Update or create the document in Windchill.</system:String>
+    <system:String x:Key="MWT_BtToolTipUpdateWtPart">Update / Create WTPart</system:String>
+    <system:String x:Key="MWT_BtToolTipTextUpdateWtPart">Update or create the WTPart in Windchill.</system:String>
+    <system:String x:Key="MWT_MsgTitleSearchWtObject">Search</system:String>
+    <system:String x:Key="MWT_MsgMsgSearchWtDocumentUpdated">The current document has been modified or is new. All updates will be replaced. Are you sure you want to continue?</system:String>
+
+    <system:String x:Key="MWT_MsgMsgSearchWtPartUpdated">The current part has been modified or is new. All updates will be replaced. Are you sure you want to continue?</system:String>
+    <system:String x:Key="MWT_MsgDownloadItem">The file already exists in the “Downloads” folder. Do you want to replace it?</system:String>
+    <system:String x:Key="MWT_MsgTitleDownloadItem">Download File</system:String>
+    <system:String x:Key="MWT_BtRemoveContent">Remove content</system:String>
+    <system:String x:Key="MWT_BtDownloadContent">Download content to the “Downloads” folder</system:String>
+
+    <system:String x:Key="MWT_ToolTipLinked">WTPart and document are linked.</system:String>
+    <system:String x:Key="MWT_ToolTipUnlinked">WTPart and document are NOT linked.</system:String>
+    <system:String x:Key="MWT_BtToolTipCreateLink">Link WTPart to document</system:String>
+    <system:String x:Key="MWT_BtToolTipTextCreateLink">Create a link between the current WTPart and document, unless they are already linked or another revision of the document is already associated.</system:String>
+</ResourceDictionary>

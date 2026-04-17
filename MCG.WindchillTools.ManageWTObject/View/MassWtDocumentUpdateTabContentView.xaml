@@ -1,0 +1,911 @@
+﻿<UserControl x:Class="MCG.WindchillTools.ManageWTObject.View.MassWtDocumentUpdateTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.WindchillTools.ManageWTObject.View"
+             xmlns:localViewModel="clr-namespace:MCG.WindchillTools.ManageWTObject.ViewModel"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:MCGLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <BitmapImage x:Key="WORD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/word.ico" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/excel.ico" />
+            <BitmapImage x:Key="POWERPOINT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/powerpoint.ico" />
+            <BitmapImage x:Key="PDF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/pdf.ico" />
+            <BitmapImage x:Key="TIFF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/image.ico" />
+            <BitmapImage x:Key="DXF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/dxf.ico" />
+            <BitmapImage x:Key="DWG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/dwg.ico" />
+            <BitmapImage x:Key="STEP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Stp_64x64.png" />
+            <BitmapImage x:Key="IGES" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Igs_64x64.png" />
+            <BitmapImage x:Key="PVZ" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/creo_view.png" />
+            <BitmapImage x:Key="ZIP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/zip.ico" />
+            <BitmapImage x:Key="VSD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/vsd.ico" />
+            <BitmapImage x:Key="CSV" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/csv.ico" />
+            <BitmapImage x:Key="OTHER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/text.ico" />
+            <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/text.ico" />
+            <BitmapImage x:Key="REVISE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/revise.gif" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/cross.ico" />
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Folder.ico" />
+            <BitmapImage x:Key="LINKED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Linked.ico" />
+            <BitmapImage x:Key="UNLINKED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Unlinked.ico" />
+
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:ArrayMultiValueConverter x:Key="ArrayMultiValueConverter"></conv:ArrayMultiValueConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+
+            <ObjectDataProvider x:Key="DataRevisionEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="MCGLib:McgRevisionSchemaEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="DataActionEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="localViewModel:MgtRequiredActionEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="QualInspGrpEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="MCGLib:QualInspGrpValueEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <DockPanel>
+
+            <Fluent:StatusBar DockPanel.Dock="Bottom" Height="20">
+                <Fluent:StatusBarItem HorizontalAlignment="Left" 
+                                      Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource MWT_StatusBarNbElem}" Margin="0,0,5,0"></TextBlock>
+                        <TextBlock Text="{Binding CurrentDataContext.WtDocumentList.Count}"></TextBlock>
+                    </StackPanel>
+                </Fluent:StatusBarItem>
+                <Fluent:StatusBarItem HorizontalAlignment="Right" 
+                                      Margin="0,0,5,0"
+                                      Visibility="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding CurrentDataContext.StatusBarTextRight}"></TextBlock>
+                </Fluent:StatusBarItem>
+                <Fluent:StatusBarItem Title="ProgressBar"                                     
+                                      HorizontalAlignment="Right"
+                                      Margin="0,0,5,0">
+                    <Fluent:StatusBarItem.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.CurrentStep}" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="\" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.TotalStep}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Fluent:StatusBarItem.ToolTip>
+                    <ProgressBar Height="17"
+                                 Width="250"
+                                 Maximum="{Binding CurrentDataContext.TotalStep}" 
+                                 Value="{Binding CurrentDataContext.CurrentStep}"
+                                 Visibility="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource BoolToVisibilityConverter}}"></ProgressBar>
+                </Fluent:StatusBarItem>
+            </Fluent:StatusBar>
+
+            <TabControl AllowDrop="True" 
+                        Drop="DockPanel_Drop" 
+                        DragEnter="MainDockPanel_DragEnter" 
+                        DragLeave="MainDockPanel_DragLeave">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:InvokeCommandAction Command="{Binding CommandDragAndDrop}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+                <TabItem Header="WtDocument">
+                    <DockPanel x:Name="MainDockPanel">
+
+                        <DataGrid Name="DgWtDocument"
+                                  ItemsSource="{Binding  CurrentDataContext.WtDocumentList}"
+                                  SelectedItem="{Binding CurrentDataContext.SelectedWtDocument, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  IsReadOnly="False"
+                                  CanUserAddRows="False"
+                                  AutoGenerateColumns="False"
+                                  RowDetailsVisibilityMode="Visible"
+                                  FrozenColumnCount="3">
+
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="SpRowDetailTemplate"
+                                                Orientation="Horizontal" 
+                                                Background="#FFECECEC">
+                                        <Border BorderThickness="2" 
+                                                BorderBrush="LightGray" >
+                                            <Image Source="{StaticResource DRAGDROP}" 
+                                                    MaxHeight="60"
+                                                    Opacity="0.1"
+                                                    Visibility="Visible"
+                                                    AllowDrop="True" 
+                                                    Drop="Image_Drop"
+                                                    DragEnter="Image_DragEnter"
+                                                    DragLeave="Image_DragLeave">
+                                            </Image>
+                                        </Border>
+                                        <Rectangle Width="15"></Rectangle>
+
+                                        <TreeView ItemsSource="{Binding  ListContentItem}" 
+                                                  Background="{Binding ElementName=SpRowDetailTemplate,Path=Background}" 
+                                                  BorderThickness="0">
+                                            <TreeView.ContextMenu>
+                                                <Fluent:ContextMenu Visibility="Collapsed">
+                                                    <Fluent:MenuItem Header="TEST"  >
+                                                    </Fluent:MenuItem>
+                                                </Fluent:ContextMenu>
+                                            </TreeView.ContextMenu>
+                                            <TreeView.ItemTemplate>
+                                                <DataTemplate >
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <Image Height="25" MinWidth="25" IsHitTestVisible="False" >
+                                                            <Image.Style>
+                                                                <Style TargetType="{x:Type Image}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOC}">
+                                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOCX}">
+                                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOCM}">
+                                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLS}">
+                                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLSX}">
+                                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLSM}">
+                                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPT}">
+                                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPTX}">
+                                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPTM}">
+                                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PDF}">
+                                                                            <Setter Property="Source" Value="{StaticResource PDF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TIF}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TIFF}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PNG}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.JPEG}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.JPG}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.BMP}">
+                                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DXF}">
+                                                                            <Setter Property="Source" Value="{StaticResource DXF}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DWG}">
+                                                                            <Setter Property="Source" Value="{StaticResource DWG}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.STP}">
+                                                                            <Setter Property="Source" Value="{StaticResource STEP}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.STEP}">
+                                                                            <Setter Property="Source" Value="{StaticResource STEP}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.IGS}">
+                                                                            <Setter Property="Source" Value="{StaticResource IGES}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.IGES}">
+                                                                            <Setter Property="Source" Value="{StaticResource IGES}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PVZ}">
+                                                                            <Setter Property="Source" Value="{StaticResource PVZ}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.ZIP}">
+                                                                            <Setter Property="Source" Value="{StaticResource ZIP}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSD}">
+                                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSDX}">
+                                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSDM}">
+                                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.CSV}">
+                                                                            <Setter Property="Source" Value="{StaticResource CSV}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TXT}">
+                                                                            <Setter Property="Source" Value="{StaticResource OTHER}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.UNKNOWN}">
+                                                                            <Setter Property="Source" Value="{StaticResource UNKNOWN}" />
+                                                                        </DataTrigger>
+
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Image.Style>
+                                                        </Image>
+                                                        <Button Height="20" Margin="2,0,2,0"
+                                                                Command="{Binding Data.CommandRemoveContent, Source={StaticResource proxy}}"
+                                                                CommandParameter="{Binding}">
+                                                            <Image Source="{StaticResource DELETE}" />
+                                                        </Button>
+                                                        <RadioButton IsChecked="{Binding IsPrimaryContent}" 
+                                                                     Margin="5,0" 
+                                                                     GroupName="{Binding ItemId}" 
+                                                                     VerticalAlignment="Center" 
+                                                                     Checked="RB_Checked"
+                                                                     Click="RB_Clicked"></RadioButton>
+                                                        <TextBlock Text="{Binding ContentType}" Margin="5,0" Width="120" VerticalAlignment="Center" IsHitTestVisible="False" ></TextBlock>
+                                                        <TextBlock Text="{Binding Filename}" Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></TextBlock>
+                                                        <!--<ComboBox  ItemsSource="{Binding Data.CurrentDataContext.ListContentType, Source={StaticResource proxy} }"
+                                                               SelectedItem="{Binding ContentType}"
+                                                               Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></ComboBox>-->
+                                                        <TextBlock Text="{Binding CompleteFilename}" Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></TextBlock>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TreeView.ItemTemplate>
+                                        </TreeView>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.Header>
+                                        <Fluent:CheckBox  IsChecked="{Binding Data.CurrentDataContext.IsAllPartSelected,Source={StaticResource proxy},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                            <behaviors:Interaction.Triggers>
+                                                <behaviors:EventTrigger EventName="Checked">
+                                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource TrueValue}" ></behaviors:InvokeCommandAction>
+                                                </behaviors:EventTrigger>
+
+                                                <behaviors:EventTrigger EventName="Unchecked">
+                                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource FalseValue}" ></behaviors:InvokeCommandAction>
+                                                </behaviors:EventTrigger>
+                                            </behaviors:Interaction.Triggers>
+                                        </Fluent:CheckBox>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Fluent:CheckBox IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                                         HorizontalAlignment="Center" 
+                                                         VerticalAlignment="Center">
+                                            </Fluent:CheckBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn  Binding="{Binding Number}" IsReadOnly="True">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="White"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WtDocumentFound}" Value="False">
+                                                    <Setter Property="Background" Value="Red"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WtDocumentFound}" Value="True">
+                                                    <Setter Property="Background" Value="LawnGreen"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WtDocumentSearchDone}" Value="False">
+                                                    <Setter Property="Background" Value="Orange"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColNumber}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTemplateColumn IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <Button Width="20" Height="20"
+                                                        Command="{Binding Data.CommandReviseItem, Source={StaticResource proxy}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Image Source="{StaticResource REVISE}"></Image>
+                                                </Button>
+                                                <Button Width="20" Height="20"
+                                                        Command="{Binding Data.CommandChangeContext, Source={StaticResource proxy}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Image Source="{StaticResource FOLDER}"></Image>
+                                                </Button>
+                                                <Button Width="20" Height="20"
+                                                        Command="{Binding Data.CommandRemoveItem, Source={StaticResource proxy}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Image Source="{StaticResource DELETE}"></Image>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridComboBoxColumn SelectedItemBinding="{Binding Revision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        ItemsSource="{Binding Source={StaticResource DataRevisionEnum}}" 
+                                                        IsReadOnly="False">
+                                    <DataGridComboBoxColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="White"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WtDocumentRevisionFound}" Value="False">
+                                                    <Setter Property="Background" Value="Red"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WtDocumentRevisionFound}" Value="True">
+                                                    <Setter Property="Background" Value="LawnGreen"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsNewRevision}" Value="True">
+                                                    <Setter Property="Background" Value="CornflowerBlue"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WtDocumentSearchDone}" Value="False">
+                                                    <Setter Property="Background" Value="Orange"/>
+                                                    <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridComboBoxColumn.CellStyle>
+                                    <DataGridComboBoxColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColRevision}"></Label>
+                                    </DataGridComboBoxColumn.Header>
+                                </DataGridComboBoxColumn>
+
+                                <DataGridTextColumn  Binding="{Binding LastWtDocumentRevision}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColLastRevision}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridComboBoxColumn  ItemsSource="{Binding Data.CurrentDataContext.ListWindchillDocumentType, Source={StaticResource proxy} }" 
+                                                         SelectedValueBinding="{Binding WindchillDocumentType}" 
+                                                         IsReadOnly="False">
+                                    <DataGridComboBoxColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColWindchillType}"></Label>
+                                    </DataGridComboBoxColumn.Header>
+                                </DataGridComboBoxColumn>
+
+                                <DataGridComboBoxColumn  ItemsSource="{Binding Source={StaticResource DataActionEnum}}" 
+                                                         SelectedValueBinding="{Binding RequiredActionWtDocument}" 
+                                                         IsReadOnly="False">
+                                    <DataGridComboBoxColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColRequiredAction}"></Label>
+                                    </DataGridComboBoxColumn.Header>
+                                </DataGridComboBoxColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.SelectedWindchillContext}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColContext}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.SelectedWindchillContext.Folder}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColFolder}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding StatusWtDocument}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColStatus}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <!--<DataGridComboBoxColumn  SelectedItemBinding="{Binding WtDocumentObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         ItemsSource="{Binding Data.CurrentDataContext.ListWebterm, Source={StaticResource proxy}}"
+                                                         IsReadOnly="False">
+                                    <DataGridComboBoxColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColPtcCommonName}"></Label>
+                                    </DataGridComboBoxColumn.Header>
+                                </DataGridComboBoxColumn>-->
+
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding WtDocumentObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox IsEditable="True" 
+                                                      Text="{Binding WtDocumentObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                      ItemsSource="{Binding Data.CurrentDataContext.ListWebterm, Source={StaticResource proxy}}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataGridTemplateColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColPtcCommonName}"></Label>
+                                    </DataGridTemplateColumn.Header>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.DESCRIPTION2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColDescription2}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <!--<DataGridComboBoxColumn  SelectedItemBinding="{Binding WtDocumentObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                         ItemsSource="{Binding Data.CurrentDataContext.ListWebtermLocal, Source={StaticResource proxy}}"
+                                                         IsReadOnly="False">
+                                    <DataGridComboBoxColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColDescription21}"></Label>
+                                    </DataGridComboBoxColumn.Header>
+                                </DataGridComboBoxColumn>-->
+
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding WtDocumentObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox IsEditable="True" 
+                                                  Text="{Binding WtDocumentObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                  ItemsSource="{Binding Data.CurrentDataContext.ListWebtermLocal, Source={StaticResource proxy}}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataGridTemplateColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColDescription21}"></Label>
+                                    </DataGridTemplateColumn.Header>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.DESCRIPTION22, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColDescription22}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.GROUPCREATOR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColGroupCreator}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding WtDocumentObject.MASS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                    <DataGridTextColumn.Header>
+                                        <Label Content="{DynamicResource MWT_LabelColMass}"></Label>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Header="WtPart">
+                    <DataGrid Name="DgWtPart"
+                              ItemsSource="{Binding  CurrentDataContext.WtDocumentList}"
+                              SelectedItem="{Binding CurrentDataContext.SelectedWtDocument, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              IsReadOnly="False"
+                              CanUserAddRows="False"
+                              AutoGenerateColumns="False"
+                              FrozenColumnCount="3">
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header>
+                                    <Fluent:CheckBox  IsChecked="{Binding Data.CurrentDataContext.IsAllPartSelected,Source={StaticResource proxy},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                        <behaviors:Interaction.Triggers>
+                                            <behaviors:EventTrigger EventName="Checked">
+                                                <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource TrueValue}" ></behaviors:InvokeCommandAction>
+                                            </behaviors:EventTrigger>
+
+                                            <behaviors:EventTrigger EventName="Unchecked">
+                                                <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource FalseValue}" ></behaviors:InvokeCommandAction>
+                                            </behaviors:EventTrigger>
+                                        </behaviors:Interaction.Triggers>
+                                    </Fluent:CheckBox>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Fluent:CheckBox IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                                         HorizontalAlignment="Center" 
+                                                         VerticalAlignment="Center">
+                                        </Fluent:CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn  Binding="{Binding Number}" IsReadOnly="True">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PartFound}" Value="False">
+                                                <Setter Property="Background" Value="Red"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PartFound}" Value="True">
+                                                <Setter Property="Background" Value="LawnGreen"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PartSearchDone}" Value="False">
+                                                <Setter Property="Background" Value="Orange"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColNumber}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTemplateColumn IsReadOnly="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Button Width="20" Height="20"
+                                                        Command="{Binding Data.CommandReviseItem, Source={StaticResource proxy}}"
+                                                        CommandParameter="{Binding}">
+                                                <Image Source="{StaticResource REVISE}"></Image>
+                                            </Button>
+                                            <Button Width="20" Height="20"
+                                                        Command="{Binding Data.CommandRemoveItem, Source={StaticResource proxy}}"
+                                                        CommandParameter="{Binding}">
+                                                <Image Source="{StaticResource DELETE}"></Image>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridComboBoxColumn SelectedItemBinding="{Binding Revision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        ItemsSource="{Binding Source={StaticResource DataRevisionEnum}}" 
+                                                        IsReadOnly="False">
+                                <DataGridComboBoxColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PartRevisionFound}" Value="False">
+                                                <Setter Property="Background" Value="Red"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PartRevisionFound}" Value="True">
+                                                <Setter Property="Background" Value="LawnGreen"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsNewRevision}" Value="True">
+                                                <Setter Property="Background" Value="CornflowerBlue"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PartSearchDone}" Value="False">
+                                                <Setter Property="Background" Value="Orange"/>
+                                                <Setter Property="ToolTip" Value="{DynamicResource QS_DgToolTipNotRecommended2}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridComboBoxColumn.CellStyle>
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColRevision}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridTextColumn  Binding="{Binding LastPartRevision}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColLastRevision}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridComboBoxColumn  ItemsSource="{Binding Data.CurrentDataContext.ListWindchillPartType, Source={StaticResource proxy} }" 
+                                                         SelectedValueBinding="{Binding WindchillPartType}" 
+                                                         IsReadOnly="False">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColWindchillPartType}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridComboBoxColumn  ItemsSource="{Binding Source={StaticResource DataActionEnum}}" 
+                                                         SelectedValueBinding="{Binding RequiredActionPart}" 
+                                                         IsReadOnly="False">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColRequiredAction}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.SelectedWindchillContext}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColContext}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.SelectedWindchillContext.Folder}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColFolder}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding StatusPart}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColStatus}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <!--<DataGridComboBoxColumn  SelectedItemBinding="{Binding WtPartObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ItemsSource="{Binding Data.CurrentDataContext.ListWebterm, Source={StaticResource proxy}}"
+                                                     IsReadOnly="False"
+                                                     TextBinding="{Binding WtPartObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColPtcCommonName}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>-->
+
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding WtPartObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox IsEditable="True" 
+                                                  Text="{Binding WtPartObject.PTCCOMMONNAME, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                  ItemsSource="{Binding Data.CurrentDataContext.ListWebterm, Source={StaticResource proxy}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                                <DataGridTemplateColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColPtcCommonName}"></Label>
+                                </DataGridTemplateColumn.Header>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.DESCRIPTION2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColDescription2}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <!--<DataGridComboBoxColumn  SelectedItemBinding="{Binding WtPartObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                     ItemsSource="{Binding Data.CurrentDataContext.ListWebtermLocal, Source={StaticResource proxy}}"
+                                                     IsReadOnly="False"
+                                                     TextBinding="{Binding WtPartObject.DESCRIPTION21}">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColDescription21}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>-->
+
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding WtPartObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox IsEditable="True" 
+                                                  Text="{Binding WtPartObject.DESCRIPTION21, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                  ItemsSource="{Binding Data.CurrentDataContext.ListWebtermLocal, Source={StaticResource proxy}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                                <DataGridTemplateColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColDescription21}"></Label>
+                                </DataGridTemplateColumn.Header>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.DESCRIPTION22, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColDescription22}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.GROUPCREATOR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColGroupCreator}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.MASS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColMass}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <!--<DataGridComboBoxColumn  SelectedValueBinding="{Binding WtPartObject.QUALINSPGRP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                     ItemsSource="{Binding Source={StaticResource QualInspGrpEnum}}" 
+                                                     IsReadOnly="False">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColQualInspGrp}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>-->
+                            <DataGridComboBoxColumn  SelectedValueBinding="{Binding WtPartObject.QUALINSPGRP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                     ItemsSource="{Binding Data.CurrentDataContext.ListQualInspGrp, Source={StaticResource proxy}}" 
+                                                     IsReadOnly="False">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColQualInspGrp}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.GROUP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelGroup}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.SUB_GROUP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelSubGroup}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.BRAND, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelBrand}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.MODEL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelModel}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtPartObject.OPTION, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelOption}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+
+                <TabItem Header="WtPart/WTDocument"
+                         >
+                    <DataGrid Name="DgWtPartWtDocument"
+                              ItemsSource="{Binding  CurrentDataContext.WtDocumentList}"
+                              SelectedItem="{Binding CurrentDataContext.SelectedWtDocument, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              IsReadOnly="False"
+                              CanUserAddRows="False"
+                              AutoGenerateColumns="False"
+                              RowDetailsVisibilityMode="Visible">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header>
+                                    <Fluent:CheckBox  IsChecked="{Binding Data.CurrentDataContext.IsAllPartSelected,Source={StaticResource proxy},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                        <behaviors:Interaction.Triggers>
+                                            <behaviors:EventTrigger EventName="Checked">
+                                                <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource TrueValue}" ></behaviors:InvokeCommandAction>
+                                            </behaviors:EventTrigger>
+
+                                            <behaviors:EventTrigger EventName="Unchecked">
+                                                <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource FalseValue}" ></behaviors:InvokeCommandAction>
+                                            </behaviors:EventTrigger>
+                                        </behaviors:Interaction.Triggers>
+                                    </Fluent:CheckBox>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Fluent:CheckBox IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                                         HorizontalAlignment="Center" 
+                                                         VerticalAlignment="Center">
+                                        </Fluent:CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn  Binding="{Binding Number}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColNumber}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding Revision}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColRevision}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridComboBoxColumn  ItemsSource="{Binding Source={StaticResource DataActionEnum}}" 
+                                                         SelectedValueBinding="{Binding RequiredActionWtDocumentPart}" 
+                                                         IsReadOnly="False">
+                                <DataGridComboBoxColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColRequiredAction}"></Label>
+                                </DataGridComboBoxColumn.Header>
+                            </DataGridComboBoxColumn>
+
+                            <DataGridTextColumn  Binding="{Binding WtDocumentRevisionFound}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColWtDocumentFound}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding PartRevisionFound}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColPartFound}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding StatusWtDocumentPart}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColStatus}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding StatusPart}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColStatus}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn  Binding="{Binding LinkStatus}" IsReadOnly="True">
+                                <DataGridTextColumn.Header>
+                                    <Label Content="{DynamicResource MWT_LabelColStatus}"></Label>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+
+                            <DataGridTemplateColumn IsReadOnly="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Image Height="24">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding LinkStatus}" Value="{x:Static MCGLib:ObjectState.LINKED}">
+                                                                <Setter Property="Source" Value="{StaticResource LINKED}" />
+                                                                <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipLinked}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding LinkStatus}" Value="{x:Static MCGLib:ObjectState.UNLINKED}">
+                                                                <Setter Property="Source" Value="{StaticResource UNLINKED}" />
+                                                                <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipUnlinked}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+
+        <Image x:Name="ImageDragDrop"
+               Source="{StaticResource DRAGDROP}" 
+               MaxHeight="300"
+               Opacity="0.5"
+               Visibility="Collapsed"
+               IsHitTestVisible="False"></Image>
+
+    </Grid>
+
+</UserControl>

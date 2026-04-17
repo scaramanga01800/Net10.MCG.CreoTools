@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassWtDocumentUpdateConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LocalLanguageList>
+      <MCGLanguage>
+        <Language>English</Language>
+        <SAPCode>EN</SAPCode>
+        <DataTableColonne>English</DataTableColonne>
+        <CultureInfo>en-EN</CultureInfo>
+      </MCGLanguage>
+      <MCGLanguage>
+        <Language>French</Language>
+        <SAPCode>FR</SAPCode>
+        <DataTableColonne>French</DataTableColonne>
+        <CultureInfo>fr-FR</CultureInfo>
+      </MCGLanguage>
+      <MCGLanguage>
+        <Language>German</Language>
+        <SAPCode>DE</SAPCode>
+        <DataTableColonne>German</DataTableColonne>
+        <CultureInfo>de-DE</CultureInfo>
+      </MCGLanguage>
+      <MCGLanguage>
+        <Language>Chinese</Language>
+        <SAPCode>ZH</SAPCode>
+        <DataTableColonne>Chinese</DataTableColonne>
+        <CultureInfo>zh-CN</CultureInfo>
+      </MCGLanguage>
+      <MCGLanguage>
+        <Language>Portuguese</Language>
+        <SAPCode>PT</SAPCode>
+        <DataTableColonne>Portuguese</DataTableColonne>
+        <CultureInfo>pt-PT</CultureInfo>
+      </MCGLanguage>
+      <MCGLanguage>
+        <Language>Italian</Language>
+        <SAPCode>IT</SAPCode>
+        <DataTableColonne>Italian</DataTableColonne>
+        <CultureInfo>it-IT</CultureInfo>
+      </MCGLanguage>
+  </LocalLanguageList>
+	<ListGroup>
+		<string>Masts</string>
+		<string>Bases</string>
+		<string>Pylon equipment</string>
+		<string>GME elements</string>
+		<string>GMA elements</string>
+		<string>Mechanisms</string>
+		<string>Others</string>
+	</ListGroup>
+	<ListBrand>
+		<string>POTAIN</string>
+		<string>GROVE</string>
+	</ListBrand>
+</MassWtDocumentUpdateConfiguration>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../MCG.Tools.EcnEcoFollowUp/MCG.Tools.EcnEcoFollowUp.csproj" />
+  <Project Path="../MCG.Tools.PurchaseOrderFollowUp/MCG.Tools.PurchaseOrderFollowUp.csproj" />
+  <Project Path="../MCG.WindchillTools.ManageWTObject/MCG.WindchillTools.ManageWTObject.csproj" />
+</Solution>

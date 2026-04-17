@@ -1,0 +1,95 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.PurchaseOrderFollowUp.View.PurchaseOrderFollowUpSelectVendorView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.View"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     mc:Ignorable="d"
+                     ResizeMode="NoResize"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     Title="{DynamicResource POF_SelectVendorWindow}"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Vendor.ico"
+                     Height="350" Width="350">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="SEARCH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_32x32.png" />
+            <BitmapImage x:Key="SELECT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check.ico" />
+            <BitmapImage x:Key="CLOSE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/delete.ico" />
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <DockPanel>
+            <Fluent:Ribbon DockPanel.Dock="Top" 
+                           AreTabHeadersVisible="False">
+                <Fluent:RibbonTabItem>
+                    <Fluent:RibbonGroupBox Header="">
+                        <!--<Fluent:TwoLineLabel Text="{DynamicResource POF_SelectVendorText}">
+                        </Fluent:TwoLineLabel>-->
+
+                        <StackPanel Width="200">
+                            <Fluent:TextBox Header="{DynamicResource POF_TbNumber}"
+                                    Text="{Binding CurrentDataContext.NumberSearchField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding CommandSearchItem}"/>
+                                </TextBox.InputBindings>
+                            </Fluent:TextBox>
+                            <Fluent:TextBox Header="{DynamicResource POF_TbName}"
+                                    Text="{Binding CurrentDataContext.DescriptionSearchField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding CommandSearchItem}"/>
+                                </TextBox.InputBindings>
+                            </Fluent:TextBox>
+                        </StackPanel>
+                        <Fluent:Button Height="44"
+                                       Command="{Binding CommandSearchItem}"
+                                       LargeIcon="{StaticResource SEARCH}">
+                        </Fluent:Button>
+                        <Fluent:Button Height="44"
+                                       x:Name="ButtonCheck"
+                                       Click="ButtonCheck_Click"
+                                       Command="{Binding CommandSelectVendor}"
+                                       LargeIcon="{StaticResource SELECT}">
+                        </Fluent:Button>
+                        <Fluent:Button Height="44"
+                                       x:Name="ButtonClose"
+                                       Click="ButtonClose_Click"
+                                       LargeIcon="{StaticResource CLOSE}">
+                        </Fluent:Button>
+
+                    </Fluent:RibbonGroupBox>
+                    
+                </Fluent:RibbonTabItem>
+            </Fluent:Ribbon>
+            
+            <DataGrid ItemsSource="{Binding CurrentDataContext.ListItem}"
+                      SelectedItem="{Binding CurrentDataContext.SelectedItem}"
+                      IsReadOnly="True"
+                      CanUserSortColumns="True"
+                      AutoGenerateColumns="False"
+                      MouseDoubleClick="ButtonCheck_Click">
+
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="MouseDoubleClick">
+                        <behaviors:InvokeCommandAction Command="{Binding CommandSelectVendor}" ></behaviors:InvokeCommandAction>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource POF_TbNumber}"
+                                        Binding="{Binding Number}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource POF_TbName}"
+                                        Binding="{Binding Description}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource POF_TbLocation}"
+                                        Binding="{Binding Location}"></DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</Fluent:RibbonWindow>

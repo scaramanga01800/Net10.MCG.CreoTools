@@ -1,0 +1,922 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.WindchillTools.ManageWTObject.View.CreateUpdateWtDocumentWtPartMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.WindchillTools.ManageWTObject.View"
+                     xmlns:localViewModel="clr-namespace:MCG.WindchillTools.ManageWTObject.ViewModel"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:MCGLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource MWT_WindowCreateUpdateWtDocPart}" 
+                     Height="880" 
+                     Width="690"
+                     AllowDrop="True"
+                     DragEnter="MainSP_DragEnter"
+                     Drop="MainSP_Drop"
+                     DragLeave="MainSP_DragLeave"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part.ico"
+                     ResizeMode="NoResize">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Drop">
+            <behaviors:InvokeCommandAction Command="{Binding CommandDrop}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <BitmapImage x:Key="WORD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/word.ico" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/excel.ico" />
+            <BitmapImage x:Key="POWERPOINT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/powerpoint.ico" />
+            <BitmapImage x:Key="PDF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/pdf.ico" />
+            <BitmapImage x:Key="TIFF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/image.ico" />
+            <BitmapImage x:Key="DXF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/dxf.ico" />
+            <BitmapImage x:Key="DWG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/dwg.ico" />
+            <BitmapImage x:Key="STEP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Stp_64x64.png" />
+            <BitmapImage x:Key="IGES" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Igs_64x64.png" />
+            <BitmapImage x:Key="PVZ" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/creo_view.png" />
+            <BitmapImage x:Key="ZIP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/zip.ico" />
+            <BitmapImage x:Key="VSD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/vsd.ico" />
+            <BitmapImage x:Key="CSV" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/csv.ico" />
+            <BitmapImage x:Key="OTHER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/text.ico" />
+            <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/text.ico" />
+            <BitmapImage x:Key="REVISE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/revise.gif" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/cross.ico" />
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Folder.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="CHECKDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_document.ico" />
+            <BitmapImage x:Key="CHECKPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_part.ico" />
+            <BitmapImage x:Key="REMOVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/remove_32x32.png" />
+            <BitmapImage x:Key="NEW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/new.ico" />
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update2.ico" />
+            <BitmapImage x:Key="UPLOAD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/uploaded.ico" />
+            <BitmapImage x:Key="DOWNLOAD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Download.ico" />
+            <BitmapImage x:Key="UPDATEDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/update_document.ico" />
+            <BitmapImage x:Key="UPDATEPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/update_part.ico" />
+            <BitmapImage x:Key="CREATELINK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part_link.ico" />
+            <BitmapImage x:Key="FR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_FR.ico" />
+            <BitmapImage x:Key="EN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_US.ico" />
+            <BitmapImage x:Key="DE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_DE.ico" />
+            <BitmapImage x:Key="ZH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_ZH.ico" />
+            <BitmapImage x:Key="IT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_IT.ico" />
+            <BitmapImage x:Key="PT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_PT.ico" />
+            <BitmapImage x:Key="COPY_L_TO_R" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/copy_l_to_r.ico" />
+            <BitmapImage x:Key="COPY_R_TO_L" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/copy_r_to_l.ico" />
+            <BitmapImage x:Key="SEARCH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_32x32.png" />
+            <BitmapImage x:Key="UNKNOWN2" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Unknown.ico" />
+            <BitmapImage x:Key="CHECKOUTNOT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Check_out_forbidden.ico" />
+            <BitmapImage x:Key="WTPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WtPart.ico" />
+            <BitmapImage x:Key="WTDOCUMENT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WtDocument.ico" />
+            <BitmapImage x:Key="LINKED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Linked.ico" />
+            <BitmapImage x:Key="UNLINKED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Unlinked.ico" />
+
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:ArrayMultiValueConverter x:Key="ArrayMultiValueConverter"></conv:ArrayMultiValueConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+
+            <ObjectDataProvider x:Key="DataRevisionEnum" MethodName="GetValues"
+                        ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="MCGLib:McgRevisionSchemaEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <ObjectDataProvider x:Key="QualInspGrpEnum" MethodName="GetValues"
+                        ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="MCGLib:QualInspGrpValueEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="First item"
+                               Margin="5,0,0,0"
+                               Content="{Binding CurrentDataContext.StatusBarText}"
+                               HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpCollect}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <Fluent:TwoLineLabel Text="{DynamicResource MWT_LabelNumber}" 
+                              HorizontalAlignment="Center"
+                              HasTwoLines="False"></Fluent:TwoLineLabel>
+                        <Fluent:TextBox HorizontalContentAlignment="Center" 
+                         VerticalContentAlignment="Center" 
+                         Height="25" MinWidth="70" 
+                         MaxWidth="200" 
+                         Text="{Binding CurrentDataContext.FilterNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                         Margin="-9,0,0,0" >
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding CommandSearchWtObject}"/>
+                            </TextBox.InputBindings>
+                        </Fluent:TextBox>
+                    </StackPanel>
+
+                    <Fluent:Button   LargeIcon="{StaticResource SEARCH}" Command="{Binding CommandSearchWtObject}" Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_TooltipBtSearch}" Width ="250"
+                       Image="{StaticResource SEARCH}"
+                       Text="{DynamicResource MWT_TooltipTextBtSearch}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <Fluent:Button Command="{Binding CommandCheckWtDocument}" 
+                                LargeIcon="{StaticResource CHECKDOC}"
+                                Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_BtToolTipCheckWtDocument}" Width ="250"
+                                           Image="{StaticResource CHECKDOC}"
+                                           Text="{DynamicResource MWT_BtToolTipTextCheckWtDocument}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Command="{Binding CommandCheckWtPart}" 
+                                Margin="5,0,5,0"
+                                LargeIcon="{StaticResource CHECKPART}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_BtToolTipCheckWtPart}" Width ="250"
+                                           Image="{StaticResource CHECKPART}"
+                                           Text="{DynamicResource MWT_BtToolTipTextCheckWtPart}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpWindchillUpdate}">
+                    <Fluent:Button LargeIcon="{StaticResource UPDATEDOC}"
+                                Margin="5,0,5,0"
+                                Command="{Binding CommandCreateUpdateWtDocument}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_BtToolTipUpdateWtDocument}" Width ="250"
+                                           Image="{StaticResource UPDATEDOC}"
+                                           Text="{DynamicResource MWT_BtToolTipTextUpdateWtDocument}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource UPDATEPART}"
+                                Margin="5,0,5,0"
+                                Command="{Binding CommandCreateUpdateWtPart}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_BtToolTipUpdateWtPart}" Width ="250"
+                                           Image="{StaticResource UPDATEPART}"
+                                           Text="{DynamicResource MWT_BtToolTipTextUpdateWtPart}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource CREATELINK}"
+                                Margin="5,0,5,0"
+                                Command="{Binding CommandCreateCreateLink}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MWT_BtToolTipCreateLink}" Width ="250"
+                                           Image="{StaticResource CREATELINK}"
+                                           Text="{DynamicResource MWT_BtToolTipTextCreateLink}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource MMA_RibGrpTools}">
+                    <Fluent:ComboBox Grid.Column="2"
+                      Margin="-9,0,0,0"
+                      IsEditable="False"                       
+                      HorizontalContentAlignment="Left" 
+                      VerticalContentAlignment="Center" 
+                      SelectedItem="{Binding CurrentDataContext.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      ItemsSource="{Binding CurrentDataContext.ListLanguage}">
+                        <Fluent:ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <Image >
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="EN">
+                                                        <Setter Property="Source" Value="{StaticResource EN}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="FR">
+                                                        <Setter Property="Source" Value="{StaticResource FR}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="DE">
+                                                        <Setter Property="Source" Value="{StaticResource DE}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="ZH">
+                                                        <Setter Property="Source" Value="{StaticResource ZH}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="PT">
+                                                        <Setter Property="Source" Value="{StaticResource PT}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SAPCode}" Value="IT">
+                                                        <Setter Property="Source" Value="{StaticResource IT}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock Margin="5,0,0,0" Text="{Binding Language}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Fluent:ComboBox.ItemTemplate>
+
+                    </Fluent:ComboBox>
+
+                    <Fluent:Button LargeIcon="{StaticResource HELP}"
+                                Command="{Binding CommandOpenHelp}"
+                                Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+            <Grid>
+                <!--Background="#FFEAEAEA"-->
+                <DockPanel  Background="{DynamicResource IdealBackgroundColor}">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <!--Background="AliceBlue"-->
+                        <Border  Background="{DynamicResource PdmColor}">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtDocumentNew}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtDocumentUpdated}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtDocumentCreated}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.UNKNOWN}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtDocumentUnknown}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED_RO}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtDocumentCreatedRo}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel MinWidth="330" 
+                                     MaxWidth="330"
+                                     Margin="10,10,5,10">
+                                <StackPanel Orientation="Horizontal"
+                                         HorizontalAlignment="Center">
+                                    <Image Height="32" MinWidth="32" IsHitTestVisible="False" Margin="2,0,2,0" >
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                                        <Setter Property="Source" Value="{StaticResource NEW}" />
+                                                        <Setter Property="ToolTip" Value="New" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                                        <Setter Property="Source" Value="{StaticResource UPDATE}" />
+                                                        <Setter Property="ToolTip" Value="Updated" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                                        <Setter Property="Source" Value="{StaticResource UPLOAD}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.UNKNOWN}">
+                                                        <Setter Property="Source" Value="{StaticResource UNKNOWN2}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED_RO}">
+                                                        <Setter Property="Source" Value="{StaticResource CHECKOUTNOT}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+
+                                    <Image Height="32" MinWidth="32" IsHitTestVisible="False" Margin="10,0,2,0" Source="{StaticResource WTDOCUMENT}" ></Image>
+                                    <Fluent:TwoLineLabel Text="{DynamicResource MWT_LabelWtDocument}" 
+                                                      FontSize="20"
+                                                      Margin="2,0,0,0"
+                                                      HasTwoLines="False"></Fluent:TwoLineLabel>
+                                </StackPanel>
+
+                                <StackPanel >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             Width="276">
+                                            <StackPanel>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelNumber}" 
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.NUMBER, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                    <TextBox.InputBindings>
+                                                        <KeyBinding Key="Enter" Command="{Binding CommandCheckWtDocument}"/>
+                                                    </TextBox.InputBindings>
+                                                </Fluent:TextBox>
+                                                <StackPanel IsEnabled="{Binding CurrentDataContext.WtDocumentSelected}">
+                                                    <Fluent:ComboBox Header="{DynamicResource MWT_LabelDocType}"
+                                                                  IsEditable="False"
+                                                                  IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                                  ItemsSource="{Binding CurrentDataContext.ListWindchillDocumentType}"
+                                                                  SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WindchillDocumentType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                  Text="{Binding CurrentDataContext.CurrentWtObject.WindchillDocumentType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                    <Fluent:ComboBox Header="{DynamicResource MWT_LabelCurrentRevision}"
+                                                                  IsEditable="False"
+                                                                  IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                                  MinWidth="160" 
+                                                                  ItemsSource="{Binding Source={StaticResource DataRevisionEnum}}"
+                                                                  SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.REVISION, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                                                                  Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.REVISION, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"></Fluent:ComboBox>
+
+                                                    <Fluent:TextBox Header="{DynamicResource MWT_LabelState}"
+                                                                 IsReadOnly="True"
+                                                                 Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.State, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                </StackPanel >
+                                            </StackPanel>
+                                        </Border>
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="2,0,0,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyWtDocToPartNumber}"
+                                             Command="{Binding CommandCopyWtDocToPartNumber}">
+                                            <Image Source="{StaticResource COPY_L_TO_R}"></Image>
+                                        </Button>
+                                    </StackPanel >
+
+                                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding CurrentDataContext.WtDocumentSelected}">
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsWtNonVersionAttributeEditable, FallbackValue=False}">
+                                            <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+                                                <Button MaxWidth="40" MaxHeight="40"
+                                                     Command="{Binding CommandChangeContext}"
+                                                     CommandParameter="WTDOCUMENT">
+                                                    <Image Source="{StaticResource FOLDER}"></Image>
+                                                </Button>
+                                                <StackPanel MinWidth="200" 
+                                                         Width="232">
+                                                    <Fluent:TextBox Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.SelectedWindchillContext.Name}"
+                                                                 Header="{DynamicResource MWT_LabelColContext}"
+                                                                 IsReadOnly="True"></Fluent:TextBox>
+                                                    <Fluent:TextBox Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.SelectedWindchillContext.Folder}"
+                                                                 Header="{DynamicResource MWT_LabelColFolder}"
+                                                                 IsReadOnly="True"></Fluent:TextBox>
+                                                </StackPanel>
+                                            </StackPanel >
+                                        </Border>
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="2,0,0,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyWtDocToPartContext}"
+                                             Command="{Binding CommandCopyWtDocToPartContext}"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsWtNonVersionAttributeEditable, FallbackValue=False}">
+                                            <Image Source="{StaticResource COPY_L_TO_R}"></Image>
+                                        </Button>
+                                    </StackPanel >
+
+                                    <StackPanel Orientation="Horizontal"
+                                             IsEnabled="{Binding CurrentDataContext.WtDocumentSelected}">
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             Width="276"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsObjectEditable}">
+                                            <StackPanel MinWidth="240"
+                                                     Margin="2,0,0,0">
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelPtcCommonName}"
+                                                              IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                              ItemsSource="{Binding CurrentDataContext.ListWebterm}"
+                                                              SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.PTCCOMMONNAME, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.PTCCOMMONNAME, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelDescription2}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.DESCRIPTION2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelDescription21}"
+                                                              ItemsSource="{Binding CurrentDataContext.ListWebtermLocal}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.DESCRIPTION21, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelDescription22}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.DESCRIPTION22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelGroupCreator}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.GROUPCREATOR, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                            </StackPanel>
+                                        </Border>
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="2,0,0,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyWtDocToPartParam}"
+                                             Command="{Binding CommandCopyWtDocToPartParam}">
+                                            <Image Source="{StaticResource COPY_L_TO_R}"></Image>
+                                        </Button>
+                                    </StackPanel >
+                                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                                        <Border BorderThickness="1"
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             Width="276"
+                                             IsEnabled="{Binding CurrentDataContext.WtDocumentSelected}">
+                                            <Grid IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsObjectEditable}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Fluent:CheckBox Margin="5,0,0,0"
+                                                              IsChecked="{Binding CurrentDataContext.LinkWtDocumentWtPart, FallbackValue=False}"></Fluent:CheckBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelWtPartLink}"
+                                                              Grid.Column="1"
+                                                              ItemsSource="{Binding CurrentDataContext.WtObjectLinkList}"
+                                                              SelectedItem="{Binding CurrentDataContext.CurrentWtObject.LinkWtDocumentWtPart}"
+                                                              IsEditable="False"
+                                                              IsEnabled="{Binding CurrentDataContext.LinkWtDocumentWtPart}"></Fluent:ComboBox>
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
+
+                                </StackPanel >
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource SapColor}"
+                             Grid.Column="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtPartNew}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtPartUpdated}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtPartCreated}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.UNKNOWN}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtPartUnknown}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED_RO}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipWtPartCreatedRo}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel MinWidth="280" 
+                                     MaxWidth="340"
+                                     Margin="10,10,5,10">
+                                <StackPanel Orientation="Horizontal"
+                                         HorizontalAlignment="Center">
+
+                                    <Image Height="32" MinWidth="32" IsHitTestVisible="False" Margin="2,0,2,0" >
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                                        <Setter Property="Source" Value="{StaticResource NEW}" />
+                                                        <Setter Property="ToolTip" Value="New" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                                        <Setter Property="Source" Value="{StaticResource UPDATE}" />
+                                                        <Setter Property="ToolTip" Value="Updated" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                                        <Setter Property="Source" Value="{StaticResource UPLOAD}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.UNKNOWN}">
+                                                        <Setter Property="Source" Value="{StaticResource UNKNOWN2}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Status}" Value="{x:Static MCGLib:ObjectState.CREATED_RO}">
+                                                        <Setter Property="Source" Value="{StaticResource CHECKOUTNOT}" />
+                                                        <Setter Property="ToolTip" Value="Removed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+
+                                    <Image Height="32" MinWidth="32" IsHitTestVisible="False" Margin="10,0,2,0" Source="{StaticResource WTPART}" ></Image>
+                                    <Fluent:TwoLineLabel Text="{DynamicResource MWT_LabelWtPart}" 
+                                                      FontSize="20"
+                                                      HasTwoLines="False"
+                                                      Margin="2,0,0,0"></Fluent:TwoLineLabel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="0,0,2,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyPartToWtDocNumber}"
+                                             Command="{Binding CommandCopyPartToWtDocNumber}">
+                                            <Image Source="{StaticResource COPY_R_TO_L}"></Image>
+                                        </Button>
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             Width="276">
+                                            <StackPanel Margin="2,0,0,0">
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelNumber}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.NUMBER, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                    <TextBox.InputBindings>
+                                                        <KeyBinding Key="Enter" Command="{Binding CommandCheckWtPart}"/>
+                                                    </TextBox.InputBindings>
+                                                </Fluent:TextBox>
+                                                <StackPanel IsEnabled="{Binding CurrentDataContext.WtPartSelected}">
+                                                    <Fluent:ComboBox Header="{DynamicResource MWT_LabelPartType}"
+                                                                  IsEditable="False"
+                                                                  IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                                  ItemsSource="{Binding CurrentDataContext.ListWindchillPartType}"
+                                                                  SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WindchillPartType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                  Text="{Binding CurrentDataContext.CurrentWtObject.WindchillPartType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                    <Fluent:ComboBox Header="{DynamicResource MWT_LabelCurrentRevision}"
+                                                                  IsEditable="False"
+                                                                  IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                                  MinWidth="160" 
+                                                                  ItemsSource="{Binding Source={StaticResource DataRevisionEnum}}"
+                                                                  SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.REVISION, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                                                                  Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.REVISION, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"></Fluent:ComboBox>
+                                                    <Fluent:TextBox Header="{DynamicResource MWT_LabelState}"
+                                                                 IsReadOnly="True"
+                                                                 Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.State, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" 
+                                             IsEnabled="{Binding CurrentDataContext.WtPartSelected}">
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="0,0,2,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyPartToWtDocContext}"
+                                             Command="{Binding CommandCopyPartToWtDocContext}"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsWtNonVersionAttributeEditable, FallbackValue=False}">
+                                            <Image Source="{StaticResource COPY_R_TO_L}"></Image>
+                                        </Button>
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsWtNonVersionAttributeEditable, FallbackValue=False}">
+                                            <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+                                                <Button MaxWidth="40" MaxHeight="40"
+                                                     Command="{Binding CommandChangeContext}"
+                                                     CommandParameter="WTPART">
+                                                    <Image Source="{StaticResource FOLDER}"></Image>
+                                                </Button>
+                                                <StackPanel Width="232">
+                                                    <Fluent:TextBox Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.SelectedWindchillContext.Name}"
+                                                                 Header="{DynamicResource MWT_LabelColContext}"
+                                                                 IsReadOnly="True"></Fluent:TextBox>
+                                                    <Fluent:TextBox Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.SelectedWindchillContext.Folder}"
+                                                                 Header="{DynamicResource MWT_LabelColFolder}"
+                                                                 IsReadOnly="True"></Fluent:TextBox>
+                                                </StackPanel>
+                                            </StackPanel >
+                                        </Border>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                             IsEnabled="{Binding CurrentDataContext.WtPartSelected}">
+                                        <Button Height="32" 
+                                             Width="32" 
+                                             Margin="0,0,2,0"
+                                             ToolTip="{DynamicResource MWT_BtCopyPartToWtDocParam}"
+                                             Command="{Binding CommandCopyPartToWtDocParam}">
+                                            <Image Source="{StaticResource COPY_R_TO_L}"></Image>
+                                        </Button>
+                                        <Border BorderThickness="1" 
+                                             BorderBrush="Gray"
+                                             Margin="0,5,0,0"
+                                             Width="276"
+                                             IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsObjectEditable}">
+                                            <StackPanel Margin="2,0,0,0"
+                                                     MinWidth="240">
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelPtcCommonName}"
+                                                              IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsWtNonVersionAttributeEditable, FallbackValue=False}"
+                                                              ItemsSource="{Binding CurrentDataContext.ListWebterm}"
+                                                              SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.PTCCOMMONNAME, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.PTCCOMMONNAME, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelDescription2}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.DESCRIPTION2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelDescription21}"
+                                                              ItemsSource="{Binding CurrentDataContext.ListWebtermLocal}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.DESCRIPTION21, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelDescription22}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.DESCRIPTION22, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelGroupCreator}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.GROUPCREATOR, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:TextBox Header="{DynamicResource MWT_LabelMass}"
+                                                             Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.MASS, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelMaterial}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.MaterialList}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.MATERIAL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelQualInspGrp}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding Source={StaticResource QualInspGrpEnum}}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.QUALINSPGRP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelBrand}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.ListBrand}"
+                                                              Text="{Binding CurrentDataContext.SelectedBrand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelGroup}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.ListGroup}"
+                                                              Text="{Binding CurrentDataContext.SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelSubGroup}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.ListSubGroup}"
+                                                              Text="{Binding CurrentDataContext.SelectedSubGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                                <Fluent:TextBox  Header="{DynamicResource MWT_LabelModel}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.MODEL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                                <Fluent:ComboBox Header="{DynamicResource MWT_LabelOption}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.ListOption}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.OPTION, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="34"></Rectangle>
+                                        <Border BorderThickness="1" 
+                                                 BorderBrush="Gray"
+                                                 Margin="0,5,0,0"
+                                                 Width="276"
+                                                 IsEnabled="{Binding CurrentDataContext.WtPartSelected}">
+                                            <Fluent:ComboBox Header="{DynamicResource MWT_LabelUnit}"
+                                                              IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.IsObjectEditable}"
+                                                              IsEditable="False"
+                                                              ItemsSource="{Binding CurrentDataContext.AllUnits}"
+                                                              SelectedItem="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Unit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                              Text="{Binding CurrentDataContext.CurrentWtObject.WtPartObject.Unit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:ComboBox>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  IsEnabled="{Binding CurrentDataContext.WtDocumentSelected}" 
+                                  Visibility="{Binding CurrentDataContext.WtDocumentSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding CurrentDataContext.ListContentItem}"
+                                      Margin="10"
+                                      IsEnabled="{Binding CurrentDataContext.CurrentWtObject.WtDocumentObject.IsObjectEditable}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Left" 
+                                                VerticalAlignment="Center">
+                                        <Image Height="32" MinWidth="32" IsHitTestVisible="False" Margin="2,0,2,0" >
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                                            <Setter Property="Source" Value="{StaticResource NEW}" />
+                                                            <Setter Property="ToolTip" Value="New" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                                            <Setter Property="Source" Value="{StaticResource UPDATE}" />
+                                                            <Setter Property="ToolTip" Value="Updated" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.REMOVED}">
+                                                            <Setter Property="Source" Value="{StaticResource REMOVE}" />
+                                                            <Setter Property="ToolTip" Value="Removed" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                                            <Setter Property="Source" Value="{StaticResource UPLOAD}" />
+                                                            <Setter Property="ToolTip" Value="Removed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <Image Height="32" 
+                                               MinWidth="32" 
+                                               IsHitTestVisible="False" 
+                                               Margin="2,0,2,0"
+                                               IsEnabled="{Binding IsActive}">
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOC}">
+                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOCX}">
+                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DOCM}">
+                                                            <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLS}">
+                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLSX}">
+                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.XLSM}">
+                                                            <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPT}">
+                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPTX}">
+                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PPTM}">
+                                                            <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PDF}">
+                                                            <Setter Property="Source" Value="{StaticResource PDF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TIF}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TIFF}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PNG}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.JPEG}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.JPG}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.BMP}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DXF}">
+                                                            <Setter Property="Source" Value="{StaticResource DXF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.DWG}">
+                                                            <Setter Property="Source" Value="{StaticResource DWG}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.STP}">
+                                                            <Setter Property="Source" Value="{StaticResource STEP}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.STEP}">
+                                                            <Setter Property="Source" Value="{StaticResource STEP}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.IGS}">
+                                                            <Setter Property="Source" Value="{StaticResource IGES}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.IGES}">
+                                                            <Setter Property="Source" Value="{StaticResource IGES}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.PVZ}">
+                                                            <Setter Property="Source" Value="{StaticResource PVZ}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.ZIP}">
+                                                            <Setter Property="Source" Value="{StaticResource ZIP}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSD}">
+                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSDX}">
+                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.VSDM}">
+                                                            <Setter Property="Source" Value="{StaticResource VSD}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.CSV}">
+                                                            <Setter Property="Source" Value="{StaticResource CSV}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.TXT}">
+                                                            <Setter Property="Source" Value="{StaticResource OTHER}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.GIF}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.MPEG}">
+                                                            <Setter Property="Source" Value="{StaticResource OTHER}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.AVI}">
+                                                            <Setter Property="Source" Value="{StaticResource OTHER}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.ICO}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.AVI}">
+                                                            <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static MCGLib:FileExtensionEnum.UNKNOWN}">
+                                                            <Setter Property="Source" Value="{StaticResource UNKNOWN}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+
+                                        <Button Height="32" 
+                                                Margin="2,0,2,0"
+                                                Command="{Binding Data.CommandRemoveContent, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="{DynamicResource MWT_BtRemoveContent}"
+                                                IsEnabled="{Binding IsActive}">
+                                            <Image Source="{StaticResource DELETE}" />
+                                        </Button>
+
+                                        <Button Height="32" 
+                                                Margin="2,0,2,0"
+                                                Command="{Binding Data.CommandDownloadContent, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="{DynamicResource MWT_BtDownloadContent}"
+                                                IsEnabled="{Binding IsCanbeDownloaded}">
+                                            <Image Source="{StaticResource DOWNLOAD}" />
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.UPDATED}">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.REMOVED}">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.CREATED}">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                        <RadioButton IsChecked="{Binding IsPrimaryContent}" 
+                                                     Margin="5,0" 
+                                                     GroupName="WtDocFiles" 
+                                                     VerticalAlignment="Center" 
+                                                     Checked="RB_Checked"
+                                                     Click="RB_Clicked"
+                                                     IsEnabled="{Binding IsActive}"></RadioButton>
+                                        <TextBlock Text="{Binding ContentType}" 
+                                                   Margin="5,0" Width="130" 
+                                                   VerticalAlignment="Center" 
+                                                   IsHitTestVisible="False" 
+                                                   IsEnabled="{Binding IsActive}"></TextBlock>
+                                        <TextBlock Text="{Binding Filename}" 
+                                                   Margin="5,0" 
+                                                   VerticalAlignment="Center" 
+                                                   IsHitTestVisible="False"
+                                                   IsEnabled="{Binding IsActive}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                </DockPanel>
+
+                <Image x:Name="ImageDragDrop"
+                       Source="{StaticResource DRAGDROP}" 
+                       MaxHeight="300"
+                       Opacity="0.5"
+                       Visibility="Collapsed"
+                       IsHitTestVisible="False"></Image>
+                <Image Visibility="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=False}" 
+                       Width="670"
+                       Stretch="Fill" 
+                       gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                       ForceCursor="False" 
+                       Cursor="Hand" 
+                       Opacity="0.4"
+                       IsHitTestVisible="False"></Image>
+            </Grid>
+
+            <Image Height="64"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="0,3,0,0">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.LinkStatus}" Value="{x:Static MCGLib:ObjectState.LINKED}">
+                                <Setter Property="Source" Value="{StaticResource LINKED}" />
+                                <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipLinked}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentDataContext.CurrentWtObject.LinkStatus}" Value="{x:Static MCGLib:ObjectState.UNLINKED}">
+                                <Setter Property="Source" Value="{StaticResource UNLINKED}" />
+                                <Setter Property="ToolTip" Value="{DynamicResource MWT_ToolTipUnlinked}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+        </Grid>
+
+    </DockPanel>
+</Fluent:RibbonWindow>

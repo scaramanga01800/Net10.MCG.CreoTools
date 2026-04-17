@@ -1,0 +1,1178 @@
+﻿<UserControl x:Class="MCG.Tools.PurchaseOrderFollowUp.View.PurchaseOrderFollowUpTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.View"
+             xmlns:localVm="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.ViewModel"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:MCGWpfLibCol="clr-namespace:MCG.CommonLib.WpfComponent.View.Attributecolumn;assembly=MCG.CommonLib.WpfComponent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="MainObj">
+
+    <!--xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"-->
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_update.ico" />
+            <BitmapImage x:Key="MULTIPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/MultiPart.ico" />
+            <BitmapImage x:Key="UPDATEVENDOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/UpdateVendor.ico" />
+            <BitmapImage x:Key="SHOWVENDOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/VendorShow.ico" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="COPY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/page_copy.png" />
+            <BitmapImage x:Key="SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Sap.ico" />
+            <BitmapImage x:Key="STOCK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/stock.ico" />
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToVisibilityMultiOrConverter x:Key="BoolToVisibilityMultiOrConverter"></conv:BoolToVisibilityMultiOrConverter>
+            <conv:InverseBoolToVisibilityConverter x:Key="BoolToInverseBoolConverter"></conv:InverseBoolToVisibilityConverter>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <TabControl>
+            <TabItem Header="{DynamicResource POF_TabMyRequest}">
+                <DockPanel>
+
+                    <Fluent:StatusBar DockPanel.Dock="Bottom" Height="20">
+                        <Fluent:StatusBarItem HorizontalAlignment="Left" 
+                                  Margin="5,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{DynamicResource POF_StatusBarNbOrder}" Margin="0,0,5,0"></TextBlock>
+                                <TextBlock Text="{Binding CurrentDataContext.ListShownMyRequest.Count}"></TextBlock>
+                            </StackPanel>
+                        </Fluent:StatusBarItem>
+                        <Fluent:StatusBarItem Title="ProgressBar"                                     
+                      HorizontalAlignment="Right"
+                      Margin="0,0,5,0">
+                            <Fluent:StatusBarItem.ToolTip>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding CurrentDataContext.CurrentStep}" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="\" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="{Binding CurrentDataContext.TotalStep}" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Fluent:StatusBarItem.ToolTip>
+                            <ProgressBar Height="17"
+                     Width="250"
+                     Maximum="{Binding CurrentDataContext.TotalStep}" 
+                     Value="{Binding CurrentDataContext.CurrentStep}"
+                     Visibility="{Binding CurrentDataContext.IsNoActionInProgress, Converter={StaticResource BoolToInverseBoolConverter}}"></ProgressBar>
+                        </Fluent:StatusBarItem>
+                    </Fluent:StatusBar>
+
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusNew}"
+                         IsChecked="{Binding CurrentDataContext.StatusNewSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusSent}"
+                         IsChecked="{Binding CurrentDataContext.StatusSentSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusCreated}"
+                         IsChecked="{Binding CurrentDataContext.StatusCreatedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusGoodsReceipt}"
+                         IsChecked="{Binding CurrentDataContext.StatusGoodsReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusInvoiceReceipt}"
+                         IsChecked="{Binding CurrentDataContext.StatusInvoiceReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusClosed}"
+                         IsChecked="{Binding CurrentDataContext.StatusClosedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" 
+                    DockPanel.Dock="Top"
+                    Margin="10,5,0,5">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateFrom}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedAfterDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right"
+                        Margin="4,0,0,0"
+                        Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateTo}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedBeforeDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                            <Polygon Points="20,10 30,5 30,8 40,8 40,11 30,11 30,15" Fill="Red" Stroke="Red" StrokeThickness="5"/>
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateWarning}"
+                                     FontSize="15"
+                                     Margin="5,0,0,0"
+                                     Foreground="Red"
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding CurrentDataContext.ListShownMyRequest}"
+                  SelectedItem="{Binding CurrentDataContext.SelectedRequest}"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  x:Name="DataGridMyRequest"
+                  FrozenColumnCount="1">
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="MouseDoubleClick">
+                                <behaviors:InvokeCommandAction Command="{Binding CommandUpdatePurchaseOrder}" ></behaviors:InvokeCommandAction>
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+
+                        <DataGrid.ContextMenu>
+                            <Fluent:ContextMenu>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyPurchaseRequest}" 
+                                     Command="{Binding CommandCopyPurchaseRequest}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyPurchaseOrder}" 
+                                     Command="{Binding CommandCopyPurchaseOrder}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyVendorNumber}" 
+                                     Command="{Binding CommandCopyVendorNumber}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuUpdateRequest}" 
+                                     Command="{Binding CommandUpdatePurchaseOrder}" 
+                                     Icon="{StaticResource UPDATE}">
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCheckExtendPart}" 
+                                     Command="{Binding CommandCheckExtendPart}" 
+                                     Icon="{StaticResource MULTIPART}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuExtendPart}" 
+                                     Command="{Binding CommandAskExtendPart}" 
+                                     Icon="{StaticResource MULTIPART}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtShowSapStock}" 
+                                     Command="{Binding CommandShowSapStock}" 
+                                     CommandParameter="{StaticResource FalseValue}"
+                                     Icon="{StaticResource STOCK}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenResa}" 
+                                     Command="{Binding CommandOpenResa}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseRequest}" 
+                                     Command="{Binding CommandOpenPurchaseRequest}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseOrder}" 
+                                     Command="{Binding CommandOpenPurchaseOrder}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseOrderPdf}" 
+                                     Command="{Binding CommandOpenPurchaseOrderPdf}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenReceiptPurchaseOrder}" 
+                                     Command="{Binding CommandReceiptPurchaseOrder}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtShowVendor}" 
+                                     Command="{Binding CommandShowVendor}"
+                                     CommandParameter="{StaticResource TrueValue}"
+                                     Icon="{StaticResource SHOWVENDOR}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtUpdateVendor}" 
+                                     Command="{Binding CommandAskUpdateVendor}"
+                                     CommandParameter="{StaticResource TrueValue}"
+                                     Icon="{StaticResource UPDATEVENDOR}">
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtDelete}" 
+                                     Command="{Binding CommandDeleteRequest}" 
+                                     Icon="{StaticResource DELETE}">
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtAdminUpdate}" 
+                                     Command="{Binding CommandAdminUpdute}" 
+                                     Icon="{StaticResource UPDATE}"
+                                     Visibility="{Binding CurrentDataContext.IsRoleAdmin, Converter={StaticResource BoolToVisibilityConv}}">
+                                </Fluent:MenuItem>
+                            </Fluent:ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="NEW">
+                                        <Setter Property="Background" Value="#FFFDDC" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusNew}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="SENT">
+                                        <Setter Property="Background" Value="#FFFBF0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusSent}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="CREATED">
+                                        <Setter Property="Background" Value="#E6FFCC" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="UNDER_REVIEW ">
+                                        <Setter Property="Background" Value="#C9FFC9" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusUnderReview}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PR_CREATED ">
+                                        <Setter Property="Background" Value="#B3FFB3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPrCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PO_CREATED ">
+                                        <Setter Property="Background" Value="#99FF99" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPoCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PR_APPROVED ">
+                                        <Setter Property="Background" Value="#CCD699" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPrApproved}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PO_APPROVED">
+                                        <Setter Property="Background" Value="#A3DFA3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPoApproved}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PARTIAL_GOODS_RECEIPT ">
+                                        <Setter Property="Background" Value="#C4E3E3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPartialGr}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="GOODS_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3D0D0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusGoodsReceipt}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PARTIAL_INVOICE_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3A3D0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPartialInvR}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="INVOICE_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3A3DF" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusInvoiceReceipt}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="CLOSED">
+                                        <Setter Property="Background" Value="#8484B3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusClosed}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn CanUserSort="True" 
+                                        SortMemberPath="Total_Ordered">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col21}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Ordered" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Total_Goods">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col22}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Goods" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Total_Invoice">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col23}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Invoice" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem  Header="{DynamicResource POF_TabAllRequest}">
+                <TabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource BoolToVisibilityMultiOrConverter}">
+                        <Binding Path="CurrentDataContext.IsRoleSuperviser" />
+                        <Binding Path="CurrentDataContext.IsRoleSapCreator" />
+                    </MultiBinding>
+                </TabItem.Visibility>
+                <DockPanel>
+                    <Fluent:StatusBar DockPanel.Dock="Bottom" Height="20">
+                        <Fluent:StatusBarItem HorizontalAlignment="Left" 
+                                  Margin="5,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{DynamicResource POF_StatusBarNbOrder}" Margin="0,0,5,0"></TextBlock>
+                                <TextBlock Text="{Binding CurrentDataContext.ListShownRequest.Count}"></TextBlock>
+                            </StackPanel>
+                        </Fluent:StatusBarItem>
+                        <Fluent:StatusBarItem Title="ProgressBar"                                     
+                      HorizontalAlignment="Right"
+                      Margin="0,0,5,0">
+                            <Fluent:StatusBarItem.ToolTip>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding CurrentDataContext.CurrentStep}" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="\" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="{Binding CurrentDataContext.TotalStep}" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Fluent:StatusBarItem.ToolTip>
+                            <ProgressBar Height="17"
+                     Width="250"
+                     Maximum="{Binding CurrentDataContext.TotalStep}" 
+                     Value="{Binding CurrentDataContext.CurrentStep}"
+                     Visibility="{Binding CurrentDataContext.IsNoActionInProgress, Converter={StaticResource BoolToInverseBoolConverter}}"></ProgressBar>
+                        </Fluent:StatusBarItem>
+                    </Fluent:StatusBar>
+
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusNew}"
+                         IsChecked="{Binding CurrentDataContext.StatusNewSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusSent}"
+                         IsChecked="{Binding CurrentDataContext.StatusSentSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusCreated}"
+                         IsChecked="{Binding CurrentDataContext.StatusCreatedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusGoodsReceipt}"
+                         IsChecked="{Binding CurrentDataContext.StatusGoodsReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusInvoiceReceipt}"
+                         IsChecked="{Binding CurrentDataContext.StatusInvoiceReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusClosed}"
+                         IsChecked="{Binding CurrentDataContext.StatusClosedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" 
+                    DockPanel.Dock="Top"
+                    Margin="10,5,0,5">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateFrom}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedAfterDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right"
+                        Margin="4,0,0,0"
+                        Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateTo}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedBeforeDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                            <Polygon Points="20,10 30,5 30,8 40,8 40,11 30,11 30,15" Fill="Red" Stroke="Red" StrokeThickness="5"/>
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateWarning}"
+                                     FontSize="15"
+                                     Margin="5,0,0,0"
+                                     Foreground="Red"
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding CurrentDataContext.ListShownRequest}"
+                  SelectedItem="{Binding CurrentDataContext.SelectedRequest}"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  x:Name="DataGridAllRequest"
+                  FrozenColumnCount="1">
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="MouseDoubleClick">
+                                <behaviors:InvokeCommandAction Command="{Binding CommandUpdatePurchaseOrder}" ></behaviors:InvokeCommandAction>
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+
+                        <DataGrid.ContextMenu>
+                            <Fluent:ContextMenu>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyPurchaseRequest}" 
+                                     Command="{Binding CommandCopyPurchaseRequest}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyPurchaseOrder}" 
+                                     Command="{Binding CommandCopyPurchaseOrder}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyVendorNumber}" 
+                                     Command="{Binding CommandCopyVendorNumber}"
+                                     Icon="{StaticResource COPY}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuUpdateRequest}" 
+                                     Command="{Binding CommandUpdatePurchaseOrder}" 
+                                     Icon="{StaticResource UPDATE}">
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuCheckExtendPart}" 
+                                     Command="{Binding CommandCheckExtendPart}" 
+                                     Icon="{StaticResource MULTIPART}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuExtendPart}" 
+                                     Command="{Binding CommandAskExtendPart}" 
+                                     Icon="{StaticResource MULTIPART}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtShowSapStock}" 
+                                     Command="{Binding CommandShowSapStock}" 
+                                     CommandParameter="{StaticResource FalseValue}"
+                                     Icon="{StaticResource STOCK}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenResa}" 
+                                     Command="{Binding CommandOpenResa}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseRequest}" 
+                                     Command="{Binding CommandOpenPurchaseRequest}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseOrder}" 
+                                     Command="{Binding CommandOpenPurchaseOrder}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenPurchaseOrderPdf}" 
+                                     Command="{Binding CommandOpenPurchaseOrderPdf}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_MenuOpenReceiptPurchaseOrder}" 
+                                     Command="{Binding CommandReceiptPurchaseOrder}"
+                                     Icon="{StaticResource SAP}">
+                                    <Fluent:MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.RESA}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZICP}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZRMI}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentDataContext.SelectedRequest.RequestType}" Value="{x:Static localVm:PurchaseOrderType.ZNB}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Fluent:MenuItem.Style>
+                                </Fluent:MenuItem>
+
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtShowVendor}" 
+                                     Command="{Binding CommandShowVendor}"
+                                     CommandParameter="{StaticResource TrueValue}"
+                                     Icon="{StaticResource SHOWVENDOR}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtUpdateVendor}" 
+                                     Command="{Binding CommandAskUpdateVendor}" 
+                                     CommandParameter="{StaticResource TrueValue}"
+                                     Icon="{StaticResource UPDATEVENDOR}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtDelete}" 
+                                     Command="{Binding CommandDeleteRequest}" 
+                                     Icon="{StaticResource DELETE}">
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem Header="{DynamicResource POF_BtAdminUpdate}" 
+                                     Command="{Binding CommandAdminUpdute}" 
+                                     Icon="{StaticResource UPDATE}"
+                                     Visibility="{Binding CurrentDataContext.IsRoleAdmin, Converter={StaticResource BoolToVisibilityConv}}">
+                                </Fluent:MenuItem>
+
+                            </Fluent:ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="NEW">
+                                        <Setter Property="Background" Value="#FFFDDC" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusNew}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="SENT">
+                                        <Setter Property="Background" Value="#FFFBF0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusSent}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="CREATED">
+                                        <Setter Property="Background" Value="#E6FFCC" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="UNDER_REVIEW ">
+                                        <Setter Property="Background" Value="#C9FFC9" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusUnderReview}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PR_CREATED ">
+                                        <Setter Property="Background" Value="#B3FFB3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPrCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PO_CREATED ">
+                                        <Setter Property="Background" Value="#99FF99" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPoCreated}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PR_APPROVED ">
+                                        <Setter Property="Background" Value="#CCD699" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPrApproved}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PO_APPROVED">
+                                        <Setter Property="Background" Value="#A3DFA3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPoApproved}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PARTIAL_GOODS_RECEIPT ">
+                                        <Setter Property="Background" Value="#C4E3E3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPartialGr}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="GOODS_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3D0D0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusGoodsReceipt}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="PARTIAL_INVOICE_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3A3D0" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusPartialInvR}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="INVOICE_RECEIPT ">
+                                        <Setter Property="Background" Value="#A3A3DF" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusInvoiceReceipt}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="CLOSED">
+                                        <Setter Property="Background" Value="#8484B3" />
+                                        <Setter Property="ToolTip" Value="{DynamicResource POF_ToolTipStatusClosed}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Total_Ordered">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col21}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Ordered" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Total_Goods">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col22}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Goods" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Total_Invoice">
+                                <DataGridTemplateColumn.Header>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush >
+                                                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <Fluent:TwoLineLabel Grid.Row="0"
+                                                     Margin="10,0"
+                                                     HorizontalAlignment="Center"
+                                                     Height="45"
+                                                     FontSize="12"
+                                                     Text="{DynamicResource POF_Col23}">
+                                            </Fluent:TwoLineLabel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:# ##0.00} {1} ">
+                                                    <Binding Path="Total_Invoice" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+                                                    <Binding Path="CurrencySymbol"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource POF_TabKPI}">
+                <TabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource BoolToVisibilityMultiOrConverter}">
+                        <Binding Path="CurrentDataContext.IsRoleSuperviser" />
+                        <Binding Path="CurrentDataContext.IsRoleSapCreator" />
+                    </MultiBinding>
+                </TabItem.Visibility>
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" 
+                    DockPanel.Dock="Top"
+                    Margin="10,5,0,5">
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusNew}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusNewSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusSent}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusSentSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusCreated}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusCreatedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusGoodsReceipt}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusGoodsReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusInvoiceReceipt}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusInvoiceReceiptSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                        <Fluent:CheckBox Header="{DynamicResource POF_CheckBoxStatusClosed}"
+                         IsChecked="{Binding CurrentDataContext.ChartStatusClosedSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" 
+                    DockPanel.Dock="Top"
+                    Margin="10,5,0,5">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateFrom}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedAfterDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right"
+                        Margin="4,0,0,0"
+                        Orientation="Horizontal">
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateTo}" 
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                            <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.ChartPoCreatedBeforeDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                            <Polygon Points="20,10 30,5 30,8 40,8 40,11 30,11 30,15" Fill="Red" Stroke="Red" StrokeThickness="5"/>
+                            <Fluent:TwoLineLabel Text="{DynamicResource POF_LabelDateWarning}"
+                                     FontSize="15"
+                                     Margin="5,0,0,0"
+                                     Foreground="Red"
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <Border BorderThickness="1"
+                    BorderBrush="Black"
+                    Padding="10" >
+
+                        <StackPanel Orientation="Horizontal">
+                            <Border BorderThickness="0.3"
+                                    BorderBrush="Black"
+                                    Padding="10" 
+                                    Height="320"
+                                    VerticalAlignment="Top">
+                                <StackPanel Orientation="Vertical"
+                                            Margin="10,5,0,5">
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                             Text="{DynamicResource POF_CBCostCenter}"
+                                             Margin="2"></Fluent:TwoLineLabel>
+                                    <CheckBox x:Name="selectAllCheckBox" 
+                                              Content="{DynamicResource POF_CBCostCenterSelectAll}"
+                                              IsChecked="{Binding CurrentDataContext.IsAllCostCenterSelected}"/>
+                                    <ListView ItemsSource="{Binding CurrentDataContext.ListCostCenter}" 
+                                              Height="250">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Number}"
+                                              IsChecked="{Binding IsSelected}"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                            </Border>
+                            <StackPanel Margin="50,0">
+
+                                <Fluent:TwoLineLabel HasTwoLines="False"
+                                                     HorizontalAlignment="Center"
+                                                     Text="{DynamicResource POF_TitleTotalPurchaseRequest}"></Fluent:TwoLineLabel>
+                                <lvc:PieChart Width="300" 
+                                              Height="400" 
+                                              Name="pieChartNumber" 
+                                              DataTooltip="{x:Null}" 
+                                              Series="{Binding CurrentDataContext.AllPurchasePieSeriesNumber}" 
+                                              LegendLocation="Bottom" />
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Left"
+                                        Margin="50,0">
+
+                                <Fluent:TwoLineLabel HasTwoLines="False"
+                                                     HorizontalAlignment="Center"
+                                                     Text="{DynamicResource POF_TitleTotalBudget}"></Fluent:TwoLineLabel>
+
+                                <lvc:CartesianChart Series="{Binding CurrentDataContext.AllPurchaseStackColSeriesNumber}"
+                                                    LegendLocation="Bottom"
+                                                    Height="400"
+                                                    Width="250">
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding CurrentDataContext.PieSeriesCostFormatter}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                            </StackPanel>
+
+                            <StackPanel Margin="50,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                                         HorizontalAlignment="Center"
+                                                         Text="{DynamicResource POF_TitleTotalVendorCost}"></Fluent:TwoLineLabel>
+                                    <Fluent:TextBox Text="{Binding CurrentDataContext.MinVendorRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                                </StackPanel>
+                                <lvc:PieChart Width="300" 
+                                              Height="400" 
+                                              Series="{Binding CurrentDataContext.AllPurchasePieSeriesVendorCost}" 
+                                              LegendLocation="Bottom"/>       
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Border>
+
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource POF_TabInternalOrder}">
+                <DataGrid ItemsSource="{Binding CurrentDataContext.ListAllInternalOrder}"
+              SelectedItem="{Binding CurrentDataContext.SelectedInternalOrder, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+              IsReadOnly="True"
+              CanUserAddRows="False"
+              AutoGenerateColumns="False">
+                    <DataGrid.ContextMenu>
+                        <Fluent:ContextMenu>
+                            <Fluent:MenuItem Header="{DynamicResource POF_MenuCopyNumber}" 
+                                 Command="{Binding CommandCopyIONumber}"
+                                     Icon="{StaticResource COPY}">
+                            </Fluent:MenuItem>
+                        </Fluent:ContextMenu>
+                    </DataGrid.ContextMenu>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{DynamicResource POF_Col25}" 
+                                Binding="{Binding Number}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="{DynamicResource POF_Col26}"
+                                Binding="{Binding Description}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <Image  Visibility="{Binding CurrentDataContext.IsNoActionInProgress, Converter={StaticResource BoolToInverseBoolConverter}, FallbackValue=True}" 
+                Stretch="Fill" 
+                gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                ForceCursor="True" 
+                Cursor="Hand" 
+                Opacity="0.4"
+                IsHitTestVisible="False"></Image>
+
+    </Grid>
+</UserControl>

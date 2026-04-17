@@ -1,0 +1,333 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="POF_AppName">Purchase Order Follow Up</system:String>
+    
+    <system:String x:Key="POF_RibGrpCreate">Create</system:String>
+    <system:String x:Key="POF_RibGrpData">Data</system:String>
+    <system:String x:Key="POF_WindowTitleCreateRequest">Create/Update Request</system:String>
+
+    <system:String x:Key="POF_CBPurchaseType">Purchase Type</system:String>
+    <system:String x:Key="POF_CBCostCenter">Cost Center</system:String>
+    <system:String x:Key="POF_CBInternalOrder">Internal Order</system:String>
+    <system:String x:Key="POF_CBVendor">Vendor</system:String>
+    <system:String x:Key="POF_TBGeneralDescription">General Description</system:String>
+    <system:String x:Key="POF_TBRequestedBy">Requested By</system:String>
+    <system:String x:Key="POF_TBSapRequest">SAP Purchase Request</system:String>
+
+    <system:String x:Key="POF_Col01">Number</system:String>
+    <system:String x:Key="POF_Col02">Material</system:String>
+    <system:String x:Key="POF_Col03">Short Text</system:String>
+    <system:String x:Key="POF_Col04">Quantity</system:String>
+    <system:String x:Key="POF_Col05">Delivery Date</system:String>
+    <system:String x:Key="POF_Col06">Vendor</system:String>
+    <system:String x:Key="POF_Col07">Unit Price excl. VAT</system:String>
+    <system:String x:Key="POF_Col08">Delivery Adess</system:String>
+    <system:String x:Key="POF_Col09">Item Text</system:String>
+    <system:String x:Key="POF_Col10">Created By</system:String>
+    <system:String x:Key="POF_Col11">Created On</system:String>
+    <system:String x:Key="POF_Col12">Requested By</system:String>
+    <system:String x:Key="POF_Col13">SAP Created By</system:String>
+    <system:String x:Key="POF_Col14">SAP Created On</system:String>
+    <system:String x:Key="POF_Col15">SAP Purchase Request</system:String>
+    <system:String x:Key="POF_Col16">SAP Purchase Order</system:String>
+    <system:String x:Key="POF_Col17">Status</system:String>
+    <system:String x:Key="POF_Col18">Type</system:String>
+    <system:String x:Key="POF_Col19">Description</system:String>
+    <system:String x:Key="POF_Col20">File Name</system:String>
+    <system:String x:Key="POF_Col21">Total Ordered</system:String>
+    <system:String x:Key="POF_Col22">Total Good Receipt</system:String>
+    <system:String x:Key="POF_Col23">Total Invoice Receipt</system:String>
+    <system:String x:Key="POF_Col24">Vendor Number</system:String>
+    <system:String x:Key="POF_Col25">Number</system:String>
+    <system:String x:Key="POF_Col26">Description</system:String>
+
+    <system:String x:Key="POF_BtAddItem">Add Item</system:String>
+    <system:String x:Key="POF_BtSaveRequest">Save Request</system:String>
+    <system:String x:Key="POF_BtSaveRequestClose">Save Request and Close</system:String>
+    <system:String x:Key="POF_BtSendRequest">Send Request</system:String>
+    <system:String x:Key="POF_BtNewRequest">New Request</system:String>
+    <system:String x:Key="POF_BtTooltipNewRequest">Create a new purchase request.</system:String>
+    <system:String x:Key="POF_BtNewVendor">New Vendor</system:String>
+    <system:String x:Key="POF_BtTooltipNewVendor">Request the creation of a new vendor. Make sure you have all required documents first.</system:String>
+    <system:String x:Key="POF_BtUpdateVendor">Update Vendor</system:String>
+    <system:String x:Key="POF_BtTooltipUpdateVendor">Request an update for a vendor. Make sure you have all required documents first.</system:String>
+    <system:String x:Key="POF_BtNewInternalOrder">New Internal Order</system:String>
+    <system:String x:Key="POF_BtTooltipInternalOrder">Request the creation of a new internal order.</system:String>
+    <system:String x:Key="POF_MenuExtendPart">Request Part Extension</system:String>
+    <system:String x:Key="POF_MenuCheckExtendPart">Check if Parts Extended</system:String>
+    <system:String x:Key="POF_BtTooltipExtendPart">Request to extend the parts of the current request to the delivery plant in SAP.</system:String>
+    <system:String x:Key="POF_BtTooltipAddItem">Add a new item to the current request.</system:String>
+    <system:String x:Key="POF_BtTooltipSaveRequest">Save the current request to the database.</system:String>
+    <system:String x:Key="POF_BtTooltipSaveRequestClose">Save the current request to the database and close the window.</system:String>
+    <system:String x:Key="POF_BtTooltipSendRequest">Send the request to create it in SAP. It will also be saved to the database at the same time.</system:String>
+    <system:String x:Key="POF_BtShowSapStock">Show SAP Stock</system:String>
+    <system:String x:Key="POF_BtToolTipShowSapStock">Display available SAP stock for the selected parts. A SAP session must be started first.</system:String>
+    
+    <system:String x:Key="POF_MenuUpdateRequest">Update</system:String>
+    <system:String x:Key="POF_MenuRemoveItem">Remove</system:String>
+    <system:String x:Key="POF_MenuOpenItem">Open</system:String>
+    <system:String x:Key="POF_MenuCopyRequest">Copy</system:String>
+    <system:String x:Key="POF_MenuDownloadItem">Download</system:String>
+    <system:String x:Key="POF_MenuCopyNumber">Copy Number</system:String>
+
+    <system:String x:Key="POF_MsgTitleExceededItem">Maximum Items Reached</system:String>
+    <system:String x:Key="POF_MsgExceededItem">The maximum number of items (40) has been reached. Please create a new request.</system:String>
+
+    <system:String x:Key="POF_TabItem">Items</system:String>
+    <system:String x:Key="POF_TabAttachment">Attachments</system:String>
+    <system:String x:Key="POF_CreateXlsIssue">Unable to create Excel file {0}. Please contact your administrator.</system:String>
+    <system:String x:Key="POF_TitleCreateXlsIssue">Excel Error</system:String>
+    <system:String x:Key="POF_TabMyRequest">My Requests</system:String>
+    <system:String x:Key="POF_TabAllRequest">All Requests</system:String>
+    <system:String x:Key="POF_TabKPI">KPI</system:String>
+    <system:String x:Key="POF_TabInternalOrder">Internal Orders</system:String>
+
+    <system:String x:Key="POF_TbNumber">Number</system:String>
+    <system:String x:Key="POF_TbName">Name</system:String>
+    <system:String x:Key="POF_TbLocation">Location</system:String>
+    <system:String x:Key="POF_TbSociety">Society</system:String>
+
+    <system:String x:Key="POF_MailObject">Purchase Request {0}</system:String>
+    <system:String x:Key="POF_MailBody01">Hello,</system:String>
+    <system:String x:Key="POF_MailBody02">Please create the following purchase requisition in SAP:</system:String>
+    <system:String x:Key="POF_MailBody03">Purchase Type: {0}</system:String>
+    <system:String x:Key="POF_MailBody04">Cost Center: {0}</system:String>
+    <system:String x:Key="POF_MailBody05">Internal Order: {0}</system:String>
+    <system:String x:Key="POF_MailBody06">Vendor: {0}</system:String>
+    <system:String x:Key="POF_MailBody07">⚠️ Please remember to attach the quote to this email for indirect orders.</system:String>
+
+    <system:String x:Key="POF_MsgRemoveItem">Are you sure you want to remove this item?</system:String>
+    <system:String x:Key="POF_MsgRemoveAttachement">Are you sure you want to remove this attachment?</system:String>
+    <system:String x:Key="POF_MsgTitleRemoveItem">Remove</system:String>
+
+    <system:String x:Key="POF_LabelMaxRow">The maximum number of rows (100) has been reached. Please refine your search.</system:String>
+    <system:String x:Key="POF_LabelUpdateNotAllowed">You are not allowed to modify this request. You must be the creator or requestor, and the status must be NEW, SENT, or REWORK.</system:String>
+    
+    <system:String x:Key="POF_RequestTypeQ01">Internal or External Order?</system:String>
+    <system:String x:Key="POF_RequestTypeQ02">Part known in SAP?</system:String>
+    <system:String x:Key="POF_RequestTypeQ03">From which site?</system:String>
+    <system:String x:Key="POF_RequestTypeR01_1">Internal</system:String>
+    <system:String x:Key="POF_RequestTypeR01_2">External</system:String>
+    <system:String x:Key="POF_RequestTypeR02_1">Yes</system:String>
+    <system:String x:Key="POF_RequestTypeR02_2">No</system:String>
+    <system:String x:Key="POF_RequestTypeR03_1">CHL</system:String>
+    <system:String x:Key="POF_RequestTypeR03_2">MLS</system:String>
+    <system:String x:Key="POF_RequestTypeR03_3">BALTAR</system:String>
+    <system:String x:Key="POF_RequestTypeR03_4">NIELLA</system:String>
+    <system:String x:Key="POF_RequestTypeR03_5">CHINA</system:String>
+    <system:String x:Key="POF_RequestTypeR03_6">SPC</system:String>
+
+    <system:String x:Key="POF_VendorWindow">Create/Update Vendor</system:String>
+    <system:String x:Key="POF_VendorName">Company Name</system:String>
+    <system:String x:Key="POF_VendorName1">Full Name</system:String>
+    <system:String x:Key="POF_VendorName2">abbreviation</system:String>
+    <system:String x:Key="POF_VendorAdress">Company Adress</system:String>
+    <system:String x:Key="POF_VendorAdressNumber">Street Number</system:String>
+    <system:String x:Key="POF_VendorAdressStreet">Street Name</system:String>
+    <system:String x:Key="POF_VendorAdressCity">City</system:String>
+    <system:String x:Key="POF_VendorAdressPostalCode">Postal Code</system:String>
+    <system:String x:Key="POF_VendorAdressCountry">Country</system:String>
+    <system:String x:Key="POF_VendorCommunication">Communication</system:String>
+    <system:String x:Key="POF_VendorComLang">Language</system:String>
+    <system:String x:Key="POF_VendorComTel">Company Telephone</system:String>
+    <system:String x:Key="POF_VendorComMail">Company E-Mail</system:String>
+    <system:String x:Key="POF_VendorComBusinessType">Business Type</system:String>
+    <system:String x:Key="POF_VendorContact">Contact</system:String>
+    <system:String x:Key="POF_VendorContactFirstName">First Name</system:String>
+    <system:String x:Key="POF_VendorContactLastName">Last Name</system:String>
+    <system:String x:Key="POF_VendorContactDepartment">Departement</system:String>
+    <system:String x:Key="POF_VendorContactTel">Telephone</system:String>
+    <system:String x:Key="POF_VendorContactMail">E-Mail</system:String>
+    <system:String x:Key="POF_VendorFinancial">Tax Data</system:String>
+    <system:String x:Key="POF_VendorFinancialSiret">Siret Number</system:String>
+    <system:String x:Key="POF_VendorFinancialSiren">Siren Number</system:String>
+    <system:String x:Key="POF_VendorFinancialTVA">TVA</system:String>
+    <system:String x:Key="POF_VendorBank">Bank Data</system:String>
+    <system:String x:Key="POF_VendorCountry">Bank Country</system:String>
+    <system:String x:Key="POF_VendorIBAN">IBAN</system:String>
+    <system:String x:Key="POF_VendorMaterialGroup">Material Group</system:String>
+    <system:String x:Key="POF_VendorPurchaserCode">Purchaser Code</system:String>
+    <system:String x:Key="POF_VendorOther">Other Information</system:String>
+    <system:String x:Key="POF_VendorFiles">Attachments</system:String>
+    <system:String x:Key="POF_VendorFilesRequired">Required files</system:String>
+    <system:String x:Key="POF_VendorFilesRequired1">- Supplier's letterhead with legal notices (SIRET, VAT, E-mail, Address...):</system:String>
+    <system:String x:Key="POF_VendorFilesRequired2">- Supplier quote</system:String>
+    <system:String x:Key="POF_VendorFilesRequired3">- Bank data (RIB, IBAN...)</system:String>
+    <system:String x:Key="POF_VendorFilesRequired4">- KBIS (less than 3 months)</system:String>
+    <system:String x:Key="POF_MsgVendorMissingData">Please check the data — some fields are missing or incorrect. All fields must be completed. Verify the email address and ensure all required files are provided.</system:String>
+    <system:String x:Key="POF_TitleMsgVendorMissingData">Missing/Incorrect Data</system:String>
+
+    <system:String x:Key="POF_MailVendorObject">Vendor Creation Request: {0}</system:String>
+    <system:String x:Key="POF_MailVendorBody01">Hello,</system:String>
+    <system:String x:Key="POF_MailVendorBody02">Please create a vendor request in SAP.</system:String>
+    <system:String x:Key="POF_MailVendorBody03">Vendor Name: {0}</system:String>
+    <system:String x:Key="POF_MailVendorUpdateObject">Vendor Update Request: {0}</system:String>
+    <system:String x:Key="POF_MailVendorBody04">Please create a vendor update request in SAP.</system:String>
+    <system:String x:Key="POF_MailVendorBody05">Vendor Name: {0}</system:String>
+    <system:String x:Key="POF_MailVendorBody06">Vendor Number: {0}</system:String>
+
+    <system:String x:Key="POF_SelectVendorWindow">Search Vendor</system:String>
+    <system:String x:Key="POF_SelectVendorText">Search for a vendor to update.</system:String>
+    <system:String x:Key="POF_BtShowVendor">Show Vendor</system:String>
+    <system:String x:Key="POF_BtTooltipShowVendor">Display vendor information in SAP. A SAP session must be started first.</system:String>
+
+    <system:String x:Key="POF_WindowInternalOrder">Internal Order Request</system:String>
+    <system:String x:Key="POF_LabelInternalOrderDesc">Description</system:String>
+    <system:String x:Key="POF_MsgErrorInternalOrderDesc">The description cannot be empty!</system:String>
+    <system:String x:Key="POF_TitleErrorInternalOrderDesc">Internal Order Error</system:String>
+    <system:String x:Key="POF_MailInternalOrderObject">Internal Order Creation Request</system:String>
+    <system:String x:Key="POF_MailInternalOrderBody01">Hello,</system:String>
+    <system:String x:Key="POF_MailInternalOrderBody02">Could you please create a new internal order for this project:</system:String>
+    <system:String x:Key="POF_MailInternalOrderBody03">Description: {0}</system:String>
+    <system:String x:Key="POF_MailInternalOrderBody04">Requester: {0}</system:String>
+
+    <system:String x:Key="POF_RibGrpSapCreator">SAP</system:String>
+    <system:String x:Key="POF_BtCreateSapRquest">Create SAP Request</system:String>
+    <system:String x:Key="POF_BtToolTipCreateSapRquest">Create the request in SAP. A SAP session must be started first. The request will be created but not saved in SAP.</system:String>
+    <system:String x:Key="POF_BtConvertSapRquest">Convert SAP Request to Order</system:String>
+    <system:String x:Key="POF_BtToolTipConvertSapRquest">Convert the request into an order in SAP. A SAP session must be started first. The order will be created but not saved in SAP.</system:String>
+
+    <system:String x:Key="POF_RibGrpA1dmin">Admin</system:String>
+    <system:String x:Key="POF_BtAddRequestFromSapPr">Add Request from PR</system:String>
+    <system:String x:Key="POF_BtToolTipAddRequestFromSapPr">Add a request using a SAP Purchase Requisition number.</system:String>
+    <system:String x:Key="POF_BtAddRequestFromSapPo">Add Request from PO</system:String>
+    <system:String x:Key="POF_BtToolTipAddRequestFromSapPo">Add a request using a SAP Purchase Order number.</system:String>
+    <system:String x:Key="POF_BtAddInternalOrder">Add Internal Order</system:String>
+    <system:String x:Key="POF_BtToolTipAddInternalOrder">Add a new internal order.</system:String>
+    <system:String x:Key="POF_BtUpdateInternalOrder">Update Internal Order</system:String>
+    <system:String x:Key="POF_BtToolTipUpdateInternalOrder">Update an existing internal order.</system:String>
+    <system:String x:Key="POF_BtDeleteInternalOrder">Delete Internal Order</system:String>
+    <system:String x:Key="POF_BtToolTipDeleteInternalOrder">Delete an existing internal order.</system:String>
+    <system:String x:Key="POF_TitleAddRequestIssue">Request Addition Error</system:String>
+    <system:String x:Key="POF_MsgAddRequestIssue">The value must not be empty.</system:String>
+    <system:String x:Key="POF_MsgAddRequestNotFound">No request found with number {0} in SAP.</system:String>
+    <system:String x:Key="POF_MsgAddRequestAlreadyExist">This request already exists in the database.</system:String>
+    <system:String x:Key="POF_BtSearchDuplicateRequest">Search for Duplicate Requests</system:String>
+    <system:String x:Key="POF_BtToolTipSearchDuplicateRequest">Check if any requests can be merged or removed as duplicates.</system:String>
+    <system:String x:Key="POF_LabelDuplicateId">Request ID: {0}</system:String>
+    <system:String x:Key="POF_LabelDuplicateSapRequest">SAP Purchase Requisition Number: {0}</system:String>
+    <system:String x:Key="POF_LabelDuplicateSapOrder">SAP Purchase Order Number: {0}</system:String>
+    <system:String x:Key="POF_LabelDuplicateVendor">Vendor: {0}</system:String>
+    <system:String x:Key="POF_LabelDuplicateTotalOrdered">Total Ordered: {0:C}</system:String>
+    <system:String x:Key="POF_WindowTitleDuplicateRequest">Duplicate Requests</system:String>
+    <system:String x:Key="POF_LabelGroupNumber">Duplicate Order Group Number: {0}</system:String>
+
+    <system:String x:Key="POF_WindowSapNotStarted">SAP is not started. Please start a SAP session and try again.</system:String>
+    <system:String x:Key="POF_TitleSapIssue">SAP Error</system:String>
+    <system:String x:Key="POF_WindowExtendPartIssue">For ZRMI purchase order types, there is no need to extend parts.</system:String>
+    <system:String x:Key="POF_TitleExtendPartIssue">Part Extension Error</system:String>
+    <system:String x:Key="POF_WindowExtendPartNotRun">Begin by checking whether the parts have already been extended to the plant using the 'Check if Parts Extended' menu option.</system:String>
+
+    <system:String x:Key="POF_MailExtendPartObject">Part Extension Request</system:String>
+    <system:String x:Key="POF_MailExtendPartBody01">Hello,</system:String>
+    <system:String x:Key="POF_MailExtendPartBody02">Could you please extend the following part(s)?</system:String>
+    <system:String x:Key="POF_MailExtendPartBody03">Part</system:String>
+    <system:String x:Key="POF_MailExtendPartBody03b">Plant</system:String>
+    <system:String x:Key="POF_MailExtendPartBody04">As a reminder, the following views should be created:</system:String>
+    <system:String x:Key="POF_MailExtendPartBody05">– Purchasing: Some updates may be required for ZNB purchase orders</system:String>
+    <system:String x:Key="POF_MailExtendPartBody06">– MRP 1 to 4</system:String>
+    <system:String x:Key="POF_MailExtendPartBody07">– General Plant Data / Storage 1 and 2</system:String>
+    <system:String x:Key="POF_MailExtendPartBody08">– Quality Management</system:String>
+    <system:String x:Key="POF_MailExtendPartBody09">– Finance</system:String>
+    <system:String x:Key="POF_MailBodyEnd01">Thank you in advance.</system:String>
+    <system:String x:Key="POF_MailBodyEnd02">Regards,</system:String>
+
+    <system:String x:Key="POF_HelpPurchaseOrderFollowUp">APP028EN.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP015">SAP015EN.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP015Header">SAP015EN: Purchase Request Process</system:String>
+    <system:String x:Key="POF_HelpSAP015Tooltip">SAP015EN: Explains the main approval steps for each type of purchase request, best practices, and key SAP transactions.</system:String>
+    <system:String x:Key="POF_HelpSAP016">SAP016FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP016Header">SAP016FR: Extend Part</system:String>
+    <system:String x:Key="POF_HelpSAP016Tooltip">SAP016FR: Step-by-step guide to extending a part to a SAP plant.</system:String>
+    <system:String x:Key="POF_HelpSAP017">SAP017FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP017Header">SAP017FR: ZRMI Request</system:String>
+    <system:String x:Key="POF_HelpSAP017Tooltip">SAP017FR: Step-by-step guide to creating a ZRMI request for indirect purchase orders with a quotation.</system:String>
+    <system:String x:Key="POF_HelpSAP018">SAP018FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP018Header">SAP018FR: ZICP Request</system:String>
+    <system:String x:Key="POF_HelpSAP018Tooltip">SAP018FR: Step-by-step guide to creating a ZICP request for part transfers from a foreign plant to a French plant.</system:String>
+    <system:String x:Key="POF_HelpSAP019">SAP019FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP019Header">SAP019FR: RESA Request</system:String>
+    <system:String x:Key="POF_HelpSAP019Tooltip">SAP019FR: Step-by-step guide to creating a RESA request for part transfers between French plants.</system:String>
+    <system:String x:Key="POF_HelpSAP020">SAP020FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP020Header">SAP020FR: ZNR Request</system:String>
+    <system:String x:Key="POF_HelpSAP020Tooltip">SAP020FR: Step-by-step guide to creating a ZNR request for indirect orders of known SAP parts.</system:String>
+    <system:String x:Key="POF_HelpSAP021">SAP021FR.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP021Header">SAP021FR: Engineering Purchase Request</system:String>
+    <system:String x:Key="POF_HelpSAP021Tooltip">SAP021FR: Explains how to choose the correct request type and what information to provide.</system:String>
+    <system:String x:Key="POF_HelpSAP023">SAP023EN.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP023Header">SAP023EN: Closing Purchase Order</system:String>
+    <system:String x:Key="POF_HelpSAP023Tooltip">SAP023EN: Explains how to close a purchase order in SAP.</system:String>
+    <system:String x:Key="POF_HelpSAP024">SAP024EN.PDF</system:String>
+    <system:String x:Key="POF_HelpSAP024Header">SAP024EN: Create Purchase Order for Assets (CAPEX)</system:String>
+    <system:String x:Key="POF_HelpSAP024Tooltip">SAP024EN: Explains how to create a purchase order for assets (CAPEX).</system:String>
+
+    <system:String x:Key="POF_TitleCreateRequestIssue">Request Error</system:String>
+    <system:String x:Key="POF_WindowCreateRequestMissingData">Some information is missing to create this request. Please check all required fields and ensure that at least one item has been added.</system:String>
+
+    <system:String x:Key="POF_LabelDateFrom">From</system:String>
+    <system:String x:Key="POF_LabelDateTo">To</system:String>
+    <system:String x:Key="POF_BtAddRequestFromSapPoDates">Add Request by Date Range</system:String>
+    <system:String x:Key="POF_BtToolTipAddRequestFromSapPoDates">Add a request from a SAP Purchase Order created between two dates.</system:String>
+    <system:String x:Key="POF_BtUpdateAllRequestFromSap">Update All Requests from SAP</system:String>
+    <system:String x:Key="POF_BtToolTipUpdateAllRequestFromSap">Update all SAP requests that are not yet closed. At least one SAP Purchase Requisition or Purchase Order must be provided.</system:String>
+    <system:String x:Key="POF_LabelDateWarning">By default, only requests from the last two months are displayed.</system:String>
+    
+    <system:String x:Key="POF_WindowListRequestTitle">Requests</system:String>
+
+    <system:String x:Key="POF_TitleDeleteRequest">Delete Request</system:String>
+    <system:String x:Key="POF_WindowDeleteRequest">Are you sure you want to delete the selected request {0}? This action is permanent.</system:String>
+    <system:String x:Key="POF_WindowDeleteRequestNot">You are not authorized to delete this request. You must be the creator or requestor, and the request must have the status "NEW" or "SENT".</system:String>
+    <system:String x:Key="POF_BtDelete">Delete</system:String>
+    <system:String x:Key="POF_BtUpdatePrFromSapHub">Update from SAP Hub (PR)</system:String>
+    <system:String x:Key="POF_BtUpdatePoFromSapHub">Update from SAP Hub (PO)</system:String>
+
+    <system:String x:Key="POF_MenuCopyPurchaseRequest">Copy Purchase Request Number</system:String>
+    <system:String x:Key="POF_MenuCopyPurchaseOrder">Copy Purchase Order Number</system:String>
+    <system:String x:Key="POF_MenuOpenPurchaseRequest">Open Purchase Request in SAP</system:String>
+    <system:String x:Key="POF_MenuOpenPurchaseOrder">Open Purchase Order in SAP</system:String>
+    <system:String x:Key="POF_MenuOpenPurchaseOrderPdf">Open Purchase Order Document in SAP</system:String>
+    <system:String x:Key="POF_MenuOpenReceiptPurchaseOrder">Receive Purchase Order in SAP</system:String>
+    <system:String x:Key="POF_MenuCopyVendorNumber">Copy Vendor Number</system:String>
+    <system:String x:Key="POF_MenuOpenResa">Open RESA in SAP</system:String>
+
+    <system:String x:Key="POF_WindowCloseRequestWithoutSaving">Do you really want to close the request without saving? All changes will be lost.</system:String>
+    <system:String x:Key="POF_TitleWindowCloseRequestWithoutSaving">Close Request</system:String>
+
+    <system:String x:Key="POF_ToolTipStatusNew">New request</system:String>
+    <system:String x:Key="POF_ToolTipStatusSent">Request sent for SAP creation</system:String>
+    <system:String x:Key="POF_ToolTipStatusCreated">Request created in SAP</system:String>
+    <system:String x:Key="POF_ToolTipStatusUnderReview">Request under review</system:String>
+    <system:String x:Key="POF_ToolTipStatusPrCreated">Purchase requisition created in SAP</system:String>
+    <system:String x:Key="POF_ToolTipStatusPoCreated">Purchase order created in SAP</system:String>
+    <system:String x:Key="POF_ToolTipStatusPrApproved">Purchase requisition approved in SAP</system:String>
+    <system:String x:Key="POF_ToolTipStatusPoApproved">Purchase order approved in SAP</system:String>
+    <system:String x:Key="POF_ToolTipStatusPartialGr">Purchase order partially received</system:String>
+    <system:String x:Key="POF_ToolTipStatusGoodsReceipt">Purchase order fully received</system:String>
+    <system:String x:Key="POF_ToolTipStatusPartialInvR">Purchase order partially paid</system:String>
+    <system:String x:Key="POF_ToolTipStatusInvoiceReceipt">Purchase order fully paid</system:String>
+    <system:String x:Key="POF_ToolTipStatusClosed">Purchase order closed</system:String>
+
+    <system:String x:Key="POF_CheckBoxStatusNew">New</system:String>
+    <system:String x:Key="POF_CheckBoxStatusSent">Sent</system:String>
+    <system:String x:Key="POF_CheckBoxStatusCreated">Created</system:String>
+    <system:String x:Key="POF_CheckBoxStatusGoodsReceipt">Goods Receipt in progress</system:String>
+    <system:String x:Key="POF_CheckBoxStatusInvoiceReceipt">Invoice Receipt in progress</system:String>
+    <system:String x:Key="POF_CheckBoxStatusClosed">Closed</system:String>
+
+    <system:String x:Key="POF_ChartLabelOrdered">Remaining Ordered</system:String>
+    <system:String x:Key="POF_ChartLabelGoodR">Current Receipted</system:String>
+    <system:String x:Key="POF_ChartLabelInvoiced">Current Invoiced</system:String>
+    <system:String x:Key="POF_CBCostCenterSelectAll">Select all</system:String>
+    <system:String x:Key="POF_TitleTotalPurchaseRequest">Total Purchase requests</system:String>
+    <system:String x:Key="POF_TitleTotalBudget">Total Budget</system:String>
+    <system:String x:Key="POF_TitleTotalVendorCost">Top Vendor By Cost</system:String>
+    <system:String x:Key="POF_StatusBarNbOrder">Nb oder(s):</system:String>
+    <system:String x:Key="POF_BtAdminUpdate">Admin Update</system:String>
+
+    <system:String x:Key="POF_TitleWindowExtendedPart">Are Parts Extended?</system:String>
+    <system:String x:Key="POF_ColPurchasingViewStatus">Purchasing View</system:String>
+    <system:String x:Key="POF_ColMrpViewStatus">MRP Views</system:String>
+    <system:String x:Key="POF_ColStorageViewStatus">General Plant Data / Storage Views</system:String>
+    <system:String x:Key="POF_ColQualityViewStatus">Quality Management View</system:String>
+</ResourceDictionary>

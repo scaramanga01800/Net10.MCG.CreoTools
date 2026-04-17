@@ -1,0 +1,312 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.Tools.PurchaseOrderFollowUp.View.PurchaseOrderFollowUpTabMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.Tools.PurchaseOrderFollowUp.View"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:System="clr-namespace:System;assembly=mscorlib"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="{DynamicResource POF_AppName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="NEW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_new.ico" />
+            <BitmapImage x:Key="SHOWVENDOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/VendorShow.ico" />
+            <BitmapImage x:Key="NEWVENDOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/NewVendor.ico" />
+            <BitmapImage x:Key="UPDATEVENDOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/UpdateVendor.ico" />
+            <BitmapImage x:Key="NEWINTERNALORDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/InternalOrderNew.ico" />
+            <BitmapImage x:Key="ADDREQUESTPR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/PurchaseAdd.ico" />
+            <BitmapImage x:Key="ADDREQUESTPO" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/PurchaseAdd.ico" />
+            <BitmapImage x:Key="ADDINTERNALORDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/InternalOrderAdd.ico" />
+            <BitmapImage x:Key="UPDTAEINTERNALORDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/InternalOrderUpdate.ico" />
+            <BitmapImage x:Key="REMOVEINTERNALORDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/InternalOrderDelete.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/sap.ico" />
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_update.ico" />
+            <BitmapImage x:Key="SEARCHDUPLICATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Purchase_duplicate.ico" />
+            <conv:IbanNumberConverter x:Key="IbanNumberConverter" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource POF_RibGrpCreate}">
+        <Fluent:Button Header="{DynamicResource POF_BtNewRequest}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandCreatePurchaseOrder}"
+                       LargeIcon="{StaticResource NEW}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtNewRequest}" 
+                                  Width ="250"
+                                  Image="{StaticResource NEW}"
+                                  Text="{DynamicResource POF_BtTooltipNewRequest}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource POF_RibGrpData}">
+        <Fluent:Button Header="{DynamicResource POF_BtShowVendor}"
+                   Margin="5,0,5,0"
+                   Command="{Binding CommandShowVendor}"
+                   LargeIcon="{StaticResource SHOWVENDOR}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtShowVendor}" 
+                              Width ="250"
+                              Image="{StaticResource SHOWVENDOR}"
+                              Text="{DynamicResource POF_BtTooltipShowVendor}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Header="{DynamicResource POF_BtNewVendor}"
+                   Margin="5,0,5,0"
+                   Command="{Binding CommandAskNewVendor}"
+                   LargeIcon="{StaticResource NEWVENDOR}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtNewVendor}" 
+                              Width ="250"
+                              Image="{StaticResource NEWVENDOR}"
+                              Text="{DynamicResource POF_BtTooltipNewVendor}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Header="{DynamicResource POF_BtUpdateVendor}"
+                   Margin="5,0,5,0"
+                   Command="{Binding CommandAskUpdateVendor}"
+                   LargeIcon="{StaticResource UPDATEVENDOR}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtUpdateVendor}" 
+                              Width ="250"
+                              Image="{StaticResource UPDATEVENDOR}"
+                              Text="{DynamicResource POF_BtTooltipUpdateVendor}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Header="{DynamicResource POF_BtNewInternalOrder}"
+                   Margin="5,0,5,0"
+                   Command="{Binding CommandAskNewInternalOrder}"
+                   LargeIcon="{StaticResource NEWINTERNALORDER}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtNewInternalOrder}" 
+                              Width ="250"
+                              Image="{StaticResource NEWINTERNALORDER}"
+                              Text="{DynamicResource POF_BtTooltipInternalOrder}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:SplitButton Margin="5,0,5,0"
+                        Command="{Binding CommandOpenHelp}"
+                        CommandParameter="POF_HelpPurchaseOrderFollowUp"
+                        LargeIcon="{StaticResource HELP}">
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP015Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP015">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP015Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP015Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP016Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP016">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP016Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP016Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP017Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP017">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP017Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP017Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP018Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP018">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP018Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP018Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP019Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP019">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP019Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP019Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP020Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP020">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP020Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP020Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP021Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP021">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP021Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP021Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP023Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP023">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP023Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP023Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+            <Fluent:MenuItem Icon="{StaticResource SAP}"
+                         Header="{DynamicResource POF_HelpSAP024Header}"
+                         Command="{Binding CommandOpenHelp}"
+                         CommandParameter="POF_HelpSAP024">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource POF_HelpSAP024Header}" 
+                                  Width ="250"
+                                  Image="{StaticResource SAP}"
+                                  Text="{DynamicResource POF_HelpSAP024Tooltip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+        </Fluent:SplitButton>
+
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource POF_RibGrpA1dmin}"
+                        Visibility="{Binding CurrentDataContext.IsRoleAdmin, Converter={StaticResource BoolToVisibilityConv}}">
+        <Fluent:Button Header="{DynamicResource POF_BtAddRequestFromSapPr}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandAddRequestFromSapPr}"
+                    LargeIcon="{StaticResource ADDREQUESTPR}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtAddRequestFromSapPr}" 
+                               Width ="250"
+                               Image="{StaticResource ADDREQUESTPR}"
+                               Text="{DynamicResource POF_BtToolTipAddRequestFromSapPr}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Header="{DynamicResource POF_BtAddRequestFromSapPo}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandAddRequestFromSapPo}"
+                    LargeIcon="{StaticResource ADDREQUESTPO}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtAddRequestFromSapPo}" 
+                               Width ="250"
+                               Image="{StaticResource ADDREQUESTPO}"
+                               Text="{DynamicResource POF_BtToolTipAddRequestFromSapPo}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Label  Content="{DynamicResource POF_LabelDateFrom}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center"></Label>
+            <DatePicker Width="100" SelectedDate="{Binding CurrentDataContext.PoCreatedAfterDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Label  Content="{DynamicResource POF_LabelDateTo}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center"></Label>
+            <DatePicker Width="100" SelectedDate="{Binding CurrentDataContext.PoCreatedBeforeDateTime,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+        </StackPanel>
+        <Fluent:Button Header="{DynamicResource POF_BtAddRequestFromSapPoDates}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandAddRequestFromSapPoDates}"
+                    LargeIcon="{StaticResource ADDREQUESTPO}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtAddRequestFromSapPoDates}" 
+                               Width ="250"
+                               Image="{StaticResource ADDREQUESTPO}"
+                               Text="{DynamicResource POF_BtToolTipAddRequestFromSapPoDates}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Header="{DynamicResource POF_BtUpdateAllRequestFromSap}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandStartUpdateAllRequestFromSap}"
+                    CommandParameter="{StaticResource TrueValue}"
+                    LargeIcon="{StaticResource UPDATE}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtUpdateAllRequestFromSap}" 
+                               Width ="250"
+                               Image="{StaticResource UPDATE}"
+                               Text="{DynamicResource POF_BtToolTipUpdateAllRequestFromSap}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Header="{DynamicResource POF_BtAddInternalOrder}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandAddInternalOrder}"
+                    LargeIcon="{StaticResource ADDINTERNALORDER}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtAddInternalOrder}" 
+                               Width ="250"
+                               Image="{StaticResource ADDINTERNALORDER}"
+                               Text="{DynamicResource POF_BtToolTipAddInternalOrder}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Header="{DynamicResource POF_BtUpdateInternalOrder}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandUpdateInternalOrder}"
+                    LargeIcon="{StaticResource UPDTAEINTERNALORDER}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtUpdateInternalOrder}" 
+                               Width ="250"
+                               Image="{StaticResource UPDTAEINTERNALORDER}"
+                               Text="{DynamicResource POF_BtToolTipUpdateInternalOrder}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Header="{DynamicResource POF_BtDeleteInternalOrder}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandDeleteInternalOrder}"
+                    LargeIcon="{StaticResource REMOVEINTERNALORDER}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtDeleteInternalOrder}" 
+                               Width ="250"
+                               Image="{StaticResource REMOVEINTERNALORDER}"
+                               Text="{DynamicResource POF_BtToolTipDeleteInternalOrder}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Header="{DynamicResource POF_BtSearchDuplicateRequest}"
+                    Margin="5,0,5,0"
+                    Command="{Binding CommandSearchDuplicateRequest}"
+                    LargeIcon="{StaticResource SEARCHDUPLICATE}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource POF_BtSearchDuplicateRequest}" 
+                               Width ="250"
+                               Image="{StaticResource SEARCHDUPLICATE}"
+                               Text="{DynamicResource POF_BtToolTipSearchDuplicateRequest}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

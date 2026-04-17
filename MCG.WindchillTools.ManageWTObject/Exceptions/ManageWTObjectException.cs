@@ -1,0 +1,43 @@
+﻿using MCG.CommonLib;
+using MCG.CommonLib.Exceptions;
+using MCG.CommonLib.Services.Statics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MCG.WindchillTools.ManageWTObject.Exceptions
+{
+    public class ManageWTObjectException: McgCommonLibException
+    {
+        public ManageWTObjectException(string message) : base(message)
+        {
+            TraceLog.AddTraceLog(Message);
+        }
+
+        public ManageWTObjectException(string CurrentClass = "UnknownClass", Exception CurrentException = null, [CallerMemberName] string CurrentMethod = "UnknownMethod") : base($"Exception in {CurrentClass}.{CurrentMethod} : {CurrentException.Message}")
+        {
+            TraceLog.AddTraceLog(Message);
+        }
+        
+        public new static void SendMessageBox(string CurrentClass = "UnknownClass", Exception CurrentException = null, [CallerMemberName] string CurrentMethod = "UnknownMethod")
+        {
+            try
+            {
+                string message = "";
+                if (CurrentException != null)
+                    message = $"Runtime issue in {CurrentClass}.{CurrentMethod}, Contact your CAD Admin. Error msg: {CurrentException.Message}";
+                else
+                    message = $"Runtime issue in {CurrentClass}.{CurrentMethod}, Contact your CAD Admin. Error msg: unknown Exception";
+                TraceLog.AddTraceLog(message);
+                SendMessageEmailLogFile(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception in ManageWTObjectException.ManageWTObjectException : {ex.Message}");
+            }
+        }
+    }
+}

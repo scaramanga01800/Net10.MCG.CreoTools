@@ -1,0 +1,284 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.WindchillTools.ManageWTObject.View.MassWtDocumentUpdateRibbonView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.WindchillTools.ManageWTObject.View"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="{DynamicResource MWT_MassWtDocumentUpdateAppName}">
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="ADD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/add_document.ico" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/delete_document.ico" />
+            <BitmapImage x:Key="CHECKDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_document.ico" />
+            <BitmapImage x:Key="CHECKPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_part.ico" />
+            <BitmapImage x:Key="APPLY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check.ico" />
+            <BitmapImage x:Key="UPDATEDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/update_document.ico" />
+            <BitmapImage x:Key="UPDATEPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/update_part.ico" />
+            <BitmapImage x:Key="RENAMEDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Document_rename.ico" />
+            <BitmapImage x:Key="RENAMEPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Part_rename.ico" />
+            <BitmapImage x:Key="UPDATELINK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part_link.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Folder.ico" />
+            <BitmapImage x:Key="FR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_FR.ico" />
+            <BitmapImage x:Key="EN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_US.ico" />
+            <BitmapImage x:Key="DE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_DE.ico" />
+            <BitmapImage x:Key="ZH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_ZH.ico" />
+            <BitmapImage x:Key="IT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_IT.ico" />
+            <BitmapImage x:Key="PT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_PT.ico" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:InverseBoolConverter x:Key="InverseBoolConv"></conv:InverseBoolConverter>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpCollect}">
+        <Fluent:Button LargeIcon="{StaticResource ADD}"
+                       Command="{Binding CommandAddWtDocument}">
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource CHECKDOC}"
+                       Command="{Binding CommandCheckWtDocument}">
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource CHECKPART}"
+                       Command="{Binding CommandCheckPart}">
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource DELETE}"
+                       Command="{Binding CommandRemoveWtDocument}">
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpUpdate}">
+
+
+        <StackPanel>
+            <Fluent:ComboBox Grid.Column="2"
+                             Header="{DynamicResource MWT_LabelMenuLocalLanguage}"
+                             IsEditable="False"                       
+                             HorizontalContentAlignment="Left" 
+                             VerticalContentAlignment="Center" 
+                             SelectedItem="{Binding CurrentDataContext.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             ItemsSource="{Binding CurrentDataContext.ListLanguage}">
+                <Fluent:ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Image >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="EN">
+                                                <Setter Property="Source" Value="{StaticResource EN}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="FR">
+                                                <Setter Property="Source" Value="{StaticResource FR}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="DE">
+                                                <Setter Property="Source" Value="{StaticResource DE}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="ZH">
+                                                <Setter Property="Source" Value="{StaticResource ZH}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="PT">
+                                                <Setter Property="Source" Value="{StaticResource PT}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SAPCode}" Value="IT">
+                                                <Setter Property="Source" Value="{StaticResource IT}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock Margin="5,0,0,0" Text="{Binding Language}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Fluent:ComboBox.ItemTemplate>
+            </Fluent:ComboBox>
+
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="5,0,0,0">
+                <Fluent:TwoLineLabel Text="{DynamicResource MWT_LabelMenuWebterm}"
+                                     VerticalAlignment="Center"
+                                     HasTwoLines="False"></Fluent:TwoLineLabel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                        <Image Source="{StaticResource EN}"
+                           Margin="5,0,0,0"
+                           Height="26"></Image>
+                        <Fluent:ComboBox MinWidth="{Binding ActualWidth, ElementName=CbWebtermLocal}"
+                                     x:Name="CbWebtermEn"
+                                     Margin="-9,0,0,0"
+                                     ItemsSource="{Binding CurrentDataContext.ListWebterm}"
+                                     SelectedItem="{Binding CurrentDataContext.SelectedWebterm}"
+                                     HorizontalContentAlignment="Center" 
+                                     VerticalContentAlignment="Center"
+                                     IsEditable="False"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                        <Image Margin="5,0,0,0"
+                           Height="26">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="EN">
+                                            <Setter Property="Source" Value="{StaticResource EN}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="FR">
+                                            <Setter Property="Source" Value="{StaticResource FR}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="DE">
+                                            <Setter Property="Source" Value="{StaticResource DE}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="ZH">
+                                            <Setter Property="Source" Value="{StaticResource ZH}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="PT">
+                                            <Setter Property="Source" Value="{StaticResource PT}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedLanguage.SAPCode}" Value="IT">
+                                            <Setter Property="Source" Value="{StaticResource IT}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Fluent:ComboBox MinWidth="{Binding ActualWidth, ElementName=CbWebtermEn}"
+                                     x:Name="CbWebtermLocal"
+                                     Margin="-9,0,0,0"
+                                     ItemsSource="{Binding CurrentDataContext.ListWebtermLocal}"
+                                     SelectedItem="{Binding CurrentDataContext.SelectedLocalWebterm}"
+                                     HorizontalContentAlignment="Center" 
+                                     VerticalContentAlignment="Center"
+                                     IsEditable="False"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Width="32" 
+                    Command="{Binding CommandApplyWebterm}"  
+                    IsEnabled="{Binding CurrentEcoManagementDataContext.IsNotOtherActionInProgress}">
+                    <Image Source="{StaticResource APPLY}"></Image>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Fluent:ComboBox Header="{DynamicResource MWT_LabelColWindchillType}" 
+                             MinWidth="150"
+                             ItemsSource="{Binding CurrentDataContext.ListWindchillDocumentType}"
+                             SelectedItem="{Binding CurrentDataContext.SelectedWindchillDocumentType}"
+                             HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center"
+                             IsEditable="False"/>
+            <Button Width="32" 
+                    Command="{Binding CommandApplyWtDocumentType}"  
+                    IsEnabled="{Binding CurrentEcoManagementDataContext.IsNotOtherActionInProgress}">
+                <Image Source="{StaticResource APPLY}"></Image>
+            </Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Fluent:ComboBox Header="{DynamicResource MWT_LabelColWindchillPartType}" 
+                             MinWidth="150"
+                             ItemsSource="{Binding CurrentDataContext.ListWindchillPartType}"
+                             SelectedItem="{Binding CurrentDataContext.SelectedWindchillPartType}"
+                             HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center"
+                             IsEditable="False"/>
+            <Button Width="32" 
+                    Command="{Binding CommandApplyWtPartType}"  
+                    IsEnabled="{Binding CurrentEcoManagementDataContext.IsNotOtherActionInProgress}">
+                <Image Source="{StaticResource APPLY}"></Image>
+            </Button>
+        </StackPanel>
+
+        <Fluent:Button LargeIcon="{StaticResource FOLDER}"
+                       Command="{Binding CommandApplyContext}"
+                       IsEnabled="{Binding CurrentEcoManagementDataContext.IsNotOtherActionInProgress}">
+        </Fluent:Button>
+
+        <Border x:Name="BorderDragXls"
+                Margin="5,0,0,0"
+                BorderThickness="2"
+                Opacity="0.5"
+                ToolTip="{DynamicResource MWT_RibbonBtDragDropXls}"
+                BorderBrush="LightGray"
+                AllowDrop="True" 
+                Drop="BorderDragXls_Drop"
+                DragEnter="BorderDragXls_DragEnter"
+                DragLeave="BorderDragXls_DragLeave">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="Drop">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandDragAndDropXls}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+            <Image Source="{StaticResource DRAGDROP}" 
+                   Opacity="0.5"
+                   AllowDrop="True" >
+            </Image>
+        </Border>
+
+        <Border x:Name="BorderDragSecondary"
+                Margin="5,0,0,0"
+                BorderThickness="2"
+                Opacity="0.5"
+                ToolTip="{DynamicResource MWT_RibbonBtDragDropSecondaryContent}"
+                BorderBrush="LightGray"
+                AllowDrop="True" 
+                Drop="BorderDragSecondary_Drop"
+                DragEnter="BorderDragSecondary_DragEnter"
+                DragLeave="BorderDragSecondary_DragLeave">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="Drop">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandDragAndDropSecondaryContent}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+            <Image Source="{StaticResource DRAGDROP}" 
+                   Opacity="0.5"
+                   AllowDrop="True" >
+            </Image>
+        </Border>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpWindchillUpdate}">
+        <Fluent:Button LargeIcon="{StaticResource UPDATEDOC}"
+                       Command="{Binding CommandCreateUpdateWtDocument}">
+        </Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource UPDATEPART}"
+                       Command="{Binding CommandCreateUpdateWtPart}">
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource RENAMEDOC}"
+                       Command="{Binding CommandRenameWtDocument}">
+        </Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource RENAMEPART}"
+                       Command="{Binding CommandRenameUpdateWtPart}">
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource UPDATELINK}"
+                       Command="{Binding CommandCreateUpdateLink}">
+        </Fluent:Button>
+
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MWT_RibbonGrpTools}">
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                       Command="{Binding CommandOpenHelp}">
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>
