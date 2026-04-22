@@ -1,0 +1,188 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="VIS_AppName">Visualization File</system:String>
+    <system:String x:Key="VIS_LabelSearch">Recherche</system:String>
+    <system:String x:Key="VIS_LabelDownloadVisuFiles">Télécharger les fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_LabelTools">Outils</system:String>
+    <system:String x:Key="VIS_BtTitleStartDownloadVisuFiles">Télécharger les fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_BtStartDownloadVisuFiles">Télécharger tous les fichiers de visualisation sélectionnés</system:String>
+    <system:String x:Key="VIS_LabelSearchNumber">Numéro</system:String>
+    <system:String x:Key="VIS_BtStartSearchEcn">Démarrer la recherche des articles liés à un ECN</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchEcn">Recherche ECN</system:String>
+    <system:String x:Key="VIS_BtStartSearchPart">Démarrer la recherche d’un article</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchPart">Recherche article</system:String>
+    <system:String x:Key="VIS_BtTitleDeleteSelectedParts">Supprimer les articles sélectionnés</system:String>
+    <system:String x:Key="VIS_BtStartDeleteSelectedPart">Supprimer les articles sélectionnés</system:String>
+    <system:String x:Key="VIS_LabelSearchVisuFiles">Fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchVisuFiles">Recherche de fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_BtStartSearchVisuFiles">Rechercher les fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_LabelOptionalWatermark">Filigrane optionnel</system:String>
+    <system:String x:Key="VIS_BtTitleSetOptionalWatermark">Définir le filigrane optionnel</system:String>
+    <system:String x:Key="VIS_BtSetOptionalWatermark">Définir le filigrane optionnel</system:String>
+
+    <system:String x:Key="VIS_MiPastePart">Coller</system:String>
+    <system:String x:Key="VIS_MiOpenPart">Ouvrir la fiche article</system:String>
+    <system:String x:Key="VIS_MiOpenEcn">Ouvrir la fiche ECN</system:String>
+    <system:String x:Key="VIS_MiDeletePart">Supprimer</system:String>
+
+    <system:String x:Key="VIS_LabelColPartNumber">Numéro</system:String>
+    <system:String x:Key="VIS_LabelColPartRevision">Révision</system:String>
+    <system:String x:Key="VIS_LabelColState">Etat</system:String>
+    <system:String x:Key="VIS_LabelColComment">Commentaire</system:String>
+    <system:String x:Key="VIS_LabelColFilterFile">Filtres pour les fichiers de visualisation</system:String>
+    <system:String x:Key="VIS_LabelColDescriptionEng">Description en anglais</system:String>
+    <system:String x:Key="VIS_LabelColDescriptionLocal">Description locale</system:String>
+    <system:String x:Key="VIS_LabelColAddedFrom">Ajouté depuis</system:String>
+    <system:String x:Key="VIS_LabelColPdmContext">Contexte PDM</system:String>
+
+    <system:String x:Key="VIS_LabelPdfTiffMainFile">PDF/TIFF (plans principaux et standards)</system:String>
+    <system:String x:Key="VIS_LabelPdfTiffFile">PDF/TIFF (autres)</system:String>
+    <system:String x:Key="VIS_LabelOfficeDocFile">Documents MS Office</system:String>
+    <system:String x:Key="VIS_LabelDxfFile">DXF</system:String>
+    <system:String x:Key="VIS_LabelStepFile">STEP</system:String>
+    <system:String x:Key="VIS_LabelIgesFile">IGES</system:String>
+    <system:String x:Key="VIS_LabelPvzFile">PVZ / Creo View</system:String>
+    <system:String x:Key="VIS_LabelOtherFile">Autres</system:String>
+    <system:String x:Key="VIS_DocCommentMain">Plan principal</system:String>
+    <system:String x:Key="VIS_DocCommentRef">Document standard</system:String>
+
+    <system:String x:Key="VIS_DocToolTipWord">Document Word</system:String>
+    <system:String x:Key="VIS_DocToolTipExcel">Document Excel</system:String>
+    <system:String x:Key="VIS_DocToolTipPowerPoint">Document Power Point</system:String>
+    <system:String x:Key="VIS_DocToolTipPdf">Document Pdf</system:String>
+    <system:String x:Key="VIS_DocToolTipTiff">Document Tiff</system:String>
+    <system:String x:Key="VIS_DocToolTipOther">Document Autre</system:String>
+    <system:String x:Key="VIS_DocToolTipDxf">Document DXF</system:String>
+    <system:String x:Key="VIS_DocToolTipDwg">Document DWG</system:String>
+    <system:String x:Key="VIS_DocToolTipStep">Document STEP</system:String>
+    <system:String x:Key="VIS_DocToolTipIges">Document IGES</system:String>
+    <system:String x:Key="VIS_DocToolTipIPvz">Document PVZ CREO View</system:String>
+    <system:String x:Key="VIS_DocToolTipPart">Article</system:String>
+    <system:String x:Key="VIS_DocToolTipEcn">ECN</system:String>
+    <system:String x:Key="VIS_DocToolTipUnknown">Inconnu</system:String>
+
+    <system:String x:Key="VIS_Status01">Plan principal trouvé (PDF)</system:String>
+    <system:String x:Key="VIS_Status02">Plan principal trouvé (TIFF)</system:String>
+    <system:String x:Key="VIS_Status03">Plan TIFF trouvé – problème de conversion en PDF : le fichier TIFF a été ajouté au ZIP.</system:String>
+    <system:String x:Key="VIS_Status04">Article non trouvé</system:String>
+    <system:String x:Key="VIS_Status05">Aucun plan PDF ou TIFF trouvé</system:String>
+    <system:String x:Key="VIS_Status06">Plan non trouvé</system:String>
+    <system:String x:Key="VIS_Status07">Plan trouvé mais non publié en PDF</system:String>
+    <system:String x:Key="VIS_Status08">Document de référence trouvé : {0} ajouté au ZIP</system:String>
+    <system:String x:Key="VIS_Status09">ECN non trouvé</system:String>
+    <system:String x:Key="VIS_Status10">Aucun plan principal</system:String>
+    <system:String x:Key="VIS_Status11">Plan standard trouvé</system:String>
+    <system:String x:Key="VIS_Status12">+ standard</system:String>
+    <system:String x:Key="VIS_Status13">Le plan Creo existe mais n’est pas publié en PDF.</system:String>
+    <system:String x:Key="VIS_Status14">Le plan Creo n’existe pas.</system:String>
+    <system:String x:Key="VIS_Status15">Publiez le plan Creo et relancez l’opération.</system:String>
+    <system:String x:Key="VIS_Status16">Le plan Creo est publié, utilisez le PDF en priorité.</system:String>
+
+    <system:String x:Key="VIS_FromEcn">Depuis l’ECN {0}</system:String>
+    <system:String x:Key="VIS_FromSearch">Depuis la recherche</system:String>
+    <system:String x:Key="VIS_FromCopyPaste">Depuis un copier-coller</system:String>
+
+    <system:String x:Key="VIS_BtPdfSecurity">Sécurité PDF</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfSecurity">Active et définit les paramètres de sécurité du PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfOwnerPassword">Mot de passe propriétaire</system:String>
+    <system:String x:Key="VIS_BtToolTipOwnerPassword">Mot de passe du propriétaire — ne le partagez pas ! Il permet d’ouvrir le PDF avec un accès complet.</system:String>
+    <system:String x:Key="VIS_LabelPdfUserPassword">Mot de passe utilisateur</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfUserPassword">Envoyez ce mot de passe aux personnes autorisées à ouvrir le PDF avec des droits restreints.</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitAnnotation">Autoriser les annotations</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitExtractContent">Autoriser l’extraction du contenu</system:String>
+    <system:String x:Key="VIS_LabelPdfPdfPermitModify">Autoriser la modification</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitPrint">Autoriser l’impression</system:String>
+
+    <system:String x:Key="VIS_BtPdfConvert">Conversion en PDF</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfConvert">Conversion des documents en PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertTiff">TIFF vers PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertWord">Word vers PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertExcel">Excel vers PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertPowerPoint">PowerPoint vers PDF</system:String>
+
+    <system:String x:Key="VIS_BtTitleFolder">Dossier d’export</system:String>
+
+    <system:String x:Key="VIS_MiSearchBom">Recherche des composants de nomenclature</system:String>
+    <system:String x:Key="VIS_MiSearchBomLevel">Niveau</system:String>
+    <system:String x:Key="VIS_LabelComponentOf">Composant de</system:String>
+
+    <system:String x:Key="VIS_StatusBarNbElem">Nb élément(s) :</system:String>
+    <system:String x:Key="VIS_StatusBarBomInProgress">Recherche de la nomenclature en cours</system:String>
+    <system:String x:Key="VIS_StatusBarSearchPartInProgress">Recherche des articles et ECN en cours</system:String>
+    <system:String x:Key="VIS_StatusBarSearchDocInProgress">Recherche des documents en cours</system:String>
+    <system:String x:Key="VIS_StatusBarExportDocInProgress">Export des documents en cours</system:String>
+
+    <system:String x:Key="VIS_ErrorMsgEcnNotFound">ECN non trouvé</system:String>
+    <system:String x:Key="VIS_ErrorMsgPartNotFound">Article non trouvé</system:String>
+    <system:String x:Key="VIS_TitleWindowSearch">Recherche</system:String>
+    <system:String x:Key="VIS_ErrorMsgBomNotFound">Nomenclature non trouvée</system:String>
+
+    <system:String x:Key="VIS_UserGuide">APP020FR.PDF</system:String>
+
+    <system:String x:Key="VIS_DownloadTimeoutMsg">Le délai de téléchargement du document {0} est dépassé : souhaitez-vous continuer ?</system:String>
+    <system:String x:Key="VIS_DownloadTimeoutTitle">Délai dépassé</system:String>
+
+    <system:String x:Key="VIS_BtStartSearchEcnFlash">Télécharger tous les documents et plans principaux d’un ECN en un clic</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchEcnFlash">Télécharger l’ECN en un clic</system:String>
+    <system:String x:Key="VIS_BtStartSearchPartFlash">Télécharger le plan principal d’un article en un clic</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchPartFlash">Télécharger l’article en un clic</system:String>
+    <system:String x:Key="VIS_MsgDownloadPart">Aucun plan principal trouvé pour l’article.</system:String>
+    <system:String x:Key="VIS_MsgTitleDownloadPart">Téléchargement de l’article</system:String>
+    <system:String x:Key="VIS_MsgDownloadEcn">Aucun plan principal ni document trouvé pour l’ECN.</system:String>
+    <system:String x:Key="VIS_MsgTitleDownloadEcn">Téléchargement de l’ECN</system:String>
+
+    <system:String x:Key="VIS_UserGuideConvPdf">APP025FR.PDF</system:String>
+    <system:String x:Key="VIS_ColFileName">Fichier</system:String>
+    <system:String x:Key="VIS_ColStatus">Statut</system:String>
+    <system:String x:Key="VIS_TabTitleConvPdf">Conversion en PDF</system:String>
+    <system:String x:Key="VIS_BtTitleStartConvPdf">Conversion en PDF</system:String>
+    <system:String x:Key="VIS_BtTextStartConvPdf">Démarrer la conversion en PDF pour les fichiers sélectionnés.</system:String>
+    <system:String x:Key="VIS_BtTitleRemoveFiles">Supprimer les fichiers</system:String>
+    <system:String x:Key="VIS_BtTextRemoveFiles">Supprimer tous les fichiers sélectionnés.</system:String>
+    <system:String x:Key="VIS_BtTitleMergeTiff">Fusionner les fichiers TIFF</system:String>
+    <system:String x:Key="VIS_BtTextMergeTiff">Fusionner tous les fichiers TIFF sélectionnés en un seul fichier. Seuls les fichiers TIFF seront pris en compte.</system:String>
+    <system:String x:Key="VIS_BtTitleMergePdf">Fusionner les fichiers PDF</system:String>
+    <system:String x:Key="VIS_BtTextMergePdf">Fusionner tous les fichiers sélectionnés en un seul PDF. Tous les fichiers seront d’abord convertis au format PDF, puis fusionnés.</system:String>
+    <system:String x:Key="VIS_BtTextFolder">Sélectionner le dossier de sortie pour les nouveaux fichiers convertis.</system:String>
+    <system:String x:Key="VIS_BtTitleCancel">Annuler</system:String>
+    <system:String x:Key="VIS_BtTextCancel">Annuler la fusion</system:String>
+    <system:String x:Key="VIS_BtTitleStartMerge">Démarrer</system:String>
+    <system:String x:Key="VIS_BtTextStartMerge">Démarrer la fusion</system:String>
+    <system:String x:Key="VIS_ColStatusConverted">Converti</system:String>
+    <system:String x:Key="VIS_ColStatusIssueConverted">Erreur lors de la conversion</system:String>
+    <system:String x:Key="VIS_ColStatusAlreadyPdf">Déjà au format PDF</system:String>
+    <system:String x:Key="VIS_ColStatusExcluded">Exclu</system:String>
+    <system:String x:Key="VIS_ColStatusNotConverted">Non converti</system:String>
+    <system:String x:Key="VIS_ColStatusTifFile">Fichier TIFF</system:String>
+
+    <system:String x:Key="VIS_MsgTitleNoTiffSelected">Aucun fichier TIFF sélectionné</system:String>
+    <system:String x:Key="VIS_MsgNoTiffSelected">Aucun fichier TIFF n’a été sélectionné. Veuillez sélectionner uniquement des fichiers au format TIFF.</system:String>
+    <system:String x:Key="VIS_MsgTitleTiffNotAllMerged">Fichiers TIFF manquants</system:String>
+    <system:String x:Key="VIS_MsgTiffNotAllMerged">Tous les fichiers n’ont pas été fusionnés. Veuillez vérifier le statut des différents fichiers. Rappel : tous les fichiers doivent être au format TIFF pour être fusionnés.</system:String>
+    <system:String x:Key="VIS_MsgTitleTiffNotCreated">Fichier TIFF non créé</system:String>
+    <system:String x:Key="VIS_MsgTiffNotCreated">Le fichier TIFF fusionné n’a pas été créé. Vérifiez les fichiers sélectionnés : assurez-vous qu’ils sont bien au format TIFF.</system:String>
+    <system:String x:Key="VIS_MsgTitleNoPdfConverted">Aucun fichier PDF converti</system:String>
+    <system:String x:Key="VIS_MsgNoPdfConverted">Aucun fichier n’a été converti avec succès au format PDF. Veuillez vérifier les fichiers concernés.</system:String>
+    <system:String x:Key="VIS_MsgTitlePdfNotAllMerged">Fichiers PDF manquants</system:String>
+    <system:String x:Key="VIS_MsgPdfNotAllMerged">Tous les fichiers n’ont pas été fusionnés. Veuillez vérifier le statut des fichiers : certains n’ont pas été publiés au format PDF.</system:String>
+    <system:String x:Key="VIS_MsgTitlePdfNotCreated">Fichier PDF non créé</system:String>
+    <system:String x:Key="VIS_MsgPdfNotCreated">Le fichier PDF fusionné n’a pas été créé. Vérifiez les fichiers sélectionnés : assurez-vous qu’ils peuvent tous être convertis en PDF.</system:String>
+    <system:String x:Key="VIS_MergedFile">Fichier fusionné</system:String>
+    <system:String x:Key="VIS_MsgMergedFile">Fichier créé : {0}.</system:String>
+    <system:String x:Key="VIS_ToolTipOpen">Ouvrir</system:String>
+    <system:String x:Key="VIS_ToolTipOpenFolder">Ouvrir le dossier</system:String>
+    <system:String x:Key="VIS_ToolTipClose">Fermer</system:String>
+    <system:String x:Key="VIS_ToolTipZip">Activer pour créer un fichier ZIP contenant les documents téléchargés.</system:String>
+    <system:String x:Key="VIS_TitleToolTipZip">Créer un fichier ZIP</system:String>
+  
+    <system:String x:Key="VIS_IssueExporExcel">Problème d’export Excel</system:String>
+    <system:String x:Key="VIS_MsgIssueExporExcel">Impossible de créer le fichier {0}. Vérifiez qu’il n’est pas déjà ouvert et que le dossier de destination existe.</system:String>
+    <system:String x:Key="VIS_ExporExcelDone">Export Excel terminé :</system:String>
+    <system:String x:Key="VIS_ExporExcelDone2">Fichier Excel : {0}</system:String>
+    <system:String x:Key="VIS_ExporExcelOpen">Ouvrir</system:String>
+    <system:String x:Key="VIS_ExporExcelClose">Fermer</system:String>
+    <system:String x:Key="VIS_ExporExcelOpenFolder">Ouvrir le dossier</system:String>
+
+</ResourceDictionary>

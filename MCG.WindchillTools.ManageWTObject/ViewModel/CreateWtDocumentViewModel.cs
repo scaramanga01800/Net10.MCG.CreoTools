@@ -4,7 +4,6 @@ using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent.Services;
 using MCG.CommonLib.WpfComponent.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.View.WindchillContextSelection;
 using MCG.WindchillRequestTool.Model.Windchill;

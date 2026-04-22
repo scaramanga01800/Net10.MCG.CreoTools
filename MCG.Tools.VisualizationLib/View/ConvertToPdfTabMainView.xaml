@@ -1,0 +1,173 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.Tools.VisualizationLib.View.ConvertToPdfTabMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.Tools.VisualizationLib.View"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" 
+                      d:DesignWidth="800"
+                      Header="{DynamicResource VIS_TabTitleConvPdf}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_Class.ico" />
+            <BitmapImage x:Key="FOLDER_OPEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_open.ico" />
+            <BitmapImage x:Key="LARGEDELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png" />
+            <BitmapImage x:Key="MERGE_TIF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Merge_tiff.ico" />
+            <BitmapImage x:Key="MERGE_PDF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Merge_pdf.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="SECURITY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Authorisation.ico" />
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox  Header="{DynamicResource VIS_TabTitleConvPdf}">
+        <Fluent:Button Command="{Binding CommandStartConvert}" 
+                   LargeIcon="{StaticResource START}"
+                   Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartConvPdf}" 
+                              Width ="250"
+                              Image="{StaticResource START}"
+                              Text="{DynamicResource VIS_BtTextStartConvPdf}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Command="{Binding CommandRemoveAll}" 
+                   Margin="5,0,5,0"
+                   LargeIcon="{StaticResource LARGEDELETE}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleRemoveFiles}" 
+                              Width ="250"
+                              Image="{StaticResource LARGEDELETE}"
+                              Text="{DynamicResource VIS_BtTextRemoveFiles}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource MERGE_TIF}"
+                   Command="{Binding CommandMergeTiff}"
+                   Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleMergeTiff}" 
+                              Width ="250"
+                              Image="{StaticResource MERGE_TIF}"
+                              Text="{DynamicResource VIS_BtTextMergeTiff}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button LargeIcon="{StaticResource MERGE_PDF}"
+                   Command="{Binding CommandMergePdf}"
+                   Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleMergePdf}" 
+                              Width ="250"
+                              Image="{StaticResource MERGE_PDF}"
+                              Text="{DynamicResource VIS_BtTextMergePdf}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+
+        <Fluent:CheckBox x:Name="CBOptionWatermark" 
+                     Header="{DynamicResource VIS_LabelOptionalWatermark}" 
+                     IsChecked="{Binding CurrentDataContext.IsOptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:ComboBox ItemsSource="{Binding CurrentDataContext.OptionalWatermarkValues}"
+                     SelectedItem="{Binding CurrentDataContext.OptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding CurrentDataContext.OptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     MaxWidth="200"
+                     Margin="-8,0,0,0"></Fluent:ComboBox>
+        <Fluent:SplitButton x:Name="BtPdfSecurity"
+                        Margin="5,0,5,0"
+                        Header="{DynamicResource VIS_BtPdfSecurity}"
+                        LargeIcon="{StaticResource SECURITY}"
+                        IsCheckable="True"
+                        IsChecked="{Binding CurrentDataContext.ActivatePdfSecurity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtPdfSecurity}" Width ="250"
+                      Image="{StaticResource SECURITY}"
+                      Text="{DynamicResource VIS_BtToolTipPdfSecurity}"/>
+            </Fluent:SplitButton.ToolTip>
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}">
+                <Fluent:TwoLineLabel Text="{DynamicResource VIS_LabelPdfUserPassword}"
+                                 Margin="2">
+                    <Fluent:TwoLineLabel.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfUserPassword}" Width ="250"
+                      Image="{StaticResource SECURITY}"
+                      Text="{DynamicResource VIS_BtToolTipPdfUserPassword}"/>
+                    </Fluent:TwoLineLabel.ToolTip>
+                </Fluent:TwoLineLabel>
+                <Fluent:TextBox HorizontalContentAlignment="Left" 
+                            VerticalContentAlignment="Center" 
+                            Height="25" MinWidth="150" 
+                            MaxWidth="200" 
+                            Text="{Binding CurrentDataContext.PdfUserPassword,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                            Margin="-9,0,0,0" >
+                    <Fluent:TextBox.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfUserPassword}" Width ="250"
+                      Image="{StaticResource SECURITY}"
+                      Text="{DynamicResource VIS_BtToolTipPdfUserPassword}"/>
+                    </Fluent:TextBox.ToolTip>
+                </Fluent:TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}">
+                <Fluent:TwoLineLabel Text="{DynamicResource VIS_LabelPdfOwnerPassword}"
+                                 Margin="2">
+                    <Fluent:TwoLineLabel.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfOwnerPassword}" Width ="250"
+                      Image="{StaticResource SECURITY}"
+                      Text="{DynamicResource VIS_BtToolTipOwnerPassword}"/>
+                    </Fluent:TwoLineLabel.ToolTip>
+                </Fluent:TwoLineLabel>
+                <Fluent:TextBox HorizontalContentAlignment="Left" 
+                            VerticalContentAlignment="Center" 
+                            Height="25" MinWidth="150" 
+                            MaxWidth="200" 
+                            Text="{Binding CurrentDataContext.PdfOwnerPassword,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                            Margin="-9,0,0,0" >
+                    <Fluent:TextBox.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfOwnerPassword}" Width ="250"
+                      Image="{StaticResource SECURITY}"
+                      Text="{DynamicResource VIS_BtToolTipOwnerPassword}"/>
+                    </Fluent:TextBox.ToolTip>
+                </Fluent:TextBox>
+            </StackPanel>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitAnnotation}"
+                         IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                         IsChecked="{Binding CurrentDataContext.PdfPermitAnnotation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitExtractContent}"
+                         IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                         IsChecked="{Binding CurrentDataContext.PdfPermitExtractContent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPdfPermitModify}"
+                         IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                         IsChecked="{Binding CurrentDataContext.PdfPermitModify,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitPrint}"
+                         IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                         IsChecked="{Binding CurrentDataContext.PdfPermitPrint,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        </Fluent:SplitButton>
+
+
+        <Fluent:SplitButton Header="{DynamicResource VIS_BtTitleFolder}"
+                        LargeIcon="{StaticResource FOLDER}"
+                        Command="{Binding CommandChangeExportFolder}"
+                        Margin="5,0,5,0">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleFolder}" 
+                              Width ="250"
+                              Image="{StaticResource FOLDER}"
+                              Text="{DynamicResource VIS_BtTextFolder}"/>
+            </Fluent:SplitButton.ToolTip>
+            <StackPanel Orientation="Horizontal">
+                <Fluent:TextBox  Text="{Binding CurrentDataContext.ExportFolder}" 
+                         IsReadOnly="True"></Fluent:TextBox>
+                <Button Height="22" Command="{Binding CommandOpenFolder}">
+                    <Image Source="{StaticResource FOLDER_OPEN}"></Image>
+                </Button>
+            </StackPanel>
+        </Fluent:SplitButton>
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                   Command="{Binding CommandOpenHelp}"
+                   Margin="5,0,5,0"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

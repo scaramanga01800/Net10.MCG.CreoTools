@@ -1,9 +1,9 @@
-﻿using MCG.Tools.PurchaseOrderFollowUp.Services;
+﻿using MCG.Tools.PurchaseOrderFollowUp.Interfaces;
 using MCG.Tools.PurchaseOrderFollowUp.View;
 using MCG.Tools.PurchaseOrderFollowUp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MCG.Tools.PurchaseOrderFollowUp.Interfaces
+namespace MCG.Tools.PurchaseOrderFollowUp.Services
 {
     public static class PurchaseOrderFollowUpServiceCollectionExtensions
     {

@@ -1,0 +1,188 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="VIS_AppName">Visualization File</system:String>
+    <system:String x:Key="VIS_LabelSearch">Search</system:String>
+    <system:String x:Key="VIS_LabelDownloadVisuFiles">Download Visualization Files</system:String>
+    <system:String x:Key="VIS_LabelTools">Tools</system:String>
+    <system:String x:Key="VIS_BtTitleStartDownloadVisuFiles">Download Visualization Files</system:String>
+    <system:String x:Key="VIS_BtStartDownloadVisuFiles">Download all selected visualization files</system:String>
+    <system:String x:Key="VIS_LabelSearchNumber">Number</system:String>
+    <system:String x:Key="VIS_BtStartSearchEcn">Start ECN part search</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchEcn">Search ECN</system:String>
+    <system:String x:Key="VIS_BtStartSearchPart">Start part search</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchPart">Search Part</system:String>
+    <system:String x:Key="VIS_BtTitleDeleteSelectedParts">Delete Selected Parts</system:String>
+    <system:String x:Key="VIS_BtStartDeleteSelectedPart">Delete Selected Parts</system:String>
+    <system:String x:Key="VIS_LabelSearchVisuFiles">Visualization Files</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchVisuFiles">Search Visualization Files</system:String>
+    <system:String x:Key="VIS_BtStartSearchVisuFiles">Search Visualization Files</system:String>
+    <system:String x:Key="VIS_LabelOptionalWatermark">Optional Watermark</system:String>
+    <system:String x:Key="VIS_BtTitleSetOptionalWatermark">Set Optional Watermark</system:String>
+    <system:String x:Key="VIS_BtSetOptionalWatermark">Set Optional Watermark</system:String>
+
+    <system:String x:Key="VIS_MiPastePart">Paste</system:String>
+    <system:String x:Key="VIS_MiOpenPart">Open part detail page</system:String>
+    <system:String x:Key="VIS_MiOpenEcn">Open ECN detail page</system:String>
+    <system:String x:Key="VIS_MiDeletePart">Delete</system:String>
+
+    <system:String x:Key="VIS_LabelColPartNumber">Number</system:String>
+    <system:String x:Key="VIS_LabelColPartRevision">Revision</system:String>
+    <system:String x:Key="VIS_LabelColState">State</system:String>
+    <system:String x:Key="VIS_LabelColComment">Comment</system:String>
+    <system:String x:Key="VIS_LabelColFilterFile">Visualization file filters</system:String>
+    <system:String x:Key="VIS_LabelColDescriptionEng">English Description</system:String>
+    <system:String x:Key="VIS_LabelColDescriptionLocal">Local Description</system:String>
+    <system:String x:Key="VIS_LabelColAddedFrom">Added From</system:String>
+    <system:String x:Key="VIS_LabelColPdmContext">PDM Context</system:String>
+
+    <system:String x:Key="VIS_LabelPdfTiffMainFile">PDF/TIFF (main drawings and standard documents)</system:String>
+    <system:String x:Key="VIS_LabelPdfTiffFile">PDF/TIFF (other files)</system:String>
+    <system:String x:Key="VIS_LabelOfficeDocFile">MS Office</system:String>
+    <system:String x:Key="VIS_LabelDxfFile">DXF</system:String>
+    <system:String x:Key="VIS_LabelStepFile">STEP</system:String>
+    <system:String x:Key="VIS_LabelIgesFile">IGES</system:String>
+    <system:String x:Key="VIS_LabelPvzFile">PVZ / Creo View</system:String>
+    <system:String x:Key="VIS_LabelOtherFile">Other</system:String>
+    <system:String x:Key="VIS_DocCommentMain">Main Drawing</system:String>
+    <system:String x:Key="VIS_DocCommentRef">Standard Document</system:String>
+
+    <system:String x:Key="VIS_DocToolTipWord">Word Document</system:String>
+    <system:String x:Key="VIS_DocToolTipExcel">Excel Document</system:String>
+    <system:String x:Key="VIS_DocToolTipPowerPoint">PowerPoint Document</system:String>
+    <system:String x:Key="VIS_DocToolTipPdf">PDF Document</system:String>
+    <system:String x:Key="VIS_DocToolTipTiff">TIFF Document</system:String>
+    <system:String x:Key="VIS_DocToolTipOther">Other Document</system:String>
+    <system:String x:Key="VIS_DocToolTipDxf">DXF Document</system:String>
+    <system:String x:Key="VIS_DocToolTipDwg">DWG Document</system:String>
+    <system:String x:Key="VIS_DocToolTipStep">STEP Document</system:String>
+    <system:String x:Key="VIS_DocToolTipIges">IGES Document</system:String>
+    <system:String x:Key="VIS_DocToolTipIPvz">PVZ Creo View Document</system:String>
+    <system:String x:Key="VIS_DocToolTipPart">Part</system:String>
+    <system:String x:Key="VIS_DocToolTipEcn">ECN</system:String>
+    <system:String x:Key="VIS_DocToolTipUnknown">Unknown</system:String>
+
+    <system:String x:Key="VIS_Status01">Main drawing found (PDF)</system:String>
+    <system:String x:Key="VIS_Status02">Main drawing found (TIFF)</system:String>
+    <system:String x:Key="VIS_Status03">TIFF found – issue converting to PDF: TIFF added to ZIP.</system:String>
+    <system:String x:Key="VIS_Status04">Part not found</system:String>
+    <system:String x:Key="VIS_Status05">No PDF or TIFF found</system:String>
+    <system:String x:Key="VIS_Status06">Drawing not found</system:String>
+    <system:String x:Key="VIS_Status07">Drawing found but not published as PDF</system:String>
+    <system:String x:Key="VIS_Status08">Reference document found: {0} added to ZIP</system:String>
+    <system:String x:Key="VIS_Status09">ECN not found</system:String>
+    <system:String x:Key="VIS_Status10">No main drawing available</system:String>
+    <system:String x:Key="VIS_Status11">Standard drawing found</system:String>
+    <system:String x:Key="VIS_Status12">+ standard</system:String>
+    <system:String x:Key="VIS_Status13">The Creo drawing exists but is not published as PDF.</system:String>
+    <system:String x:Key="VIS_Status14">Creo drawing does not exist.</system:String>
+    <system:String x:Key="VIS_Status15">Publish the Creo drawing and try again.</system:String>
+    <system:String x:Key="VIS_Status16">Creo drawing is published. Use the PDF as priority.</system:String>
+
+    <system:String x:Key="VIS_FromEcn">From ECN {0}</system:String>
+    <system:String x:Key="VIS_FromSearch">From Search</system:String>
+    <system:String x:Key="VIS_FromCopyPaste">From Copy/Paste</system:String>
+
+    <system:String x:Key="VIS_BtPdfSecurity">PDF Security</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfSecurity">Enable and configure PDF security settings</system:String>
+    <system:String x:Key="VIS_LabelPdfOwnerPassword">Owner Password</system:String>
+    <system:String x:Key="VIS_BtToolTipOwnerPassword">This is the owner password. Do not share it! It allows full access to the PDF.</system:String>
+    <system:String x:Key="VIS_LabelPdfUserPassword">User Password</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfUserPassword">Send this password to users who need restricted access to the PDF.</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitAnnotation">Allow Annotations</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitExtractContent">Allow Content Extraction</system:String>
+    <system:String x:Key="VIS_LabelPdfPdfPermitModify">Allow Modifications</system:String>
+    <system:String x:Key="VIS_LabelPdfPermitPrint">Allow Printing</system:String>
+
+    <system:String x:Key="VIS_BtPdfConvert">Convert to PDF</system:String>
+    <system:String x:Key="VIS_BtToolTipPdfConvert">Convert document to PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertTiff">TIFF to PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertWord">Word to PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertExcel">Excel to PDF</system:String>
+    <system:String x:Key="VIS_LabelPdfConvertPowerPoint">PowerPoint to PDF</system:String>
+
+    <system:String x:Key="VIS_BtTitleFolder">Export Folder</system:String>
+
+    <system:String x:Key="VIS_MiSearchBom">Search BOM Components</system:String>
+    <system:String x:Key="VIS_MiSearchBomLevel">Level</system:String>
+    <system:String x:Key="VIS_LabelComponentOf">Component of</system:String>
+
+    <system:String x:Key="VIS_StatusBarNbElem">Number of element(s):</system:String>
+    <system:String x:Key="VIS_StatusBarBomInProgress">Searching BOM...</system:String>
+    <system:String x:Key="VIS_StatusBarSearchPartInProgress">Searching parts and ECNs...</system:String>
+    <system:String x:Key="VIS_StatusBarSearchDocInProgress">Searching documents...</system:String>
+    <system:String x:Key="VIS_StatusBarExportDocInProgress">Exporting documents...</system:String>
+
+    <system:String x:Key="VIS_ErrorMsgEcnNotFound">ECN not found</system:String>
+    <system:String x:Key="VIS_ErrorMsgPartNotFound">Part not found</system:String>
+    <system:String x:Key="VIS_TitleWindowSearch">Search</system:String>
+    <system:String x:Key="VIS_ErrorMsgBomNotFound">BOM not found</system:String>
+
+    <system:String x:Key="VIS_UserGuide">APP020EN.PDF</system:String>
+
+    <system:String x:Key="VIS_DownloadTimeoutMsg">Download timeout for document {0} exceeded. Do you want to continue?</system:String>
+    <system:String x:Key="VIS_DownloadTimeoutTitle">Timeout Exceeded</system:String>
+
+    <system:String x:Key="VIS_BtStartSearchEcnFlash">Download all documents and main drawings from an ECN in one click</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchEcnFlash">Download ECN in one click</system:String>
+    <system:String x:Key="VIS_BtStartSearchPartFlash">Download the main drawing of a part in one click</system:String>
+    <system:String x:Key="VIS_BtTitleStartSearchPartFlash">Download part in one click</system:String>
+    <system:String x:Key="VIS_MsgDownloadPart">No main drawing found for the part.</system:String>
+    <system:String x:Key="VIS_MsgTitleDownloadPart">Download Part</system:String>
+    <system:String x:Key="VIS_MsgDownloadEcn">No main drawing or document found for the ECN.</system:String>
+    <system:String x:Key="VIS_MsgTitleDownloadEcn">Download ECN</system:String>
+
+    <system:String x:Key="VIS_UserGuideConvPdf">APP025EN.PDF</system:String>
+    <system:String x:Key="VIS_ColFileName">File Name</system:String>
+    <system:String x:Key="VIS_ColStatus">Status</system:String>
+    <system:String x:Key="VIS_TabTitleConvPdf">Convert to PDF</system:String>
+    <system:String x:Key="VIS_BtTitleStartConvPdf">Convert to PDF</system:String>
+    <system:String x:Key="VIS_BtTextStartConvPdf">Start PDF conversion for selected files</system:String>
+    <system:String x:Key="VIS_BtTitleRemoveFiles">Remove Files</system:String>
+    <system:String x:Key="VIS_BtTextRemoveFiles">Remove all selected files</system:String>
+    <system:String x:Key="VIS_BtTitleMergeTiff">Merge TIFF</system:String>
+    <system:String x:Key="VIS_BtTextMergeTiff">Merge all selected TIFF files into a single file. Only TIFF files will be considered.</system:String>
+    <system:String x:Key="VIS_BtTitleMergePdf">Merge PDF</system:String>
+    <system:String x:Key="VIS_BtTextMergePdf">Merge all selected files into a single PDF. All files will be converted to PDF before merging.</system:String>
+    <system:String x:Key="VIS_BtTextFolder">Select the output folder for the converted files</system:String>
+    <system:String x:Key="VIS_BtTitleCancel">Cancel</system:String>
+    <system:String x:Key="VIS_BtTextCancel">Cancel the merge</system:String>
+    <system:String x:Key="VIS_BtTitleStartMerge">Start</system:String>
+    <system:String x:Key="VIS_BtTextStartMerge">Start the merge</system:String>
+    <system:String x:Key="VIS_ColStatusConverted">Converted</system:String>
+    <system:String x:Key="VIS_ColStatusIssueConverted">Conversion failed</system:String>
+    <system:String x:Key="VIS_ColStatusAlreadyPdf">Already a PDF</system:String>
+    <system:String x:Key="VIS_ColStatusExcluded">Excluded</system:String>
+    <system:String x:Key="VIS_ColStatusNotConverted">Not converted</system:String>
+    <system:String x:Key="VIS_ColStatusTifFile">TIFF File</system:String>
+
+    <system:String x:Key="VIS_MsgTitleNoTiffSelected">No TIFF Selected</system:String>
+    <system:String x:Key="VIS_MsgNoTiffSelected">No TIFF file has been selected. Please select only TIFF files.</system:String>
+    <system:String x:Key="VIS_MsgTitleTiffNotAllMerged">Missing TIFF Files</system:String>
+    <system:String x:Key="VIS_MsgTiffNotAllMerged">Not all files were merged. Please check the status of each file. Reminder: all files must be in TIFF format to be merged.</system:String>
+    <system:String x:Key="VIS_MsgTitleTiffNotCreated">TIFF Not Created</system:String>
+    <system:String x:Key="VIS_MsgTiffNotCreated">The merged TIFF file was not created. Please check the selected files and ensure they are all in TIFF format.</system:String>
+    <system:String x:Key="VIS_MsgTitleNoPdfConverted">No PDF Converted</system:String>
+    <system:String x:Key="VIS_MsgNoPdfConverted">No file was successfully converted to PDF. Please check the selected files.</system:String>
+    <system:String x:Key="VIS_MsgTitlePdfNotAllMerged">Missing PDF Files</system:String>
+    <system:String x:Key="VIS_MsgPdfNotAllMerged">Not all files were merged. Please check the status of each file. Some files were not published as PDF.</system:String>
+    <system:String x:Key="VIS_MsgTitlePdfNotCreated">PDF Not Created</system:String>
+    <system:String x:Key="VIS_MsgPdfNotCreated">The merged PDF file was not created. Please check the selected files and ensure they can all be converted to PDF.</system:String>
+    <system:String x:Key="VIS_MergedFile">Merged File</system:String>
+    <system:String x:Key="VIS_MsgMergedFile">File created: {0}.</system:String>
+    <system:String x:Key="VIS_ToolTipOpen">Open</system:String>
+    <system:String x:Key="VIS_ToolTipOpenFolder">Open Folder</system:String>
+    <system:String x:Key="VIS_ToolTipClose">Close</system:String>
+    <system:String x:Key="VIS_ToolTipZip">Select to create a ZIP file containing all downloaded documents.</system:String>
+    <system:String x:Key="VIS_TitleToolTipZip">Create ZIP File</system:String>
+
+    <system:String x:Key="VIS_IssueExporExcel">Excel Export Issue</system:String>
+    <system:String x:Key="VIS_MsgIssueExporExcel">Unable to create the file {0}. Please check that it is not already open and that the folder exists.</system:String>
+    <system:String x:Key="VIS_ExporExcelDone">Excel export completed:</system:String>
+    <system:String x:Key="VIS_ExporExcelDone2">Excel file: {0}</system:String>
+    <system:String x:Key="VIS_ExporExcelOpen">Open</system:String>
+    <system:String x:Key="VIS_ExporExcelClose">Close</system:String>
+    <system:String x:Key="VIS_ExporExcelOpenFolder">Open Folder</system:String>
+
+</ResourceDictionary>
