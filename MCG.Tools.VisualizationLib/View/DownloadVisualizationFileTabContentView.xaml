@@ -1,0 +1,568 @@
+﻿<UserControl x:Class="MCG.Tools.VisualizationLib.View.DownloadVisualizationFileTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.Tools.VisualizationLib.View"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:localVM="clr-namespace:MCG.Tools.VisualizationLib.ViewModel"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:VisuFile="clr-namespace:MCG.Tools.VisualizationLib.ViewModel"
+             xmlns:MCGEnum="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="PASTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/paste.gif" />
+            <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" />
+            <BitmapImage x:Key="ECN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/chgnotice.gif" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="WORD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Word.ico" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+            <BitmapImage x:Key="POWERPOINT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/PowerPoint.ico" />
+            <BitmapImage x:Key="PDF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Pdf.ico" />
+            <BitmapImage x:Key="TIFF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Image.ico" />
+            <BitmapImage x:Key="DXF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Dxf.ico" />
+            <BitmapImage x:Key="DWG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Dwg.ico" />
+            <BitmapImage x:Key="STEP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Stp_64x64.png" />
+            <BitmapImage x:Key="IGES" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Igs_64x64.png" />
+            <BitmapImage x:Key="PVZ" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/creo_view.png" />
+            <BitmapImage x:Key="OTHER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Document_64x64.png" />
+            <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/unknown_doc.gif" />
+            <BitmapImage x:Key="STRUCTURE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure.ico" />
+            <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+            <Style x:Key="Body_Content_DataGrid_Centering"
+                        TargetType="{x:Type DataGridCell}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+
+        <DockPanel x:Name="MainDockPanel" 
+               AllowDrop="False" 
+               Drop="DockPanel_Drop" 
+               DragEnter="MainDockPanel_DragEnter" 
+               DragLeave="MainDockPanel_DragLeave">
+
+            <Fluent:StatusBar DockPanel.Dock="Bottom" Height="20">
+                <Fluent:StatusBarItem HorizontalAlignment="Left" 
+                                  Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource VIS_StatusBarNbElem}" Margin="0,0,5,0"></TextBlock>
+                        <TextBlock Text="{Binding CurrentDataContext.SearchedPartList.Count}"></TextBlock>
+                    </StackPanel>
+                </Fluent:StatusBarItem>
+                <Fluent:StatusBarItem HorizontalAlignment="Right" 
+                                  Margin="0,0,5,0"
+                                  Visibility="{Binding CurrentDataContext.IsSearchInProgress, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding CurrentDataContext.StatusBarTextRight}"></TextBlock>
+                </Fluent:StatusBarItem>
+                <Fluent:StatusBarItem Title="ProgressBar"                                     
+                                  HorizontalAlignment="Right"
+                                  Margin="0,0,5,0">
+                    <Fluent:StatusBarItem.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.CurrentStep}" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="\" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.TotalStep}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Fluent:StatusBarItem.ToolTip>
+                    <ProgressBar Height="17"
+                             Width="250"
+                             Maximum="{Binding CurrentDataContext.TotalStep}" 
+                             Value="{Binding CurrentDataContext.CurrentStep}"
+                             Visibility="{Binding CurrentDataContext.IsSearchInProgress, Converter={StaticResource BoolToVisibilityConverter}}"></ProgressBar>
+                </Fluent:StatusBarItem>
+            </Fluent:StatusBar>
+            <DataGrid x:Name="DgParts"
+                      ItemsSource="{Binding  CurrentDataContext.SearchedPartList}" 
+                      SelectedItem="{Binding CurrentDataContext.SelectedPart, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="False" 
+                      RowDetailsVisibilityMode="Visible"
+                      CanUserAddRows="False"
+                      CellStyle="{StaticResource Body_Content_DataGrid_Centering}">
+
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="KeyDown">
+                        <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ItemFrom}" Value="{x:Static MCGEnum:DocumentTypeEnum.FROMECN}">
+                                <Setter Property="Background" Value="#C8FFC4"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ItemFrom}" Value="{x:Static MCGEnum:DocumentTypeEnum.FROMBOM}">
+                                <Setter Property="Background" Value="#C4EBFF"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                <Setter Property="ToolTip" Value="{Binding DetailComment}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                <Setter Property="ToolTip" Value="{Binding DetailComment}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </DataGrid.Resources>
+
+                <DataGrid.ContextMenu>
+                    <Fluent:ContextMenu>
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiPastePart}" Command="{Binding CommandMenuItemPastePart}">
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource PASTE}"></Image>
+                            </Fluent:MenuItem.Icon>
+                        </Fluent:MenuItem>
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiOpenPart}" Command="{Binding CommandMenuItemOpenPart}"   >
+                            <Fluent:MenuItem.Style>
+                                <Style TargetType="Fluent:MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Fluent:MenuItem.Style>
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource PART}"></Image>
+                            </Fluent:MenuItem.Icon>
+                        </Fluent:MenuItem>
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiOpenEcn}" Command="{Binding CommandMenuItemOpenEcn}" >
+                            <Fluent:MenuItem.Style>
+                                <Style TargetType="Fluent:MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Fluent:MenuItem.Style>
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource ECN}"></Image>
+                            </Fluent:MenuItem.Icon>
+                        </Fluent:MenuItem>
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiSearchBom}" >
+                            <Fluent:MenuItem.Style>
+                                <Style TargetType="Fluent:MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Fluent:MenuItem.Style>
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource STRUCTURE}"></Image>
+                            </Fluent:MenuItem.Icon>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="1">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="1"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="2">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="2"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="3">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="3"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="4">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="4"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="5">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="5"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="6">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="6"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="7">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="7"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="8">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="8"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="9">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="9"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="10"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="11"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="12"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                        </Fluent:MenuItem>
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiDeletePart}" Command="{Binding CommandMenuItemDeletePart}"  >
+                            <Fluent:MenuItem.Style>
+                                <Style TargetType="Fluent:MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Fluent:MenuItem.Style>
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource DELETE}"></Image>
+                            </Fluent:MenuItem.Icon>
+                        </Fluent:MenuItem>
+                    </Fluent:ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.RowDetailsTemplate >
+                    <DataTemplate>
+                        <StackPanel x:Name="SpRowDetailTemplate"
+                                Orientation="Horizontal" 
+                                Visibility="{Binding IsDocumentFound, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                Background="#FFECECEC">
+                            <Rectangle Width="15"></Rectangle>
+                            <Fluent:CheckBox VerticalAlignment="Center" IsChecked="{Binding IsAllSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+                            <Rectangle Width="15"></Rectangle>
+                            <StackPanel>
+                                <TreeView ItemsSource="{Binding  SearchedDocumentList}" Background="{Binding ElementName=SpRowDetailTemplate,Path=Background}" BorderThickness="0">
+                                    <TreeView.ContextMenu>
+                                        <Fluent:ContextMenu Visibility="Collapsed">
+                                            <Fluent:MenuItem Header="TEST"  >
+                                            </Fluent:MenuItem>
+                                        </Fluent:ContextMenu>
+                                    </TreeView.ContextMenu>
+                                    <TreeView.ItemTemplate>
+                                        <DataTemplate >
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <Fluent:CheckBox Margin="5,0,10,0" IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <Image Height="25" IsHitTestVisible="False">
+                                                    <Image.Style>
+                                                        <Style TargetType="{x:Type Image}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.WORD}">
+                                                                    <Setter Property="Source" Value="{StaticResource WORD}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipWord}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.EXCEL}">
+                                                                    <Setter Property="Source" Value="{StaticResource EXCEL}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipExcel}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.POWERPOINT}">
+                                                                    <Setter Property="Source" Value="{StaticResource POWERPOINT}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipPowerPoint}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PDF}">
+                                                                    <Setter Property="Source" Value="{StaticResource PDF}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipPdf}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.TIFF}">
+                                                                    <Setter Property="Source" Value="{StaticResource TIFF}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipTiff}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.DXF}">
+                                                                    <Setter Property="Source" Value="{StaticResource DXF}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipDxf}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.DWG}">
+                                                                    <Setter Property="Source" Value="{StaticResource DWG}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipDwg}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.STEP}">
+                                                                    <Setter Property="Source" Value="{StaticResource STEP}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipStep}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.IGES}">
+                                                                    <Setter Property="Source" Value="{StaticResource IGES}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipIges}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PVZ}">
+                                                                    <Setter Property="Source" Value="{StaticResource PVZ}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipPvz}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DocumentType}" Value="{x:Static MCGEnum:DocumentTypeEnum.OTHER}">
+                                                                    <Setter Property="Source" Value="{StaticResource OTHER}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipOther}"></Setter>
+                                                                </DataTrigger>
+
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Image.Style>
+                                                </Image>
+                                                <TextBlock Text="{Binding DocumentNumber}" Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></TextBlock>
+                                                <TextBlock Text="{Binding DocumentRevision}" Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></TextBlock>
+                                                <TextBlock Text="{Binding Comment}" Margin="5,0" VerticalAlignment="Center" IsHitTestVisible="False"></TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <Fluent:CheckBox  IsChecked="{Binding Data.CurrentDataContext.IsAllPartSelected,Source={StaticResource proxy},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                <behaviors:Interaction.Triggers>
+                                    <behaviors:EventTrigger EventName="Checked">
+                                        <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource TrueValue}" ></behaviors:InvokeCommandAction>
+                                    </behaviors:EventTrigger>
+
+                                    <behaviors:EventTrigger EventName="Unchecked">
+                                        <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckUncheckAll, Source={StaticResource proxy} }" CommandParameter="{StaticResource FalseValue}" ></behaviors:InvokeCommandAction>
+                                    </behaviors:EventTrigger>
+                                </behaviors:Interaction.Triggers>
+                            </Fluent:CheckBox>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Fluent:CheckBox  IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center">
+                                </Fluent:CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="ItemType">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                                    <Setter Property="Source" Value="{StaticResource PART}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipPart}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                                    <Setter Property="Source" Value="{StaticResource ECN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipEcn}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.UNKNOWN}">
+                                                    <Setter Property="Source" Value="{StaticResource UNKNOWN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource VIS_DocToolTipUnknown}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn  Binding="{Binding PartNumber}" 
+                                         IsReadOnly="True">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColPartNumber}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                        <Setter Property="IsEnabled" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.UNKNOWN}">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+
+                        <DataGridTemplateColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColPartRevision}"></Label>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox IsEditable="False" 
+                                          Text="{Binding PartRevision,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding AllPartRevisionState}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} - {1}">
+                                                            <Binding Path="Revision" />
+                                                            <Binding Path="State" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding PartRevision}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn  Binding="{Binding State}" IsReadOnly="True">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColState}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn CanUserSort="True" SortMemberPath="Comment">
+                        <DataGridTemplateColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColComment}"></Label>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Comment}">
+                                    <TextBlock.ToolTip>
+                                        <Fluent:TwoLineLabel Text="{Binding DetailComment}"></Fluent:TwoLineLabel>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn  Binding="{Binding AddedFrom}" IsReadOnly="True"
+                                     Visibility="{Binding Data.CurrentDataContext.IsColAddedFromShown,Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColAddedFrom}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn  Binding="{Binding DescriptionEng}" IsReadOnly="True"
+                                     Visibility="{Binding Data.CurrentDataContext.IsColDescriptionEngShown,Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColDescriptionEng}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn  Binding="{Binding DescriptionLocal}" IsReadOnly="True"
+                                     Visibility="{Binding Data.CurrentDataContext.IsColDescriptionLocalShown,Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColDescriptionLocal}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn  Binding="{Binding PdmContext}" IsReadOnly="True"
+                                     Visibility="{Binding Data.CurrentDataContext.IsColPdmContextShown,Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DataGridTextColumn.Header>
+                            <Label Content="{DynamicResource VIS_LabelColPdmContext}"></Label>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </DockPanel>
+        <Image x:Name="ImageDragDrop"
+               Source="{StaticResource DRAGDROP}" 
+               MaxHeight="300"
+               Opacity="0.5"
+               Visibility="Collapsed"
+               IsHitTestVisible="False"></Image>
+    </Grid>
+</UserControl>

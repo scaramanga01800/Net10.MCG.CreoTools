@@ -429,10 +429,15 @@ namespace MCG.Tools.VisualizationLib.Services
                         {
                             if (IsBackupFile)
                             {
-                                if (currentViewable.CompleteOrigFileName == null || currentViewable.CompleteOrigFileName.Trim() == "")
+                                if (string.IsNullOrWhiteSpace(currentViewable.CompleteOrigFileName))
                                     currentViewable.CompleteOrigFileName = currentViewable.CompleteFileName;
-                                if (currentViewable.FileName == null || currentViewable.FileName.Trim() != "")
+                                if (string.IsNullOrWhiteSpace(currentViewable.FileName))
                                     currentViewable.FileName = currentViewable.CompleteFileName.Split('\\').LastOrDefault();
+                                //if (currentViewable.CompleteOrigFileName == null || currentViewable.CompleteOrigFileName.Trim() == "")
+                                //    currentViewable.CompleteOrigFileName = currentViewable.CompleteFileName;
+                                //if (currentViewable.FileName == null || currentViewable.FileName.Trim() == "")
+                                //    currentViewable.FileName = currentViewable.CompleteFileName.Split('\\').LastOrDefault();
+
 
                                 CompleteBackupFile = $"{BackupFolder}\\{currentViewable.FileName}";
                                 if (!File.Exists(CompleteBackupFile))

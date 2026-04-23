@@ -296,7 +296,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.View
                     && (((PurchaseOrderFollowUpViewModel)DataContext).CurrentDataContext.CurrentRequest.Status == PurchaseOrderStatus.NEW
                     || ((PurchaseOrderFollowUpViewModel)DataContext).CurrentDataContext.CurrentRequest.Status == PurchaseOrderStatus.SENT))
                 {
-                    MessageBoxResult result = MessageBox.Show(McgMiscTools.GetStringResource("POF_WindowCloseRequestWithoutSaving"), McgMiscTools.GetStringResource("POF_TitleWindowCloseRequestWithoutSaving"), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(McgWpfTools.GetStringResource("POF_WindowCloseRequestWithoutSaving"), McgWpfTools.GetStringResource("POF_TitleWindowCloseRequestWithoutSaving"), MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.No)
                     {
                         // Cancel Closing

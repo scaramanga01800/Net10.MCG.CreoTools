@@ -549,7 +549,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 MgtWtDocumentItem CurrentItem = new MgtWtDocumentItem()
                 {
                     Number = NUMBER?.Trim().ToUpper(),
-                    Revision = McgMiscTools.GetEnumValue<McgRevisionSchemaEnum>(REVISION),
+                    Revision = McgReflectionTools.GetEnumValue<McgRevisionSchemaEnum>(REVISION),
                     WindchillWtDocument = new RestOdataWtDocument()
                     {
                         Name = PTCCOMMONNAME?.Trim().ToUpper(),

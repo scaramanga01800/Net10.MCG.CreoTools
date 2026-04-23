@@ -1559,7 +1559,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                 (CurrentDataContext.ActivatePdfConvert && CurrentDataContext.ActivateTiffConvert),
                                 (CurrentDataContext.ActivatePdfConvert && CurrentDataContext.ActivateWordConvert),
                                 (CurrentDataContext.ActivatePdfConvert && CurrentDataContext.ActivateExcelConvert),
-                                (CurrentDataContext.ActivatePdfConvert && CurrentDataContext.ActivatePowerPointConvert));
+                                (CurrentDataContext.ActivatePdfConvert && CurrentDataContext.ActivatePowerPointConvert),
+                                CurrentDataContext.IsCreateZip);
 
                     string TempZipFileName = $"{CurrentDataContext.ExportFolder}\\export_viewable_{rnd.Next(10000000)}.zip";
                     while (File.Exists(TempZipFileName))
@@ -1813,7 +1814,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                         foreach (var doc in item.SearchedDocumentList.Where((docfile) => docfile.IsSelected))
                         {
                             if (!doc.IsAlreadyDownloaded)
-                                doc.Viewable = _wtDownloadViewableTools.GetOneWtPartViewables(WindchillNetworkCredential, doc.WindchillPartViewable, doc.WindchillDocument, doc.IsDefaultWatermark, doc.IsOptionaltWatermark, doc.OptionalWatermark, true, TempFolder, McgMiscTools.GetAppSetting(this, "WindchillUrl"));
+                                doc.Viewable = _wtDownloadViewableTools.GetOneWtPartViewables(WindchillNetworkCredential, doc.WindchillPartViewable, doc.WindchillDocument, doc.IsDefaultWatermark, doc.IsOptionaltWatermark, doc.OptionalWatermark, true, TempFolder, CommonLibConstants.WindchillUrl);
                             AllViewableResult.Add(doc.Viewable);
                             doc.IsAlreadyDownloaded = true;
                             CurrentDataContext.CurrentStep++;
@@ -1888,7 +1889,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
                 File.Move(ZipFileName, TempZipFileName);
 
-                McgMiscTools.OpenFile(TempZipFileName);
+                McgFileAndSystemTools.OpenFile(TempZipFileName);
 
             }
             catch (Exception ex)

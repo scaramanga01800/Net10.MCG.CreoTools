@@ -218,7 +218,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
             {
                 if (CompleteFilename != null && CompleteFilename.Trim() != "")
                 {
-                    var listExt = McgMiscTools.GetEnumValues<FileExtensionEnum>();
+                    var listExt = McgReflectionTools.GetEnumValues<FileExtensionEnum>();
                     Filename = CompleteFilename.Split('\\').LastOrDefault();
                     if (Filename != null)
                     {

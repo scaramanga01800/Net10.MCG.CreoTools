@@ -1,0 +1,304 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.Tools.VisualizationLib.View.DownloadVisualizationFileMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.Tools.VisualizationLib.View"
+                      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="{DynamicResource VIS_AppName}">
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="SEARCHECN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Ecn.png" />
+            <BitmapImage x:Key="SEARCHPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Part.png" />
+            <BitmapImage x:Key="SEARCHVISUFILE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Document.png" />
+            <BitmapImage x:Key="LARGEDELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="DOWNLOAD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Download_48x48.png" />
+            <BitmapImage x:Key="WATERMARK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/watermark.png" />
+            <BitmapImage x:Key="FILTER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Filter.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="COLUMN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Column.ico" />
+            <BitmapImage x:Key="SECURITY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Authorisation.ico" />
+            <BitmapImage x:Key="PDFCONVERT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Convert_PDF.ico" />
+            <BitmapImage x:Key="WORD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Word.ico" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+            <BitmapImage x:Key="POWERPOINT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/PowerPoint.ico" />
+            <BitmapImage x:Key="PDF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Pdf.ico" />
+            <BitmapImage x:Key="TIFF" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Image.ico" />
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_Class.ico" />
+            <BitmapImage x:Key="FOLDER_OPEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_open.ico" />
+            <BitmapImage x:Key="ADMIN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Admin_48x48.png" />
+            <BitmapImage x:Key="SEARCHECNFLASH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Ecn_flash.png" />
+            <BitmapImage x:Key="SEARCHPARTFLASH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Part_flash.png" />
+            <BitmapImage x:Key="ZIP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Folder_Zip.ico" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:InverseBoolConverter x:Key="InverseBoolConv"></conv:InverseBoolConverter>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource VIS_LabelSearch}" 
+                           IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <StackPanel HorizontalAlignment="Center">
+            <Fluent:TwoLineLabel Text="{DynamicResource VIS_LabelSearchNumber}" 
+                                 HorizontalAlignment="Center"
+                                 HasTwoLines="False"></Fluent:TwoLineLabel>
+            <Fluent:TextBox HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center" 
+                            Height="25" MinWidth="70" 
+                            MaxWidth="200" 
+                            Text="{Binding CurrentDataContext.FilterNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                            Margin="-9,0,0,0" >
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding CommandSearchFromPressEnterKey}"/>
+                </TextBox.InputBindings>
+            </Fluent:TextBox>
+        </StackPanel>
+        <Fluent:SplitButton   LargeIcon="{StaticResource SEARCHECN}" Command="{Binding CommandSearchEcn}" Margin="5,0,5,0">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchEcn}" Width ="250"
+                          Image="{StaticResource SEARCHECN}"
+                          Text="{DynamicResource VIS_BtStartSearchEcn}"/>
+            </Fluent:SplitButton.ToolTip>
+            <Fluent:Button   LargeIcon="{StaticResource SEARCHECNFLASH}" Command="{Binding CommandDownloadEcnFlash}" Margin="5,0,5,0">
+                <Fluent:Button.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchEcnFlash}" Width ="250"
+                          Image="{StaticResource SEARCHECNFLASH}"
+                          Text="{DynamicResource VIS_BtStartSearchEcnFlash}"/>
+                </Fluent:Button.ToolTip>
+            </Fluent:Button>
+        </Fluent:SplitButton>
+        <Fluent:SplitButton   LargeIcon="{StaticResource SEARCHPART}" Command="{Binding CommandSearchPart}" Margin="5,0,5,0">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchPart}" Width ="250"
+                          Image="{StaticResource SEARCHPART}"
+                          Text="{DynamicResource VIS_BtStartSearchPart}"/>
+            </Fluent:SplitButton.ToolTip>
+            <Fluent:Button  LargeIcon="{StaticResource SEARCHPARTFLASH}" Command="{Binding CommandDownloadPartFlash}" Margin="5,0,5,0">
+                <Fluent:Button.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchPartFlash}" Width ="250"
+                          Image="{StaticResource SEARCHPARTFLASH}"
+                          Text="{DynamicResource VIS_BtStartSearchPartFlash}"/>
+                </Fluent:Button.ToolTip>
+            </Fluent:Button>
+        </Fluent:SplitButton>
+
+        <Fluent:Button  LargeIcon="{StaticResource LARGEDELETE}" Command="{Binding CommandDeleteSelectedParts}" Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleDeleteSelectedParts}" Width ="250"
+                          Image="{StaticResource LARGEDELETE}"
+                          Text="{DynamicResource VIS_BtStartDeleteSelectedPart}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource VIS_LabelSearchVisuFiles}"
+                           IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:Button  LargeIcon="{StaticResource SEARCHVISUFILE}" Command="{Binding CommandSearchVisuFile}" Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchVisuFiles}" Width ="250"
+                              Image="{StaticResource SEARCHVISUFILE}"
+                              Text="{DynamicResource VIS_BtStartSearchVisuFiles}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:SplitButton Header="{DynamicResource VIS_LabelColFilterFile}"
+                                LargeIcon="{StaticResource FILTER}">
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelPdfTiffMainFile}" IsChecked="{Binding CurrentDataContext.IsPdfTiffMainSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelPdfTiffFile}" IsChecked="{Binding CurrentDataContext.IsPdfTiffSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelOfficeDocFile}" IsChecked="{Binding CurrentDataContext.IsOfficeDocSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelPvzFile}" IsChecked="{Binding CurrentDataContext.IsPvzSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelDxfFile}" IsChecked="{Binding CurrentDataContext.IsDxfSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelStepFile}" IsChecked="{Binding CurrentDataContext.IsStepSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelIgesFile}" IsChecked="{Binding CurrentDataContext.IsIgesSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandApplyFilters}" Header="{DynamicResource VIS_LabelOtherFile}" IsChecked="{Binding CurrentDataContext.IsOtherSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+        </Fluent:SplitButton >
+
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource VIS_LabelDownloadVisuFiles}"
+                           IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+
+
+        <Fluent:ToggleButton LargeIcon="{StaticResource ZIP}"
+                             IsChecked="{Binding CurrentDataContext.IsCreateZip}">
+            <Fluent:ToggleButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_TitleToolTipZip}" Width ="250"
+                                  Image="{StaticResource ZIP}"
+                                  Text="{DynamicResource VIS_ToolTipZip}"/>
+            </Fluent:ToggleButton.ToolTip>
+        </Fluent:ToggleButton>
+
+        <Fluent:CheckBox x:Name="CBOptionWatermark" 
+                         Header="{DynamicResource VIS_LabelOptionalWatermark}" 
+                         IsChecked="{Binding CurrentDataContext.IsOptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:ComboBox ItemsSource="{Binding CurrentDataContext.OptionalWatermarkValues}"
+                         SelectedItem="{Binding CurrentDataContext.OptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding CurrentDataContext.OptionalWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         MaxWidth="200"
+                         Margin="-8,0,0,0"></Fluent:ComboBox>
+
+        <Fluent:SplitButton LargeIcon="{StaticResource ADMIN}"
+                            Margin="2,0"
+                            Visibility="{Binding CurrentDataContext.IsAdminActivated, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="Admin Tool" Width ="250"
+                                  Image="{StaticResource ADMIN}"
+                                  Text="Admin Tool: Should be used only for Admin purpose. If this action is available and you're not an admin, please contact the application's owner."/>
+            </Fluent:SplitButton.ToolTip>
+            <Fluent:CheckBox Header="Admin: Default Watermak"
+                         Visibility="{Binding CurrentDataContext.IsAdminActivated, Converter={StaticResource BoolToVisibilityConverter}}"
+                         IsChecked="{Binding CurrentDataContext.IsDefaultWatermark,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="Admin: Add Revision in File Name"
+                         Visibility="{Binding CurrentDataContext.IsAdminActivated, Converter={StaticResource BoolToVisibilityConverter}}"
+                         IsChecked="{Binding CurrentDataContext.AddRevisionInFileName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="Admin: Add State in File Name"
+                         Visibility="{Binding CurrentDataContext.IsAdminActivated, Converter={StaticResource BoolToVisibilityConverter}}"
+                         IsChecked="{Binding CurrentDataContext.AddStateInFileName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        </Fluent:SplitButton>
+
+        <Fluent:SplitButton x:Name="BtPdfConvert"
+                            Margin="5,0,5,0"
+                            Header="{DynamicResource VIS_BtPdfConvert}"
+                            LargeIcon="{StaticResource PDFCONVERT}"
+                            IsCheckable="True"
+                            IsChecked="{Binding CurrentDataContext.ActivatePdfConvert,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtPdfConvert}" Width ="250"
+                          Image="{StaticResource PDFCONVERT}"
+                          Text="{DynamicResource VIS_BtToolTipPdfConvert}"/>
+            </Fluent:SplitButton.ToolTip>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfConvertTiff}"
+                             Icon="{StaticResource TIFF}"
+                             IsEnabled="{Binding ElementName=BtPdfConvert,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.ActivateTiffConvert,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfConvertWord}"
+                             IsEnabled="{Binding ElementName=BtPdfConvert,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.ActivateWordConvert,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfConvertExcel}"
+                             IsEnabled="{Binding ElementName=BtPdfConvert,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.ActivateExcelConvert,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfConvertPowerPoint}"
+                             IsEnabled="{Binding ElementName=BtPdfConvert,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.ActivatePowerPointConvert,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        </Fluent:SplitButton>
+
+        <Fluent:SplitButton x:Name="BtPdfSecurity"
+                            Margin="5,0,5,0"
+                            Header="{DynamicResource VIS_BtPdfSecurity}"
+                            LargeIcon="{StaticResource SECURITY}"
+                            IsCheckable="True"
+                            IsChecked="{Binding CurrentDataContext.ActivatePdfSecurity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtPdfSecurity}" Width ="250"
+                          Image="{StaticResource SECURITY}"
+                          Text="{DynamicResource VIS_BtToolTipPdfSecurity}"/>
+            </Fluent:SplitButton.ToolTip>
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}">
+                <Fluent:TwoLineLabel Text="{DynamicResource VIS_LabelPdfUserPassword}"
+                                     Margin="2">
+                    <Fluent:TwoLineLabel.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfUserPassword}" Width ="250"
+                          Image="{StaticResource SECURITY}"
+                          Text="{DynamicResource VIS_BtToolTipPdfUserPassword}"/>
+                    </Fluent:TwoLineLabel.ToolTip>
+                </Fluent:TwoLineLabel>
+                <Fluent:TextBox HorizontalContentAlignment="Left" 
+                                VerticalContentAlignment="Center" 
+                                Height="25" MinWidth="150" 
+                                MaxWidth="200" 
+                                Text="{Binding CurrentDataContext.PdfUserPassword,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                Margin="-9,0,0,0" >
+                    <Fluent:TextBox.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfUserPassword}" Width ="250"
+                          Image="{StaticResource SECURITY}"
+                          Text="{DynamicResource VIS_BtToolTipPdfUserPassword}"/>
+                    </Fluent:TextBox.ToolTip>
+                </Fluent:TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}">
+                <Fluent:TwoLineLabel Text="{DynamicResource VIS_LabelPdfOwnerPassword}"
+                                     Margin="2">
+                    <Fluent:TwoLineLabel.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfOwnerPassword}" Width ="250"
+                          Image="{StaticResource SECURITY}"
+                          Text="{DynamicResource VIS_BtToolTipOwnerPassword}"/>
+                    </Fluent:TwoLineLabel.ToolTip>
+                </Fluent:TwoLineLabel>
+                <Fluent:TextBox HorizontalContentAlignment="Left" 
+                                VerticalContentAlignment="Center" 
+                                Height="25" MinWidth="150" 
+                                MaxWidth="200" 
+                                Text="{Binding CurrentDataContext.PdfOwnerPassword,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                Margin="-9,0,0,0" >
+                    <Fluent:TextBox.ToolTip>
+                        <Fluent:ScreenTip Title="{DynamicResource VIS_LabelPdfOwnerPassword}" Width ="250"
+                          Image="{StaticResource SECURITY}"
+                          Text="{DynamicResource VIS_BtToolTipOwnerPassword}"/>
+                    </Fluent:TextBox.ToolTip>
+                </Fluent:TextBox>
+            </StackPanel>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitAnnotation}"
+                             IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.PdfPermitAnnotation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitExtractContent}"
+                             IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.PdfPermitExtractContent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPdfPermitModify}"
+                             IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.PdfPermitModify,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource VIS_LabelPdfPermitPrint}"
+                             IsEnabled="{Binding ElementName=BtPdfSecurity,Path=IsChecked}"
+                             IsChecked="{Binding CurrentDataContext.PdfPermitPrint,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        </Fluent:SplitButton>
+
+        <Fluent:Button  LargeIcon="{StaticResource DOWNLOAD}" Command="{Binding CommandDownloadVisuFiles}" Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartDownloadVisuFiles}" Width ="250"
+                          Image="{StaticResource DOWNLOAD}"
+                          Text="{DynamicResource VIS_BtStartDownloadVisuFiles}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource VIS_LabelTools}"
+                           IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:SplitButton Header="{DynamicResource VIS_BtTitleColumn}"
+                            LargeIcon="{StaticResource COLUMN}"
+                            Margin="5,0,5,0">
+            <Fluent:CheckBox Command="{Binding CommandUpdateColumn}" Header="{DynamicResource VIS_LabelColAddedFrom}" IsChecked="{Binding CurrentDataContext.IsColAddedFromShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandUpdateColumn}" Header="{DynamicResource VIS_LabelColDescriptionEng}" IsChecked="{Binding CurrentDataContext.IsColDescriptionEngShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandUpdateColumn}" Header="{DynamicResource VIS_LabelColDescriptionLocal}" IsChecked="{Binding CurrentDataContext.IsColDescriptionLocalShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+            <Fluent:CheckBox Command="{Binding CommandUpdateColumn}" Header="{DynamicResource VIS_LabelColPdmContext}" IsChecked="{Binding CurrentDataContext.IsColPdmContextShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></Fluent:CheckBox>
+        </Fluent:SplitButton>
+        <Fluent:SplitButton Header="{DynamicResource VIS_BtTitleFolder}"
+                            LargeIcon="{StaticResource FOLDER}"
+                            Command="{Binding CommandChangeExportFolder}"
+                            Margin="5,0,5,0">
+            <StackPanel Orientation="Horizontal">
+                <Fluent:TextBox  Text="{Binding CurrentDataContext.ExportFolder}" 
+                             IsReadOnly="True"></Fluent:TextBox>
+                <Button Height="22" Command="{Binding CommandOpenFolder}">
+                    <Image Source="{StaticResource FOLDER_OPEN}"></Image>
+                </Button>
+            </StackPanel>
+        </Fluent:SplitButton>
+
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                       Command="{Binding CommandOpenHelp}"
+                       Margin="5,0,5,0"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+    
+</Fluent:RibbonTabItem>

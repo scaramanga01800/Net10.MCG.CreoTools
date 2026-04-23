@@ -473,7 +473,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
             {
                 if (CompleteFilename != null && CompleteFilename.Trim() != "")
                 {
-                    var listExt = McgMiscTools.GetEnumValues<FileExtensionEnum>();
+                    var listExt = McgReflectionTools.GetEnumValues<FileExtensionEnum>();
                     string Filename = CompleteFilename.Split('\\').LastOrDefault();
                     if (Filename != null)
                     {
@@ -483,7 +483,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                         if (filemaneSplit.Length > 1)
                         {
                             if (filemaneSplit[1] == "#") filemaneSplit[1] = "BLANK";
-                            Revision = McgMiscTools.GetEnumValue<McgRevisionSchemaEnum>(filemaneSplit[1]);
+                            Revision = McgReflectionTools.GetEnumValue<McgRevisionSchemaEnum>(filemaneSplit[1]);
                         }
                         else
                             Revision = McgRevisionSchemaEnum.BLANK;
