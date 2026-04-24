@@ -14,6 +14,7 @@ using MCG.WindchillRequestTool.Model.Windchill;
 using MCG.WindchillRequestTool.Services;
 using MCG.WindchillRequestTool.Services.Interfaces;
 using MCG.WindchillRequestTool.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -23,6 +24,7 @@ namespace MCG.Tools.VisualizationLib.Services
 {
     public class WtDownloadViewableTools : IWtDownloadViewableTools
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IWindchillVisualizationManagementService _windchillVisualizationManagementService;
         private readonly IPdfTools _pdfTools;
         private readonly IWindchillRequestMiscService _windchillRequestMiscService;
@@ -31,12 +33,14 @@ namespace MCG.Tools.VisualizationLib.Services
         public WtDownloadViewableTools(IPdfTools pdfTools, 
                                        IWindchillRequestMiscService windchillRequestMiscService,
                                        IWindchillVisualizationManagementService windchillVisualizationManagementService,
-                                       IWindchillChangeManagementService windchillChangeManagementService)
+                                       IWindchillChangeManagementService windchillChangeManagementService,
+                                       IServiceProvider serviceProvider)
         {
             _pdfTools = pdfTools;
             _windchillRequestMiscService = windchillRequestMiscService;
             _windchillVisualizationManagementService = windchillVisualizationManagementService;
             _windchillChangeManagementService = windchillChangeManagementService;
+            _serviceProvider = serviceProvider;
         }
 
         #region [REGION] Methods to search and download viewables
@@ -233,6 +237,39 @@ namespace MCG.Tools.VisualizationLib.Services
                 string Watermak = "";
                 Watermak = $"Published by {McgActiveDirectoryTools.GetWindowsSessionUserFullName()} on {DateTime.Today.ToShortDateString()}";
                 return Watermak;
+            }
+            catch (Exception ex)
+            {
+                throw new VisualizationException("WtDownloadViewableTools", ex);
+            }
+        }
+
+        public bool DownloadPartMainDrwing( string number, string revision = "Latest", DocumentTypeEnum itemType = DocumentTypeEnum.PART, bool isCreateZip = false)
+        {
+            try
+            {
+                var visuViewModel = _serviceProvider.GetRequiredService<DownloadVisualizationFileViewModel>();
+                visuViewModel.CurrentDataContext.SearchedPartList.Add(new VisualizationItem
+                {
+                    PartNumber = number,
+                    PartRevision = revision,
+                    ItemType = itemType
+                });
+
+                visuViewModel.ExecuteSearchVisuFileNotAsynch();
+                VisualizationItem CurrentVisuItem = visuViewModel.CurrentDataContext.SearchedPartList.FirstOrDefault();
+                visuViewModel.CurrentDataContext.IsCreateZip = isCreateZip;
+                var listDoc = CurrentVisuItem.SearchedDocumentList.Where((item) => item.IsMainDrawing).ToList();
+                if (listDoc != null && listDoc.Count > 0)
+                {
+                    foreach (var doc in listDoc)
+                        doc.IsSelected = true;
+
+                    visuViewModel.ExecuteDownloadVisuFilesNotAsynch();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception ex)
             {

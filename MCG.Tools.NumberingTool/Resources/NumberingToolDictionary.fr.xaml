@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="NUT_LabelDescription">Description</system:String>
+    <system:String x:Key="NUT_LabelProduct">Produit</system:String>
+    <system:String x:Key="NUT_LabelFormat">Format</system:String>
+    <system:String x:Key="NUT_LabelCreator">Créé par</system:String>
+    <system:String x:Key="NUT_LabelCreatedOn">Créé le</system:String>
+    <system:String x:Key="NUT_TitlePartNumber">Outil de génération de code</system:String>
+    <system:String x:Key="NUT_BtCancel">Annuler</system:String>
+    <system:String x:Key="NUT_ToolTipCreateOne">Créer un numéro</system:String>
+    <system:String x:Key="NUT_ToolTipCreateMulti">Créer plusieurs numéros</system:String>
+    <system:String x:Key="NUT_LabelNumber">Numéro</system:String>
+    <system:String x:Key="NUT_LabelFrom">Du</system:String>
+    <system:String x:Key="NUT_LabelTo">Au</system:String>
+    <system:String x:Key="NUT_BtCreate">Créer les codes</system:String>
+    <system:String x:Key="NUT_BtUpdate">Enregistrer les modifications</system:String>
+    <system:String x:Key="NUT_BtActionUpdate">Modifier</system:String>
+    <system:String x:Key="NUT_ToolTipSearch">Lancer la recherche</system:String>
+    <system:String x:Key="NUT_HeaderSearchExpander">Rechercher les codes dans la base</system:String>
+    <system:String x:Key="NUT_ToolTipSearchKeyWord">Utiliser un espace ou "|" pour un OU. Utiliser "&amp;" pour un ET.</system:String>
+    <system:String x:Key="NUT_LabelNumberingRange">Plage de numérotation</system:String>
+    <system:String x:Key="NUT_LabelSizeBlock">Taille du bloc</system:String>
+    <system:String x:Key="NUT_LabelBtUpdate">Mettre à jour les numéros</system:String>
+    <system:String x:Key="NUT_BtUseNumber">Utiliser le numéro</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated">Nouveau numéro créé :</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated2">Le code a été copié dans le presse-papiers.</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated3">Utilisez CTRL+V pour le coller.</system:String>
+    <system:String x:Key="NUT_NumberFound">Nombre de numéro(s) trouvé(s) :</system:String>
+    <system:String x:Key="NUT_BtActionDownloadDrawing">Télécharger le plan principal</system:String>
+    <system:String x:Key="NUT_DownloadDrawingNotAvailable">Aucun plan principal disponible.</system:String>
+    <system:String x:Key="NUT_TitleDownloadDrawingNotAvailable">Plan non disponible</system:String>
+    <system:String x:Key="NUT_WindchillPartNotAvailable">Aucun article disponible dans Windchill.</system:String>
+    <system:String x:Key="NUT_TitleWindchillPartNotAvailable">Article Windchill non disponible</system:String>
+    <system:String x:Key="NUT_BtActionOpenPart">Ouvrir la page de détail de l’article</system:String>
+</ResourceDictionary>

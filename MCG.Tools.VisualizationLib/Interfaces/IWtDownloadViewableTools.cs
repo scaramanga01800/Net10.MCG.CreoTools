@@ -1,4 +1,5 @@
-﻿using MCG.CommonLib.Models.Main;
+﻿using MCG.CommonLib.Models.Enums;
+using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
 using MCG.Tools.VisualizationLib.ViewModel;
 using MCG.WindchillRequestTool;
@@ -17,6 +18,7 @@ namespace MCG.Tools.VisualizationLib.Interfaces
         ViewableResult GetOneWtPartViewables(NetworkCredential WindchillCredential, string Number, string Revision, string TempFolder = null, bool SearchEcnInformation = true, string EcnNumber = null, string WindchillUrl = "Default");
         ViewableResult GetOneWtPartViewables(NetworkCredential WindchillCredential, WindchillObjectViewable CurrentPartViewable, WindchillObjectViewableItem CurrentPartViewableItem, bool IsWartermark = false, bool IsOptionalWatermark = false, string OptionalWatermark = "", bool ConvertToPdf = false, string TempFolder = null, string WindchillUrl = "Default");
         string GetWatermarkPublishedBy();
+        bool DownloadPartMainDrwing(string number, string revision = "Latest", DocumentTypeEnum itemType = DocumentTypeEnum.PART, bool isCreateZip = false);
         string GetWatermarkStateDrw(WindchillObjectViewable CurrentPartViewable);
         List<ViewableResult> GetWtPartViewablesFromEcn(NetworkCredential WindchillCredential, string EcnNumber, string TempFolder = null, string WindchillUrl = "Default");
         List<ViewableResult> GetWtPartViewablesFromList(NetworkCredential WindchillCredential, List<McgObjectNumber> PartList, string TempFolder = null, string WindchillUrl = "Default");

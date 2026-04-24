@@ -21,8 +21,8 @@ namespace MCG.Tools.VisualizationLib.Services
             services.AddTransient<ConvertToPdfMergeWindowView>();
             services.AddTransient<ConvertToPdfMergeWindowViewModel>();
 
-            services.AddSingleton<DownloadVisualizationFileViewModel>();
-            services.AddSingleton<DownloadVisualizationFileDataContext>();
+            services.AddTransient<DownloadVisualizationFileViewModel>();
+            services.AddTransient<DownloadVisualizationFileDataContext>();
 
             // On retourne la collection pour permettre le chaînage (fluent pattern)
             return services;

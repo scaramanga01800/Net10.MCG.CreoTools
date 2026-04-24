@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="NUT_LabelDescription">Description</system:String>
+    <system:String x:Key="NUT_LabelProduct">Product</system:String>
+    <system:String x:Key="NUT_LabelFormat">Format</system:String>
+    <system:String x:Key="NUT_LabelCreator">Created by</system:String>
+    <system:String x:Key="NUT_LabelCreatedOn">Created on</system:String>
+    <system:String x:Key="NUT_TitlePartNumber">Numbering Tool</system:String>
+    <system:String x:Key="NUT_BtCancel">Cancel</system:String>
+    <system:String x:Key="NUT_ToolTipCreateOne">Create one number</system:String>
+    <system:String x:Key="NUT_ToolTipCreateMulti">Create multiple numbers</system:String>
+    <system:String x:Key="NUT_LabelNumber">Number</system:String>
+    <system:String x:Key="NUT_LabelFrom">From</system:String>
+    <system:String x:Key="NUT_LabelTo">To</system:String>
+    <system:String x:Key="NUT_BtCreate">Generate numbers</system:String>
+    <system:String x:Key="NUT_BtUpdate">Save changes</system:String>
+    <system:String x:Key="NUT_BtActionUpdate">Update</system:String>
+    <system:String x:Key="NUT_ToolTipSearch">Start search</system:String>
+    <system:String x:Key="NUT_HeaderSearchExpander">Search codes in the database</system:String>
+    <system:String x:Key="NUT_ToolTipSearchKeyWord">Use space or "|" for OR. Use "&amp;" for AND.</system:String>
+    <system:String x:Key="NUT_LabelNumberingRange">Numbering range</system:String>
+    <system:String x:Key="NUT_LabelSizeBlock">Block size</system:String>
+    <system:String x:Key="NUT_LabelBtUpdate">Update numbers</system:String>
+    <system:String x:Key="NUT_BtUseNumber">Use number</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated">New number created:</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated2">The code has been copied to the clipboard.</system:String>
+    <system:String x:Key="NUT_MsgNewNumberCreated3">Use CTRL+V to paste it.</system:String>
+    <system:String x:Key="NUT_NumberFound">Number(s) found:</system:String>
+    <system:String x:Key="NUT_BtActionDownloadDrawing">Download main drawing</system:String>
+    <system:String x:Key="NUT_DownloadDrawingNotAvailable">No main drawing available.</system:String>
+    <system:String x:Key="NUT_TitleDownloadDrawingNotAvailable">Drawing not available</system:String>
+    <system:String x:Key="NUT_WindchillPartNotAvailable">No part available in Windchill.</system:String>
+    <system:String x:Key="NUT_TitleWindchillPartNotAvailable">Windchill part not available</system:String>
+    <system:String x:Key="NUT_BtActionOpenPart">Open part detail page</system:String>
+</ResourceDictionary>

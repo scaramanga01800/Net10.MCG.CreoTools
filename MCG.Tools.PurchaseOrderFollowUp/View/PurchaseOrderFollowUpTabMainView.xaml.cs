@@ -1,6 +1,6 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
-using MCG.CommonLib.DataBaseAccess.Services.Interfaces;
+using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.SapTools.Services;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;

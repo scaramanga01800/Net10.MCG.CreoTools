@@ -1,0 +1,69 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.NumberingTool.View.NumberingToolFluentMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.Tools.NumberingTool.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource NUT_TitlePartNumber}" 
+                     SizeToContent="Height" Width="500" 
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" MaxHeight="750">
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+        <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></conv:InverseBoolToVisibilityConverter>
+        <BitmapImage x:Key="Create" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Create.png" />
+        <BitmapImage x:Key="Ceate_Multi" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Create_Multi.png" />
+        <BitmapImage x:Key="Close" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+    </Window.Resources>
+
+    <DockPanel>
+
+        <DockPanel.Background>
+            <LinearGradientBrush >
+                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
+
+        <Fluent:ComboBox Height="32" 
+                     Width="250" 
+                     DockPanel.Dock="Top"
+                     Margin="5"
+                     IsEditable="False"
+                     Header="{DynamicResource NUT_LabelNumberingRange}"
+                     VerticalContentAlignment="Center" 
+                     HorizontalContentAlignment="Center" 
+                     ItemsSource="{Binding ListNumberingTemplate}" ToolTip="{Binding SelectedNumberingTemplate.Description}" 
+                     SelectedItem="{Binding SelectedNumberingTemplate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center" Height="32" Margin="0,2" Width="{Binding ActualWindowWidth,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}">
+            <Button  Command="{Binding CommandCreateNumber}"  ToolTip="{DynamicResource NUT_ToolTipCreateOne}">
+                <Image Source="{StaticResource Create}"></Image>
+            </Button>
+            <Rectangle Width="100" Visibility="{Binding SelectedNumberingTemplate.IsRangeAuthorized,Converter={StaticResource BoolToVisibilityConverter}}" ></Rectangle>
+            <Button  Command="{Binding CommandCreateSeveralNumbers}" ToolTip="{DynamicResource NUT_ToolTipCreateMulti}" Visibility="{Binding SelectedNumberingTemplate.IsRangeAuthorized,Converter={StaticResource BoolToVisibilityConverter}}" >
+                <Image Source="{StaticResource Ceate_Multi}"></Image>
+            </Button>
+            <Rectangle Width="100"></Rectangle>
+            <Button  ToolTip="{DynamicResource NUT_BtCancel}" Command="{Binding CommandCancel}">
+                <Image   Source="{StaticResource Close}"></Image>
+            </Button>
+        </StackPanel>
+        <Rectangle DockPanel.Dock="Top" Height="10"></Rectangle>
+        <Grid  >
+            <Expander x:Name="ExpanderSearch"
+                  Collapsed="Expander_ExpandedCollapsed" 
+                  Expanded="Expander_ExpandedCollapsed">
+                <local:NumberingToolSearchFluentView></local:NumberingToolSearchFluentView>
+            </Expander>
+            <Fluent:TwoLineLabel Text="{DynamicResource NUT_HeaderSearchExpander}" 
+                             Margin="30,0,0,0"
+                             HasTwoLines="False" 
+                             VerticalAlignment="Top"></Fluent:TwoLineLabel>
+        </Grid>
+
+
+    </DockPanel>
+</Fluent:RibbonWindow>
