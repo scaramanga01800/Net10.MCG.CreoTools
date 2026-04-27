@@ -1,5 +1,4 @@
-﻿using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
-using MCG.CommonLib.Models.Enums;
+﻿using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
@@ -11,14 +10,12 @@ using MCG.Tools.VisualizationLib.ViewModel;
 using MCG.WindchillRequestTool;
 using MCG.WindchillRequestTool.Model.RestOdata;
 using MCG.WindchillRequestTool.Model.Windchill;
-using MCG.WindchillRequestTool.Services;
 using MCG.WindchillRequestTool.Services.Interfaces;
 using MCG.WindchillRequestTool.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
-using static System.Windows.Forms.AxHost;
 
 namespace MCG.Tools.VisualizationLib.Services
 {
@@ -217,7 +214,7 @@ namespace MCG.Tools.VisualizationLib.Services
                 string Watermak = "";
                 if (CurrentPartViewable != null && CurrentPartViewable.CurrentPart != null)
                 {
-                    if (CurrentPartViewable.CurrentPart.EcnNumber != null)
+                    if (!string.IsNullOrEmpty(CurrentPartViewable.CurrentPart.EcnNumber))
                         Watermak = $"{CurrentPartViewable.CurrentPart.State.ToUpper()} throw {CurrentPartViewable.CurrentPart.EcnNumber} on {CurrentPartViewable.CurrentPart.EcnModifiedOn.ToShortDateString()}";
                     else
                         Watermak = $"{CurrentPartViewable.CurrentPart.State.ToUpper()}";
@@ -244,7 +241,7 @@ namespace MCG.Tools.VisualizationLib.Services
             }
         }
 
-        public bool DownloadPartMainDrwing( string number, string revision = "Latest", DocumentTypeEnum itemType = DocumentTypeEnum.PART, bool isCreateZip = false)
+        public bool DownloadPartMainDrawing( string number, string revision = "Latest", DocumentTypeEnum itemType = DocumentTypeEnum.PART, bool isCreateZip = false)
         {
             try
             {
@@ -468,13 +465,8 @@ namespace MCG.Tools.VisualizationLib.Services
                             {
                                 if (string.IsNullOrWhiteSpace(currentViewable.CompleteOrigFileName))
                                     currentViewable.CompleteOrigFileName = currentViewable.CompleteFileName;
-                                if (string.IsNullOrWhiteSpace(currentViewable.FileName))
+                               // if (string.IsNullOrWhiteSpace(currentViewable.FileName))
                                     currentViewable.FileName = currentViewable.CompleteFileName.Split('\\').LastOrDefault();
-                                //if (currentViewable.CompleteOrigFileName == null || currentViewable.CompleteOrigFileName.Trim() == "")
-                                //    currentViewable.CompleteOrigFileName = currentViewable.CompleteFileName;
-                                //if (currentViewable.FileName == null || currentViewable.FileName.Trim() == "")
-                                //    currentViewable.FileName = currentViewable.CompleteFileName.Split('\\').LastOrDefault();
-
 
                                 CompleteBackupFile = $"{BackupFolder}\\{currentViewable.FileName}";
                                 if (!File.Exists(CompleteBackupFile))

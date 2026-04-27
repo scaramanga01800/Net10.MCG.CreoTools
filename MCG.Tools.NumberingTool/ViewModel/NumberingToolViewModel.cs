@@ -636,7 +636,7 @@ namespace MCG.Tools.NumberingTool.ViewModel
                 if (SelectedSearchNumber != null)
                 {
 
-                    bool redult = _wtDownloadViewableTools.DownloadPartMainDrwing(SelectedSearchNumber.Number, "Latest", DocumentTypeEnum.PART, IsCreateZip);
+                    bool redult = _wtDownloadViewableTools.DownloadPartMainDrawing(SelectedSearchNumber.Number, "Latest", DocumentTypeEnum.PART, IsCreateZip);
                     if(!redult)
                         MessageBox.Show(McgWpfTools.GetStringResource("NUT_DownloadDrawingNotAvailable"), McgWpfTools.GetStringResource("NUT_TitleDownloadDrawingNotAvailable"), MessageBoxButton.OK, MessageBoxImage.Warning); 
                     
