@@ -1,13 +1,7 @@
-﻿using MCG.CommonLib.WpfComponent.Services;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
-using MCG.CommonLib.WpfComponent.ViewModel.WindchillCredential;
-using MCG.WindchillTools.ManageWTObject.Interfaces;
+﻿using MCG.WindchillTools.ManageWTObject.Interfaces;
 using MCG.WindchillTools.ManageWTObject.View;
 using MCG.WindchillTools.ManageWTObject.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MCG.WindchillTools.ManageWTObject.Services
 {

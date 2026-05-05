@@ -1,0 +1,688 @@
+﻿<UserControl x:Class="MCG.Tools.EcnEcoFollowUp.View.EcnEcoFollowUpFluentTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.Tools.EcnEcoFollowUp.View"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:Fluent="urn:fluent-ribbon"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <BitmapImage x:Key="SEARCH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_32x32.png" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+            <BitmapImage x:Key="ECN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/chgnotice.gif" />
+            <BitmapImage x:Key="ECO" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Sap.ico" />
+            <BitmapImage x:Key="WFTASK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WfTask.gif" />
+            <BitmapImage x:Key="WFTASKSAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Sap.ico" />
+            <BitmapImage x:Key="DASHBOARD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Dashboard_16x16.png" />
+            <BitmapImage x:Key="DOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/doc_document.gif" />
+            <BitmapImage x:Key="MULTIPART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/MultiPart.ico" />
+
+            <Style TargetType="Label">
+                <Setter Property="Padding">
+                    <Setter.Value>2,0,2,0</Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="0,0,0,0" Margin="2,0">
+                                    <ContentPresenter x:Name="ContentSite" 
+										    VerticalAlignment="Center" 
+										    HorizontalAlignment="Center" 
+										    ContentSource="Header" 
+										    Margin="10,2"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#FFF1F1F1"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter TargetName="Border" Property="Background" Value="White" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="LightGray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <TabControl Name="TabControlDashboard" SelectionChanged="TabControlDashboard_SelectionChanged" SelectedItem="{Binding CurrentEcnEcoFollowUpDataContext.SelectedTab}" >
+            <TabItem Header="{DynamicResource EFU_TabMain}">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+
+                        <Border  Width="484" BorderThickness="2" BorderBrush="Gray">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Vertical">
+                                    <Label Height="25" Content="{DynamicResource EFU_LabelColorCode}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="White"></Label>
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical" Width="160">
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeInProgress}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFFDE9D9"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeInProgress90}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFDA9694"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeUnderReview}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFFABF8F"></Label>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" Width="160">
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeCanceled}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFD9D9D9"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEcoToBeCreated}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFB8CCE4"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEco99}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FF95B3D7"></Label>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" Width="160">
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEco01_6months}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center">
+                                                <Label.Background>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#FFC4D79B" Offset="0"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.10"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="0.2"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.30"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.5"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="0.6"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.70"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.90"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Label.Background>
+                                            </Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEco01}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFC4D79B"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEco02}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FF9BBB59"></Label>
+                                            <Label Height="25" Content="{DynamicResource EFU_LabelColorCodeEco03}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFDDD9C4"></Label>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Canvas.Top="5" Canvas.Left="462" BorderThickness="2" BorderBrush="Gray" Background="DarkGray">
+                            <StackPanel Canvas.Top="5" Canvas.Left="435" Width="220">
+                                <Label Height="25" Content="{DynamicResource EFU_LabelTotalEcn}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFB0B0B0"></Label>
+                                <StackPanel Orientation="Horizontal" Height="20" Width="220" >
+                                    <Label  Height="20" Margin="0,1,1,1" Width="91" Content="{DynamicResource EFU_LabelTotalEcnParts}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="LightGray"></Label>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbParts,FallbackValue=0000}"   TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center"  Background="White"></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbPartsPdmApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center">
+                                        <TextBlock.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFB8CCE4"/>
+                                                <GradientStop Color="#FF95B3D7" Offset="0.5"/>
+                                                <GradientStop Color="#FF9BBB59" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </TextBlock.Background></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbPartsSapApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="#FF9BBB59"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Height="20" Width="220">
+                                    <Label Height="20" Margin="0,1,1,1" Width="91" Content="{DynamicResource EFU_LabelTotalEcnDrw}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFD3D3D3"></Label>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbDrawings,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="White"></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1,0" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbDrawingsPdmApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Bottom"  HorizontalAlignment="Center">
+                                        <TextBlock.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFB8CCE4"/>
+                                                <GradientStop Color="#FF95B3D7" Offset="0.5"/>
+                                                <GradientStop Color="#FF9BBB59" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbDrawingsSapApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="#FF9BBB59"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Height="20" Width="220">
+                                    <Label Height="20" Margin="0,1,1,1" Width="91" Content="{DynamicResource EFU_LabelTotalEcnEpmDoc}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFD3D3D3"></Label>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEpmDoc,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="White"></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEpmDocPdmApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center">
+                                        <TextBlock.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFB8CCE4"/>
+                                                <GradientStop Color="#FF95B3D7" Offset="0.5"/>
+                                                <GradientStop Color="#FF9BBB59" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEpmDocSapApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="#FF9BBB59"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Height="20" Width="220">
+                                    <Label Height="20" Margin="0,1,1,1" Width="91" Content="{DynamicResource EFU_LabelTotalEcnWtDoc}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFD3D3D3"></Label>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbWtDoc,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="White"></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbWtDocPdmApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" >
+                                        <TextBlock.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFB8CCE4"/>
+                                                <GradientStop Color="#FF95B3D7" Offset="0.5"/>
+                                                <GradientStop Color="#FF9BBB59" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbWtDocSapApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="#FF9BBB59"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Height="20" Width="220">
+                                    <Label Height="20" Margin="0,1,1,1" Width="91" Content="{DynamicResource EFU_LabelTotalEcnNbEcn}" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" Background="#FFD3D3D3"></Label>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEcn,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="White" ></TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEcnPdmApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center">
+                                        <TextBlock.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFB8CCE4"/>
+                                                <GradientStop Color="#FF95B3D7" Offset="0.5"/>
+                                                <GradientStop Color="#FF9BBB59" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                    <TextBlock Height="20" Width="41" Margin="1" Text="{Binding CurrentEcnEcoFollowUpDataContext.NbEcnSapApproved,FallbackValue=0000}" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center" Background="#FF9BBB59" ></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+
+                    <DockPanel>
+
+                        <DataGrid Name="DgEcnEco" FrozenColumnCount="2" 
+                                ItemsSource="{Binding CurrentEcnEcoFollowUpDataContext.EcnShownList}" 
+                                SelectedItem="{Binding CurrentEcnEcoFollowUpDataContext.SelectedEcn,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" 
+                                IsReadOnly="True" 
+                                AutoGenerateColumns="False" 
+                                SelectionMode="Extended" 
+                                SelectionUnit="Cell" 
+                                MouseLeftButtonUp="DgECN_MouseLeftButtonUp">
+
+                            <DataGrid.ContextMenu>
+                                <Fluent:ContextMenu>
+                                    <Fluent:MenuItem x:Name="MiOpenEcn" 
+                                                   Header="{DynamicResource EFU_MiOpenEcn}" 
+                                                   Command="{Binding CommandMenuItemOpenEcn}" 
+                                                   Icon="{StaticResource ECN}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiOpenEco" 
+                                                   Header="{DynamicResource EFU_MiOpenEco}" 
+                                                   Command="{Binding CommandMenuItemOpenEco}" 
+                                                   Icon="{StaticResource ECO}"
+                                                   Visibility="{Binding CurrentEcnEcoFollowUpDataContext.SelectedEcn.EcnEcoFollowUp.Eco_IsCreated, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiOpenEcnDocs" 
+                                                   Header="{DynamicResource EFU_MiOpenEcnDocs}" 
+                                                   Command="{Binding CommandMenuItemOpenEcnDocs}" 
+                                                   ItemsSource="{Binding Data.CurrentEcnEcoFollowUpDataContext.SelectedEcn.MenuAttachments, Source={StaticResource proxy}}" 
+                                                   Icon="{StaticResource ResourceKey=DOC}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiSearchEcnWfTask" 
+                                                   Header="{DynamicResource EFU_MiSearchEcnWfTask}" 
+                                                   Command="{Binding CommandMenutItemSearchEcnWfTask}" 
+                                                   Icon="{StaticResource WFTASK}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiSearchEcoWfTask" 
+                                                   Header="{DynamicResource EFU_MiSearchEcoWfTask}" 
+                                                   Command="{Binding CommandMenutItemSearchEcoWfTask}"
+                                                   Icon="{StaticResource WFTASKSAP}"
+                                                   Visibility="{Binding CurrentEcnEcoFollowUpDataContext.SelectedEcn.EcnEcoFollowUp.Eco_IsCreated, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiOpenEcoDashboard" 
+                                                   Header="{DynamicResource EFU_MiOpenEcoDashboard}" 
+                                                   Command="{Binding CommandMenuItemOpenEcoDashboard}"
+                                                   Icon="{StaticResource WFTASKSAP}"
+                                                   Visibility="{Binding CurrentEcnEcoFollowUpDataContext.SelectedEcn.EcnEcoFollowUp.Eco_IsCreated, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    </Fluent:MenuItem>
+                                    <Fluent:MenuItem x:Name="MiSearchAddEcnEcoToDashboard" 
+                                                   Header="{DynamicResource EFU_MiSearchAddEcnEcoToDashboard}">
+                                        <Fluent:MenuItem.Icon>
+                                            <Image Height="13" Source="{StaticResource DASHBOARD}"></Image>
+                                        </Fluent:MenuItem.Icon>
+                                    </Fluent:MenuItem>
+                                </Fluent:ContextMenu>
+                            </DataGrid.ContextMenu>
+
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECNINPROGRESS">
+                                            <Setter Property="Background" Value="#FFFDE9D9"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcnInProgress}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECNINPROGRESS90">
+                                            <Setter Property="Background" Value="#FFDA9694"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcnInProgress90}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOTOBECREATED">
+                                            <Setter Property="Background" Value="#FFB8CCE4"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoToBeCreated}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOSTATUS99">
+                                            <Setter Property="Background" Value="#FFB8CCE4"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoStatus99}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOSTATUS01">
+                                            <Setter Property="Background" Value="#FFC4D79B"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoStatus01}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOSTATUS01_6MONTHS">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#FFC4D79B" Offset="0"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.10"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="0.2"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.30"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.5"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="0.6"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.70"/>
+                                                        <GradientStop Color="#FEC4D79B" Offset="0.90"/>
+                                                        <GradientStop Color="#FFFF5A5A" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoStatus01_6months}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOSTATUS02">
+                                            <Setter Property="Background" Value="#FF9BBB59"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoStatus02}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECOSTATUS03">
+                                            <Setter Property="Background" Value="#FFDDD9C4"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcoStatus03}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECNCANCELED">
+                                            <Setter Property="Background" Value="#FFD9D9D9"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcnCanceled}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="ECNUNDERREVIEW">
+                                            <Setter Property="Background" Value="#FFFABF8F"/>
+                                            <Setter Property="ToolTip" Value="{DynamicResource EFU_ToolTipEcnUnderReview}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <DockPanel Background="LightGray">
+                                        <DockPanel.Resources>
+                                            <Style TargetType="Label">
+                                                <Setter Property="FontSize">
+                                                    <Setter.Value>10</Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Padding">
+                                                    <Setter.Value>2,0,2,0</Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="FontSize">
+                                                    <Setter.Value>10</Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DockPanel.Resources>
+                                        <StackPanel Orientation="Vertical"
+                                                  DockPanel.Dock="Left"
+                                                  Margin="2,2" 
+                                                  Background="{DynamicResource PdmColor}" 
+                                                  VerticalAlignment="Center">
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelSearchEcnNumberPart}"
+                                                          Text="{Binding EcnEcoFollowUp.Nb_Part}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelSearchEcnNbDrawing}"
+                                                          Text="{Binding EcnEcoFollowUp.Nb_Drw}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelSearchEcnNbCadDoc}"
+                                                          Text="{Binding EcnEcoFollowUp.Nb_Epm_Doc}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelSearchEcnNbDocuments}"
+                                                          Text="{Binding EcnEcoFollowUp.Nb_Wt_Doc}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                        </StackPanel>
+
+                                        <StackPanel DockPanel.Dock="Left"
+                                                  Margin="2,2,0,2"
+                                                  Background="{DynamicResource SapColor}"
+                                                  VerticalAlignment="Center">
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoCreatedOnDetail}"
+                                                          Text="{Binding EcnEcoFollowUp.Eco_Created_On,StringFormat='dd/MM/yyyy'}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoWfStartedOnDetail}"
+                                                          Text="{Binding EcnEcoFollowUp.Eco_Wf_Started_On,StringFormat='dd/MM/yyyy'}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoEffectivityDateDetail}"
+                                                          Text="{Binding EcnEcoFollowUp.Eco_Effectivity_Date,StringFormat='dd/MM/yyyy'}" 
+                                                          Margin="5,1"
+                                                          VerticalAlignment="Center"
+                                                          IsReadOnly="True"/>
+                                        </StackPanel >
+
+                                        <StackPanel DockPanel.Dock="Left"
+                                                  Margin="0,2"
+                                                  VerticalAlignment="Center"
+                                                  Background="{DynamicResource SapColor}">
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoNextStepSecondary}"
+                                                          Margin="5,1"
+                                                          IsReadOnly="True"
+                                                          Text="{Binding EcnEcoToShowEndUser.EcnEcoFollowUp.Eco_Next_Step_Secondary}">
+                                            </Fluent:TextBox>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoLastWiCreatedOnSecondary}"
+                                                          Margin="5,1"
+                                                          IsReadOnly="True"
+                                                          Text="{Binding EcnEcoToShowEndUser.EcnEcoFollowUp.Eco_Last_Wi_Created_On_Secondary,StringFormat='dd/MM/yyyy'}">
+                                            </Fluent:TextBox>
+                                            <Fluent:TextBox Header="{DynamicResource EFU_LabelEcoWiInProgressSecondary}"
+                                                          Margin="5,1"
+                                                          IsReadOnly="True"
+                                                          Text="{Binding EcnEcoToShowEndUser.EcnEcoFollowUp.Eco_Wi_Secondary_Plants}">
+                                            </Fluent:TextBox>
+                                        </StackPanel>
+
+                                        <Grid></Grid>
+
+
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+
+                            <DataGrid.Columns>
+
+                                <DataGridTemplateColumn >
+                                    <DataGridTemplateColumn.Header>
+                                        <Fluent:CheckBox Name="CheckBoxHeader" >
+                                            <behaviors:Interaction.Triggers>
+                                                <behaviors:EventTrigger EventName="Checked">
+                                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandCheckAllMain , Source={StaticResource proxy} }" ></behaviors:InvokeCommandAction>
+                                                </behaviors:EventTrigger>
+
+                                                <behaviors:EventTrigger EventName="Unchecked">
+                                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandUncheckAllMain, Source={StaticResource proxy} }" ></behaviors:InvokeCommandAction>
+                                                </behaviors:EventTrigger>
+                                            </behaviors:Interaction.Triggers>
+                                        </Fluent:CheckBox>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Fluent:CheckBox IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Ecn_Number}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header >
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchEcnNumber}"
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Ecn_Name}" IsReadOnly="True"  >
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnDescription}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Ecn_State}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchEcnState}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Pdm_Product}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchProduct}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Ecn_Creator_Name}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchCreator}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Ecn_Created_On,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnCreatedOn}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Designer_Start_App_Date,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnStartApproval}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.First_Approval_Date,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnFirstApproval}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Qual_Check_Approval_Date,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnQualCheckApproval}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.CAIII_Approval_Date,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource PdmColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcnResolvedOn}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Eco_Status}" IsReadOnly="True" SortMemberPath="EcnEcoFollowUp.Eco_Status_Order">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchSAPStatus}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding EcnEcoFollowUp.Eco_Urgence}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelSearchSAPUrgency}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+
+                                <DataGridTextColumn   IsReadOnly="True">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat=" {0} ({1})">
+                                            <Binding Path="EcnEcoFollowUp.MainPlantDescription"/>
+                                            <Binding Path="EcnEcoFollowUp.MainPlant"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoMainPlant}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Wi_Secondary_Plants}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoSecondaryPlants}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Created_On,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoCreatedOn}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Wf_Started_On,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoWfStartedOn}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Closed_On,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoClosedOn}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Effectivity_Date,StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoEffectivityDate}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Project}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoProject}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Categ}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoCategory}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Sub_Line}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoSubLine}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn  Binding="{Binding EcnEcoFollowUp.Eco_Next_Step}" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel Background="{DynamicResource SapColor}">
+                                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoNextStep}" 
+                                                               HasTwoLines="True"
+                                                               Margin="10,0"
+                                                               Foreground="{DynamicResource IdealForegroundColor}"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </DockPanel>
+
+            </TabItem>
+
+            <TabItem Header="{DynamicResource EFU_TabPersonal}" Content="{Binding CurrentEcnEcoFollowUpDataContext.PersonalDashboard}" />
+        </TabControl>
+    </DockPanel>
+</UserControl>

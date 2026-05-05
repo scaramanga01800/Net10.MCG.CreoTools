@@ -14,7 +14,7 @@ using MCG.CommonLib.SapTools.Services;
 using MCG.CommonLib.SapTools.ViewModel;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.View;
 using MCG.CommonLib.WpfComponent.ViewModel;
 using MCG.CommonLib.WpfComponent.ViewModel.Mail;
@@ -426,9 +426,9 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             {
                 string CurrentUser = LoggedUser.SamAccountName.ToUpper();
 
-                CurrentDataContext.IsRoleAdmin = _userAuthorizationService.GetIsRoleAdmin(CurrentUser);
-                CurrentDataContext.IsRoleSuperviser = _userAuthorizationService.GetIsRoleSuperviser(CurrentUser);
-                CurrentDataContext.IsRoleSapCreator = _userAuthorizationService.GetIsRoleSapCreator(CurrentUser);
+                CurrentDataContext.IsRoleAdmin = _userAuthorizationService.GetIsRolePurchaseOrderAdmin(CurrentUser);
+                CurrentDataContext.IsRoleSuperviser = _userAuthorizationService.GetIsRolePurchaseOrderSuperviser(CurrentUser);
+                CurrentDataContext.IsRoleSapCreator = _userAuthorizationService.GetIsRolePurchaseOrderCreator(CurrentUser);
             }
             catch (Exception ex)
             {
@@ -1653,18 +1653,12 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                var (dialogResult, valueResult) = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel();
+                var (dialogResult, valueResult) = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel("Request from SAP PR");
 
-                //McgWindowOkCancel mcgWindowOkCancel = new McgWindowOkCancel();
-                //mcgWindowOkCancel.ShowDialog();
-
-                //if (mcgWindowOkCancel.DialogResult.Value)
-                if (dialogResult.Value)
+                if (dialogResult == MessageBoxResult.OK)
                 {
-                    //if (!string.IsNullOrEmpty(mcgWindowOkCancel.CurrendDataContext.Value))
                     if (!string.IsNullOrEmpty(valueResult))
                     {
-                        //PurchaseOrderRequest SearchedRequest = SearchSapHubRequestFromPurchaseRequest(mcgWindowOkCancel.CurrendDataContext.Value);
                         PurchaseOrderRequest SearchedRequest = SearchSapHubRequestFromPurchaseRequest(valueResult);
                         if (SearchedRequest != null)
                         {
@@ -1673,7 +1667,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                         }
                         else
                         {
-                            //MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestNtoFound"), mcgWindowOkCancel.CurrendDataContext.Value), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                             MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestNtoFound"), valueResult), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                         }
                     }
@@ -1693,25 +1686,17 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                var (dialogResult, valueResult) = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel();
+                var (dialogResult, valueResult) = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel("Request from SAP PO");
 
-                //McgWindowOkCancel mcgWindowOkCancel = new McgWindowOkCancel();
-                //mcgWindowOkCancel.ShowDialog();
-
-                //if (mcgWindowOkCancel.DialogResult.Value)
-                if (dialogResult.Value)
+                if (dialogResult == MessageBoxResult.OK)
                 {
-                    // if (!string.IsNullOrEmpty(mcgWindowOkCancel.CurrendDataContext.Value))
                     if (!string.IsNullOrEmpty(valueResult))
                     {
-                        //PurchaseOrderRequest SearchedRequest = SearchSapHubRequestFromPurchaseOrder(mcgWindowOkCancel.CurrendDataContext.Value);
                         PurchaseOrderRequest SearchedRequest = SearchSapHubRequestFromPurchaseOrder(valueResult);
                         if (SearchedRequest == null)
-                            //SearchedRequest = SearchSapHubRequestFromPurchaseOrderWithoutPurchaseResquest(mcgWindowOkCancel.CurrendDataContext.Value);
                             SearchedRequest = SearchSapHubRequestFromPurchaseOrderWithoutPurchaseResquest(valueResult);
                         if (SearchedRequest != null)
                         {
-                            //if (!CheckIfRequestAlreadyExist(mcgWindowOkCancel.CurrendDataContext.Value, "PO"))
                             if (!CheckIfRequestAlreadyExist(valueResult, "PO"))
                             {
                                 UpdateListFromRequest(SearchedRequest);
@@ -1719,13 +1704,11 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                             }
                             else
                             {
-                                //MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestAlreadyExist"), mcgWindowOkCancel.CurrendDataContext.Value), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                                 MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestAlreadyExist"), valueResult), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                             }
                         }
                         else
                         {
-                            //MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestNotFound"), mcgWindowOkCancel.CurrendDataContext.Value), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                             MessageBox.Show(string.Format(McgWpfTools.GetStringResource("POF_MsgAddRequestNotFound"), valueResult), McgWpfTools.GetStringResource("POF_TitleAddRequestIssue"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                         }
                     }

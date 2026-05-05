@@ -1,0 +1,122 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.EcnEcoFollowUp.View.EcnEcoFollowUpDashboardSearchWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.Tools.EcnEcoFollowUp.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     mc:Ignorable="d"
+                     Title="Dashboard Search" 
+                     Height="450" Width="800" 
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/dashboard_search.gif">
+
+    <Window.Resources>
+        <BitmapImage x:Key="SEARCH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_32x32.png" />
+        <BitmapImage x:Key="ADD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add_Cross.ico" />
+        <BitmapImage x:Key="CLOSE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+    </Window.Resources>
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelCreatedByFullName}"
+                                  HasTwoLines="False"></Fluent:TwoLineLabel>
+                <Fluent:TextBox Grid.Column="1" 
+                             Text="{Binding CreatedByFullName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CommandSearchDashboard}"/>
+                    </TextBox.InputBindings>
+                </Fluent:TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelCreatedByID}"
+                                  HasTwoLines="False"></Fluent:TwoLineLabel>
+                <Fluent:TextBox Grid.Column="1" Text="{Binding CreatedById,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CommandSearchDashboard}"/>
+                    </TextBox.InputBindings>
+                </Fluent:TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelDashboardName}"
+                                  HasTwoLines="False"></Fluent:TwoLineLabel>
+                <Fluent:TextBox Grid.Column="1" Text="{Binding DashboardName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CommandSearchDashboard}"/>
+                    </TextBox.InputBindings>
+                </Fluent:TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelDashboardID}"
+                                  HasTwoLines="False"></Fluent:TwoLineLabel>
+                <Fluent:TextBox Grid.Column="1" Text="{Binding DashboardID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="Int_PreviewTextInput">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CommandSearchDashboard}"/>
+                    </TextBox.InputBindings>
+                </Fluent:TextBox>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center" Height="48" Margin="0,5">
+            <Button Name="BtSearchEcnEco" Margin="0,0,2,0"  ToolTip="{DynamicResource EFU_LabelSearchDashboard}" Command="{Binding CommandSearchDashboard}">
+                <Image Source="{StaticResource SEARCH}"></Image>
+            </Button>
+            <Rectangle Width="100"></Rectangle>
+            <Button Margin="1,0" ToolTip="{DynamicResource EFU_LabelAddDashboard}" Command="{Binding CommandAddDashboard}" >
+                <Image   Source="{StaticResource ResourceKey=ADD}"></Image>
+            </Button>
+            <Rectangle Width="100"></Rectangle>
+            <Button Margin="1,0" ToolTip="{DynamicResource EFU_LabelCloseWindow}" Command="{Binding CommandClose}" >
+                <Image   Source="{StaticResource ResourceKey=CLOSE}"></Image>
+            </Button>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding ListSearchedDashboard}" CanUserAddRows="False" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CbTemplate" IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn  Binding="{Binding Name}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelDashboardName}"  ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn  Binding="{Binding Id}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelDashboardID}" ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn  Binding="{Binding CreatedBy}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelCreatedByFullName}"  ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn  Binding="{Binding CreatedOn, StringFormat='dd/MM/yyyy'}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelDashboardCreatedOn}" ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Fluent:RibbonWindow>

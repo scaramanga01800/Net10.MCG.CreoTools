@@ -8,7 +8,7 @@ using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.Webterm.Services.Interfaces;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.View.WindchillContextSelection;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.WindchillRequestTool.Configuration;
@@ -306,9 +306,6 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 var returnWindow = _mcgWindchillToolsManageWTObjectWindowService.ShowDialogCreateWtDocumentMainView(CurrentDataContext.ListWindchillDocumentType.ToList(), CurrentDataContext.ListWindchillPartType.ToList(), ListWebterm, CurrentDataContext.SelectedLanguage, CurrentDataContext.WindchillContextList.ToList(), CurrentDataContext.ListGroup.ToList(), CurrentDataContext.ListBrand.ToList());
                 if (returnWindow.DialogResult.Value && CurrentDataContext.WtDocumentList.FirstOrDefault((item) => item.Number == returnWindow.WtDocItem.Number) == null)
                     CurrentDataContext.WtDocumentList.Add(returnWindow.WtDocItem);
-                //CreateWtDocumentMainView createWt = new CreateWtDocumentMainView(CurrentDataContext.ListWindchillDocumentType.ToList(), CurrentDataContext.ListWindchillPartType.ToList(), ListWebterm, CurrentDataContext.SelectedLanguage, CurrentDataContext.WindchillContextList.ToList(), CurrentDataContext.ListGroup.ToList(), CurrentDataContext.ListBrand.ToList());
-                //if (createWt.ShowDialog().Value && CurrentDataContext.WtDocumentList.FirstOrDefault((item) => item.Number == createWt.WtDocumentItem.Number) == null)
-                //    CurrentDataContext.WtDocumentList.Add(createWt.WtDocumentItem);
             }
             catch (Exception ex)
             {
@@ -401,9 +398,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
             {
                 var returnWindow = _mcgCommonLibWindowService.ShowDialogMcgWindchillContextSelection(CurrentDataContext.WindchillContextList);
 
-                //McgWindchillContextSelection ContextWindow = new McgWindchillContextSelection(CurrentDataContext.WindchillContextList);
-                //ContextWindow.ShowDialog();
-                if (returnWindow.DialogResult.Value)
+                if (returnWindow.DialogValue == MessageBoxResult.OK)
                 {
                     WindchillContext SelectedContext = returnWindow.SelectedContext.Clone();
 
@@ -431,181 +426,6 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 Thread CurrentThread = new Thread(() => CreateUpdateWtDocumentAsynch());
                 CurrentThread.IsBackground = true;
                 CurrentThread.Start();
-
-                //var ListItems = CurrentDataContext.WtDocumentList.Where((item) => item.IsSelected).ToList();
-                //if (ListItems != null && ListItems.Count > 0)
-                //{
-                //    if (MessageBox.Show(McgMiscTools.GetStringResource("MWT_MsgCreateUpdateDocument"), McgMiscTools.GetStringResource("MWT_MsgTitleCreateUpdate"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                //    {
-                //        foreach (var item in ListItems)
-                //        {
-                //            if (item.WtDocumentSearchDone)
-                //            {
-                //                if (item.RequiredActionWtDocument == MgtRequiredActionEnum.CREATE)
-                //                {
-                //                    if (item.WtDocumentObject.SelectedWindchillContext == null ||
-                //                        item.WtDocumentObject.SelectedWindchillContext.OdataContext == null ||
-                //                        item.WtDocumentObject.SelectedWindchillContext.OdataFolder == null)
-                //                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCreateUpdateMissingContext"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCreateUpdate"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                //                    else if (item.WtDocumentOdataType == WindchillWtDocumentOdataTypeEnum.UNKNOWN)
-                //                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCreateUpdateMissingDocType"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCreateUpdate"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                //                    else if (item.WtDocumentObject.PTCCOMMONNAME == null ||
-                //                             item.WtDocumentObject.PTCCOMMONNAME.Trim() == "")
-                //                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCreateUpdateMissingPtcCommonName"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCreateUpdate"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                //                    else
-                //                    {
-                //                        if (CreateWtDocument(item))
-                //                        {
-                //                            item.StatusWtDocument = "Doc Created";
-                //                            if (CheckOutWtDocument(item))
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Doc Checked out";
-                //                                if (UpdateWtDocument(item))
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Doc Updated";
-                //                                    if (UpdateContentWtDocument(item))
-                //                                    {
-                //                                        item.StatusWtDocument = $"{item.StatusWtDocument} - Content Updated";
-                //                                        if (CheckInWtDocument(item))
-                //                                        {
-                //                                            item.StatusWtDocument = $"{item.StatusWtDocument} - Checked in";
-                //                                            item.RequiredActionWtDocument = MgtRequiredActionEnum.UPDATE;
-                //                                        }
-                //                                        else
-                //                                        {
-                //                                            item.StatusWtDocument = $"{item.StatusWtDocument} - Check in issue";
-                //                                            MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckInNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                        }
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        item.StatusWtDocument = $"{item.StatusWtDocument} - Content Update issue";
-                //                                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateContentNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateContentNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                    }
-                //                                }
-                //                                else
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Update issue";
-                //                                    MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                }
-                //                            }
-                //                            else
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Check out issue";
-                //                                MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckOutNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                            }
-                //                        }
-                //                        else
-                //                        {
-                //                            item.StatusWtDocument = $"Create issue";
-                //                            MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCreateNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCreateNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                        }
-                //                    }
-                //                }
-                //                else if (item.RequiredActionWtDocument == MgtRequiredActionEnum.REVISE)
-                //                {
-                //                    if (item.WindchillWtDocument != null && item.Revision > McgMiscTools.GetEnumValue<McgRevisionSchemaEnum>(item.WindchillWtDocument.Revision))
-                //                        if (ReviseWtDocument(item))
-                //                        {
-                //                            item.StatusWtDocument = "Doc Revised";
-                //                            if (CheckOutWtDocument(item))
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Checked out";
-                //                                if (UpdateWtDocument(item))
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Doc Updated";
-                //                                    if (UpdateContentWtDocument(item))
-                //                                    {
-                //                                        item.StatusWtDocument = $"{item.StatusWtDocument} - Content Updated";
-                //                                        if (CheckInWtDocument(item))
-                //                                        {
-                //                                            item.StatusWtDocument = $"{item.StatusWtDocument} - Checked in";
-                //                                            item.RequiredActionWtDocument = MgtRequiredActionEnum.UPDATE;
-                //                                        }
-                //                                        else
-                //                                        {
-                //                                            item.StatusWtDocument = $"{item.StatusWtDocument} - Check in issue";
-                //                                            MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckInNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                        }
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        item.StatusWtDocument = $"{item.StatusWtDocument} - Content Update issue";
-                //                                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateContentNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateContentNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                    }
-                //                                }
-                //                                else
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Update issue";
-                //                                    MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                }
-                //                            }
-                //                            else
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Check Out issue";
-                //                                MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckOutNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                            }
-                //                        }
-                //                        else
-                //                        {
-                //                            item.StatusWtDocument = $"{item.StatusWtDocument} - Revise issue";
-                //                            MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgReviseNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleReviseNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                        }
-                //                    else
-                //                    {
-                //                        item.StatusWtDocument = "Wrong revision";
-                //                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgReviseNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleReviseNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                    }
-                //                }
-                //                else if (item.RequiredActionWtDocument == MgtRequiredActionEnum.UPDATE)
-                //                {
-                //                    if (CheckOutWtDocument(item))
-                //                    {
-                //                        item.StatusWtDocument = "Checked out";
-                //                        if (UpdateWtDocument(item))
-                //                        {
-                //                            item.StatusWtDocument = $"{item.StatusWtDocument} - Doc Updated";
-                //                            if (UpdateContentWtDocument(item))
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Content Updated";
-                //                                if (CheckInWtDocument(item))
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Checked in";
-                //                                }
-                //                                else
-                //                                {
-                //                                    item.StatusWtDocument = $"{item.StatusWtDocument} - Check in issue";
-                //                                    MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckInNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                                }
-                //                            }
-                //                            else
-                //                            {
-                //                                item.StatusWtDocument = $"{item.StatusWtDocument} - Content Update issue";
-                //                                MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateContentNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateContentNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                            }
-                //                        }
-                //                        else
-                //                        {
-                //                            item.StatusWtDocument = $"{item.StatusWtDocument} - Update issue";
-                //                            MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgUpdateNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleUpdateNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        item.StatusWtDocument = "Check out issue";
-                //                        MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgCheckOutNotPossible"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleCheckOutNotPossible"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //                    }
-                //                }
-                //            }
-                //            else
-                //            {
-                //                MessageBox.Show(string.Format(McgMiscTools.GetStringResource("MWT_MsgSearchNotDoneWtDoc"), item.Number), McgMiscTools.GetStringResource("MWT_MsgTitleSearchNotDone"), MessageBoxButton.OK, MessageBoxImage.Error);
-                //            }
-                //        }
-                //    }
-                //}
-                //else
-                //    MessageBox.Show(McgMiscTools.GetStringResource("MWT_MsgCreateUpdateNoSelection"), McgMiscTools.GetStringResource("MWT_MsgTitleCreateUpdate"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
@@ -792,9 +612,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                     CurrentItem = (MgtWtDocumentItem)obj;
 
                     var returnWindow = _mcgCommonLibWindowService.ShowDialogMcgWindchillContextSelection(CurrentDataContext.WindchillContextList, CurrentDataContext.WindchillContextList.FirstOrDefault((item) => item.Name == CurrentItem.WtDocumentObject?.SelectedWindchillContext?.Name));
-                    //McgWindchillContextSelection ContextWindow = new McgWindchillContextSelection(CurrentDataContext.WindchillContextList, CurrentDataContext.WindchillContextList.FirstOrDefault((item) => item.Name == CurrentItem.WtDocumentObject?.SelectedWindchillContext?.Name));
-                    //ContextWindow.ShowDialog();
-                    if (returnWindow.DialogResult.Value)
+                    if (returnWindow.DialogValue == MessageBoxResult.OK)
                     {
                         WindchillContext SelectedContext = returnWindow.SelectedContext.Clone();
                         CurrentItem.WtDocumentObject.SelectedWindchillContext = SelectedContext;
@@ -802,7 +620,6 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                         CurrentItem.WtDocumentObject.SelectedWindchillContext.Folder = SelectedContext.OdataFolder.Name;
                         CurrentItem.WtPartObject.SelectedWindchillContext.Folder = SelectedContext.OdataFolder.Name;
                     }
-
                 }
             }
             catch (Exception ex)

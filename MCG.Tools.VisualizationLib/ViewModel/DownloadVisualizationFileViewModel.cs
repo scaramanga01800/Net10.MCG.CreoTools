@@ -7,7 +7,7 @@ using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.Tools.VisualizationLib.Configuration;
 using MCG.Tools.VisualizationLib.Exceptions;

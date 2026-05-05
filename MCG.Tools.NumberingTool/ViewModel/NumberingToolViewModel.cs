@@ -8,7 +8,7 @@ using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.Tools.NumberingTool.Configuration;
 using MCG.Tools.NumberingTool.Exceptions;
@@ -558,7 +558,7 @@ namespace MCG.Tools.NumberingTool.ViewModel
 
                     for (int index = 0; index < SelectedSizeBlock; index++)
                     {
-                        string CreatedBy = McgMiscTools.GetWindowsSessionUserShortName();
+                        string CreatedBy = McgActiveDirectoryTools.GetWindowsSessionUserShortName();
                         CurrentItem = new NumberingToolItem()
                         {
                             CreatedBy = CreatedBy,

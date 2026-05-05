@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EcnEcoFollowUpConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <EcnStateList>
+      <string>All</string>
+      <string>In progress</string>
+      <string>Under review</string>
+      <string>Resolved</string>
+      <string>Canceled</string>
+    </EcnStateList>   
+</EcnEcoFollowUpConfiguration>
+

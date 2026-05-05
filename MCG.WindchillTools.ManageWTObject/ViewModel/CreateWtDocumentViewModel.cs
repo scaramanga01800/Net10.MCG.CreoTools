@@ -4,7 +4,7 @@ using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.View.WindchillContextSelection;
 using MCG.WindchillRequestTool.Model.Windchill;
 using MCG.WindchillTools.ManageWTObject.Exceptions;
@@ -241,7 +241,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
             {
                 var returnWindow = _mcgCommonLibWindowService.ShowDialogMcgWindchillContextSelection(WindchillContextList, WindchillContextList.FirstOrDefault());
 
-                if (returnWindow.DialogResult.Value)
+                if (returnWindow.DialogValue == MessageBoxResult.OK)
                 {
                     WindchillContext SelectedContext = returnWindow.SelectedContext.Clone();
                     WtObject.SelectedWindchillContext = SelectedContext;

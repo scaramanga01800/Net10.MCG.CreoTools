@@ -7,7 +7,7 @@ using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.Webterm.Services.Interfaces;
-using MCG.CommonLib.WpfComponent.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.WindchillRequestTool.Model.RestOdata;
 using MCG.WindchillRequestTool.Model.Windchill;
@@ -607,7 +607,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                     var returnWindow = _mcgCommonLibWindowService.ShowDialogMcgWindchillContextSelection(CurrentDataContext.WindchillContextList, CurrentDataContext.WindchillContextList.FirstOrDefault((item) => item.Name == CurrentObject.SelectedWindchillContext?.Name));
                     //McgWindchillContextSelection ContextWindow = new McgWindchillContextSelection(CurrentDataContext.WindchillContextList, CurrentDataContext.WindchillContextList.FirstOrDefault((item) => item.Name == CurrentObject.SelectedWindchillContext?.Name));
                     //ContextWindow.ShowDialog();
-                    if (returnWindow.DialogResult.Value)
+                    if (returnWindow.DialogValue == MessageBoxResult.OK)
                     {
                         WindchillContext SelectedContext = returnWindow.SelectedContext.Clone();
                         CurrentObject.SelectedWindchillContext = SelectedContext;
