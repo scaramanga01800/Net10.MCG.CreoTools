@@ -12,6 +12,45 @@ namespace MCG.Tools.EcnEcoFollowUp.View
 {
     public partial class EcnEcoFollowUpFluentTabView : RibbonTabItem
     {
+
+        #region [REGION] Events Action
+        public event EventHandler ActionInProgressEvent;
+        public void RaiseActionInProgressEvent(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                ActionInProgressEvent?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public event EventHandler ActionDoneEvent;
+        public void RaiseActionDoneEvent(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                ActionDoneEvent?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public event EventHandler DataContextUpdatedEvent;
+        public void RaiseDataContextUpdatedEvent(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                DataContextUpdatedEvent?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+            }
+        }
+        #endregion
+
         private bool IsAppAlreadyInit { get; set; } = false;
         private EcnEcoFollowUpViewModel CurrentEcnEcoFollowUpViewModel { get; set; }
         private string ImageResourcePath { get; set; }
@@ -28,6 +67,38 @@ namespace MCG.Tools.EcnEcoFollowUp.View
             McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{EcnEcoFollowUpConstants.MainDictionary}", UriKind.Absolute);
 
             InitializeComponent();
+            DataContextChanged += EcnEcoFollowUpFluentTabView_DataContextChanged;
+
+        }
+
+        private void EcnEcoFollowUpFluentTabView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (!IsAppAlreadyInit && DataContext != null && DataContext.GetType() == typeof(EcnEcoFollowUpViewModel))
+                {
+                    CurrentEcnEcoFollowUpViewModel = DataContext as EcnEcoFollowUpViewModel;
+                    IsAppAlreadyInit = true;
+
+                    CurrentEcnEcoFollowUpViewModel.ActionDoneEvent += RaiseActionDoneEvent;
+                    CurrentEcnEcoFollowUpViewModel.ActionInProgressEvent += RaiseActionInProgressEvent;
+
+                    CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.RecentSearchesListEvent += UpdateMenuRecentSearches;
+                    CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.SavedSearchesListEvent += UpdateMenuSavedSearches;
+                    CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.DashboardListEvent += UpdateMenuDashboard;
+
+                    UpdateMenuRecentSearches();
+                    UpdateMenuSavedSearches();
+                    UpdateMenuDashboard();
+
+                    CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.EcnShownList.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((sender, e) => SubscribeToIsSelectedEvent(sender, e));
+                    StartSubscribeToAllEcnEcoIsSelected();
+                }
+            }
+            catch (Exception ex)
+            {
+                EcnEcoFollowUpException.SendMessageBox(this.GetType().Name, ex);
+            }
         }
 
         private void UpdateMenuRecentSearches(object sender = null, EventArgs e = null)

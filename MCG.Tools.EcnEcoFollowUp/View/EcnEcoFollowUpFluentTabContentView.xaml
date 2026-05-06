@@ -679,7 +679,6 @@
                         </DataGrid>
                     </DockPanel>
                 </DockPanel>
-
             </TabItem>
 
             <TabItem Header="{DynamicResource EFU_TabPersonal}" Content="{Binding CurrentEcnEcoFollowUpDataContext.PersonalDashboard}" />

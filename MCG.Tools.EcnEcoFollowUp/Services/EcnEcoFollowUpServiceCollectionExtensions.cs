@@ -12,10 +12,14 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             services.AddSingleton<IEcnEcoFollowUpWindowService, EcnEcoFollowUpWindowService>();
 
             services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
-            services.AddTransient<EcnEcoFollowUpDashboardSearchWindowViewModel>();
-            services.AddTransient<EcnEcoFollowUpDashboardViewModel>();
 
-            services.AddTransient<EcnEcoFollowUpViewModel>();
+            services.AddTransient<EcnEcoFollowUpDashboardSearchWindow>();
+            services.AddTransient<EcnEcoFollowUpDashboardSearchWindowViewModel>();
+
+            services.AddTransient<EcnEcoFollowUpDashboardViewModel>();
+            services.AddTransient<EcnEcoFollowUpDashboardView>();
+
+            services.AddSingleton<EcnEcoFollowUpViewModel>();
             
             services.AddTransient<EcoWorkFlowTasksViewModel>();
 

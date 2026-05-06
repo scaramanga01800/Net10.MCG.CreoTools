@@ -2,7 +2,6 @@
 using MCG.Tools.EcnEcoFollowUp.View;
 using MCG.Tools.EcnEcoFollowUp.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace MCG.Tools.EcnEcoFollowUp.Interfaces
 {
