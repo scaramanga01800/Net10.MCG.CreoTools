@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SapConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<ListBomApplication>
+		<SapBomExportApplicationItem>
+			<Name>BEST</Name>
+			<Description>Inventory Management</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>DFPS</Name>
+			<Description>External Batches</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>INST</Name>
+			<Description>Plant Maintenance</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>PC01</Name>
+			<Description>Costing</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>PI01</Name>
+			<Description>Process Manufacturing</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>PP01</Name>
+			<Description>Production - General</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>RWRK</Name>
+			<Description>Only For Rework Orders - China</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>SD01</Name>
+			<Description>Sales and Distribution</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZC01</Name>
+			<Description>Sales Order Costing</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZCDT</Name>
+			<Description>For IPD Process (CDT Step)</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZPPP</Name>
+			<Description>For IPD Process (PPP Step)</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZPR3</Name>
+			<Description>Production Rework - MCC</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZPRO</Name>
+			<Description>For IPD Process (Proto Step)</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZPRW</Name>
+			<Description>Only For Rework Orders - Brazil</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZTP1</Name>
+			<Description>TP CBOM generation for equipments</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZTP2</Name>
+			<Description>TP CBOM generation for models</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZTP3</Name>
+			<Description>TP SPL genration</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZTP4</Name>
+			<Description>TP BOM explosion for all usages</Description>
+		</SapBomExportApplicationItem>
+		<SapBomExportApplicationItem>
+			<Name>ZTP5</Name>
+			<Description>TP BOM explosion for SPL</Description>
+		</SapBomExportApplicationItem>
+	</ListBomApplication>
+
+	<ListSapPlant>
+		<SapPlant>
+			<Number>0000</Number>
+			<Name>Without</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1000</Number>
+			<Name>Baltar</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1011</Number>
+			<Name>Moulins</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1012</Number>
+			<Name>Charlieu</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1015</Number>
+			<Name>Lusigny</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1050</Number>
+			<Name>Niella</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1070</Number>
+			<Name>Zhangjagang</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1090</Number>
+			<Name>Pune</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>2010</Number>
+			<Name>St Pierre De Chandieu</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>8010</Number>
+			<Name>Dardilly</Name>
+		</SapPlant>
+	</ListSapPlant>
+
+	<AllSapPlant>
+		<SapPlant>
+			<Number>1000</Number>
+			<Name>BALTAR</Name>
+			<City>Baltar</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1011</Number>
+			<Name>MOULINS</Name>
+			<City>Avermes</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1012</Number>
+			<Name>CHARLIEU</Name>
+			<City>Saint Nizier sous Charlieu</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1013</Number>
+			<Name>ST OUEN</Name>
+			<City>St Ouen L’aumône</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1014</Number>
+			<Name>DRY</Name>
+			<City>DRY</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1015</Number>
+			<Name>LUSIGNY</Name>
+			<City>LUSIGNY</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1020</Number>
+			<Name>MCC - MANITOWOC</Name>
+			<City>Manitowoc</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1021</Number>
+			<Name>MCC - PORT WASHINGTO</Name>
+			<City>Port Washington</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1031</Number>
+			<Name>SHADY GROVE</Name>
+			<City>Shady Grove</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1050</Number>
+			<Name>NIELLA TANARO</Name>
+			<City>Niella Tanaro</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1070</Number>
+			<Name>ZJG CRANE</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1070</Number>
+			<Name>ZJG CRANE</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1071</Number>
+			<Name>MCG TRADING CN</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1072</Number>
+			<Name>MCLC</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1081</Number>
+			<Name>PASSO FUNDO</Name>
+			<City>Passo Fundo</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1090</Number>
+			<Name>PUNE</Name>
+			<City>PUNE</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1110</Number>
+			<Name>MCG DUBAI</Name>
+			<City>DUBAI</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1150</Number>
+			<Name>MCG PHILIPPINES</Name>
+			<City>Palanan, Makati City</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1180</Number>
+			<Name>MCG ASIA SINGAPORE</Name>
+			<City>SINGAPORE</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1190</Number>
+			<Name>MADRID</Name>
+			<City>Ajalvir - Madrid</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1191</Number>
+			<Name>MADRID</Name>
+			<City>Ajalvir - Madrid</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>1210</Number>
+			<Name>MCG AUSTRALIA</Name>
+			<City>Blacktown</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2000</Number>
+			<Name>BALTAR</Name>
+			<City>Baltar</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2010</Number>
+			<Name>ST PIERRE CHANDIEU</Name>
+			<City>SAINT-PIERRE de CHANDIEU</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2011</Number>
+			<Name>CERGY</Name>
+			<City>St Ouen L’aumône</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2012</Number>
+			<Name>LYON</Name>
+			<City>Saint Pierre de Chandieu</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2013</Number>
+			<Name>MARSEILLE</Name>
+			<City>Vitrolles</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2014</Number>
+			<Name>NANTES</Name>
+			<City>Saint Herblain</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2015</Number>
+			<Name>SPC TRAINING</Name>
+			<City>SAINT-PIERRE de CHANDIEU</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2016</Number>
+			<Name>PLANT ABROAD</Name>
+			<City>LANGENFELD</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2019</Number>
+			<Name>DECINES</Name>
+			<City>Décines Charpieu</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2029</Number>
+			<Name>MCC</Name>
+			<City>Manitowoc</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2031</Number>
+			<Name>SHADY GROVE</Name>
+			<City>Shady Grove</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2050</Number>
+			<Name>NIELLA</Name>
+			<City>Niella Tanaro</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2070</Number>
+			<Name>ZJG</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2070</Number>
+			<Name>ZJG CRANE CARE</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2071</Number>
+			<Name>ZJG CRANE CARE</Name>
+			<City>ZhangJiagang City, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2079</Number>
+			<Name>ZJG</Name>
+			<City>Zhangjiagang, Jiangsu Province</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2081</Number>
+			<Name>PASSO FUNDO</Name>
+			<City>Passo Fundo</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2090</Number>
+			<Name>PUNE</Name>
+			<City>PUNE</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2099</Number>
+			<Name>PUNE</Name>
+			<City>PUNE</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2110</Number>
+			<Name>MCG DUBAI</Name>
+			<City>Dubai</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2150</Number>
+			<Name>MCG PHILIPPINES</Name>
+			<City>Palanan, Makati City</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2180</Number>
+			<Name>MCG ASIA SINGAPORE</Name>
+			<City>SINGAPORE</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2190</Number>
+			<Name>MADRID</Name>
+			<City>Ajalvir - Madrid</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2191</Number>
+			<Name>MADRID</Name>
+			<City>Ajalvir - Madrid</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>2210</Number>
+			<Name>MCG AUSTRALIA</Name>
+			<City>Blacktown</City>
+		</SapPlant>
+		<SapPlant>
+			<Number>8010</Number>
+			<Name>DARDILLY</Name>
+			<City>DARDILLY CEDEX</City>
+		</SapPlant>
+	</AllSapPlant>
+
+</SapConfiguration> 

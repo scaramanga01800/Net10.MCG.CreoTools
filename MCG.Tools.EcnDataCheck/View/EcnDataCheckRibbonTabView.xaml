@@ -1,0 +1,188 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.Tools.EcnDataCheck.View.EcnDataCheckRibbonTabView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.Tools.EcnDataCheck.View"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:EcnDataCheckVM="clr-namespace:MCG.Tools.EcnDataCheck.ViewModel"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"  Header="{DynamicResource EDC_AppName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png" />
+        <BitmapImage x:Key="BOM_COMP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Bom_comp.gif" />
+        <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+        <BitmapImage x:Key="WORLD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Earth.ico" />
+        <BitmapImage x:Key="FR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_FR.ico" />
+        <BitmapImage x:Key="EN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_US.ico" />
+        <BitmapImage x:Key="DE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_DE.ico" />
+        <BitmapImage x:Key="ZH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_ZH.ico" />
+        <BitmapImage x:Key="IT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_IT.ico" />
+        <BitmapImage x:Key="PT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_PT.ico" />
+        <BitmapImage x:Key="SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Sap.ico" />
+        <BitmapImage x:Key="BAAN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/BAAN.png" />
+        <BitmapImage x:Key="Help" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
+        <BitmapImage x:Key="QUESTION_BIG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_question_big.jpg" />
+        <BitmapImage x:Key="GREEN_BIG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_green_big.jpg" />
+        <BitmapImage x:Key="YELLOW_BIG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_yellow_big.jpg" />
+        <BitmapImage x:Key="RED_BIG" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_red_big.jpg" />
+        <BitmapImage x:Key="CRANE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/crane.ico" />
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource EDC_TabStart}">
+        <Fluent:TwoLineLabel HorizontalAlignment="Center" 
+                            Text="{DynamicResource EDC_LabelEcnNumber}"
+                            HasTwoLines="False"></Fluent:TwoLineLabel>
+        <Fluent:TextBox HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center"  
+                Text="{Binding CurrentEcnDataCheckDataContext.EcnNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                Margin="-9,0,0,0">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding CommandStartEcnDataCheck}"/>
+            </TextBox.InputBindings>
+        </Fluent:TextBox>
+
+        <Fluent:ComboBox Grid.Column="2"
+                        Margin="-9,0,0,0"
+                        IsEditable="False"                       
+                        HorizontalContentAlignment="Left" 
+                        VerticalContentAlignment="Center" 
+                        SelectedItem="{Binding CurrentEcnDataCheckDataContext.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding CurrentEcnDataCheckDataContext.ListLanguage}">
+            <Fluent:ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Image >
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="EN">
+                                            <Setter Property="Source" Value="{StaticResource EN}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="FR">
+                                            <Setter Property="Source" Value="{StaticResource FR}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="DE">
+                                            <Setter Property="Source" Value="{StaticResource DE}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="ZH">
+                                            <Setter Property="Source" Value="{StaticResource ZH}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="PT">
+                                            <Setter Property="Source" Value="{StaticResource PT}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SAPCode}" Value="IT">
+                                            <Setter Property="Source" Value="{StaticResource IT}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding Language}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Fluent:ComboBox.ItemTemplate>
+
+        </Fluent:ComboBox>
+
+        <Fluent:Button  LargeIcon="{StaticResource START}" 
+                       Command="{Binding CommandStartEcnDataCheck}" 
+                       Margin="5,0,5,0" 
+                       IsEnabled="{Binding CurrentEcnDataCheckDataContext.ShowActionButton}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource EDC_BtStartCheck}" Width ="250"
+                                 Image="{StaticResource START}"
+                                 Text="{DynamicResource EDC_BtStartCheck}"
+                                 DisableReason="{DynamicResource  EDC_DisableReason}" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource EDC_TabTool}">
+
+        <Fluent:TwoLineLabel HorizontalAlignment="Center" 
+                            Text="{DynamicResource EDC_LabelLocalErp}"
+                            HasTwoLines="False"></Fluent:TwoLineLabel>
+        <Fluent:ComboBox Grid.Column="2"
+                        Margin="-9,0,0,0"
+                        IsEditable="False"                       
+                        HorizontalContentAlignment="Left" 
+                        VerticalContentAlignment="Center" 
+                        SelectedItem="{Binding CurrentEcnDataCheckDataContext.ErpSystem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding CurrentEcnDataCheckDataContext.ErpList}">
+            <Fluent:ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Image MaxHeight="32">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="SAP">
+                                            <Setter Property="Source" Value="{StaticResource SAP}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="BAAN">
+                                            <Setter Property="Source" Value="{StaticResource BAAN}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Fluent:ComboBox.ItemTemplate>
+
+        </Fluent:ComboBox>
+
+        <Fluent:Button  LargeIcon="{StaticResource BOM_COMP}" Command="{Binding CommandStartSapBOMComparison}" Margin="5,0,5,0" IsEnabled="{Binding CurrentEcnDataCheckDataContext.ShowActionButton}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource EDC_BtStartSapBomComp}" Width ="250"
+                                 Image="{StaticResource BOM_COMP}"
+                                 Text="{DynamicResource EDC_BtStartSapBomComp}"
+                                 DisableReason="{DynamicResource  EDC_DisableReason}" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button  LargeIcon="{StaticResource CRANE}" Command="{Binding CommandStartSapCraneSearch}" Margin="5,0,5,0" IsEnabled="{Binding CurrentEcnDataCheckDataContext.ShowActionButton}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource EDC_BtCraneSearch}" Width ="250"
+                                 Image="{StaticResource CRANE}"
+                                 Text="{DynamicResource EDC_BtToolTipCraneSearch}"
+                                 DisableReason="{DynamicResource  EDC_DisableReason}" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button  LargeIcon="{StaticResource EXCEL}" Command="{Binding CommandStartExportXLS}" Margin="5,0,5,0" IsEnabled="{Binding CurrentEcnDataCheckDataContext.ShowActionButton}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource EDC_BtExportResult}" Width ="250"
+                                 Image="{StaticResource EXCEL}"
+                                 Text="{DynamicResource EDC_BtExportResult}"
+                                 DisableReason="{DynamicResource  EDC_DisableReason}" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:ComboBox Grid.Column="2"
+                       Fluent:RibbonGroupBoxWrapPanel.ExcludeFromSharedSize="True"
+                       Header="{DynamicResource EDC_MiRepDigit}"
+                       IsEditable="False"                       
+                       HorizontalContentAlignment="Left" 
+                       VerticalContentAlignment="Center" 
+                       SelectedItem="{Binding CurrentEcnDataCheckDataContext.NumericalLineNumberDigit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                       ItemsSource="{Binding CurrentEcnDataCheckDataContext.NumericalLineNumberDigitList}">
+        </Fluent:ComboBox>
+        <Fluent:ComboBox Grid.Column="2"
+                       Header="{DynamicResource EDC_MiSapPlant}"
+                       IsEditable="False"                       
+                       HorizontalContentAlignment="Left" 
+                       VerticalContentAlignment="Center" 
+                       SelectedItem="{Binding CurrentEcnDataCheckDataContext.SelectedSapPlant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                       ItemsSource="{Binding CurrentEcnDataCheckDataContext.ListSapPlant}">
+        </Fluent:ComboBox>
+
+        <Fluent:Button LargeIcon="{StaticResource Help}" 
+                      Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}" 
+                      Margin="5,0,5,0"/>
+
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

@@ -6,7 +6,6 @@
         public const string ConfigurationFile = "VisualizationLibConfiguration.xml";
         public const string DefaultOptionalWatermark = "For consultation only";
         public const string EcnCopyPasteRegEx = "^B-\\d{6}$";
-        public const string NamingConventionFileName = "NamingConvention.xml";
         public const string NoneOfficialDrawingWatermark = "For Consultation Only";
         public const string OfficialDrawingStates = "RELEASED|PROTOTYPE";
         public const string OptionalWatermarkValues = "For Consultation Only|For Quotation|Patent In Progress, Do Not Share Externaly";

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.Configuration;
+using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
@@ -83,6 +84,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         private readonly IWindchillVisualizationManagementService _windchillVisualizationManagementService;
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
         #endregion
+
 
         #region [REGION] Commands
         public ICommand CommandSearchEcn { get => new RelayCommand(() => ExecuteSearchEcn()); }
@@ -520,7 +522,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         {
             try
             {
-                //McgMiscTools.OpenFile($"{MainAppFolder}\\{McgMiscTools.GetAppSetting(this, "DocumentationFolder")}\\{McgMiscTools.GetStringResource("VIS_UserGuide")}");
+                //McgMiscTools.OpenFile($"{MainAppFolder}\\{McgMiscTools.GetAppSetting(this, "DocumentationFolder")}\\{McgWpfTools.GetStringResource("VIS_UserGuide")}");
                 McgFileAndSystemTools.OpenSharePointDocument(McgWpfTools.GetStringResource("VIS_UserGuide"));
             }
             catch (Exception ex)
@@ -1036,7 +1038,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 CurrentDataContext.CurrentStep = 0;
                 CurrentDataContext.StatusBarTextRight = McgWpfTools.GetStringResource("VIS_StatusBarBomInProgress");
                 WindchillNamingConvention NamingConvention = null;
-                NamingConvention = _xmlSerializeTools.GetDeserializedXml<WindchillNamingConvention>($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{VisualizationLibConstants.NamingConventionFileName}");
+                NamingConvention = _xmlSerializeTools.GetDeserializedXml<WindchillNamingConvention>($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CommonLibConstants.NamingConventionFile}");
 
                 WindchillObjStructureComponent FinalStructure = _windchillBomManagementService.SearchBomLevelByLevel(
                                                                     CurrentDataContext.SelectedPart.PartNumber,

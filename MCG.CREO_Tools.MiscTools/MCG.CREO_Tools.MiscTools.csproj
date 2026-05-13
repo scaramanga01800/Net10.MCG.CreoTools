@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Fluent.Ribbon" Version="11.0.2" />
+    <PackageReference Include="XamlAnimatedGif" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.CreoInteractionTools\MCG.CommonLib.CreoInteractionTools.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.DataBaseAccess\MCG.CommonLib.DataBaseAccess.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.Resources\MCG.CommonLib.Resources.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.SapTools\MCG.CommonLib.SapTools.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.Webterm\MCG.CommonLib.Webterm.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.WindchillRequestTool\MCG.WindchillRequestTool.csproj" />
+  </ItemGroup>
+
+</Project>

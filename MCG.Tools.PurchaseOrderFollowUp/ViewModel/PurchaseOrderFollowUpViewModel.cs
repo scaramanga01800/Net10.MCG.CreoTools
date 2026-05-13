@@ -1756,7 +1756,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 //}
                 //else
                 //{
-                //    MessageBox.Show(McgMiscTools.GetStringResource("POF_MsgVendorMissingData"), McgMiscTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                //    MessageBox.Show(McgWpfTools.GetStringResource("POF_MsgVendorMissingData"), McgWpfTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 //}
             }
             catch (Exception ex)
@@ -1775,7 +1775,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 //    }
                 //    else
                 //    {
-                //        MessageBox.Show(McgMiscTools.GetStringResource("POF_MsgVendorMissingData"), McgMiscTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                //        MessageBox.Show(McgWpfTools.GetStringResource("POF_MsgVendorMissingData"), McgWpfTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 //    }
             }
             catch (Exception ex)
@@ -1794,7 +1794,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 //}
                 //else
                 //{
-                //    MessageBox.Show(McgMiscTools.GetStringResource("POF_MsgVendorMissingData"), McgMiscTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                //    MessageBox.Show(McgWpfTools.GetStringResource("POF_MsgVendorMissingData"), McgWpfTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 //}
             }
             catch (Exception ex)
@@ -4206,7 +4206,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                     MailBody = $"{MailBody}</p><p><br>{McgWpfTools.GetStringResource("POF_MailVendorBody04")}";
                     MailBody = $"{MailBody}<br><br><br><p>{string.Format(McgWpfTools.GetStringResource("POF_MailVendorBody05"), CurrentRequest.Description)}";
                     MailBody = $"{MailBody}<br>{string.Format(McgWpfTools.GetStringResource("POF_MailVendorBody06"), CurrentRequest.Number)}";
-                    //MailBody = $"{MailBody}<br><br><br><p>{string.Format(McgMiscTools.GetStringResource("POF_MailVendorBody06"), CurrentRequest.Number)}";
+                    //MailBody = $"{MailBody}<br><br><br><p>{string.Format(McgWpfTools.GetStringResource("POF_MailVendorBody06"), CurrentRequest.Number)}";
                     MailObject = string.Format(McgWpfTools.GetStringResource("POF_MailVendorUpdateObject"), CurrentRequest.Description);
                 }
                 else

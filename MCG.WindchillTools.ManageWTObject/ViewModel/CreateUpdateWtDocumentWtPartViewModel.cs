@@ -6,7 +6,7 @@ using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.Webterm.Services.Interfaces;
+using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.WindchillRequestTool.Model.RestOdata;
