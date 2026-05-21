@@ -259,4 +259,11 @@
     <system:String x:Key="EDC_EDC014">EDC014FR.PDF</system:String>
     <system:String x:Key="EDC_EDC015">EDC015FR.PDF</system:String>
     <system:String x:Key="EDC_EDC016">EDC016FR.PDF</system:String>
+
+    <system:String x:Key="EDC_PdmSource1">Document CAO</system:String>
+    <system:String x:Key="EDC_PdmSource2">Article</system:String>
+    <system:String x:Key="EDC_ErpSource">ERP</system:String>
+    <system:String x:Key="EDC_PdmCompWindowTitle">Comparaison Nomenclature Document CAO/Article</system:String>
+    <system:String x:Key="EDC_ErpCompWindowTitle">Comparaison Nomenclature Article/ERP</system:String>
+    <system:String x:Key="EDC_ExportXlsIssue">Impossible de créer le fichier : {0}. Veuillez contacter votre administrateur CAO.</system:String>
 </ResourceDictionary>

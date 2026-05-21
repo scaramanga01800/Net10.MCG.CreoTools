@@ -36,14 +36,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
 
         public void ShowAndExecuteCraneSearchMainView(List<string> listObject, bool isAlreadyCreated)
         {
-            if (isAlreadyCreated)
-            {
-                if (_CraneSearchMainView != null)
-                {
-                    _CraneSearchMainView.Activate();
-                    return;
-                }
-            }
+            //if (isAlreadyCreated)
+            //{
+            //    if (_CraneSearchMainView != null)
+            //    {
+            //        _CraneSearchMainView.Activate();
+            //        return;
+            //    }
+            //}
 
             _CraneSearchMainView = _serviceProvider.GetRequiredService<CraneSearchMainView>();
             ((CraneSearchMainView)_CraneSearchMainView).SetCraneSearchViewModelProperties(listObject);

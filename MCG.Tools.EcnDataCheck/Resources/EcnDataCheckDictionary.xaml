@@ -259,4 +259,11 @@
     <system:String x:Key="EDC_EDC014">EDC014EN.PDF</system:String>
     <system:String x:Key="EDC_EDC015">EDC015EN.PDF</system:String>
     <system:String x:Key="EDC_EDC016">EDC016EN.PDF</system:String>
+
+    <system:String x:Key="EDC_PdmSource1">CAD Document</system:String>
+    <system:String x:Key="EDC_PdmSource2">Part</system:String>
+    <system:String x:Key="EDC_ErpSource">ERP</system:String>
+    <system:String x:Key="EDC_PdmCompWindowTitle">CAD Document / Part BOM Comparison</system:String>
+    <system:String x:Key="EDC_ErpCompWindowTitle">Part / ERP BOM Comparison</system:String>
+    <system:String x:Key="EDC_ExportXlsIssue">Unable to create file: {0}. Please contact your CAD administrator.</system:String>
 </ResourceDictionary>

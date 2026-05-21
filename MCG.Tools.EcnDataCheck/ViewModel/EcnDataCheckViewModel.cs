@@ -279,9 +279,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 }
 
                 CheckWindchillCredential();
-                //WindchillChangeNotice CurrentWindchillObjectEcn = WindchillRestOdataTool.GetWindchillChangeNoticeWithEca(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
 
-                WindchillChangeNotice CurrentWindchillObjectEcn = _windchillReportingManagementService.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
+               // WindchillChangeNotice CurrentWindchillObjectEcn = _windchillReportingManagementService.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
+                WindchillChangeNotice CurrentWindchillObjectEcn = _windchillRequestTool.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
 
                 if (CurrentWindchillObjectEcn != null && CurrentWindchillObjectEcn.ListEca != null && CurrentWindchillObjectEcn.ListEca.Count > 0)
                 {
@@ -369,6 +369,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                         ExportEcnBomInformationAsynch(CurrentEcnDataCheckDataContext.EcnNumber);
                     }
                 }
+                UpdateDataCheckResultItemList(true);
             }
             catch (Exception ex)
             {
@@ -744,13 +745,15 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 // Check Link accuracy between Part And CadDocument
                 CheckAllLinkPartCadDocAsync();
 
-                MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
+                MainDispatcher.Invoke(() => UpdateDataCheckResultItemList());
+                //MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
 
                 // Check if CadDocument is not linked to Part
                 SearchAllCadDocAsync();
                 CheckAllMissingLinkCadDocAsync();
 
-                MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
+                MainDispatcher.Invoke(() => UpdateDataCheckResultItemList());
+                //MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
 
                 // Check if Part is missing in ECN (CAD Document in ECN but not the part)
                 CheckAllMissingPartInEcnAsync();
@@ -780,17 +783,20 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 // Check unchecked Epm Doc in the ECN
                 CheckAllUncheckedEpmDocAttributes();
 
-                MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
+                MainDispatcher.Invoke(() => UpdateDataCheckResultItemList());
+                //MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
 
                 // Download All Parts and EpmDocs (owner link) BOM and do comparison
                 DownloadAllDataCheckItemBomAsync();
-                MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
+                MainDispatcher.Invoke(() => UpdateDataCheckResultItemList());
+                //MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
 
                 // Check components of the diffrent Part BOM
                 CurrentEcnDataCheckDataContext.ExtraStatusBarMsg = McgWpfTools.GetStringResource("EDC_SbExtraMsg09");
                 CheckAllPartBomComponentAsync();
 
-                MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
+                MainDispatcher.Invoke(() => UpdateDataCheckResultItemList());
+                //MainDispatcher.Invoke(new Action(UpdateDataCheckResultItemList));
 
                 CurrentEcnDataCheckDataContext.CurrentStep++;
                 CurrentEcnDataCheckDataContext.ExtraStatusBarMsg = McgWpfTools.GetStringResource("EDC_SbExtraMsg04");
@@ -2137,7 +2143,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 if (CurrentItem.EcnWtPart.TemplateWebterm == null || CurrentItem.EcnWtPart.TemplateWebterm.Defaultunit == null || CurrentItem.EcnWtPart.TemplateWebterm.Defaultunit.Trim() == "")
                     return DataCheckValue.UNDEFINED;
 
-                if (McgMiscTools.GetBomUnit(CurrentItem.EcnWtPart.TemplateWebterm.Defaultunit) != McgMiscTools.GetBomUnit(CurrentItem.EcnWtPart.DefaultUnit))
+                if (McgBusinessTools.GetBomUnit(CurrentItem.EcnWtPart.TemplateWebterm.Defaultunit) != McgBusinessTools.GetBomUnit(CurrentItem.EcnWtPart.DefaultUnit))
                     return DataCheckValue.NOTACCURATE;
 
                 return DataCheckValue.OK;
@@ -3034,9 +3040,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
 
                     CurrentItem.PdmBomComparison = _bomComparisonToolService.GetBomComparison(EpmDocBomItem, PartBomItem);
                     CurrentItem.PdmBomComparison.Type = "PDM";
-                    CurrentItem.PdmBomComparison.SourceBom1 = McgWpfTools.GetStringResource("BOM_PdmSource1");
-                    CurrentItem.PdmBomComparison.SourceBom2 = McgWpfTools.GetStringResource("BOM_PdmSource2");
-                    CurrentItem.PdmBomComparison.WindowTitle = McgWpfTools.GetStringResource("BOM_PdmCompWindowTitle");
+                    CurrentItem.PdmBomComparison.SourceBom1 = McgWpfTools.GetStringResource("EDC_PdmSource1");
+                    CurrentItem.PdmBomComparison.SourceBom2 = McgWpfTools.GetStringResource("EDC_PdmSource2");
+                    CurrentItem.PdmBomComparison.WindowTitle = McgWpfTools.GetStringResource("EDC_PdmCompWindowTitle");
                     CurrentItem.PdmBomComparison.PartNumber = CurrentItem.EcnWtPart.Number;
                     CurrentItem.PdmBomComparison.Description = $"{CurrentItem.EcnWtPart.Name} {CurrentItem.EcnWtPart.DescriptionEn2}";
                     CurrentItem.PdmBomComparison.XlsFileTemplateFullPath = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{EcnDataCheckConstants.ExcelTemplateEcnDataCheck}";
@@ -3187,9 +3193,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                     CurrentItem.ErpBomComparison = _bomComparisonToolService.GetBomComparison(_windchillRequestMiscService.GetBomItem(CurrentItem.PartStructure, CurrentEcnDataCheckDataContext.NumericalLineNumberDigit),
                                                                                       CurrentItem.EprStructure, false, false);
                     CurrentItem.ErpBomComparison.Type = "ERP";
-                    CurrentItem.ErpBomComparison.SourceBom1 = McgWpfTools.GetStringResource("BOM_PdmSource2");
-                    CurrentItem.ErpBomComparison.SourceBom2 = McgWpfTools.GetStringResource("BOM_ErpSource");
-                    CurrentItem.ErpBomComparison.WindowTitle = McgWpfTools.GetStringResource("BOM_ErpCompWindowTitle");
+                    CurrentItem.ErpBomComparison.SourceBom1 = McgWpfTools.GetStringResource("EDC_PdmSource2");
+                    CurrentItem.ErpBomComparison.SourceBom2 = McgWpfTools.GetStringResource("EDC_ErpSource");
+                    CurrentItem.ErpBomComparison.WindowTitle = McgWpfTools.GetStringResource("EDC_ErpCompWindowTitle");
                     CurrentItem.ErpBomComparison.PartNumber = CurrentItem.EcnWtPart.Number;
                     CurrentItem.ErpBomComparison.Description = $"{CurrentItem.EcnWtPart.Name} {CurrentItem.EcnWtPart.DescriptionEn2}";
                     CurrentItem.ErpBomComparison.XlsFileTemplateFullPath = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{EcnDataCheckConstants.ExcelTemplateEcnDataCheck}";
@@ -3272,7 +3278,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
 
                 if (CurrentExcel.OpenFile(templatePath) != ExcelStatus.OK)
                 {
-                    MessageBox.Show(String.Format(McgWpfTools.GetStringResource("BOM_ExportXlsIssue"), XlsFileName), "Excel Export Issue", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    MessageBox.Show(String.Format(McgWpfTools.GetStringResource("EDC_ExportXlsIssue"), XlsFileName), "Excel Export Issue", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                     return;
                 }
 
@@ -3337,7 +3343,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
 
                 if (CurrentExcel.SaveClose() != ExcelStatus.OK)
                 {
-                    MessageBox.Show(String.Format(McgWpfTools.GetStringResource("BOM_ExportXlsIssue"), XlsFileName), "Excel Export Issue", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    MessageBox.Show(String.Format(McgWpfTools.GetStringResource("EDC_ExportXlsIssue"), XlsFileName), "Excel Export Issue", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                     return;
                 }
 
@@ -3395,7 +3401,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             }
         }
 
-        private void UpdateDataCheckResultItemList()
+        private void UpdateDataCheckResultItemList(bool isSapBomUpdate = false)
         {
             try
             {
@@ -3428,16 +3434,18 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 // Show/hide Rename and Move tab
                 CurrentEcnDataCheckDataContext.ShowRenameTab = CurrentEcnDataCheckDataContext.RenameItemList.Any();
                 CurrentEcnDataCheckDataContext.ShowMoveTab = CurrentEcnDataCheckDataContext.MoveItemList.Any();
-
-                // Update Global Status
-                if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.ISSUE || item.BomPdmComparisonStatus == DataCheckStatus.ISSUE))
-                    CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.ISSUE;
-                else if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.WARNING || item.BomPdmComparisonStatus == DataCheckStatus.WARNING)
-                    && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.ISSUE)
-                    CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.WARNING;
-                else if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.OK || item.BomPdmComparisonStatus == DataCheckStatus.OK)
-                    && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.ISSUE && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.WARNING)
-                    CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.OK;
+                if (!isSapBomUpdate)
+                {
+                    // Update Global Status
+                    if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.ISSUE || item.BomPdmComparisonStatus == DataCheckStatus.ISSUE))
+                        CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.ISSUE;
+                    else if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.WARNING || item.BomPdmComparisonStatus == DataCheckStatus.WARNING)
+                        && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.ISSUE)
+                        CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.WARNING;
+                    else if (CurrentEcnDataCheckDataContext.DataCheckItemList.Concat(((EcnDataCheckDataContext)CurrentEcnDataCheckDataContext).OtherCheckItemList).Any((item) => item.MetaDataStatus == DataCheckStatus.OK || item.BomPdmComparisonStatus == DataCheckStatus.OK)
+                        && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.ISSUE && CurrentEcnDataCheckDataContext.GlobalStatus != DataCheckStatus.WARNING)
+                        CurrentEcnDataCheckDataContext.GlobalStatus = DataCheckStatus.OK;
+                }
             }
             catch (Exception ex)
             {

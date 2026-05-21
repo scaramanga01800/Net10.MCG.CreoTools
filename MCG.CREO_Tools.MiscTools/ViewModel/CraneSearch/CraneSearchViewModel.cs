@@ -479,7 +479,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
         #endregion
 
         #region [REGION] Read/update information in SQL Server DataBase
-        private void SearchSapCraneAsynch()
+        private async void SearchSapCraneAsynch()
         {
             try
             {
@@ -494,7 +494,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
                 //    RaiseCallCloseEvent();
                 //    return;
                 //}
-                List<SapGenericObject> craneList = _sapMaterialService.GetCraneUseFromNumbers(PartList);
+                var craneList =  _sapMaterialService.ZDTB_DIS_SELCODE(PartList);
+                //var craneList = await StaRunner.RunAsync(() => _sapMaterialService.ZDTB_DIS_SELCODEAsync(PartList));
+               
+                //List<SapGenericObject> craneList = _sapMaterialService.ZDTB_DIS_SELCODE(PartList);
                 //List<SapGenericObject> craneList = SAPTools.ZDTB_DIS_SELCODE(sapConnection, PartList);
                 if (craneList == null || craneList.Count == 0)
                 {
