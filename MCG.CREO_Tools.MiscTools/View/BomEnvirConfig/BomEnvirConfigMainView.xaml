@@ -1,0 +1,104 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.BomEnvirConfig.BomEnvirConfigMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.BomEnvirConfig"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource BEC_WindowTitle}"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/parameter.ico"
+                     Height="450" Width="800">
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="MouseEnter">
+            <behaviors:InvokeCommandAction Command="{Binding CommandUpdateActiveCadModel}"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png"/>
+            <BitmapImage x:Key="Help" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png" />
+            <BitmapImage x:Key="ASSEMBLY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Assembly_32x32.png" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False" >
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource BEC_RibGrpCreo}"
+                                       IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
+                    <Fluent:Button Command="{Binding CommandReadAsm}"
+                                   Header="{DynamicResource BEC_BtStart}"
+                                   LargeIcon="{StaticResource START}"
+                                   IsEnabled="{Binding CurrentDataContext.IsCreoEnable}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,0,0" Height="32">
+                        <Image Source="{StaticResource ASSEMBLY}" Margin="0,0,10,0"></Image>
+                        <TextBlock Text="{Binding CurrentDataContext.ActiveModelFileName, FallbackValue=Assembly}"
+                       VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                    <Fluent:TextBox Header="{DynamicResource BEC_AsmName}"
+                                    MaxWidth="250"
+                                    MinWidth="200"
+                                    Text="{Binding CurrentDataContext.AsmNameValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    </Fluent:TextBox>
+
+                    <Fluent:Button LargeIcon="{StaticResource UPDATE}"
+                                   Header="{DynamicResource BEC_BtUpdate}"
+                                   Command="{Binding CommandUpdateCadDoc}"
+                                   IsEnabled="{Binding CurrentDataContext.IsRenamedPossible}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button LargeIcon="{StaticResource Help}" 
+                                   Command="{Binding CommandOpenHelp}" 
+                                   Margin="5,0,5,0" />
+                </Fluent:RibbonGroupBox>
+
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid>
+            <DataGrid CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding CurrentDataContext.ListItem}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource BEC_Column_Number}" 
+                                    Binding="{Binding Number}" 
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource BEC_Column_CompNum}" 
+                                    Binding="{Binding CompOrder}"
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource BEC_Column_OldAsmName}" 
+                                    Binding="{Binding OldAsmName}"
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource BEC_Column_AsmName}" 
+                                    Binding="{Binding AsmName}"
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource BEC_Column_Comment}" 
+                                    Binding="{Binding Comment}"
+                                    IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Image  Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

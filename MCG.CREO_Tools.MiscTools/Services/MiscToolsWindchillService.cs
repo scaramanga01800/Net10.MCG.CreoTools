@@ -1,5 +1,6 @@
 ﻿using MCG.CommonLib.DataBaseAccess.Models.SapHupDbResult;
 using MCG.CREO_Tools.MiscTools.Interfaces;
+using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,17 +14,45 @@ namespace MCG.CREO_Tools.MiscTools.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private Window _CraneSearchMainView;
+        private Window _BomEnvirConfigMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
+        public void ShowBomEnvirConfigMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_BomEnvirConfigMainView != null && _BomEnvirConfigMainView.IsVisible)
+                {
+                    _BomEnvirConfigMainView.Activate();
+                    return;
+                }
+            }
+            _BomEnvirConfigMainView = _serviceProvider.GetRequiredService<BomEnvirConfigMainView>();
+            _BomEnvirConfigMainView.Show();
+        }
+        public void ShowDialogBomEnvirConfigMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_BomEnvirConfigMainView != null)
+                {
+                    _BomEnvirConfigMainView.Activate();
+                    return;
+                }
+            }
+            _BomEnvirConfigMainView = _serviceProvider.GetRequiredService<BomEnvirConfigMainView>();
+            _BomEnvirConfigMainView.ShowDialog();
+        }
+
         public void ShowCraneSearchMainView(List<string> listObject, bool isAlreadyCreated)
         {
             if (isAlreadyCreated)
             {
-                if (_CraneSearchMainView != null)
+                if (_CraneSearchMainView != null && _CraneSearchMainView.IsVisible)
                 {
                     _CraneSearchMainView.Activate();
                     return;
@@ -56,6 +85,15 @@ namespace MCG.CREO_Tools.MiscTools.Services
             var view = _serviceProvider.GetRequiredService<CraneSearchMainView>();
             ((CraneSearchMainView)view).SetCraneSearchViewModelProperties(listObject);
             view.ShowDialog();
+        }
+
+        public void closeBomEnvirConfigMainView()
+        {
+            if (_BomEnvirConfigMainView != null)
+            {
+                _BomEnvirConfigMainView.Close();
+                _BomEnvirConfigMainView = null;
+            }
         }
 
         public void closeCraneSearchMainView()
