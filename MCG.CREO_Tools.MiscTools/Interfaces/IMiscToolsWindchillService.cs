@@ -4,9 +4,13 @@
     {
         void closeBomEnvirConfigMainView();
         void closeCraneSearchMainView();
+        void closeCadAutoColorMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
-        void ShowDialogBomEnvirConfigMainView(bool isAlreadyCreated = false);
+        void ShowDialogBomEnvirConfigMainView();
+
+        void ShowCadAutoColorMainView(bool isAlreadyCreated = false);
+        void ShowDialogCadAutoColorMainView();
 
         void ShowAndExecuteCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
         void ShowCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
