@@ -2,11 +2,12 @@
 {
     public interface IMiscToolsWindchillService
     {
-        void closeBomEnvirConfigMainView();
-        void closeCraneSearchMainView();
-        void closeCadAutoColorMainView();
-        void closeCadDocRenameMainView();
-        void closeMechanismAnalysisMainView();
+        void CloseBomEnvirConfigMainView();
+        void CloseCraneSearchMainView();
+        void CloseCadAutoColorMainView();
+        void CloseCadDocRenameMainView();
+        void CloseMechanismAnalysisMainView();
+        void CloseNumberCumulationMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -23,5 +24,8 @@
 
         void ShowMechanismAnalysisMainView(bool isAlreadyCreated = false);
         void ShowDialogMechanismAnalysisMainView();
+
+        void ShowNumberCumulationMainView(bool isAlreadyCreated = false);
+        void ShowDialogNumberCumulationMainView();
     }
 }

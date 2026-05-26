@@ -1,0 +1,130 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.NumberCumulation.NumberCumulationMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.NumberCumulation"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource NBC_WindowTitle}" 
+                     Height="450" Width="800"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Cumulation.ico">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="CUMULATION" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Cumulation.ico"  />
+            <BitmapImage x:Key="LARGEDELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="COPY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/page_copy.png" />
+            <BitmapImage x:Key="PASTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/paste.gif" />
+            <BitmapImage x:Key="REMOVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource NBC_RibGrpData}">
+                    <Fluent:Button   Command="{Binding CommandRemoveAll}" 
+                     Margin="5,0,5,0"
+                     LargeIcon="{StaticResource LARGEDELETE}">
+                    </Fluent:Button>
+                    <StackPanel Orientation="Horizontal" Height="18">
+                        <Fluent:TextBox Header="{DynamicResource NBC_HeaderNumberOnly}"
+                                    Text="{Binding CurrentDataContext.CumulNumberOnly}"
+                                    Width="300"
+                                    IsReadOnly="True"></Fluent:TextBox>
+                        <Button Command="{Binding CommandCopy}" CommandParameter="ONLY">
+                            <Image Source="{StaticResource COPY}"></Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="18">
+                        <Fluent:TextBox Header="{DynamicResource NBC_HeaderNumberSuf}"
+                                    Text="{Binding CurrentDataContext.CumulNumberSuf}"
+                                    Width="300"
+                                    IsReadOnly="True"></Fluent:TextBox>
+                        <Button Command="{Binding CommandCopy}" CommandParameter="SUF">
+                            <Image Source="{StaticResource COPY}"></Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="18">
+                        <Fluent:TextBox Header="{DynamicResource NBC_HeaderNumberPre}"
+                                    Text="{Binding CurrentDataContext.CumulNumberPre}"
+                                    Width="300"
+                                    IsReadOnly="True"></Fluent:TextBox>
+                        <Button Command="{Binding CommandCopy}" CommandParameter="PRE">
+                            <Image Source="{StaticResource COPY}"></Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="18">
+                        <Fluent:TextBox Header="{DynamicResource NBC_HeaderNumberSufPre}"
+                                    Text="{Binding CurrentDataContext.CumulNumberSufPre}"
+                                    Width="300"
+                                    IsReadOnly="True"></Fluent:TextBox>
+                        <Button Command="{Binding CommandCopy}" CommandParameter="SUFPRE">
+                            <Image Source="{StaticResource COPY}"></Image>
+                        </Button>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="{DynamicResource NBC_RibGrpTools}">
+                    <Fluent:Button LargeIcon="{StaticResource HELP}"
+                               Command="{Binding CommandOpenHelp}"
+                               Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <DataGrid x:Name="DataGridItem"
+              AutoGenerateColumns="False"
+              CanUserAddRows="True" 
+              IsReadOnly="False"
+              SelectedItem="{Binding CurrentDataContext.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+              ItemsSource="{Binding CurrentDataContext.ListNumbers, Mode=TwoWay}">
+
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="LostFocus">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandUpdateNumberCumul}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="CellEditEnding">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandUpdateNumberCumul}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="CurrentCellChanged">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandUpdateNumberCumul}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="SelectedCellsChanged">
+                    <behaviors:InvokeCommandAction Command="{Binding CommandUpdateNumberCumul}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+
+            <DataGrid.ContextMenu>
+                <Fluent:ContextMenu>
+                    <Fluent:MenuItem Header="{DynamicResource NBC_MiPaste}" 
+                                 Command="{Binding CommandMenuItemPaste}">
+                        <Fluent:MenuItem.Icon>
+                            <Image Source="{StaticResource PASTE}"></Image>
+                        </Fluent:MenuItem.Icon>
+                    </Fluent:MenuItem>
+                    <Fluent:MenuItem Header="{DynamicResource NBC_MiRemove}" 
+                                 Command="{Binding CommandMenuRemoveItem}">
+                        <Fluent:MenuItem.Icon>
+                            <Image Source="{StaticResource REMOVE}"></Image>
+                        </Fluent:MenuItem.Icon>
+                    </Fluent:MenuItem>
+                </Fluent:ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource NBC_ColHeaderNumber}" 
+                                Binding="{Binding Number}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
+</Fluent:RibbonWindow>

@@ -4,6 +4,7 @@ using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
 using MCG.CREO_Tools.MiscTools.View.MechanismTool;
+using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -18,6 +19,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _CadAutoColorMainView;
         private Window _CadDocRenameMainView;
         private Window _MechanismAnalysisMainView;
+        private Window _NumberCumulationMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -137,7 +139,26 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _MechanismAnalysisMainView.ShowDialog();
         }
 
-        public void closeBomEnvirConfigMainView()
+        public void ShowNumberCumulationMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_NumberCumulationMainView != null && _NumberCumulationMainView.IsVisible)
+                {
+                    _NumberCumulationMainView.Activate();
+                    return;
+                }
+            }
+            _NumberCumulationMainView = _serviceProvider.GetRequiredService<NumberCumulationMainView>();
+            _NumberCumulationMainView.Show();
+        }
+        public void ShowDialogNumberCumulationMainView()
+        {
+            _NumberCumulationMainView = _serviceProvider.GetRequiredService<NumberCumulationMainView>();
+            _NumberCumulationMainView.ShowDialog();
+        }
+
+        public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
             {
@@ -145,7 +166,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _BomEnvirConfigMainView = null;
             }
         }
-        public void closeCadAutoColorMainView()
+        public void CloseCadAutoColorMainView()
         {
             if (_CadAutoColorMainView != null)
             {
@@ -153,7 +174,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _CadAutoColorMainView = null;
             }
         }
-        public void closeCadDocRenameMainView()
+        public void CloseCadDocRenameMainView()
         {
             if (_CadDocRenameMainView != null)
             {
@@ -161,7 +182,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _CadDocRenameMainView = null;
             }
         }
-        public void closeCraneSearchMainView()
+        public void CloseCraneSearchMainView()
         {
             if (_CraneSearchMainView != null)
             {
@@ -169,12 +190,20 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _CraneSearchMainView = null;
             }
         }
-        public void closeMechanismAnalysisMainView()
+        public void CloseMechanismAnalysisMainView()
         {
             if (_MechanismAnalysisMainView != null)
             {
                 _MechanismAnalysisMainView.Close();
                 _MechanismAnalysisMainView = null;
+            }
+        }
+        public void CloseNumberCumulationMainView()
+        {
+            if (_NumberCumulationMainView != null)
+            {
+                _NumberCumulationMainView.Close();
+                _NumberCumulationMainView = null;
             }
         }
     }
