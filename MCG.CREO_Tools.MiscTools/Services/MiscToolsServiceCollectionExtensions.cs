@@ -3,10 +3,12 @@ using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
+using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
 using MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch;
+using MCG.CREO_Tools.MiscTools.ViewModel.MechanismTool;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MCG.CREO_Tools.MiscTools.Services
@@ -29,6 +31,8 @@ namespace MCG.CREO_Tools.MiscTools.Services
             services.AddTransient<CraneSearchMainView>();
             services.AddTransient<CraneSearchViewModel>();
 
+            services.AddTransient<MechanismAnalysisMainView>();
+            services.AddTransient<MechanismAnalysisViewModel>();
 
             return services;
         }

@@ -8,9 +8,6 @@ using System.IO;
 
 namespace MCG.CREO_Tools.MiscTools.View.CadDocRename
 {
-    /// <summary>
-    /// Logique d'interaction pour CadDocRenameMainView.xaml
-    /// </summary>
     public partial class CadDocRenameMainView : RibbonWindow
     {
         public CadDocRenameViewModel CurrentDataContext { get; set; }

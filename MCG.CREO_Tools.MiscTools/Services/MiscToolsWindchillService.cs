@@ -3,6 +3,7 @@ using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
+using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -16,6 +17,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _BomEnvirConfigMainView;
         private Window _CadAutoColorMainView;
         private Window _CadDocRenameMainView;
+        private Window _MechanismAnalysisMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -116,6 +118,25 @@ namespace MCG.CREO_Tools.MiscTools.Services
             view.ShowDialog();
         }
 
+        public void ShowMechanismAnalysisMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_MechanismAnalysisMainView != null && _MechanismAnalysisMainView.IsVisible)
+                {
+                    _MechanismAnalysisMainView.Activate();
+                    return;
+                }
+            }
+            _MechanismAnalysisMainView = _serviceProvider.GetRequiredService<MechanismAnalysisMainView>();
+            _MechanismAnalysisMainView.Show();
+        }
+        public void ShowDialogMechanismAnalysisMainView()
+        {
+            _MechanismAnalysisMainView = _serviceProvider.GetRequiredService<MechanismAnalysisMainView>();
+            _MechanismAnalysisMainView.ShowDialog();
+        }
+
         public void closeBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
@@ -146,6 +167,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _CraneSearchMainView.Close();
                 _CraneSearchMainView = null;
+            }
+        }
+        public void closeMechanismAnalysisMainView()
+        {
+            if (_MechanismAnalysisMainView != null)
+            {
+                _MechanismAnalysisMainView.Close();
+                _MechanismAnalysisMainView = null;
             }
         }
     }

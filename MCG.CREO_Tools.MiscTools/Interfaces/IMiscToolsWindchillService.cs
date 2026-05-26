@@ -5,6 +5,8 @@
         void closeBomEnvirConfigMainView();
         void closeCraneSearchMainView();
         void closeCadAutoColorMainView();
+        void closeCadDocRenameMainView();
+        void closeMechanismAnalysisMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -14,10 +16,12 @@
 
         void ShowCadDocRenameMainView(bool isAlreadyCreated = false);
         void ShowDialogCadDocRenameMainView();
-        void closeCadDocRenameMainView();
 
         void ShowAndExecuteCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
         void ShowCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
         void ShowDialogCraneSearchMainView(List<string> listObject);
+
+        void ShowMechanismAnalysisMainView(bool isAlreadyCreated = false);
+        void ShowDialogMechanismAnalysisMainView();
     }
 }
