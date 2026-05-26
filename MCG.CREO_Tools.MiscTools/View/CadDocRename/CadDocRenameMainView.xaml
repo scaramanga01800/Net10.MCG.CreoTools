@@ -1,0 +1,114 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.CadDocRename.CadDocRenameMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.CadDocRename"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource CDR_WindowTitle}" 
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CadRename.png"
+                     Height="450" Width="800">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png"/>
+            <BitmapImage x:Key="Help" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="ProgressBar"                                     
+                                  HorizontalAlignment="Right"
+                                  Margin="0,0,5,0">
+                <ProgressBar Height="18"
+                             Width="250"
+                             Maximum="{Binding CurrentDataContext.NbModels}" 
+                             Value="{Binding CurrentDataContext.NbModelsInProgress}"
+                             Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}}">
+                    <ProgressBar.ToolTip>
+                        <StackPanel  Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.NbModelsInProgress}"></TextBlock>
+                            <TextBlock Text="/"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.NbModels}"></TextBlock>
+                        </StackPanel>
+                    </ProgressBar.ToolTip>
+                </ProgressBar>
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <Fluent:Ribbon DockPanel.Dock="Top" 
+                       AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}" >
+                    <Fluent:Button Command="{Binding CommandReadAsm}"
+                                   Header="{DynamicResource CDR_BtStart}"
+                                   LargeIcon="{StaticResource START}"
+                                   IsEnabled="{Binding CurrentDataContext.IsCreoConnected}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+
+                    <Fluent:TextBox Header="{DynamicResource CDR_AsmNunmber}"
+                                    Width="160"
+                                    MaxWidth="160"
+                                    Text="{Binding CurrentDataContext.CadNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    </Fluent:TextBox>
+                    <Fluent:ComboBox Header="{DynamicResource CDR_LeadingZero}"
+                                     Width="160"
+                                     SelectedItem="{Binding CurrentDataContext.SelectedLeadingZero, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     ItemsSource="{Binding CurrentDataContext.ListLeadingZero}">
+                        <Fluent:ComboBox.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource CDR_LeadingZero}" 
+                                              Text="{DynamicResource CDR_ToolTipLeadingZero}"/>
+                        </Fluent:ComboBox.ToolTip>
+                    </Fluent:ComboBox>
+
+                    <Fluent:Button LargeIcon="{StaticResource UPDATE}"
+                                   Header="{DynamicResource CDR_BtUpdate}"
+                                   Command="{Binding CommandRenameCadDoc}"
+                                   IsEnabled="{Binding CurrentDataContext.IsRenamedPossible}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button LargeIcon="{StaticResource Help}" 
+                                   Command="{Binding CommandOpenHelp}" 
+                                   Margin="5,0,5,0" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid>
+
+            <DataGrid CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding CurrentDataContext.ListItem}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource CDR_Column_OldNumber}" 
+                                    Binding="{Binding OldNumber}" 
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource CDR_Column_NewNumber}" 
+                                    Binding="{Binding NewNumber}"
+                                    IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource CDR_Column_Comment}" 
+                                    Binding="{Binding Comment}"
+                                    IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Image  Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

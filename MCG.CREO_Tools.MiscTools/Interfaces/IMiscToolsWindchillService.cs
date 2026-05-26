@@ -12,6 +12,10 @@
         void ShowCadAutoColorMainView(bool isAlreadyCreated = false);
         void ShowDialogCadAutoColorMainView();
 
+        void ShowCadDocRenameMainView(bool isAlreadyCreated = false);
+        void ShowDialogCadDocRenameMainView();
+        void closeCadDocRenameMainView();
+
         void ShowAndExecuteCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
         void ShowCraneSearchMainView(List<string> listObject, bool isAlreadyCreated);
         void ShowDialogCraneSearchMainView(List<string> listObject);

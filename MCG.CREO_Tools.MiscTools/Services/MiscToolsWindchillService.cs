@@ -1,12 +1,10 @@
-﻿using MCG.CommonLib.DataBaseAccess.Models.SapHupDbResult;
-using MCG.CREO_Tools.MiscTools.Interfaces;
+﻿using MCG.CREO_Tools.MiscTools.Interfaces;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
+using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using System.Windows;
 
 namespace MCG.CREO_Tools.MiscTools.Services
@@ -17,6 +15,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _CraneSearchMainView;
         private Window _BomEnvirConfigMainView;
         private Window _CadAutoColorMainView;
+        private Window _CadDocRenameMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -42,7 +41,6 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _BomEnvirConfigMainView.ShowDialog();
         }
 
-
         public void ShowCadAutoColorMainView(bool isAlreadyCreated = false)
         {
             if (isAlreadyCreated)
@@ -62,6 +60,25 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _CadAutoColorMainView.ShowDialog();
         }
 
+        public void ShowCadDocRenameMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_CadDocRenameMainView != null && _CadDocRenameMainView.IsVisible)
+                {
+                    _CadDocRenameMainView.Activate();
+                    return;
+                }
+            }
+            _CadDocRenameMainView = _serviceProvider.GetRequiredService<CadDocRenameMainView>();
+            _CadDocRenameMainView.Show();
+        }
+        public void ShowDialogCadDocRenameMainView()
+        {
+            _CadDocRenameMainView = _serviceProvider.GetRequiredService<CadDocRenameMainView>();
+            _CadDocRenameMainView.ShowDialog();
+        }
+
         public void ShowCraneSearchMainView(List<string> listObject, bool isAlreadyCreated)
         {
             if (isAlreadyCreated)
@@ -76,7 +93,6 @@ namespace MCG.CREO_Tools.MiscTools.Services
             ((CraneSearchMainView)_CraneSearchMainView).SetCraneSearchViewModelProperties(listObject);
             _CraneSearchMainView.Show();
         }
-
         public void ShowAndExecuteCraneSearchMainView(List<string> listObject, bool isAlreadyCreated)
         {
             if (isAlreadyCreated)
@@ -93,7 +109,6 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _CraneSearchMainView.Show();
             ((CraneSearchMainView)_CraneSearchMainView).CurrentDataContext.CommandSearchSapCrane.Execute(null);
         }
-
         public void ShowDialogCraneSearchMainView(List<string> listObject)
         {
             var view = _serviceProvider.GetRequiredService<CraneSearchMainView>();
@@ -109,7 +124,6 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _BomEnvirConfigMainView = null;
             }
         }
-
         public void closeCadAutoColorMainView()
         {
             if (_CadAutoColorMainView != null)
@@ -118,7 +132,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
                 _CadAutoColorMainView = null;
             }
         }
-
+        public void closeCadDocRenameMainView()
+        {
+            if (_CadDocRenameMainView != null)
+            {
+                _CadDocRenameMainView.Close();
+                _CadDocRenameMainView = null;
+            }
+        }
         public void closeCraneSearchMainView()
         {
             if (_CraneSearchMainView != null)

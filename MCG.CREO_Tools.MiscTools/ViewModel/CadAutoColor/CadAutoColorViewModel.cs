@@ -32,7 +32,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr
         #region [REGION] Internal variables
         private string MainAppFolder { get; set; }
         private string AppearanceFileName { get; set; }
-        // private CREOConnection CurrentCREOConnection { get; set; } = McgMiscTools.GetPropertiesFromMainApp<CREOConnection>("CREOSESSION");
         private IpfcModel CurrentCadModel { get; set; }
         public bool IsMainClearAppearancesDone { get; set; } = false;
         private Dispatcher MainDispatcher { get; set; }
@@ -83,8 +82,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
 
-                //AppearanceFileName = $"{MainAppFolder}\\{McgMiscTools.GetAppSetting(this, "ResourcesFolder")}\\{McgMiscTools.GetAppSetting(this, "AppearanceFileName")}";
-
                 CurrentDataContext = new CadAutoColorDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
 
@@ -92,7 +89,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr
                 CurrentDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentDataContext.IsCreoEnable = e;
 
-                List<McgAppearanceItem> ListAppearances;// = McgMiscTools.GetListAppearancesFromFile(AppearanceFileName);
+                List<McgAppearanceItem> ListAppearances;
 
                 AppearanceFileName = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.AppearanceFileName01}";
                 ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);

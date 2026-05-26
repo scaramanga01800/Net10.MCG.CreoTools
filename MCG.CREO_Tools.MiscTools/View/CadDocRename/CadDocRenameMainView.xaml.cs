@@ -3,35 +3,24 @@ using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
-using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
-using System;
-using System.Collections.Generic;
+using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
 using System.IO;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace MCG.CREO_Tools.MiscTools.View.BomEnvirConfig
+namespace MCG.CREO_Tools.MiscTools.View.CadDocRename
 {
     /// <summary>
-    /// Logique d'interaction pour BomEnvirConfigMainView.xaml
+    /// Logique d'interaction pour CadDocRenameMainView.xaml
     /// </summary>
-    public partial class BomEnvirConfigMainView : RibbonWindow
+    public partial class CadDocRenameMainView : RibbonWindow
     {
-        public BomEnvirConfigViewModel CurrentDataContext { get; set; }
+        public CadDocRenameViewModel CurrentDataContext { get; set; }
 
-        public BomEnvirConfigMainView(BomEnvirConfigViewModel currentViewModel)
+        public CadDocRenameMainView(CadDocRenameViewModel currentViewModel)
         {
             try
             {
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
-                TraceLog.AddTraceLog($"BomEnvirConfigViewModel: Local App Directory {MainAppFolder}");
+                TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 
                 if (MainAppFolder == null || MainAppFolder == "" || !Directory.Exists(MainAppFolder))
                     MainAppFolder = CommonLibConstants.MainAppFolder;
