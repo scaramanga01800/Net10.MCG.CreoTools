@@ -100,7 +100,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename
         {
             try
             {
-                McgFileAndSystemTools.OpenSharePointDocument(McgMiscTools.GetStringResource("CDR_UserGuide"));
+                McgFileAndSystemTools.OpenSharePointDocument(McgWpfTools.GetStringResource("CDR_UserGuide"));
             }
             catch (Exception ex)
             {

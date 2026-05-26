@@ -1,0 +1,120 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.QuickChange.QuickChangeMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.QuickChange"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Exchange.ico"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource QCH_WindowTitle}" 
+                     Height="450" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png"/>
+            <BitmapImage x:Key="EXIT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel_32x32.png" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="ProgressBar"                                     
+                              HorizontalAlignment="Right"
+                              Margin="0,0,5,0">
+                <ProgressBar Height="18"
+                         Width="250"
+                         Maximum="{Binding CurrentDataContext.NbModels}" 
+                         Value="{Binding CurrentDataContext.NbModelsInProgress}"
+                         Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}}">
+                    <ProgressBar.ToolTip>
+                        <StackPanel  Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.NbModelsInProgress}"></TextBlock>
+                            <TextBlock Text="/"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.NbModels}"></TextBlock>
+                        </StackPanel>
+                    </ProgressBar.ToolTip>
+                </ProgressBar>
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False" >
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource QCH_RibGrpCreo}"
+                                   IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
+                    <Fluent:Button Command="{Binding CommandReadAsm}"
+                               Header="{DynamicResource QCH_BtStart}"
+                               LargeIcon="{StaticResource START}"
+                               IsEnabled="{Binding CurrentDataContext.IsCreoEnable}"
+                               Margin="5,0,5,0">
+                    </Fluent:Button>
+                    <Fluent:CheckBox IsChecked="{Binding CurrentDataContext.AllLevel, UpdateSourceTrigger=Default, Mode=TwoWay}"
+                                 Header="{DynamicResource QCH_CbAllLevel}">
+                        <Fluent:CheckBox.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource QCH_CbAllLevel}" 
+                                          Text="{DynamicResource QCH_CbToolTipAllLevel}"/>
+                        </Fluent:CheckBox.ToolTip>
+                    </Fluent:CheckBox>
+                    <!--<Fluent:Button Command="{Binding CommandReplaceComponent}"
+                               Header="{DynamicResource QCH_BtReplaceComponent}"
+                               LargeIcon="{StaticResource START}"
+                               IsEnabled="{Binding CurrentDataContext.IsCreoEnable}"
+                               Margin="5,0,5,0">
+                </Fluent:Button>-->
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource QCH_RibGrpTools}">
+                    <Fluent:Button LargeIcon="{StaticResource EXCEL}"
+                               IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartExcelExport}"
+                               Header="{DynamicResource QCH_BtAsmExport}"></Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource HELP}"
+                               Command="{Binding CommandOpenHelp}"
+                               Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid>
+            <DataGrid ItemsSource="{Binding CurrentDataContext.ListItem}"
+                  x:Name="DgPartsMaterial"
+                  IsReadOnly="False" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource QCH_ColLevel}"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Level}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource QCH_ColCurrentNumber}"
+                                    IsReadOnly="True"
+                                    Binding="{Binding CurrentNumber}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource QCH_ColNewNumber}"
+                                    IsReadOnly="True"
+                                    Binding="{Binding NewNumber}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource QCH_ColNbInstance}"
+                                    IsReadOnly="True"
+                                    Binding="{Binding NbInstance}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="{DynamicResource QCH_ColParentNumber}"
+                                    IsReadOnly="True"
+                                    Binding="{Binding ParentNumber}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Image  Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

@@ -5,6 +5,7 @@ using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
 using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
+using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -20,6 +21,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _CadDocRenameMainView;
         private Window _MechanismAnalysisMainView;
         private Window _NumberCumulationMainView;
+        private Window _QuickChangeMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -158,6 +160,25 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _NumberCumulationMainView.ShowDialog();
         }
 
+        public void ShowQuickChangeMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_QuickChangeMainView != null && _QuickChangeMainView.IsVisible)
+                {
+                    _QuickChangeMainView.Activate();
+                    return;
+                }
+            }
+            _QuickChangeMainView = _serviceProvider.GetRequiredService<QuickChangeMainView>();
+            _QuickChangeMainView.Show();
+        }
+        public void ShowDialogQuickChangeMainView()
+        {
+            _QuickChangeMainView = _serviceProvider.GetRequiredService<QuickChangeMainView>();
+            _QuickChangeMainView.ShowDialog();
+        }
+
         public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
@@ -204,6 +225,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _NumberCumulationMainView.Close();
                 _NumberCumulationMainView = null;
+            }
+        }
+        public void CloseQuickChangeMainView()
+        {
+            if (_QuickChangeMainView != null)
+            {
+                _QuickChangeMainView.Close();
+                _QuickChangeMainView = null;
             }
         }
     }

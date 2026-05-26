@@ -8,6 +8,7 @@
         void CloseCadDocRenameMainView();
         void CloseMechanismAnalysisMainView();
         void CloseNumberCumulationMainView();
+        void CloseQuickChangeMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -27,5 +28,8 @@
 
         void ShowNumberCumulationMainView(bool isAlreadyCreated = false);
         void ShowDialogNumberCumulationMainView();
+
+        void ShowQuickChangeMainView(bool isAlreadyCreated = false);
+        void ShowDialogQuickChangeMainView();
     }
 }

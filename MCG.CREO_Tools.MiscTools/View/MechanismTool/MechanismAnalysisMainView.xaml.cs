@@ -16,7 +16,7 @@ namespace MCG.CREO_Tools.MiscTools.View.MechanismTool
             try
             {
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
-                TraceLog.AddTraceLog($"CraneSearchMainView: Local App Directory {MainAppFolder}");
+                TraceLog.AddTraceLog($"MechanismAnalysisMainView: Local App Directory {MainAppFolder}");
 
                 if (MainAppFolder == null || MainAppFolder == "" || !Directory.Exists(MainAppFolder))
                     MainAppFolder = CommonLibConstants.MainAppFolder;
