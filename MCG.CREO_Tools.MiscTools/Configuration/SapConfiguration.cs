@@ -1,5 +1,5 @@
 ﻿using MCG.CommonLib.Models.SAP;
-using MCG.CREO_Tools.MiscTools.ViewModel.Models;
+using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport;
 
 namespace MCG.CREO_Tools.MiscTools.Configuration
 {

@@ -6,6 +6,7 @@ using MCG.CREO_Tools.MiscTools.View.CraneSearch;
 using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.View.QuickChange;
+using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -22,6 +23,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _MechanismAnalysisMainView;
         private Window _NumberCumulationMainView;
         private Window _QuickChangeMainView;
+        private Window _SapBomExportMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -179,6 +181,25 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _QuickChangeMainView.ShowDialog();
         }
 
+        public void ShowSapBomExportMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_SapBomExportMainView != null && _SapBomExportMainView.IsVisible)
+                {
+                    _SapBomExportMainView.Activate();
+                    return;
+                }
+            }
+            _SapBomExportMainView = _serviceProvider.GetRequiredService<SapBomExportMainView>();
+            _SapBomExportMainView.Show();
+        }
+        public void ShowDialogSapBomExportMainView()
+        {
+            _SapBomExportMainView = _serviceProvider.GetRequiredService<SapBomExportMainView>();
+            _SapBomExportMainView.ShowDialog();
+        }
+
         public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
@@ -233,6 +254,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _QuickChangeMainView.Close();
                 _QuickChangeMainView = null;
+            }
+        }
+        public void CloseSapBomExportMainView()
+        {
+            if (_SapBomExportMainView != null)
+            {
+                _SapBomExportMainView.Close();
+                _SapBomExportMainView = null;
             }
         }
     }

@@ -9,6 +9,7 @@
         void CloseMechanismAnalysisMainView();
         void CloseNumberCumulationMainView();
         void CloseQuickChangeMainView();
+        void CloseSapBomExportMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -31,5 +32,8 @@
 
         void ShowQuickChangeMainView(bool isAlreadyCreated = false);
         void ShowDialogQuickChangeMainView();
+
+        void ShowSapBomExportMainView(bool isAlreadyCreated = false);
+        void ShowDialogSapBomExportMainView();
     }
 }

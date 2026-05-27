@@ -8,7 +8,7 @@ using MCG.CommonLib.DataBaseAccess.Models.SapHupDb;
 using MCG.CommonLib.DataBaseAccess.Services;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
-using MCG.CommonLib.SapTools.Services;
+using MCG.CommonLib.SapTools.Interfaces;
 using MCG.CommonLib.Services;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;

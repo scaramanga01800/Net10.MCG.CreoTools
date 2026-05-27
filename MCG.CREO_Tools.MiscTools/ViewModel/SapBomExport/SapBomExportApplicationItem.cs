@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MCG.CREO_Tools.MiscTools.View.Interfaces;
+using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 
-namespace MCG.CREO_Tools.MiscTools.ViewModel.Models
+namespace MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport
 {
     public class SapBomExportApplicationItem:ObservableObject, ISapBomExportApplicationItem
     {

@@ -1,7 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.DataBaseAccess.Interfaces;
-using MCG.CommonLib.SapTools.Services;
+using MCG.CommonLib.SapTools.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.PurchaseOrderFollowUp.Configuration;

@@ -37,4 +37,8 @@
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.WindchillRequestTool\MCG.WindchillRequestTool.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
