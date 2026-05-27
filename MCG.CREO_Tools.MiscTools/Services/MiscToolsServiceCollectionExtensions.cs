@@ -7,6 +7,7 @@ using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using MCG.CREO_Tools.MiscTools.View.SapBomExport;
+using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
@@ -15,6 +16,7 @@ using MCG.CREO_Tools.MiscTools.ViewModel.MechanismTool;
 using MCG.CREO_Tools.MiscTools.ViewModel.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.ViewModel.QuickChange;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport;
+using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExportAllLevel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MCG.CREO_Tools.MiscTools.Services
@@ -48,6 +50,9 @@ namespace MCG.CREO_Tools.MiscTools.Services
 
             services.AddTransient<SapBomExportMainView>();
             services.AddTransient<SapBomExportViewModel>();
+
+            services.AddTransient<SapBomExportAllLevelMainView>();
+            services.AddTransient<SapBomExportAllLevelViewModel>();
 
             return services;
         }

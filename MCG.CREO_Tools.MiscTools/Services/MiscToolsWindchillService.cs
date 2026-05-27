@@ -7,6 +7,7 @@ using MCG.CREO_Tools.MiscTools.View.MechanismTool;
 using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using MCG.CREO_Tools.MiscTools.View.SapBomExport;
+using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -24,6 +25,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _NumberCumulationMainView;
         private Window _QuickChangeMainView;
         private Window _SapBomExportMainView;
+        private Window _SapBomExportAllLevelMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -200,6 +202,25 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _SapBomExportMainView.ShowDialog();
         }
 
+        public void ShowSapBomExportAllLevelMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_SapBomExportAllLevelMainView != null && _SapBomExportAllLevelMainView.IsVisible)
+                {
+                    _SapBomExportAllLevelMainView.Activate();
+                    return;
+                }
+            }
+            _SapBomExportAllLevelMainView = _serviceProvider.GetRequiredService<SapBomExportAllLevelMainView>();
+            _SapBomExportAllLevelMainView.Show();
+        }
+        public void ShowDialogSapBomExportAllLevelMainView()
+        {
+            _SapBomExportAllLevelMainView = _serviceProvider.GetRequiredService<SapBomExportAllLevelMainView>();
+            _SapBomExportAllLevelMainView.ShowDialog();
+        }
+
         public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
@@ -262,6 +283,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _SapBomExportMainView.Close();
                 _SapBomExportMainView = null;
+            }
+        }
+        public void CloseSapBomExportAllLevelMainView()
+        {
+            if (_SapBomExportAllLevelMainView != null)
+            {
+                _SapBomExportAllLevelMainView.Close();
+                _SapBomExportAllLevelMainView = null;
             }
         }
     }

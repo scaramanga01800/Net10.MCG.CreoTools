@@ -10,6 +10,7 @@
         void CloseNumberCumulationMainView();
         void CloseQuickChangeMainView();
         void CloseSapBomExportMainView();
+        void CloseSapBomExportAllLevelMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -35,5 +36,8 @@
 
         void ShowSapBomExportMainView(bool isAlreadyCreated = false);
         void ShowDialogSapBomExportMainView();
+
+        void ShowSapBomExportAllLevelMainView(bool isAlreadyCreated = false);
+        void ShowDialogSapBomExportAllLevelMainView();
     }
 }
