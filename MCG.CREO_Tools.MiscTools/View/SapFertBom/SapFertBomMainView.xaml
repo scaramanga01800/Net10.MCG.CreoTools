@@ -1,0 +1,151 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.SapFertBom.SapFertBomMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.SapFertBom"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:MCGLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource SFB_WindowTitle}" 
+                     Height="850" Width="800"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP_FERT.ico">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/SAP_BOM_32x32.png"/>
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_Update.ico"/>
+            <BitmapImage x:Key="CHECK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_part.ico"/>
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico"/>
+            <BitmapImage x:Key="EXIT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource SFB_GrpData}"
+                                   IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
+                    <StackPanel MinWidth="220"
+                            Margin="2,0,2,0">
+                        <Fluent:TextBox Header="{DynamicResource SFB_FertPart}"
+                                    Text="{Binding CurrentDataContext.FertNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                        <Fluent:ComboBox Header="{DynamicResource SFB_LbPlant}"
+                                     IsEditable="False"
+                                     ItemsSource="{Binding CurrentDataContext.AllSapPlants}"
+                                     SelectedItem="{Binding CurrentDataContext.Plant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource SFB_GrpSap}"
+                                   IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
+                    <Fluent:Button Command="{Binding CommandStartSapBomExport}" 
+                               Margin="5,0,5,0"
+                               Header="{DynamicResource SFB_LabelBtExport}"
+                               LargeIcon="{StaticResource SAP}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SFB_LabelBtExport}" 
+                              Image="{StaticResource SAP}"
+                              Text="{DynamicResource SFB_ToolTipBtExport}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Command="{Binding CommandStartImportExcel}" 
+                               Margin="5,0,5,0"
+                               Header="{DynamicResource SFB_LabelBtImportXls}"
+                               LargeIcon="{StaticResource EXCEL}">
+                        <Fluent:Button.ToolTip>
+                            <ToolTip Placement="Bottom"
+                                 VerticalOffset="27">
+                                <DockPanel>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                                         HasTwoLines="False"
+                                                         FontWeight="Bold"
+                                                         Text="{DynamicResource SFB_LabelBtImportXls}"></Fluent:TwoLineLabel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <Image Height="48"
+                                               Source="{StaticResource EXCEL}"></Image>
+                                            <StackPanel Margin="10,0,0,0"
+                                                    HorizontalAlignment="Left">
+                                                <Fluent:TwoLineLabel Text="{DynamicResource SFB_ToolTipBtImportXls}" HasTwoLines="True"
+                                                                 HorizontalAlignment="Left"
+                                                                 HorizontalContentAlignment="Left"></Fluent:TwoLineLabel>
+                                                <Fluent:TwoLineLabel Text="{DynamicResource SFB_ToolTipBtImportXls2}" HasTwoLines="True"
+                                                                 HorizontalAlignment="Left"
+                                                                 HorizontalContentAlignment="Left"></Fluent:TwoLineLabel>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                    </DockPanel>
+                                    <DataGrid ItemsSource="{Binding CurrentDataContext.BomCopyExample}"
+                                          Margin="0,3,0,0">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn CanUserReorder="False" Binding="{Binding PartNumber}"  Header="{DynamicResource SFB_ColHeader01}"/>
+                                            <DataGridTextColumn CanUserReorder="False" Binding="{Binding LineNumberBom1}"  Header="{DynamicResource SFB_ColHeader03}" />
+                                            <DataGridTextColumn CanUserReorder="False" Binding="{Binding QtyBom1}"  Header="{DynamicResource SFB_ColHeader04}"/>
+                                            <DataGridTextColumn CanUserReorder="False" Binding="{Binding Description}"  Header="{DynamicResource SFB_ColHeader13}" />
+                                            <DataGridTextColumn CanUserReorder="False" Binding="{Binding Description}"  Header="{DynamicResource SFB_ColHeader14}" />
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
+                                </DockPanel>
+                            </ToolTip>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Command="{Binding CommandStartCheckPartSap}" 
+                               Margin="5,0,5,0"
+                               Header="{DynamicResource SFB_LabelBtCheckPart}"
+                               LargeIcon="{StaticResource CHECK}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SFB_LabelBtCheckPart}" 
+                              Image="{StaticResource CHECK}"
+                              Text="{DynamicResource SFB_ToolTipBtCheckPart}" />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Command="{Binding CommandStartUpdateBomSap}" 
+                               Margin="5,0,5,0"
+                               Header="{DynamicResource SFB_LabelBtUpdateBom}"
+                               LargeIcon="{StaticResource UPDATE}">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SFB_LabelBtUpdateBom}" 
+                              Image="{StaticResource UPDATE}"
+                              Text="{DynamicResource SFB_ToolTipBtUpdateBom}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Command="{Binding CommandOpenHelp}" 
+                               Margin="5,0,5,0"
+                               LargeIcon="{StaticResource HELP}">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+            <local:SapFertBomComparisonView  DataContext="{Binding CurrentDataContext.BomComparison}"></local:SapFertBomComparisonView>
+            <Image  Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+        </Grid>
+
+    </DockPanel>
+</Fluent:RibbonWindow>

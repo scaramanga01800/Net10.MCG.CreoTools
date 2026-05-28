@@ -1,0 +1,458 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.WebtermRequest.WebtermRequestMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.WebtermRequest"
+                     xmlns:localvm="clr-namespace:MCG.CREO_Tools.MiscTools.ViewModel.WebtermRequest"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:MCGLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource WTR_WebtermRequestTitle}" 
+                     Height="500" Width="1150"
+                     AllowDrop="True"
+                     Drop="MainSP_Drop"
+                     DragEnter="MainSP_DragEnter"
+                     DragLeave="MainSP_DragLeave"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WebTerm.png">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Drop">
+            <behaviors:InvokeCommandAction Command="{Binding CommandDrop}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="SEND" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/send_mail.ico"  />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <ObjectDataProvider x:Key="DataUnitEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="localvm:WebtermRequestUnitEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="DataQualInspGrpEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="localvm:WebtermRequestQualInspGrpEnum"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource WTR_RibGrpData}">
+                    <Fluent:Button Command="{Binding CommandSendRequest}" 
+                               Margin="5,0,5,0"
+                               Header="{DynamicResource WTR_BtSendRquest}"
+                               LargeIcon="{StaticResource SEND}">
+                    </Fluent:Button>
+                    <Fluent:Button   Command="{Binding CommandOpenHelp}" 
+                     Margin="5,0,5,0"
+                     LargeIcon="{StaticResource HELP}">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid>
+            <DockPanel>
+                <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                 HasTwoLines="False"
+                                 Text="{DynamicResource WTR_LabelMainData}"
+                                 FontSize="20"
+                                 HorizontalAlignment="Center"></Fluent:TwoLineLabel>
+                <StackPanel Orientation="Horizontal" 
+                        DockPanel.Dock="Top">
+                    <Fluent:ComboBox Header="{DynamicResource WTR_LabelQualInspGrp}"
+                                 ItemsSource="{Binding Source={StaticResource DataQualInspGrpEnum}}"
+                                 SelectedIndex="0"
+                                 SelectedItem="{Binding CurrentDataContext.CurrentRequest.QualInspGrp}"
+                                 IsEditable="False"></Fluent:ComboBox>
+                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                     Text="*"
+                                     Foreground="Red"
+                                     FontSize="20"></Fluent:TwoLineLabel>
+                    <Fluent:ComboBox Header="{DynamicResource WTR_LabelDefaultUnit}"
+                                 ItemsSource="{Binding Source={StaticResource DataUnitEnum}}"
+                                 SelectedIndex="0"
+                                 IsEditable="False"
+                                 SelectedItem="{Binding CurrentDataContext.CurrentRequest.DefaulUnit}"></Fluent:ComboBox>
+                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                     Text="*"
+                                     Foreground="Red"
+                                     FontSize="20"></Fluent:TwoLineLabel>
+                    <Fluent:TextBox Header="{DynamicResource WTR_LabelMinMass}"
+                                Text="{Binding CurrentDataContext.CurrentRequest.MinMass, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                     Text="*"
+                                     Foreground="Red"
+                                     FontSize="20"></Fluent:TwoLineLabel>
+                    <Fluent:TextBox Header="{DynamicResource WTR_LabelMaxMass}"
+                                Text="{Binding CurrentDataContext.CurrentRequest.MaxMass, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                     Text="*"
+                                     Foreground="Red"
+                                     FontSize="20"></Fluent:TwoLineLabel>
+                </StackPanel>
+                <Grid Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Column="0" 
+                           Background="{DynamicResource PdmColor}"
+                           Margin="3,0,3,0">
+                        <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                         Text="{DynamicResource WTR_LabelEnglish}"
+                                         HasTwoLines="False"
+                                         FontSize="20"
+                                         HorizontalAlignment="Center"/>
+                        <StackPanel Margin="5,0,5,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Fluent:TextBox Grid.Column="0" Header="{DynamicResource WTR_LabelTerm}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermEn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            HorizontalAlignment="Stretch" />
+
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <StackPanel >
+                                <Fluent:TwoLineLabel HasTwoLines="False" 
+                                             Text="{DynamicResource WTR_LabelDescription}" 
+                                             HorizontalAlignment="Center" 
+                                             VerticalAlignment="Center" ></Fluent:TwoLineLabel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Height="80" 
+                                         Background="{DynamicResource IdealBackgroundColor}"
+                                         Foreground="{DynamicResource IdealForegroundColor}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                         Text="{Binding CurrentDataContext.CurrentRequest.DescriptionEn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         AcceptsReturn="True"/>
+
+                                    <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                     Text="*"
+                                                     Foreground="Red"
+                                                     FontSize="20"
+                                                     VerticalAlignment="Center" />
+                                </Grid>
+                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:ComboBox Header="{DynamicResource WTR_LabelClass}"
+                                             DisplayMemberPath="NameEn"
+                                             ItemsSource="{Binding CurrentDataContext.ListClass}"
+                                             IsEditable="False"
+                                             SelectedItem="{Binding CurrentDataContext.CurrentRequest.SelectedClass, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                                             SelectedIndex="{Binding CurrentDataContext.CurrentRequest.SelectedClassIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <behaviors:Interaction.Triggers>
+                                        <behaviors:EventTrigger EventName="DropDownOpened">
+                                            <behaviors:InvokeCommandAction Command="{Binding CommandStartClassOrder}" CommandParameter="En"></behaviors:InvokeCommandAction>
+                                        </behaviors:EventTrigger>
+                                    </behaviors:Interaction.Triggers>
+                                </Fluent:ComboBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermUpperCase}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermUpperCaseEn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermAbbreviation}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermAbbrevitationEn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttribute}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.AttributeEn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttributeExample}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.AttributeExampleEn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                        </StackPanel>
+                    </DockPanel>
+                    <DockPanel Grid.Column="1" 
+                           Background="{DynamicResource PdmColor}"
+                           Margin="3,0,3,0">
+                        <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                         Text="{DynamicResource WTR_LabelFrench}"
+                                         HasTwoLines="False"
+                                         FontSize="20"
+                                         HorizontalAlignment="Center"/>
+                        <StackPanel  Margin="5,0,5,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTerm}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermFr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <StackPanel >
+                                <Fluent:TwoLineLabel HasTwoLines="False" 
+                                                 Text="{DynamicResource WTR_LabelDescription}" 
+                                                 HorizontalAlignment="Center" 
+                                                 VerticalAlignment="Center" ></Fluent:TwoLineLabel>
+                                <TextBox Height="80" 
+                                     Background="{DynamicResource IdealBackgroundColor}"
+                                     Foreground="{DynamicResource IdealForegroundColor}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                     Text="{Binding CurrentDataContext.CurrentRequest.DescriptionFr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     AcceptsReturn="True"/>
+                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:ComboBox Header="{DynamicResource WTR_LabelClass}"
+                                             DisplayMemberPath="NameFr"
+                                             ItemsSource="{Binding CurrentDataContext.ListClass}"
+                                             IsEditable="False"
+                                             SelectedItem="{Binding CurrentDataContext.CurrentRequest.SelectedClass, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                                             SelectedIndex="{Binding CurrentDataContext.CurrentRequest.SelectedClassIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <behaviors:Interaction.Triggers>
+                                        <behaviors:EventTrigger EventName="DropDownOpened">
+                                            <behaviors:InvokeCommandAction Command="{Binding CommandStartClassOrder}" CommandParameter="Fr"></behaviors:InvokeCommandAction>
+                                        </behaviors:EventTrigger>
+                                    </behaviors:Interaction.Triggers>
+                                </Fluent:ComboBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermUpperCase}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermUpperCaseFr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermAbbreviation}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermAbbrevitationFr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttribute}"
+                                        Text="{Binding CurrentDataContext.CurrentRequest.AttributeFr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttributeExample}"
+                                        Text="{Binding CurrentDataContext.CurrentRequest.AttributeExampleFr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                        </StackPanel>
+                    </DockPanel>
+                    <DockPanel Grid.Column="2" 
+                           Background="{DynamicResource PdmColor}"
+                           Margin="3,0,3,0">
+                        <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                         Text="{DynamicResource WTR_LabelGerman}"
+                                         HasTwoLines="False"
+                                         FontSize="20"
+                                         HorizontalAlignment="Center"/>
+                        <StackPanel Margin="5,0,5,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTerm}"
+                                    Text="{Binding CurrentDataContext.CurrentRequest.TermDe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <StackPanel>
+                                <Fluent:TwoLineLabel HasTwoLines="False" 
+                                             Text="{DynamicResource WTR_LabelDescription}" 
+                                             HorizontalAlignment="Center" 
+                                             VerticalAlignment="Center" ></Fluent:TwoLineLabel>
+
+                                <TextBox Height="80" 
+                                     Background="{DynamicResource IdealBackgroundColor}"
+                                     Foreground="{DynamicResource IdealForegroundColor}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                     Text="{Binding CurrentDataContext.CurrentRequest.DescriptionDe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     AcceptsReturn="True"/>
+
+                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:ComboBox Header="{DynamicResource WTR_LabelClass}"
+                                             DisplayMemberPath="NameDe"
+                                             ItemsSource="{Binding CurrentDataContext.ListClass}"
+                                             IsEditable="False"
+                                             SelectedItem="{Binding CurrentDataContext.CurrentRequest.SelectedClass, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                                             SelectedIndex="{Binding CurrentDataContext.CurrentRequest.SelectedClassIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <behaviors:Interaction.Triggers>
+                                        <behaviors:EventTrigger EventName="DropDownOpened">
+                                            <behaviors:InvokeCommandAction Command="{Binding CommandStartClassOrder}" CommandParameter="De"></behaviors:InvokeCommandAction>
+                                        </behaviors:EventTrigger>
+                                    </behaviors:Interaction.Triggers>
+                                </Fluent:ComboBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermUpperCase}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermUpperCaseDe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Fluent:TextBox Header="{DynamicResource WTR_LabelTermAbbreviation}"
+                                            Text="{Binding CurrentDataContext.CurrentRequest.TermAbbrevitationDe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                                <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                                 Text="*"
+                                                 Foreground="Red"
+                                                 FontSize="20"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttribute}"
+                                        Text="{Binding CurrentDataContext.CurrentRequest.AttributeDe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                            <Fluent:TextBox Header="{DynamicResource WTR_LabelAttributeExample}"
+                                        Text="{Binding CurrentDataContext.CurrentRequest.AttributeExampleDe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Fluent:TextBox>
+                        </StackPanel>
+                    </DockPanel>
+
+
+                    <DockPanel Grid.Column="3"
+                           Margin="3,0,3,0">
+                        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Fluent:TwoLineLabel DockPanel.Dock="Top"
+                                             Text="{DynamicResource WTR_LabelPicture}"
+                                             HasTwoLines="False"
+                                             FontSize="20"
+                                             HorizontalAlignment="Center"/>
+                            <Fluent:TwoLineLabel Grid.Column="1" HasTwoLines="False"
+                                             Text="*"
+                                             Foreground="Red"
+                                             FontSize="20"
+                                             VerticalAlignment="Center" />
+                        </Grid>
+                        <ListBox ItemsSource="{Binding CurrentDataContext.CurrentRequest.ListImage}"
+                             SelectedItem="{Binding CurrentDataContext.CurrentRequest.SelectedImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="KeyDown">
+                                    <behaviors:InvokeCommandAction Command="{Binding CommandDeletePicture}"  PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                            <ListBox.ContextMenu>
+                                <Fluent:ContextMenu>
+                                    <Fluent:MenuItem Header="{DynamicResource WTR_MenuDelete}"
+                                                 Icon="{StaticResource DELETE}"
+                                                 Command="{Binding CommandDeletePicture}">
+                                    </Fluent:MenuItem>
+                                </Fluent:ContextMenu>
+                            </ListBox.ContextMenu>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding}"
+                                       MaxHeight="150"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
+            <Image x:Name="ImageDragDrop"
+              Source="{StaticResource DRAGDROP}" 
+              Opacity="0.5"
+              Visibility="Collapsed"
+              IsHitTestVisible="False"></Image>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

@@ -28,7 +28,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CadAutoColor
 
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.MainDictionary}", UriKind.Absolute);
                 CurrentDataContext = currentViewModel;
-                DataContext = CurrentDataContext;
+                DataContext = currentViewModel;
 
                 CurrentDataContext.CurrentDataContext.ListItem.CollectionChanged += new NotifyCollectionChangedEventHandler((newsender, newe) => SubscribeToIsSelectedEvent(DgPartsMaterial, newe));
                 CurrentDataContext.CurrentDataContext.ListItemName.CollectionChanged += new NotifyCollectionChangedEventHandler((newsender, newe) => SubscribeToIsSelectedEvent(DgPartsName, newe));

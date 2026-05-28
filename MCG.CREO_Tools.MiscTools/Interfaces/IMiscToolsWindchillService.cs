@@ -1,4 +1,6 @@
-﻿namespace MCG.CREO_Tools.MiscTools.Interfaces
+﻿using MCG.WindchillRequestTool.Model.BomComparison;
+
+namespace MCG.CREO_Tools.MiscTools.Interfaces
 {
     public interface IMiscToolsWindchillService
     {
@@ -11,6 +13,9 @@
         void CloseQuickChangeMainView();
         void CloseSapBomExportMainView();
         void CloseSapBomExportAllLevelMainView();
+        void CloseSapFertMissingPart();
+        void CloseSapFertBomMainView();
+        void CloseWebtermRequestMainView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();
@@ -39,5 +44,14 @@
 
         void ShowSapBomExportAllLevelMainView(bool isAlreadyCreated = false);
         void ShowDialogSapBomExportAllLevelMainView();
+
+        void ShowSapFertMissingPart(List<BomMissingComponentItem> listMissingComp, bool isAlreadyCreated = false);
+        void ShowDialogSapFertMissingPart(List<BomMissingComponentItem> listMissingComp);
+
+        void ShowSapFertBomMainView(bool isAlreadyCreated = false);
+        void ShowDialogSapFertBomMainView();
+
+        void ShowWebtermRequestMainView(bool isAlreadyCreated = false);
+        void ShowDialogWebtermRequestMainView();
     }
 }

@@ -10,7 +10,6 @@ using MCG.CommonLib.SapTools.ViewModel;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent.Interfaces;
-using MCG.CommonLib.WpfComponent.ViewModel;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;

@@ -8,6 +8,9 @@ using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
+using MCG.CREO_Tools.MiscTools.View.SapFertBom;
+using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
+using MCG.WindchillRequestTool.Model.BomComparison;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Windows;
@@ -26,6 +29,9 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _QuickChangeMainView;
         private Window _SapBomExportMainView;
         private Window _SapBomExportAllLevelMainView;
+        private Window _SapFertMissingPart;
+        private Window _SapFertBomMainView;
+        private Window _WebtermRequestMainView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -221,6 +227,65 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _SapBomExportAllLevelMainView.ShowDialog();
         }
 
+        public void ShowSapFertMissingPart(List<BomMissingComponentItem> listMissingComp, bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_SapFertMissingPart != null && _SapFertMissingPart.IsVisible)
+                {
+                    _SapFertMissingPart.Activate();
+                    return;
+                }
+            }
+            _SapFertMissingPart = _serviceProvider.GetRequiredService<SapFertMissingPart>();
+            ((SapFertMissingPart)_SapFertMissingPart).ListPart = listMissingComp;
+            _SapFertMissingPart.Show();
+        }
+        public void ShowDialogSapFertMissingPart(List<BomMissingComponentItem> listMissingComp)
+        {
+            _SapFertMissingPart = _serviceProvider.GetRequiredService<SapFertMissingPart>();
+            ((SapFertMissingPart)_SapFertMissingPart).ListPart = listMissingComp;
+            _SapFertMissingPart.ShowDialog();
+        }
+
+        public void ShowSapFertBomMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_SapFertBomMainView != null && _SapFertBomMainView.IsVisible)
+                {
+                    _SapFertBomMainView.Activate();
+                    return;
+                }
+            }
+            _SapFertBomMainView = _serviceProvider.GetRequiredService<SapFertBomMainView>();
+            _SapFertBomMainView.Show();
+        }
+        public void ShowDialogSapFertBomMainView()
+        {
+            _SapFertBomMainView = _serviceProvider.GetRequiredService<SapFertBomMainView>();
+            _SapFertBomMainView.ShowDialog();
+        }
+
+        public void ShowWebtermRequestMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_WebtermRequestMainView != null && _WebtermRequestMainView.IsVisible)
+                {
+                    _WebtermRequestMainView.Activate();
+                    return;
+                }
+            }
+            _WebtermRequestMainView = _serviceProvider.GetRequiredService<WebtermRequestMainView>();
+            _WebtermRequestMainView.Show();
+        }
+        public void ShowDialogWebtermRequestMainView()
+        {
+            _WebtermRequestMainView = _serviceProvider.GetRequiredService<WebtermRequestMainView>();
+            _WebtermRequestMainView.ShowDialog();
+        }
+
         public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)
@@ -291,6 +356,30 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _SapBomExportAllLevelMainView.Close();
                 _SapBomExportAllLevelMainView = null;
+            }
+        }
+        public void CloseSapFertMissingPart()
+        {
+            if (_SapFertMissingPart != null)
+            {
+                _SapFertMissingPart.Close();
+                _SapFertMissingPart = null;
+            }
+        }
+        public void CloseSapFertBomMainView()
+        {
+            if (_SapFertBomMainView != null)
+            {
+                _SapFertBomMainView.Close();
+                _SapFertBomMainView = null;
+            }
+        }
+        public void CloseWebtermRequestMainView()
+        {
+            if (_WebtermRequestMainView != null)
+            {
+                _WebtermRequestMainView.Close();
+                _WebtermRequestMainView = null;
             }
         }
     }

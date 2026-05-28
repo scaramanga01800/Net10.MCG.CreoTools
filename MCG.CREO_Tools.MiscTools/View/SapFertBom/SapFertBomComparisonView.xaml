@@ -1,0 +1,291 @@
+﻿<UserControl x:Class="MCG.CREO_Tools.MiscTools.View.SapFertBom.SapFertBomComparisonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.SapFertBom"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:AddDoubleMultiConverter x:Key="AddDoubleMultiConverter"></conv:AddDoubleMultiConverter>
+            <conv:SelectedItemToVisibilityConverter x:Key="SelectItemToVisibilityConv"></conv:SelectedItemToVisibilityConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+
+            <Style x:Key="CellPartNumberBom" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckRev}" Value="False">
+                        <Setter Property="Background" Value="Yellow"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckQty}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckUnit}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellRevBom1" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckRev}" Value="False">
+                        <Setter Property="Background" Value="Yellow"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellRepBom1" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellQtyBom1" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckQty}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellUnitBom1" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckUnit}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellState1" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckState1}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom2}" Value="False">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellRevBom2" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckRev}" Value="False">
+                        <Setter Property="Background" Value="Yellow"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellRepBom2" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellQtyBom2" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckQty}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellUnitBom2" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckUnit}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CellState2" TargetType="DataGridCell">
+                <Setter Property="TextBlock.TextAlignment"  Value="Center" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CheckState2}" Value="False">
+                        <Setter Property="Background" Value="Orange"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CheckPartBom1}" Value="False">
+                        <Setter Property="Background" Value="#FF0097FF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+            <Style x:Key="ColBom1" TargetType="TextBox">
+                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            </Style>
+
+            <LinearGradientBrush x:Key="HeaderBrushMain">
+                <GradientStop Color="#FFDAEEF3" Offset="0"/>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HeaderBrushBom1">
+                <GradientStop Color="#FFB8CCE4" Offset="0"/>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HeaderBrushBom2" >
+                <GradientStop Color="#FFD8E4BC" Offset="0"/>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HeaderBorderBrush" >
+                <GradientStop Color="Gray" Offset="0"/>
+            </LinearGradientBrush>
+
+            <Style x:Key="HeaderStyleMain" TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="{StaticResource HeaderBrushMain}" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{StaticResource HeaderBorderBrush}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="MinWidth" Value="10" />
+            </Style>
+
+            <Style x:Key="HeaderStyleBom1" TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="{StaticResource HeaderBrushBom1}" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{StaticResource HeaderBorderBrush}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="MinWidth" Value="10" />
+            </Style>
+
+            <Style x:Key="HeaderStyleBom2" TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="{StaticResource HeaderBrushBom2}" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{StaticResource HeaderBorderBrush}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="MinWidth" Value="10" />
+            </Style>
+
+            <BitmapImage x:Key="Copy" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/page_copy.png" />
+
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel x:Name="LayoutRoot">
+        <DockPanel.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
+        <Grid DockPanel.Dock="Top" Height="40" Margin="1,0,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2">
+                    <ColumnDefinition.MinWidth>
+                        <MultiBinding Converter="{StaticResource AddDoubleMultiConverter}">
+                            <Binding ElementName="Col01" Path="ActualWidth" />
+                        </MultiBinding>
+                    </ColumnDefinition.MinWidth>
+                </ColumnDefinition>
+                <ColumnDefinition Width="2">
+                    <ColumnDefinition.MinWidth>
+                        <MultiBinding Converter="{StaticResource AddDoubleMultiConverter}">
+                            <Binding ElementName="Col04" Path="ActualWidth" />
+                            <Binding ElementName="Col05" Path="ActualWidth" />
+                            <Binding ElementName="Col06" Path="ActualWidth" />
+                        </MultiBinding>
+                    </ColumnDefinition.MinWidth>
+                </ColumnDefinition>
+                <ColumnDefinition Width="2">
+                    <ColumnDefinition.MinWidth>
+                        <MultiBinding Converter="{StaticResource AddDoubleMultiConverter}">
+                            <Binding ElementName="Col09" Path="ActualWidth" />
+                            <Binding ElementName="Col10" Path="ActualWidth" />
+                            <Binding ElementName="Col11" Path="ActualWidth" />
+                        </MultiBinding>
+                    </ColumnDefinition.MinWidth>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+            </Grid>
+
+            <TextBox Grid.Column="1" 
+                 Text="{Binding SourceBom1}" 
+                 HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center" 
+                 Background="{DynamicResource PdmColor}"
+                 Foreground="{DynamicResource IdealForegroundColor}"
+                 IsReadOnly="True"></TextBox>
+            <TextBox Grid.Column="2" 
+                 Text="{Binding SourceBom2}" 
+                 HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center" 
+                 Background="{DynamicResource SapColor}"
+                 Foreground="{DynamicResource IdealForegroundColor}"
+                 IsReadOnly="True"></TextBox>
+        </Grid>
+
+        <DataGrid RowHeaderWidth="0"  
+              x:Name="DataGridBom" 
+              AutoGenerateColumns="False" 
+              IsReadOnly="True" 
+              ItemsSource="{Binding BomComparison}"
+              SelectionMode="Extended"
+              SelectionUnit="Cell"
+              SelectedItem="{Binding SelectedBomComponent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="Col01" CanUserReorder="False" Binding="{Binding PartNumber}"  Header="{DynamicResource SFB_ColHeader01}"  CellStyle="{StaticResource CellPartNumberBom}"/>
+                <DataGridTextColumn x:Name="Col04" CanUserReorder="False" Binding="{Binding LineNumberBom1}"  Header="{DynamicResource SFB_ColHeader03}" CellStyle="{StaticResource CellRepBom1}" />
+                <DataGridTextColumn x:Name="Col05" CanUserReorder="False" Binding="{Binding QtyBom1}"  Header="{DynamicResource SFB_ColHeader04}" CellStyle="{StaticResource CellQtyBom1}"  />
+                <DataGridTextColumn x:Name="Col06" CanUserReorder="False" Binding="{Binding UnitBom1}"  Header="{DynamicResource SFB_ColHeader05}" CellStyle="{StaticResource CellUnitBom1}"  />
+                <DataGridTextColumn x:Name="Col09" CanUserReorder="False" Binding="{Binding LineNumberBom2}"  Header="{DynamicResource SFB_ColHeader03}" CellStyle="{StaticResource CellRepBom2}"  />
+                <DataGridTextColumn x:Name="Col10" CanUserReorder="False" Binding="{Binding QtyBom2}"  Header="{DynamicResource SFB_ColHeader04}" CellStyle="{StaticResource CellQtyBom2}"  />
+                <DataGridTextColumn x:Name="Col11" CanUserReorder="False" Binding="{Binding UnitBom2}"  Header="{DynamicResource SFB_ColHeader05}" CellStyle="{StaticResource CellUnitBom2}"  />
+                <DataGridTextColumn x:Name="Col02" CanUserReorder="False" Binding="{Binding Description}"  Header="{DynamicResource SFB_ColHeader06}"  />
+                <DataGridTextColumn x:Name="Col13" 
+                                CanUserReorder="False" 
+                                Binding="{Binding Comment}"  
+                                Header="{DynamicResource SFB_ColHeader12}"
+                                Visibility="{Binding Path=Data.IsCommentShown, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=False}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+
+</UserControl>

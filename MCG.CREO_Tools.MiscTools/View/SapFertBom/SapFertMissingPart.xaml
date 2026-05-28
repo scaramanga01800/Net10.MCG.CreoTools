@@ -1,0 +1,62 @@
+﻿<Window x:Class="MCG.CREO_Tools.MiscTools.View.SapFertBom.SapFertMissingPart"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.SapFertBom"
+        mc:Ignorable="d"
+        Title="{DynamicResource SFB_TitleMissingPart}" 
+        Height="350" 
+        Width="380"
+        Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP.ico">
+
+    <Window.Resources>
+        <BitmapImage x:Key="Extend" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/duplicate.png" />
+        <BitmapImage x:Key="Close" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/cross.ico" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="36"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center" 
+               Content="{DynamicResource SFB_MsgMissingMaterialMaster1}" 
+               FontSize="15"></Label>
+        <Label Grid.Row="1" 
+               VerticalContentAlignment="Center" 
+               HorizontalContentAlignment="Center" 
+               Content="{DynamicResource SFB_MsgMissingMaterialMaster2}" 
+               FontSize="15"></Label>
+        <DataGrid ItemsSource="{Binding ListPartShow}" 
+                  AutoGenerateColumns="False" 
+                  Grid.Row="2" 
+                  IsReadOnly="True" 
+                  FontSize="15" 
+                  SelectionMode="Extended" 
+                  SelectionUnit="Cell">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Number}" 
+                                    Header="{DynamicResource SFB_ColNumber}" />
+                <DataGridTextColumn Binding="{Binding Comment}" 
+                                    Header="{DynamicResource SFB_ColComment}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,2">
+            <Button Grid.Row="3" 
+                    ToolTip="Close" 
+                    Click="BtClose_Click" 
+                    Grid.ColumnSpan="2">
+                <Image Source="{StaticResource Close}"></Image>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

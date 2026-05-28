@@ -8,6 +8,8 @@ using MCG.CREO_Tools.MiscTools.View.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
+using MCG.CREO_Tools.MiscTools.View.SapFertBom;
+using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
@@ -17,6 +19,8 @@ using MCG.CREO_Tools.MiscTools.ViewModel.NumberCumulation;
 using MCG.CREO_Tools.MiscTools.ViewModel.QuickChange;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExportAllLevel;
+using MCG.CREO_Tools.MiscTools.ViewModel.SapFertBom;
+using MCG.CREO_Tools.MiscTools.ViewModel.WebtermRequest;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MCG.CREO_Tools.MiscTools.Services
@@ -53,6 +57,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
 
             services.AddTransient<SapBomExportAllLevelMainView>();
             services.AddTransient<SapBomExportAllLevelViewModel>();
+
+            services.AddTransient<SapFertMissingPart>();
+
+            services.AddTransient<SapFertBomMainView>();
+            services.AddTransient<SapFertBomViewModel>();
+
+            services.AddTransient<WebtermRequestMainView>();
+            services.AddTransient<WebtermRequestViewModel>();
 
             return services;
         }
