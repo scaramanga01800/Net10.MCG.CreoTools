@@ -1,0 +1,199 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.BomComparison.BomComparisonView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.BomComparison"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:BomComparison="clr-namespace:MCG.CommonLib.WpfComponent.View.BomComparison;assembly=MCG.CommonLib.WpfComponent"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource BCE_TitleBomComparison}"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/BOM_comp.ico"
+                     Height="450" Width="850"
+                     Name="MainWindows">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="SEARCH_BOM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Bom.png" />
+            <BitmapImage x:Key="ASM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/asm_image.gif" />
+            <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help_32x32.png" />
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInvBoolConverter"></conv:BoolToInverseBoolConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_RibGrpData}"
+                                    IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ResourceKey=PART}" Height="16" ></Image>
+                        <Fluent:RadioButton x:Name="RBPartSelected" 
+                                                 Header="{DynamicResource BCE_RbPart}"
+                                                 IsChecked="{Binding CurrentDataContext.IsPartChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 GroupName="ObjectType"></Fluent:RadioButton>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                             Visibility="{Binding CurrentDataContext.ShowAsmRadioButton, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Image Source="{StaticResource ResourceKey=ASM}" Height="16" ></Image>
+                        <Fluent:RadioButton Header="{DynamicResource BCE_RbCadDoc}"
+                                                 IsChecked="{Binding CurrentDataContext.IsAssemblyChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 GroupName="ObjectType"
+                                                 LargeIcon="{StaticResource ResourceKey=ASM}"></Fluent:RadioButton>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_BomLeft}"
+                                    IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}">
+                    <Fluent:ComboBox Header="{DynamicResource BCE_MiBomFrom}"
+                                  IsEditable="False"                       
+                                  HorizontalContentAlignment="Left" 
+                                  VerticalContentAlignment="Center" 
+                                  SelectedItem="{Binding CurrentDataContext.SelectedBomFromL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding CurrentDataContext.ListBomFrom}">
+                    </Fluent:ComboBox>
+
+                    <Fluent:TextBox Header="{DynamicResource BCE_Number}"
+                                 MinWidth="150"
+                                 HorizontalAlignment="Left"
+                                 Text="{Binding CurrentDataContext.NumberL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=82020189}"></Fluent:TextBox>
+
+                    <StackPanel Orientation="Horizontal"
+                             Visibility="{Binding CurrentDataContext.ShowPdmFieldsL, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Fluent:TextBox  MinWidth="80"
+                                     Header="{DynamicResource BCE_Revision}"
+                                     HorizontalContentAlignment="Center" 
+                                     VerticalContentAlignment="Center" 
+                                     Text="{Binding CurrentDataContext.RevisionL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=J}" 
+                                     IsEnabled="{Binding CurrentDataContext.IsLatestRevisionL, Converter={StaticResource BoolToInvBoolConverter}}"></Fluent:TextBox>
+                        <Fluent:CheckBox Name="CbLatestRevision" 
+                                     HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center" 
+                                     Header="{DynamicResource BCE_CbLatestRevision}" 
+                                     IsChecked="{Binding CurrentDataContext.IsLatestRevisionL, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=false}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <Fluent:ComboBox Header="{DynamicResource BCE_MiSapPlant}"
+                                  Visibility="{Binding CurrentDataContext.ShowSapFieldsL, Converter={StaticResource BoolToVisibilityConverter}}"
+                                  IsEditable="False"                       
+                                  HorizontalContentAlignment="Left" 
+                                  VerticalContentAlignment="Center" 
+                                  SelectedItem="{Binding CurrentDataContext.SelectedSapPlantL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding CurrentDataContext.ListSapPlant}">
+                    </Fluent:ComboBox>
+
+                    <StackPanel HorizontalAlignment="Right" 
+                             Visibility="{Binding CurrentDataContext.ShowSapFieldsL, Converter={StaticResource BoolToVisibilityConverter}}"
+                             Orientation="Vertical">
+                        <Label Content="{DynamicResource BCE_LabelValidityDate}" 
+                            VerticalContentAlignment="Center"  
+                            HorizontalContentAlignment="Center"></Label>
+                        <DatePicker Width="100" SelectedDate="{Binding CurrentDataContext.ValidityDateL,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
+
+                    <Fluent:Button LargeIcon="{StaticResource SEARCH_BOM}"
+                                 Margin="5,0,5,0"
+                                 Command="{Binding CommandStartBomSearch}"
+                                 CommandParameter="L"
+                                 Header="{DynamicResource BCE_BtBomSearch}"
+                                 IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_BomRight}"
+                                            IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}">
+
+                    <Fluent:ComboBox Header="{DynamicResource BCE_MiBomFrom}"
+                                  IsEditable="False"                       
+                                  HorizontalContentAlignment="Left" 
+                                  VerticalContentAlignment="Center" 
+                                  SelectedItem="{Binding CurrentDataContext.SelectedBomFromR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding CurrentDataContext.ListBomFrom}">
+                    </Fluent:ComboBox>
+
+                    <Fluent:TextBox Header="{DynamicResource BCE_Number}"
+                                 MinWidth="150"
+                                 HorizontalAlignment="Left"
+                                 Text="{Binding CurrentDataContext.NumberR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=82020189}"></Fluent:TextBox>
+
+                    <StackPanel Orientation="Horizontal"
+                             Visibility="{Binding CurrentDataContext.ShowPdmFieldsR, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Fluent:TextBox  MinWidth="80"
+                                     Header="{DynamicResource BCE_Revision}"
+                                     HorizontalContentAlignment="Center" 
+                                     VerticalContentAlignment="Center" 
+                                     Text="{Binding CurrentDataContext.RevisionR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=J}" 
+                                     IsEnabled="{Binding CurrentDataContext.IsLatestRevisionR, Converter={StaticResource BoolToInvBoolConverter}}"></Fluent:TextBox>
+                        <Fluent:CheckBox Name="CbLatestRevision2" 
+                                     HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center" 
+                                     Header="{DynamicResource BCE_CbLatestRevision}" 
+                                     IsChecked="{Binding CurrentDataContext.IsLatestRevisionR, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=false}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <Fluent:ComboBox Header="{DynamicResource BCE_MiSapPlant}"
+                                  Visibility="{Binding CurrentDataContext.ShowSapFieldsR, Converter={StaticResource BoolToVisibilityConverter}}"
+                                  IsEditable="False"                       
+                                  HorizontalContentAlignment="Left" 
+                                  VerticalContentAlignment="Center" 
+                                  SelectedItem="{Binding CurrentDataContext.SelectedSapPlantR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  ItemsSource="{Binding CurrentDataContext.ListSapPlant}">
+                    </Fluent:ComboBox>
+
+                    <StackPanel HorizontalAlignment="Right" 
+                             Visibility="{Binding CurrentDataContext.ShowSapFieldsR, Converter={StaticResource BoolToVisibilityConverter}}"
+                             Orientation="Vertical">
+                        <Label Content="{DynamicResource BCE_LabelValidityDate}" 
+                            VerticalContentAlignment="Center"  
+                            HorizontalContentAlignment="Center"></Label>
+                        <DatePicker Width="100" SelectedDate="{Binding CurrentDataContext.ValidityDateR,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
+
+                    <Fluent:Button LargeIcon="{StaticResource SEARCH_BOM}"
+                                        Margin="5,0,5,0"
+                                        Command="{Binding CommandStartBomSearch}"
+                                        CommandParameter="R"
+                                        Header="{DynamicResource BCE_BtBomSearch}"
+                                        IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}"></Fluent:Button>
+
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_RibGrptool}"
+                                    IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}">
+                    <Fluent:Button  LargeIcon="{StaticResource EXCEL}" 
+                                 Command="{Binding CommandStartExportXLS}" 
+                                 Margin="5,0,5,0" 
+                                 IsEnabled="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToInvBoolConverter}}">
+                    </Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource HELP}"
+                                Margin="5,0,5,0"
+                                Command="{Binding CommandHelp}">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+            <BomComparison:BomComparisonDataGridLight x:Name="aBomComparisonDataGrid" 
+                                                      DataContext="{Binding CurrentDataContext.BomComparison}">
+            </BomComparison:BomComparisonDataGridLight>
+
+            <Image  Visibility="{Binding CurrentDataContext.IsActionProgress, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+        </Grid>
+
+    </DockPanel>
+</Fluent:RibbonWindow>

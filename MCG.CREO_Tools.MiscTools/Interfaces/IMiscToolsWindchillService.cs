@@ -4,6 +4,7 @@ namespace MCG.CREO_Tools.MiscTools.Interfaces
 {
     public interface IMiscToolsWindchillService
     {
+        void CloseBomComparisonView();
         void CloseBomEnvirConfigMainView();
         void CloseCraneSearchMainView();
         void CloseCadAutoColorMainView();
@@ -16,6 +17,9 @@ namespace MCG.CREO_Tools.MiscTools.Interfaces
         void CloseSapFertMissingPart();
         void CloseSapFertBomMainView();
         void CloseWebtermRequestMainView();
+
+        void ShowBomComparisonView(bool isAlreadyCreated = false);
+        void ShowDialogBomComparisonView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();

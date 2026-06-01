@@ -1,4 +1,5 @@
 ﻿using MCG.CREO_Tools.MiscTools.Interfaces;
+using MCG.CREO_Tools.MiscTools.View.BomComparison;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
@@ -32,10 +33,30 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _SapFertMissingPart;
         private Window _SapFertBomMainView;
         private Window _WebtermRequestMainView;
+        private Window _BomComparisonView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+        }
+
+        public void ShowBomComparisonView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_BomComparisonView != null && _BomComparisonView.IsVisible)
+                {
+                    _BomComparisonView.Activate();
+                    return;
+                }
+            }
+            _BomComparisonView = _serviceProvider.GetRequiredService<BomComparisonView>();
+            _BomComparisonView.Show();
+        }
+        public void ShowDialogBomComparisonView()
+        {
+            _BomComparisonView = _serviceProvider.GetRequiredService<BomComparisonView>();
+            _BomComparisonView.ShowDialog();
         }
 
         public void ShowBomEnvirConfigMainView(bool isAlreadyCreated = false)
@@ -286,6 +307,14 @@ namespace MCG.CREO_Tools.MiscTools.Services
             _WebtermRequestMainView.ShowDialog();
         }
 
+        public void CloseBomComparisonView()
+        {
+            if (_BomComparisonView != null)
+            {
+                _BomComparisonView.Close();
+                _BomComparisonView = null;
+            }
+        }
         public void CloseBomEnvirConfigMainView()
         {
             if (_BomEnvirConfigMainView != null)

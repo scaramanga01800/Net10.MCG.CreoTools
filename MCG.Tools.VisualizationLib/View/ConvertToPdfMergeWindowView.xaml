@@ -19,13 +19,12 @@
             <BitmapImage x:Key="Arrow_Up" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/arrow-up.png" />
             <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
         </ResourceDictionary>
-
     </Fluent:RibbonWindow.Resources>
 
     <DockPanel>
         <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
             <Fluent:RibbonTabItem>
-                <Fluent:RibbonGroupBox Header="{DynamicResource BOM_RibGrpData}">
+                <Fluent:RibbonGroupBox Header="{DynamicResource VIS_RibGrpData}">
                     <Fluent:Button Command="{Binding CommandStartMerge}" 
                                LargeIcon="{StaticResource OK}"
                                Margin="5,0,5,0">
@@ -111,7 +110,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-
         </DockPanel>
     </DockPanel>
 </Fluent:RibbonWindow>

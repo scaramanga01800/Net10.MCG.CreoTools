@@ -35,6 +35,7 @@
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.WindchillRequestTool\MCG.WindchillRequestTool.csproj" />
+    <ProjectReference Include="..\MCG.Tools.VisualizationLib\MCG.Tools.VisualizationLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

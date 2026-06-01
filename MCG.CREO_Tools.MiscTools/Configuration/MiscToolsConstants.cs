@@ -21,5 +21,18 @@
         public const string WebtermRequestMail = "thierry.champier@manitowoc.com";
         public const string WebtermRequestMailCC = "thierry.champier@manitowoc.com";
         public const string WebtermRequestMailSave = "ericka.nivet@manitowoc.com";
+
+        public const string BomExportConfigurationFile = "BomExportConfiguration.xml";
+        public const string BomExportUserPreferencesFile = "BomExportUserPreferences.xml";
+        public const string BomFromValues = "PDM|SAP";
+        public const char CsvSeparator = ',';
+        public const int DefaultRepDigit = 4;
+        public const string ExcelTemplateBomComparison = "BOM_COMPARISON_Template.xlsx";
+        public const string RegexPartNumberToExcludeBomSearch = "^7\\d{9}$|^7\\d{8}[A-Z]$|^7\\d{7}[A-Z]\\d$";
+        public const string RegexStateCumulationNumber = "INWORK|REWORK";
+        public const int MaxBomLevel = 12;
+        public const int MaxRepDigit = 10;
+        public const int MinRepDigit = 1;
+        public const string SapPlantValues = "Without|1000|1011|1012|1050|1070|1090";
     }
 }

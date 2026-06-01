@@ -184,5 +184,6 @@
     <system:String x:Key="VIS_ExporExcelOpen">Ouvrir</system:String>
     <system:String x:Key="VIS_ExporExcelClose">Fermer</system:String>
     <system:String x:Key="VIS_ExporExcelOpenFolder">Ouvrir le dossier</system:String>
+    <system:String x:Key="VIS_RibGrpData">Données</system:String>
 
 </ResourceDictionary>

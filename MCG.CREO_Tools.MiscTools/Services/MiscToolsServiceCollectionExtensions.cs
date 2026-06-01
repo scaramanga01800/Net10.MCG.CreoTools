@@ -1,4 +1,6 @@
-﻿using MCG.CREO_Tools.MiscTools.Interfaces;
+﻿using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
+using MCG.CREO_Tools.MiscTools.Interfaces;
+using MCG.CREO_Tools.MiscTools.View.BomComparison;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
@@ -30,6 +32,10 @@ namespace MCG.CREO_Tools.MiscTools.Services
         public static IServiceCollection AddMiscToolsServices(this IServiceCollection services)
         {
             services.AddSingleton<IMiscToolsWindchillService, MiscToolsWindchillService>();
+
+            services.AddTransient<BomComparisonView>();
+            services.AddTransient<BomComparisonViewModel>();
+            services.AddTransient<BomComparisonTabMainView>();
 
             services.AddTransient<BomEnvirConfigMainView>();
             services.AddTransient<BomEnvirConfigViewModel>();
