@@ -6,9 +6,6 @@ using System.Windows.Controls;
 
 namespace MCG.CREO_Tools.MiscTools.View.BomComparison
 {
-    /// <summary>
-    /// Logique d'interaction pour BomComparisonTabContentView.xaml
-    /// </summary>
     public partial class BomComparisonTabContentView : UserControl
     {
         private bool IsAlreadyInit { get; set; } = false;

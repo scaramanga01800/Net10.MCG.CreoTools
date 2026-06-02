@@ -1,0 +1,80 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.BomExport.BomExportCumulativeView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.BomExport"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     mc:Ignorable="d"
+                     Title="Cumulative BOM" Height="450" Width="800"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add.ico">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="EXCEL2" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel_32x32.png" />
+            <BitmapImage x:Key="ADD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add.ico"  />
+            <BitmapImage x:Key="EXIT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/cross.ico"  />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button LargeIcon="{StaticResource EXCEL2}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartCumulativeBomExport}"
+                               Header="{DynamicResource BCE_BtBomExport}"></Fluent:Button>
+
+                    <Fluent:TextBox Header="{DynamicResource BCE_ColHeader10}"
+                                Text="{Binding CurrentBomExportWindowDataContext.CumulativeEndItemMass}"></Fluent:TextBox>
+
+                    <Fluent:Button LargeIcon="{StaticResource EXIT}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandCloseCumulativeBomExport}"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+        </Fluent:Ribbon>
+
+        <DataGrid ItemsSource="{Binding CurrentBomExportWindowDataContext.ClassificationItemList}" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding PtcCommonName}" 
+                                Header="{DynamicResource BCE_ColHeader08}" 
+                                Visibility="{Binding Data.CurrentBomExportWindowDataContext.IsColNameShown, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConv}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Material}" 
+                                Header="{DynamicResource BCE_ColHeader09}" 
+                                Visibility="{Binding Data.CurrentBomExportWindowDataContext.IsColMaterialShown, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConv}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CumulativeMass}" 
+                                Header="{DynamicResource BCE_ColHeader10}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CumulativeQuantity}" 
+                                Header="{DynamicResource BCE_ColHeader11}"></DataGridTextColumn>
+            </DataGrid.Columns>
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <DataGrid ItemsSource="{Binding ListItem}" 
+                          IsReadOnly="True" 
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="None"
+                          MaxHeight="200">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.Number}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.DescriptionEn2}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.DescriptionLocal1}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.DescriptionLocal2}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.Material}"></DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MainWindchillObject.Mass}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+    </DockPanel>
+</Fluent:RibbonWindow>

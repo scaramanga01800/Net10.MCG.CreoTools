@@ -67,8 +67,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
             }
         }
 
-
         public ObservableCollection<WindchillObjStructureComponent> ListItem { get; set; } = new ObservableCollection<WindchillObjStructureComponent>();
-
     }
 }

@@ -1,0 +1,1006 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.BomExport.BomExportFluentWindowView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.BomExport"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource BCE_AppName}" 
+                     Height="500" Width="1090" 
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/structure_24.png">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closing">
+            <behaviors:InvokeCommandAction Command="{Binding CommandClosing}"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="ASM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/asm_image.gif" />
+            <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" />
+            <BitmapImage x:Key="Arrow_Left" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/arrow-left.png" />
+            <BitmapImage x:Key="Arrow_Right" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/arrow-right.png" />
+            <BitmapImage x:Key="Arrow_Down" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/arrow-down.png" />
+            <BitmapImage x:Key="Arrow_Up" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/arrow-up.png" />
+            <BitmapImage x:Key="Copy" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/page_copy.png" />
+            <BitmapImage x:Key="EXCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel_32x32.png" />
+            <BitmapImage x:Key="SEARCH_BOM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Bom.png" />
+            <BitmapImage x:Key="SEARCH_ECN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_Ecn.png" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help_32x32.png" />
+            <BitmapImage x:Key="Exit" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exit_32x32.png"  />
+            <BitmapImage x:Key="COLUMN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Column.ico"  />
+            <BitmapImage x:Key="REMOVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Remove.gif"  />
+            <BitmapImage x:Key="RESET" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Remove.gif"  />
+            <BitmapImage x:Key="DRAWING" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/pdf.ico"  />
+            <BitmapImage x:Key="ADD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add.ico"  />
+            <BitmapImage x:Key="CUMULATION" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Cumulation.ico"  />
+            <BitmapImage x:Key="EXPAND" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/ExpandAll.gif" />
+            <BitmapImage x:Key="COLLAPSE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CollapseAll.gif" />
+
+            <conv:InverseBoolConverter x:Key="InverseBoolConverter"></conv:InverseBoolConverter>
+            <conv:SelectedItemToBoolConverter x:Key="SelectItemToBoolConv"></conv:SelectedItemToBoolConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:LevelConverter x:Key="levelConverter" />
+            <conv:LevelConverter2 x:Key="levelConverter2" />
+            <conv:IsPriceToTextConverter x:Key="IsPriceToTextConverter"></conv:IsPriceToTextConverter>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="{DynamicResource BCE_MainMenu}" >
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="{DynamicResource BCE_MenuDefColumn}" 
+                                             Icon="{StaticResource COLUMN}">
+                            <DockPanel>
+                                <Fluent:TwoLineLabel DockPanel.Dock="Top" Text="{DynamicResource BCE_TitleDefColumn}" HasTwoLines="False" ></Fluent:TwoLineLabel>
+                                <ListView  ItemsSource="{Binding CurrentBomExportWindowDataContext.ListAllParameters}"
+                                           Name="lstView"
+                                           AllowDrop="True"
+                                           PreviewMouseLeftButtonDown="lstview_PreviewMouseLeftButtonDown"
+                                           DragEnter="lstview_DragEnter"
+                                           Drop="lstview_Drop"
+                                           MouseMove="lstview_MouseMove"
+                                           Background="{DynamicResource IdealBackgroundColor}">
+                                    <ListView.Resources>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Style>
+                                        <Style TargetType="Fluent:CheckBox">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Source}" Value="PDM">
+                                                    <Setter Property="Background" Value="{DynamicResource PdmColor}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Source}" Value="SAP">
+                                                    <Setter Property="Background" Value="{DynamicResource SapColor}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListView.Resources>
+
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn>
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Fluent:CheckBox FontSize="11" 
+                                                                         Header="{Binding ParamName}"
+                                                                         IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                         Margin="5,1,0,1" >
+                                                        </Fluent:CheckBox>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Width="36">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Command="{Binding MainApp.CommandMoveUpParameter}" 
+                                                                CommandParameter="{Binding}" >
+                                                            <Image Source="{StaticResource Arrow_Up}"></Image>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Width="36">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Command="{Binding MainApp.CommandMoveDownParameter}" 
+                                                                CommandParameter="{Binding}">
+                                                            <Image Source="{StaticResource Arrow_Down}"></Image>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn DisplayMemberBinding="{Binding ShortFileName}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:SeparatorTabItem></Fluent:SeparatorTabItem>
+                        <Fluent:Button Header="{DynamicResource BCE_MenuAppExit}" Icon="{StaticResource Exit}" Command="{Binding CommandClosing}"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+            <Fluent:RibbonTabItem>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_RibGrpData}">
+                    <StackPanel  Margin="5,0,5,0" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource ResourceKey=PART}" Height="16" ></Image>
+                            <Fluent:RadioButton x:Name="RBPartSelected" 
+                                            Header="{DynamicResource BCE_RbPart}"
+                                            IsChecked="{Binding CurrentBomExportWindowDataContext.IsPartChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                            GroupName="ObjectType"></Fluent:RadioButton>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource ResourceKey=ASM}" Height="16" ></Image>
+                            <Fluent:RadioButton Header="{DynamicResource BCE_RbCadDoc}"
+                                            IsChecked="{Binding CurrentBomExportWindowDataContext.IsAssemblyChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                            GroupName="ObjectType"
+                                            LargeIcon="{StaticResource ResourceKey=ASM}"></Fluent:RadioButton>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Fluent:ComboBox HorizontalContentAlignment="Center"
+                                         Header="{DynamicResource BCE_BomLevel}"
+                                         VerticalContentAlignment="Center"
+                                         IsEditable="False"
+                                         MinWidth="40" 
+                                         ItemsSource="{Binding CurrentBomExportWindowDataContext.BomLevelList}" 
+                                         SelectedItem="{Binding CurrentBomExportWindowDataContext.BomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <Fluent:TextBox Header="{DynamicResource BCE_Number}"
+                                MinWidth="200"
+                                HorizontalAlignment="Left"
+                                Text="{Binding CurrentBomExportWindowDataContext.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=82020189}"></Fluent:TextBox>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Fluent:TextBox  MinWidth="80"
+                                         Header="{DynamicResource BCE_Revision}"
+                                         HorizontalContentAlignment="Center" 
+                                         VerticalContentAlignment="Center" 
+                                         Text="{Binding CurrentBomExportWindowDataContext.Revision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=J}" 
+                                         IsEnabled="{Binding CurrentBomExportWindowDataContext.IsLatestRevision, Converter={StaticResource InverseBoolConverter}}"></Fluent:TextBox>
+                        <Fluent:CheckBox Name="CbLatestRevision" 
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center" 
+                                         Header="{DynamicResource BCE_CbLatestRevision}" 
+                                         IsChecked="{Binding CurrentBomExportWindowDataContext.IsLatestRevision, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=false}"></Fluent:CheckBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Fluent:ComboBox x:Name="ComboBoxSapPlant"
+                                     Header="{DynamicResource BCE_LabelSapPlant}"
+                                     IsEditable="False"
+                                     VerticalContentAlignment="Center" 
+                                     ItemsSource="{Binding CurrentBomExportWindowDataContext.ListSapPlant, Mode=OneWay}" 
+                                     SelectedItem="{Binding CurrentBomExportWindowDataContext.SelectedSapPlant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="SelectionChanged">
+                                    <behaviors:InvokeCommandAction Command="{Binding CommandSapPlantSelectionChanged}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </Fluent:ComboBox>
+                        <Fluent:TwoLineLabel  HasTwoLines="False"
+                                              Margin="10,0,0,0"
+                                              Text="{Binding CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol}" />
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_RibGrpInteraction}">
+                    <Fluent:Button LargeIcon="{StaticResource SEARCH_BOM}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartBomSearch}"
+                               Header="{DynamicResource BCE_BtBomSearch}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource SEARCH_ECN}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartPendingEcnSearch}"
+                               Header="{DynamicResource BCE_BtPendingEcnSearch}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource EXCEL}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartBomExport}"
+                               Header="{DynamicResource BCE_BtBomExport}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+
+                    <StackPanel>
+                        <Fluent:ComboBox VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left"
+                                     IsEditable="False"
+                                     Header="{DynamicResource BCE_LbOutputFormat}"
+                                     ItemsSource="{Binding CurrentBomExportWindowDataContext.ListOutputFormat}" 
+                                     SelectedItem="{Binding CurrentBomExportWindowDataContext.SelectedOutputFormat,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Label HorizontalContentAlignment="Right" 
+                               Content="{DynamicResource BCE_LbOutputFormatSeparator}" 
+                               Visibility="{Binding  CurrentBomExportWindowDataContext.SelectedOutputFormat.NeedFieldSeparator, Converter={StaticResource BoolToVisibilityConverter}}"></Label>
+                            <Fluent:TextBox HorizontalContentAlignment="Center" 
+                                        VerticalContentAlignment="Center" 
+                                        MinWidth="40"
+                                        Text="{Binding CurrentBomExportWindowDataContext.FieldSeparator,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=;}" 
+                                        PreviewTextInput="Separator_PreviewTextInput" 
+                                        Visibility="{Binding  CurrentBomExportWindowDataContext.SelectedOutputFormat.NeedFieldSeparator, Converter={StaticResource BoolToVisibilityConverter}}"></Fluent:TextBox>
+                        </StackPanel>
+                        <Fluent:CheckBox VerticalContentAlignment="Center" 
+                                     VerticalAlignment="Center" 
+                                     IsChecked="{Binding CurrentBomExportWindowDataContext.IsLevelIndented, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                     Header="{DynamicResource BCE_CbIndentXlsExport}"></Fluent:CheckBox>
+
+                    </StackPanel>
+
+                    <Fluent:Button LargeIcon="{StaticResource DRAWING}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandDownloadDrawing}" 
+                               CommandParameter="Main"
+                               Visibility="{Binding Path=CurrentBomExportWindowDataContext.IsPartChecked,Converter={StaticResource BoolToVisibilityConv}}"
+                               Header="{DynamicResource BCE_MiDownloadDrawing}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="{DynamicResource BCE_RibGrptool}">
+                    <Fluent:Button LargeIcon="{StaticResource ADD}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartCumulativeMaterial}"
+                               Header="{DynamicResource BCE_BtCumulativeMaterial}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+                    <Fluent:Button LargeIcon="{StaticResource ADD}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandStartCumulativeName}"
+                               Header="{DynamicResource BCE_BtCumulativeName}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}"></Fluent:Button>
+                    <Fluent:SplitButton LargeIcon="{StaticResource CUMULATION}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandCumulateInWorkNumber}"
+                               Header="{DynamicResource BCE_BtCumulativeNumber}"
+                               IsEnabled="{Binding CurrentBomExportWindowDataContext.IsActionProgress, Converter={StaticResource InverseBoolConverter}}">
+                        <Fluent:SplitButton.ToolTip >
+                            <Fluent:ScreenTip Title="{DynamicResource BCE_BtCumulativeNumber}" 
+                                          Image="{StaticResource CUMULATION}"
+                                          Text="{DynamicResource BCE_ToolTipCumulativeNumber}">
+                            </Fluent:ScreenTip>
+                        </Fluent:SplitButton.ToolTip>
+                        <StackPanel>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateInWork, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateInWork}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateUnderReview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateUnderReview}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStatePreReleased, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StatePreReleased}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStatePrototype, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StatePrototype}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateReleased, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateReleased}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateObsolete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateObsolete}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateSuperseded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateSuperseded}"></Fluent:CheckBox>
+                            <Fluent:CheckBox IsChecked="{Binding CurrentBomExportWindowDataContext.IsStateRework, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Header="{DynamicResource BCE_StateRework}"></Fluent:CheckBox>
+                        </StackPanel>
+                    </Fluent:SplitButton>
+
+                    <Fluent:Button LargeIcon="{StaticResource HELP}"
+                               Margin="5,0,5,0"
+                               Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <DockPanel>
+
+            <Fluent:StatusBar DockPanel.Dock="Bottom">
+                <Fluent:StatusBarItem Title="First item"
+                              Margin="5,0,0,0"
+                              Content="{Binding CurrentBomExportWindowDataContext.StatusBarMsg}"
+                              HorizontalAlignment="Left" >
+                </Fluent:StatusBarItem>
+            </Fluent:StatusBar >
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"  Background="LightGray" Height="20">
+                <TextBlock Text="{DynamicResource BCE_LabelSapCost}" Margin="20,0,0,0" ></TextBlock>
+                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.MainSapCost}" Margin="2,0,0,0"></TextBlock>
+                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol}" Margin="2,0,0,0"></TextBlock>
+                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.MainSapProvider,StringFormat= - ({0})}"></TextBlock>
+            </StackPanel>
+
+            <TabControl>
+                <TabItem Header="{DynamicResource BCE_TabMain}">
+
+                    <ScrollViewer Name="ScrollHori" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+
+                        <Grid Grid.IsSharedSizeScope="True" Name="treeGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+
+                            <TreeView Grid.Row="0" 
+                          BorderThickness="0" 
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                          ScrollViewer.CanContentScroll="True" 
+                          Grid.ColumnSpan="2"
+                          Margin="5,0,0,0">
+
+                                <TreeViewItem Focusable="False">
+                                    <TreeViewItem.Header>
+                                        <Grid Name="GridColumnAttribute">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="rowHeader1"/>
+                                                <ColumnDefinition SharedSizeGroup="rowHeader2"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn1.Width}" />
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn2.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn3.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn4.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn5.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn6.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn7.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn8.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn9.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn10.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn11.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn12.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn13.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn14.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn15.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn16.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn17.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn18.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn19.Width}"/>
+                                                <ColumnDefinition Width="{Binding CurrentBomExportWindowDataContext.BomColumn20.Width}"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <DataGridColumnHeader Grid.Column="0" >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumnLevel}" Margin="5,0" ></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumnNumber}" Grid.Column="1" >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumnNumber}" Margin="5,0" ></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <TreeViewItem Grid.Column="2">
+                                                <TreeViewItem.Header>
+                                                    <TreeViewItem Name="treeViewItemToMeasure" Padding="0"></TreeViewItem>
+                                                </TreeViewItem.Header>
+                                                <TreeViewItem.Width>
+                                                    <MultiBinding Converter="{StaticResource levelConverter}">
+                                                        <Binding Path="CurrentBomExportWindowDataContext.MaxBomLevel"></Binding>
+                                                        <Binding ElementName="treeViewItemToMeasure"  Path="ActualWidth"></Binding>
+                                                    </MultiBinding>
+                                                </TreeViewItem.Width>
+                                            </TreeViewItem>
+
+
+                                            <DataGridColumnHeader Grid.Column="3" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn1}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn1.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn1}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="4" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn2}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn2.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn2}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="5" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn3}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn3.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"   >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn3}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="6" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn4}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn4.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn4}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="7" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn5}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn5.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"   >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn5}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="8" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn6}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn6.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn6}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="9" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn7}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn7.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn7}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="10" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn8}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn8.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn8}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="11" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn9}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn9.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn9}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="12" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn10}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn10.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn10}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="13" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn11}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn11.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn11}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="14" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn12}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn12.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn12}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="15" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn13}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn13.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn13}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="16" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn14}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn14.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn14}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="17" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn15}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn15.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn15}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="18" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn16}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn16.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn16}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="19" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn17}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn17.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn17}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="20" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn18}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn18.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn18}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="21" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn19}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn19.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn19}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                            <DataGridColumnHeader Grid.Column="22" Command="{Binding CommandSortBom}" CommandParameter="{Binding CurrentBomExportWindowDataContext.BomColumn20}" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn20.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  >
+                                                <TextBlock Text="{Binding CurrentBomExportWindowDataContext.BomColumn20}" Margin="5,0"></TextBlock>
+                                            </DataGridColumnHeader>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                            </TreeView>
+
+                            <TreeView Grid.Row="1" BorderThickness="0"  
+                                  ItemsSource="{Binding CurrentBomExportWindowDataContext.MainBom}" 
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                  MouseLeftButtonDown="TreeView_MouseLeftButtonDown" 
+                                  Grid.ColumnSpan="2"
+                                  Margin="5,0,0,0">
+                                <behaviors:Interaction.Triggers>
+                                    <behaviors:EventTrigger EventName="SelectedItemChanged">
+                                        <behaviors:InvokeCommandAction Command="{Binding CommandSelectedBomItem}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                                    </behaviors:EventTrigger>
+                                </behaviors:Interaction.Triggers>
+
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="TreeViewItem">
+                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+
+                                <TreeView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="MiCopyPartNumber" Command="{Binding CommandCopyPartNumber}" Header="{DynamicResource BCE_MiCopyPartNumber}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{StaticResource ResourceKey=Copy}" Width="16" ></Image>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding CommandDownloadDrawing}" 
+                                      CommandParameter="Selected"
+                                      Header="{DynamicResource BCE_MiDownloadDrawing}"
+                                      Visibility="{Binding Path=CurrentBomExportWindowDataContext.IsPartChecked,Converter={StaticResource BoolToVisibilityConv}}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{StaticResource ResourceKey=DRAWING}" Width="16" ></Image>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding CommandRemoveLine}" Header="{DynamicResource BCE_MiRemoveLine}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{StaticResource ResourceKey=REMOVE}" Width="16" ></Image>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </TreeView.ContextMenu>
+
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Structure}">
+                                        <Grid>
+                                            <Border BorderBrush="Gray" BorderThickness="1" />
+                                            <Grid Name="GridComponent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="rowHeader1"/>
+                                                    <ColumnDefinition SharedSizeGroup="rowHeader2"/>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn1.Width, Source={StaticResource proxy}}" />
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn2.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn3.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn4.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn5.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn6.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn7.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn8.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn9.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn10.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn11.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn12.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn13.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn14.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn15.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn16.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn17.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn18.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn19.Width, Source={StaticResource proxy}}"/>
+                                                    <ColumnDefinition Width="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn20.Width, Source={StaticResource proxy}}"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="{Binding BomLevel}" Margin="5,0" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Number}" Margin="5,0" />
+                                                <Rectangle Grid.Column="2" >
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource levelConverter2}">
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.MaxBomLevel" Source="{StaticResource proxy}"></Binding>
+                                                            <Binding Path="BomLevel"></Binding>
+                                                            <Binding ElementName="treeViewItemToMeasure" Path="ActualWidth"></Binding>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
+                                                </Rectangle>
+
+                                                <TextBlock Grid.Column="3" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn1.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice1}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice1" />
+                                                            <Binding Path="ValueCol1" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="4" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn2.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice2}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice2" />
+                                                            <Binding Path="ValueCol2" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="5" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn3.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice3}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice3" />
+                                                            <Binding Path="ValueCol3" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="6" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn4.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice4}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice4" />
+                                                            <Binding Path="ValueCol4" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="7" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn5.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice5}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice5" />
+                                                            <Binding Path="ValueCol5" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="8" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn6.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice6}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice6" />
+                                                            <Binding Path="ValueCol6" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="9" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn7.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice7}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice7" />
+                                                            <Binding Path="ValueCol7" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Column="10" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn8.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice8}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice8" />
+                                                            <Binding Path="ValueCol8" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="11" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn9.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice9}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice9" />
+                                                            <Binding Path="ValueCol9" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="12" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn10.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice10}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice10" />
+                                                            <Binding Path="ValueCol10" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="13" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn11.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice11}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice11" />
+                                                            <Binding Path="ValueCol11" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="14" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn12.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice12}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice12" />
+                                                            <Binding Path="ValueCol12" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="15" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn13.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice13}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice13" />
+                                                            <Binding Path="ValueCol13" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="16" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn14.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice14}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice14" />
+                                                            <Binding Path="ValueCol14" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="17" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn15.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice15}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice15" />
+                                                            <Binding Path="ValueCol15" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="18" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn16.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}"  Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice16}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice16" />
+                                                            <Binding Path="ValueCol16" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="19" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn17.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice17}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice17" />
+                                                            <Binding Path="ValueCol17" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="20" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn18.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice18}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice18" />
+                                                            <Binding Path="ValueCol18" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="21" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn19.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice19}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice19" />
+                                                            <Binding Path="ValueCol19" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="22" Visibility="{Binding Path=Data.CurrentBomExportWindowDataContext.BomColumn20.IsVisible, Source={StaticResource proxy}, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,0" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Left" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsAPrice20}" Value="{StaticResource TrueValue}">
+                                                                    <Setter Property="TextAlignment" Value="Right" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IsPriceToTextConverter}">
+                                                            <Binding Path="IsAPrice20" />
+                                                            <Binding Path="ValueCol20" />
+                                                            <Binding Path="Data.CurrentBomExportWindowDataContext.SelectedSapPlant.CurrencySymbol" Source="{StaticResource proxy}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Grid>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+
+                            <ToggleButton Command="{Binding CommandToggleExpandCollapse}" 
+                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                              Width="26"
+                              HorizontalAlignment="Left">
+                                <ToggleButton.Style>
+                                    <Style TargetType="ToggleButton">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image Source="{StaticResource COLLAPSE}" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <Image Source="{StaticResource EXPAND}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="LightSkyBlue" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter Content="{TemplateBinding Content}" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+
+                        </Grid>
+
+                    </ScrollViewer>
+
+                </TabItem>
+                <TabItem Header="{DynamicResource BCE_TabComponents}">
+                    <DataGrid ItemsSource="{Binding CurrentBomExportWindowDataContext.AllComponents}" 
+                          SelectedItem="{Binding CurrentBomExportWindowDataContext.SelectedComponent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding CommandCopyPartNumber}"
+                                      CommandParameter="{Binding CurrentBomExportWindowDataContext.SelectedComponent}"
+                                      Header="{DynamicResource BCE_MiCopyPartNumber}">
+                                    <MenuItem.Icon>
+                                        <Image Source="{StaticResource ResourceKey=Copy}" Width="16" ></Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding CommandDownloadDrawing}" 
+                                      CommandParameter="Component"
+                                      Header="{DynamicResource BCE_MiDownloadDrawing}"
+                                      Visibility="{Binding Path=CurrentBomExportWindowDataContext.IsPartChecked,Converter={StaticResource BoolToVisibilityConv}}">
+                                    <MenuItem.Icon>
+                                        <Image Source="{StaticResource ResourceKey=DRAWING}" Width="16" ></Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader01}" Binding="{Binding Number}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader06}" Binding="{Binding MainWindchillObject.DescriptionEn}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader02}" Binding="{Binding MainWindchillObject.Revision}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader11}" Binding="{Binding CumulativeQuantity}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader13}" Binding="{Binding MainWindchillObject.ErpStdCost}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader14}" Binding="{Binding MainWindchillObject.ErpProvider}"/>
+                            <DataGridTextColumn Header="{DynamicResource BCE_ColHeader15}" Binding="{Binding MainWindchillObject.ErpPriceMass}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+
+        </DockPanel>
+    </DockPanel>
+</Fluent:RibbonWindow>

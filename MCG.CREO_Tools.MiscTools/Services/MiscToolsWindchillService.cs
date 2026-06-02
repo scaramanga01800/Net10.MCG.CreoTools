@@ -1,6 +1,7 @@
 ﻿using MCG.CREO_Tools.MiscTools.Interfaces;
 using MCG.CREO_Tools.MiscTools.View.BomComparison;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
+using MCG.CREO_Tools.MiscTools.View.BomExport;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
@@ -11,6 +12,7 @@ using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.View.SapFertBom;
 using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
+using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
 using MCG.WindchillRequestTool.Model.BomComparison;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,6 +36,8 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _SapFertBomMainView;
         private Window _WebtermRequestMainView;
         private Window _BomComparisonView;
+        private Window _BomExportCumulativeView;
+        private Window _BomExportFluentWindowView;
 
         public MiscToolsWindchillService(IServiceProvider serviceProvider)
         {
@@ -57,6 +61,46 @@ namespace MCG.CREO_Tools.MiscTools.Services
         {
             _BomComparisonView = _serviceProvider.GetRequiredService<BomComparisonView>();
             _BomComparisonView.ShowDialog();
+        }
+
+        public void ShowBomExportCumulativeView(BomExportWindowViewModel dataContext, bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_BomExportCumulativeView != null && _BomExportCumulativeView.IsVisible)
+                {
+                    _BomExportCumulativeView.Activate();
+                    return;
+                }
+            }
+            _BomExportCumulativeView = _serviceProvider.GetRequiredService<BomExportCumulativeView>();
+            ((BomExportCumulativeView)_BomExportCumulativeView).SetDataContext(dataContext);
+            _BomExportCumulativeView.Show();
+        }
+        public void ShowDialogBomExportCumulativeView(BomExportWindowViewModel dataContext)
+        {
+            _BomExportCumulativeView = _serviceProvider.GetRequiredService<BomExportCumulativeView>();
+            ((BomExportCumulativeView)_BomExportCumulativeView).SetDataContext(dataContext);
+            _BomExportCumulativeView.ShowDialog();
+        }
+
+        public void ShowBomExportFluentWindowView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_BomExportFluentWindowView != null && _BomExportFluentWindowView.IsVisible)
+                {
+                    _BomExportFluentWindowView.Activate();
+                    return;
+                }
+            }
+            _BomExportFluentWindowView = _serviceProvider.GetRequiredService<BomExportFluentWindowView>();
+            _BomExportFluentWindowView.Show();  
+        }
+        public void ShowDialogBomExportFluentWindowView()
+        {
+            _BomExportFluentWindowView = _serviceProvider.GetRequiredService<BomExportFluentWindowView>();
+            _BomExportFluentWindowView.ShowDialog();
         }
 
         public void ShowBomEnvirConfigMainView(bool isAlreadyCreated = false)
@@ -313,6 +357,22 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _BomComparisonView.Close();
                 _BomComparisonView = null;
+            }
+        }
+        public void CloseBomExportCumulativeView()
+        {
+            if (_BomExportCumulativeView != null)
+            {
+                _BomExportCumulativeView.Close();
+                _BomExportCumulativeView = null;
+            }
+        }
+        public void CloseBomExportFluentWindowView()
+        {
+            if (_BomExportFluentWindowView != null)
+            {
+                _BomExportFluentWindowView.Close();
+                _BomExportFluentWindowView = null;
             }
         }
         public void CloseBomEnvirConfigMainView()

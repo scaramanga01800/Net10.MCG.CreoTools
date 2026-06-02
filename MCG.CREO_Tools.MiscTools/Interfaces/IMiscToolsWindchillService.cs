@@ -1,10 +1,13 @@
-﻿using MCG.WindchillRequestTool.Model.BomComparison;
+﻿using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
+using MCG.WindchillRequestTool.Model.BomComparison;
 
 namespace MCG.CREO_Tools.MiscTools.Interfaces
 {
     public interface IMiscToolsWindchillService
     {
         void CloseBomComparisonView();
+        void CloseBomExportCumulativeView();
+        void CloseBomExportFluentWindowView();
         void CloseBomEnvirConfigMainView();
         void CloseCraneSearchMainView();
         void CloseCadAutoColorMainView();
@@ -20,6 +23,12 @@ namespace MCG.CREO_Tools.MiscTools.Interfaces
 
         void ShowBomComparisonView(bool isAlreadyCreated = false);
         void ShowDialogBomComparisonView();
+
+        void ShowBomExportCumulativeView(BomExportWindowViewModel dataContext, bool isAlreadyCreated = false);
+        void ShowDialogBomExportCumulativeView(BomExportWindowViewModel dataContext);
+
+        void ShowBomExportFluentWindowView(bool isAlreadyCreated = false);
+        void ShowDialogBomExportFluentWindowView();
 
         void ShowBomEnvirConfigMainView( bool isAlreadyCreated = false);
         void ShowDialogBomEnvirConfigMainView();

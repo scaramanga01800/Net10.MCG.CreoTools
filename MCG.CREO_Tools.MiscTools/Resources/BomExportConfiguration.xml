@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BomExportConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<ListAvailableParameter>
+		<BomExportParameterData>
+			<ParamName>Rep</ParamName>
+			<ParamId>REP</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Quantity</ParamName>
+			<ParamId>Quantity</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Unit</ParamName>
+			<ParamId>Unit</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Description 1 En</ParamName>
+			<ParamId>Name</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Description 2 En</ParamName>
+			<ParamId>DescriptionEn2</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Description 1 Local</ParamName>
+			<ParamId>DescriptionLocal1</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Description 2 Local</ParamName>
+			<ParamId>DescriptionLocal2</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Group Creator</ParamName>
+			<ParamId>GroupCreator</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Mass</ParamName>
+			<ParamId>Mass</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Quality Insp. Group</ParamName>
+			<ParamId>QualInspGrp</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>State</ParamName>
+			<ParamId>State</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Revision</ParamName>
+			<ParamId>Revision</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>ECN</ParamName>
+			<ParamId>EcnNumber</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Material</ParamName>
+			<ParamId>Material</ParamId>
+			<Order>1000</Order>
+			<Source>PDM</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Provider (SAP)</ParamName>
+			<ParamId>ErpProvider</ParamId>
+			<Order>1001</Order>
+			<Source>SAP</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Standard cost (SAP)</ParamName>
+			<ParamId>ErpStdCost</ParamId>
+			<Order>1001</Order>
+			<Source>SAP</Source>
+			<IsAPrice>true</IsAPrice>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamName>Price/Mass (SAP)</ParamName>
+			<ParamId>ErpPriceMass</ParamId>
+			<Order>1001</Order>
+			<Source>SAP</Source>
+			<IsAPrice>false</IsAPrice>
+		</BomExportParameterData>
+	</ListAvailableParameter>
+
+	<ListSelectedParameter>
+		<BomExportParameterData>
+			<ParamId>REP</ParamId>
+			<Order>1</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>Quantity</ParamId>
+			<Order>2</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>Unit</ParamId>
+			<Order>3</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>Name</ParamId>
+			<Order>4</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>DESCRIPTION_2</ParamId>
+			<Order>5</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>DESCRIPTION2_1</ParamId>
+			<Order>6</Order>
+		</BomExportParameterData>
+		<BomExportParameterData>
+			<ParamId>DESCRIPTION2_2</ParamId>
+			<Order>7</Order>
+		</BomExportParameterData>
+	</ListSelectedParameter>
+
+	<FieldSeparator>059</FieldSeparator>
+
+
+
+	<SelectedOutputFormat>
+		<Name>Excel</Name>
+		<Extension>XLSX</Extension>
+		<NeedFieldSeparator>false</NeedFieldSeparator>
+	</SelectedOutputFormat>
+
+	<ListOutputFormat>
+		<BomExportOutputFormat>
+			<Name>Excel</Name>
+			<Extension>XLSX</Extension>
+			<NeedFieldSeparator>false</NeedFieldSeparator>
+		</BomExportOutputFormat>
+		<BomExportOutputFormat>
+			<Name>CSV File</Name>
+			<Extension>CSV</Extension>
+			<NeedFieldSeparator>true</NeedFieldSeparator>
+		</BomExportOutputFormat>
+	</ListOutputFormat>
+
+	<ListSapPlant>
+		<SapPlant>
+			<Name>Portugal Whole Crane</Name>
+			<Number>1000</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>Moulins</Name>
+			<Number>1011</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>Charlieu</Name>
+			<Number>1012</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>Italy Whole Crane</Name>
+			<Number>1050</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>China Whole Crane</Name>
+			<Number>1070</Number>
+			<Currency>RMB</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>China Whole Crane - Devise Euro</Name>
+			<Number>1070</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+		<SapPlant>
+			<Name>Saint-Pierre de Chandieu</Name>
+			<Number>2010</Number>
+			<Currency>EUR</Currency>
+		</SapPlant>
+	</ListSapPlant>
+
+	<ShowSapCostVolumeInfo>true</ShowSapCostVolumeInfo>
+
+	<UnapprovedState>
+		<string>REWORK</string>
+		<string>INWORK</string>
+		<string>UNDERREVIEW</string>
+	</UnapprovedState>
+
+</BomExportConfiguration>

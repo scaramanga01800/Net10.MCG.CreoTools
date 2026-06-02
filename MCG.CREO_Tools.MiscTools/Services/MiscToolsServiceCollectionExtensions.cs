@@ -1,7 +1,8 @@
-﻿using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
+﻿using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
 using MCG.CREO_Tools.MiscTools.Interfaces;
 using MCG.CREO_Tools.MiscTools.View.BomComparison;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
+using MCG.CREO_Tools.MiscTools.View.BomExport;
 using MCG.CREO_Tools.MiscTools.View.CadAutoColor;
 using MCG.CREO_Tools.MiscTools.View.CadDocRename;
 using MCG.CREO_Tools.MiscTools.View.CraneSearch;
@@ -12,6 +13,7 @@ using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.View.SapFertBom;
 using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
+using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
@@ -36,6 +38,11 @@ namespace MCG.CREO_Tools.MiscTools.Services
             services.AddTransient<BomComparisonView>();
             services.AddTransient<BomComparisonViewModel>();
             services.AddTransient<BomComparisonTabMainView>();
+
+            services.AddTransient<BomExportCumulativeView>();
+
+            services.AddTransient<BomExportFluentWindowView>();
+            services.AddTransient<BomExportWindowViewModel>();
 
             services.AddTransient<BomEnvirConfigMainView>();
             services.AddTransient<BomEnvirConfigViewModel>();
