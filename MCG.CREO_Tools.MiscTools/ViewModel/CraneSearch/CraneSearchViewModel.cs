@@ -7,7 +7,7 @@ using MCG.CommonLib.SapTools.Interfaces;
 using MCG.CommonLib.SapTools.ViewModel;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WebtermLib.Services;
+using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
@@ -31,7 +31,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
         private string MainAppFolder { get; set; }
         private SapConfiguration CurrentConfiguration { get; set; }
         private List<string> ListItemInProgress { get; set; }
-        private McgCraneMapping CraneMapping { get; set; } = new McgCraneMapping();
+       // private McgCraneMapping CraneMapping { get; set; } = new McgCraneMapping();
         #endregion
 
         #region [REGION] Commands
@@ -64,14 +64,17 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
         private readonly IXmlSerializeTools _xmlSerializeTools;
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
         private readonly ISapMaterialService _sapMaterialService;
+        private readonly IMcgCraneMapping _craneMapping;
 
         public CraneSearchViewModel(IXmlSerializeTools xmlSerializeTools,
                                     IMcgCommonLibWindowService mcgCommonLibWindowService,
-                                    ISapMaterialService sapMaterialService)
+                                    ISapMaterialService sapMaterialService,
+                                    IMcgCraneMapping mcgCraneMapping)
         {
             _xmlSerializeTools = xmlSerializeTools;
             _mcgCommonLibWindowService = mcgCommonLibWindowService;
             _sapMaterialService = sapMaterialService;
+            _craneMapping = mcgCraneMapping;
 
             try
             {
@@ -479,22 +482,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
         {
             try
             {
-                //object sapConnection = SAPTools.GetSapConnection();
-                //if (sapConnection == null)
-                //{
-                //    MessageBox.Show(
-                //        string.Format(McgWpfTools.GetStringResource("EDC_InfoMsgErpConNotFound"), "SAP"),
-                //        McgWpfTools.GetStringResource("EDC_InfoTitleErpBom"),
-                //        MessageBoxButton.OK,
-                //        MessageBoxImage.Information);
-                //    RaiseCallCloseEvent();
-                //    return;
-                //}
                 var craneList =  _sapMaterialService.ZDTB_DIS_SELCODE(PartList);
-                //var craneList = await StaRunner.RunAsync(() => _sapMaterialService.ZDTB_DIS_SELCODEAsync(PartList));
                
-                //List<SapGenericObject> craneList = _sapMaterialService.ZDTB_DIS_SELCODE(PartList);
-                //List<SapGenericObject> craneList = SAPTools.ZDTB_DIS_SELCODE(sapConnection, PartList);
                 if (craneList == null || craneList.Count == 0)
                 {
                     MessageBox.Show(
@@ -543,8 +532,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch
                          .Where(name => !string.IsNullOrWhiteSpace(name))
                          .Distinct()
                          .ToList();
-                CurrentDataContext.EuropeEquivalent = new System.Collections.ObjectModel.ObservableCollection<KeyValuePair<string, string>>(CraneMapping.ConvertToEuropeCraneNameDictionary(DistinctCraneNames));
-                CurrentDataContext.AsiaEquivalent = new System.Collections.ObjectModel.ObservableCollection<KeyValuePair<string, string>>(CraneMapping.ConvertToAsiaCraneNameDictionary(DistinctCraneNames));
+                CurrentDataContext.EuropeEquivalent = new System.Collections.ObjectModel.ObservableCollection<KeyValuePair<string, string>>(_craneMapping.ConvertToEuropeCraneNameDictionary(DistinctCraneNames));
+                CurrentDataContext.AsiaEquivalent = new System.Collections.ObjectModel.ObservableCollection<KeyValuePair<string, string>>(_craneMapping.ConvertToAsiaCraneNameDictionary(DistinctCraneNames));
             }
             catch (Exception ex)
             {

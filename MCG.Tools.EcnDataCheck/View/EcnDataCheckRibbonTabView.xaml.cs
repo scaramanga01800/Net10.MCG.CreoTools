@@ -46,7 +46,7 @@ namespace MCG.Tools.EcnDataCheck.View
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{EcnDataCheckConstants.MainDictionary}", UriKind.Absolute);
-                //McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\WindchillRequestToolDictionary.xaml", UriKind.Absolute);
+
                 InitializeComponent();
                 DataContextChanged += EcnDataCheckRibbonTabView_DataContextChanged;
             }

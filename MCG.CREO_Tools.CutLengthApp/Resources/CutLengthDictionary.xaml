@@ -1,0 +1,55 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="CT_AppName">Cut Length</system:String>
+    <system:String x:Key="CT_LabelType">Cut Length Type</system:String>
+    <system:String x:Key="CT_BtHelp">Help</system:String>
+    <system:String x:Key="CT_ColHeader01">Part number</system:String>
+    <system:String x:Key="CT_ColHeader02">Description</system:String>
+    <system:String x:Key="CT_ColHeader03">CAD document type</system:String>
+    <system:String x:Key="CT_MiOpenTemplate">Open template</system:String>
+    <system:String x:Key="CT_LabelBulkItem">Bulk item</system:String>
+    <system:String x:Key="CT_Label3DPart">3D model</system:String>
+    <system:String x:Key="CT_LabelQuantity">Quantity</system:String>
+    <system:String x:Key="CT_BtInsert">Insert cut length</system:String>
+    <system:String x:Key="CT_LabelActiveAssembly">Active assembly</system:String>
+    <system:String x:Key="CT_MsgNoPartSelected">No part has been selected.</system:String>
+    <system:String x:Key="CT_MsgTitleCutLenghtIssue">Cut Length Application Issue</system:String>
+    <system:String x:Key="CT_MsgNothingInsertSelected">Select at least a bulk item or a 3D part to insert.</system:String>
+    <system:String x:Key="CT_MsgNotAnAssembly">The active model is not an assembly.</system:String>
+    <system:String x:Key="CT_MsgIssueOpen3D">Unable to create the 3D model. Please check that the template exists.</system:String>
+    <system:String x:Key="CT_BtUpdateQuantity">Update bulk quantity</system:String>
+    <system:String x:Key="CT_MsgSelectBulk">Select a bulk item.</system:String>
+    <system:String x:Key="CT_MsgSelectItem">Please select a cut length first.</system:String>
+    <system:String x:Key="CT_BtOk">OK</system:String>
+    <system:String x:Key="CT_BtCancel">Cancel</system:String>
+    <system:String x:Key="CT_TitleBulkItemQty">Bulk item quantity</system:String>
+    <system:String x:Key="CT_MsgBulkParamIssue">The parameter BOM_REPORT_QUANTITY has not been created for this bulk item. Please create it first.</system:String>
+    <system:String x:Key="CT_TtHelpCutLength">Cut Length Help</system:String>
+    <system:String x:Key="CT_LinkHelpCutLength">APP001EN.PDF</system:String>
+    <system:String x:Key="CT_Msg3DNameTooLong">The filename of the 3D component is too long because the assembly name is too long. It cannot be created.</system:String>
+
+    <system:String x:Key="CT_RibCutLength">Cut Length</system:String>
+    <system:String x:Key="CT_TabConfig">Configuration</system:String>
+    <system:String x:Key="CT_TabTools">Tools</system:String>
+    <system:String x:Key="CT_TabCREO">CREO Interaction</system:String>
+    <system:String x:Key="CT_LabelNoActiveModel">No active model</system:String>
+
+    <system:String x:Key="CT_TitleTipEdit">Edit mode</system:String>
+    <system:String x:Key="CT_TextTipEdit">Switch the interface to edit mode to add or update parts</system:String>
+    <system:String x:Key="CT_TitleTipAddPart">Add part</system:String>
+    <system:String x:Key="CT_TextTipAddPart">Add a new part to the selected class/sub-class</system:String>
+    <system:String x:Key="CT_WindowTitleUpdateCreatePart">Create / Update part</system:String>
+    <system:String x:Key="CT_MenuData">Data</system:String>
+    <system:String x:Key="CT_ErrorMsgPartExist">The part already exists for this class/sub-class</system:String>
+    <system:String x:Key="CT_ErrorMsgTitlePartExist">Part already exists</system:String>
+    <system:String x:Key="CT_ErrorMsgNumberBlank">Part number or file name cannot be blank</system:String>
+    <system:String x:Key="CT_ErrorMsgTitleIssue">Creation / update issue</system:String>
+    <system:String x:Key="CT_MiEditPartNumber">Edit</system:String>
+    <system:String x:Key="CT_MiDuplicatePartNumber">Duplicate</system:String>
+    <system:String x:Key="CT_ErrorMsgClassNotSelected">Please select a class first</system:String>
+    <system:String x:Key="CT_ErrorMsgCantModify">CAD model is read-only. Update is not allowed</system:String>
+    <system:String x:Key="CT_ErrorMsgCantModifySubAssy">CAD model {0} is read-only. Update is not allowed</system:String>
+</ResourceDictionary> 

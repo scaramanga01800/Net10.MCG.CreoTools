@@ -15,7 +15,6 @@ using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
 using MCG.WindchillRequestTool.Model.BomComparison;
 using Microsoft.Extensions.DependencyInjection;
-
 using System.Windows;
 
 namespace MCG.CREO_Tools.MiscTools.Services

@@ -1,0 +1,55 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="CT_AppName">Débit</system:String>
+    <system:String x:Key="CT_LabelType">Type de débit</system:String>
+    <system:String x:Key="CT_BtHelp">Aide</system:String>
+    <system:String x:Key="CT_ColHeader01">Numéro d’article</system:String>
+    <system:String x:Key="CT_ColHeader02">Description</system:String>
+    <system:String x:Key="CT_ColHeader03">Type de document CAO</system:String>
+    <system:String x:Key="CT_MiOpenTemplate">Ouvrir le modèle</system:String>
+    <system:String x:Key="CT_LabelBulkItem">Article en vrac</system:String>
+    <system:String x:Key="CT_Label3DPart">Modèle 3D</system:String>
+    <system:String x:Key="CT_LabelQuantity">Quantité</system:String>
+    <system:String x:Key="CT_BtInsert">Insérer le débit</system:String>
+    <system:String x:Key="CT_LabelActiveAssembly">Assemblage actif</system:String>
+    <system:String x:Key="CT_MsgNoPartSelected">Aucune pièce n’a été sélectionnée.</system:String>
+    <system:String x:Key="CT_MsgTitleCutLenghtIssue">Problème dans l’application Débit</system:String>
+    <system:String x:Key="CT_MsgNothingInsertSelected">Sélectionnez au moins l’article en vrac ou la pièce 3D à insérer.</system:String>
+    <system:String x:Key="CT_MsgNotAnAssembly">Le modèle actif n’est pas un assemblage.</system:String>
+    <system:String x:Key="CT_MsgIssueOpen3D">Problème lors de la création du modèle 3D. Vérifiez que le modèle existe bien.</system:String>
+    <system:String x:Key="CT_BtUpdateQuantity">Mettre à jour la quantité de l’article en vrac</system:String>
+    <system:String x:Key="CT_MsgSelectBulk">Sélectionnez un article en vrac.</system:String>
+    <system:String x:Key="CT_MsgSelectItem">Sélectionnez d’abord un débit.</system:String>
+    <system:String x:Key="CT_BtOk">OK</system:String>
+    <system:String x:Key="CT_BtCancel">Annuler</system:String>
+    <system:String x:Key="CT_TitleBulkItemQty">Quantité de l’article en vrac</system:String>
+    <system:String x:Key="CT_MsgBulkParamIssue">Le paramètre BOM_REPORT_QUANTITY n’a pas été créé pour cet article en vrac. Veuillez le créer d’abord.</system:String>
+    <system:String x:Key="CT_TtHelpCutLength">Aide Débit (Cut Length)</system:String>
+    <system:String x:Key="CT_LinkHelpCutLength">APP001FR.PDF</system:String>
+    <system:String x:Key="CT_Msg3DNameTooLong">Le nom du fichier du composant 3D est trop long car le nom de l’assemblage est trop grand. Il ne pourra pas être créé.</system:String>
+
+    <system:String x:Key="CT_RibCutLength">Débit</system:String>
+    <system:String x:Key="CT_TabConfig">Configuration</system:String>
+    <system:String x:Key="CT_TabTools">Outils</system:String>
+    <system:String x:Key="CT_TabCREO">Interaction CREO</system:String>
+    <system:String x:Key="CT_LabelNoActiveModel">Aucun modèle actif</system:String>
+
+    <system:String x:Key="CT_TitleTipEdit">Mode édition</system:String>
+    <system:String x:Key="CT_TextTipEdit">Basculer l’interface en mode édition pour ajouter ou mettre à jour des articles</system:String>
+    <system:String x:Key="CT_TitleTipAddPart">Ajouter un article</system:String>
+    <system:String x:Key="CT_TextTipAddPart">Ajouter un nouvel article à la classe/sous-classe sélectionnée</system:String>
+    <system:String x:Key="CT_WindowTitleUpdateCreatePart">Créer / Mettre à jour un article</system:String>
+    <system:String x:Key="CT_MenuData">Données</system:String>
+    <system:String x:Key="CT_ErrorMsgPartExist">L’article existe déjà pour cette classe/sous-classe</system:String>
+    <system:String x:Key="CT_ErrorMsgTitlePartExist">Article déjà existant</system:String>
+    <system:String x:Key="CT_ErrorMsgNumberBlank">Le numéro ou le nom de fichier ne doit pas être vide</system:String>
+    <system:String x:Key="CT_ErrorMsgTitleIssue">Erreur lors de la création ou mise à jour</system:String>
+    <system:String x:Key="CT_MiEditPartNumber">Éditer</system:String>
+    <system:String x:Key="CT_MiDuplicatePartNumber">Dupliquer</system:String>
+    <system:String x:Key="CT_ErrorMsgClassNotSelected">Veuillez sélectionner une classe au préalable</system:String>
+    <system:String x:Key="CT_ErrorMsgCantModify">Le modèle CAO est en lecture seule. La mise à jour n’est pas autorisée</system:String>
+    <system:String x:Key="CT_ErrorMsgCantModifySubAssy">Le modèle CAO {0} est en lecture seule. La mise à jour n’est pas autorisée</system:String>
+</ResourceDictionary> 

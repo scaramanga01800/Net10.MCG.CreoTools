@@ -136,6 +136,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         private readonly ISapHupService _sapHupService;
         private readonly IEcnDataCheckWindchillService _ecnDataCheckWindchillService;
         private readonly IMiscToolsWindchillService _miscToolsWindchillService;
+        private readonly IMcgQuickChangeTools _mcgQuickChangeTools;
 
         public EcnDataCheckViewModel(IXmlSerializeTools xmlSerializeTools,
                                      IRegExTools regExTools,
@@ -155,7 +156,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                                      IWindchillRequestMiscService windchillRequestMiscService,
                                      ISapHupService sapHupService,
                                      IEcnDataCheckWindchillService ecnDataCheckWindchillService,
-                                     IMiscToolsWindchillService miscToolsWindchillService)
+                                     IMiscToolsWindchillService miscToolsWindchillService,
+                                     IMcgQuickChangeTools mcgQuickChangeTools)
         {
             try
             {
@@ -178,6 +180,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 _sapHupService = sapHupService;
                 _ecnDataCheckWindchillService = ecnDataCheckWindchillService;
                 _miscToolsWindchillService = miscToolsWindchillService;
+                _mcgQuickChangeTools = mcgQuickChangeTools;
 
                 CurrentEcnDataCheckDataContext = new EcnDataCheckDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -2188,9 +2191,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         {
             try
             {
-                if (CurrentMcgQuickChangeTool == null)
-                    CurrentMcgQuickChangeTool = new McgQuickChangeTools();
-                CurrentComponent.ReplacementNumber = CurrentMcgQuickChangeTool.GetNewPartNumber(CurrentComponent.MainWindchillObject.Number);
+                CurrentComponent.ReplacementNumber = _mcgQuickChangeTools.GetNewPartNumber(CurrentComponent.MainWindchillObject.Number);
 
                 if (CurrentComponent.ReplacementNumber != null)
                     return DataCheckValue.NOTACCURATE;
