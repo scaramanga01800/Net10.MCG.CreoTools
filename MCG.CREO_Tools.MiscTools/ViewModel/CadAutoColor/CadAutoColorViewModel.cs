@@ -214,11 +214,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr
             {
                 if (CurrentDataContext.SelectedCadDoc != null)
                 {
-                    EPMDocument CurrentEpm = new EPMDocument()
-                    {
-                        PartNumber = CurrentDataContext.SelectedCadDoc,
-                        FileName = CurrentDataContext.SelectedCadDoc
-                    };
+                    EPMDocument CurrentEpm = new EPMDocument(CurrentDataContext.SelectedCadDoc, CurrentDataContext.SelectedCadDoc, CurrentDataContext.SelectedCadDoc);
                     CurrentEpm.OpenInCreo(_creoSessionProvider, _creoModelService);
                 }
             }

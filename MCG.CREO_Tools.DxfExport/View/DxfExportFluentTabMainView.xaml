@@ -1,0 +1,51 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.CREO_Tools.DxfExport.View.DxfExportFluentTabMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.CREO_Tools.DxfExport.View"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      mc:Ignorable="d"
+                      Header="{DynamicResource DXF_AppName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <conv:InverseBoolConverter x:Key="InverseBoolConv"></conv:InverseBoolConverter>
+            <conv:SelectedItemToVisibilityConverter x:Key="SelectItemToVisibilityConv"></conv:SelectedItemToVisibilityConverter>
+            <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_class.ico" />
+            <BitmapImage x:Key="FILE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/configuration_settings.ico" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico" />
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png" />
+            <BitmapImage x:Key="FLAT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/FlatPart_32x32.png" />
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource DXF_RibGrpFileFolder}" 
+                           IsEnabled="{Binding CurrentDxfExportDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:Button Header="{DynamicResource DXF_LabelExportFolder}"
+                       LargeIcon="{StaticResource FOLDER}"
+                       Command="{Binding CommandOpenFolder}"></Fluent:Button>
+        <Fluent:Button Header="{DynamicResource DXF_LabelExportFile}"
+                       LargeIcon="{StaticResource FILE}"
+                       Command="{Binding CommandOpenFile}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource DXF_RibGrpCreo}" 
+                           IsEnabled="{Binding CurrentDxfExportDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:ToggleButton Header="{DynamicResource DXF_LabelFlatState}"
+                             LargeIcon="{StaticResource FLAT}"
+                             IsChecked="{Binding CurrentDxfExportDataContext.IsFlatSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ToggleButton>
+        <Fluent:Button LargeIcon="{StaticResource START}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandExportDxf}"
+                       IsEnabled="{Binding CurrentDxfExportDataContext.IsCreoEnable}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource DXF_RibGrpTools}" 
+                           IsEnabled="{Binding CurrentDxfExportDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

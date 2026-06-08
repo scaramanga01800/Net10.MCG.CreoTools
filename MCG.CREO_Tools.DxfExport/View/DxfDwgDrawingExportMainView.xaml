@@ -1,0 +1,145 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.DxfExport.View.DxfDwgDrawingExportMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.DxfExport.View"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource DXF_TitleDwfDxgExport}" 
+                     Height="450" Width="800" 
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Export_Dwg.ico">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <conv:SelectedItemToVisibilityConverter x:Key="SelectItemToVisibilityConv"></conv:SelectedItemToVisibilityConverter>
+            <BitmapImage x:Key="IconFoldr" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_class.ico" />
+            <BitmapImage x:Key="HardDisk" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/hard_disk.ico" />
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png" />
+            <BitmapImage x:Key="RESET" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/delete.ico" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <DockPanel.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
+        <StackPanel HorizontalAlignment="Center" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <StackPanel HorizontalAlignment="Center">
+                    <Grid Height="30"  Width="245">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="215"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{StaticResource ResourceKey=IconFoldr}" Margin="2"  Stretch="Fill" HorizontalAlignment="Left" />
+                        <Fluent:TwoLineLabel Grid.Column="1" 
+                                         HasTwoLines="False"
+                                         HorizontalAlignment="Center"
+                                         HorizontalContentAlignment="Center" 
+                                         VerticalContentAlignment="Center" 
+                                         FontSize="18" 
+                                         Text="{DynamicResource DXF_LabelExportFolder}"/>
+                    </Grid>
+
+                    <Grid Width="245">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="215"/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0">
+                            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" VerticalAlignment="Center">
+                                <Button x:Name="btnOpenFolder" Command="{Binding CommandOpenFolder}" Margin="1" Width="28" Height="28">
+                                    <Image Source="{StaticResource ResourceKey=HardDisk}"  Stretch="Fill"/>
+                                </Button>
+                            </WrapPanel>
+                        </DockPanel>
+                        <TextBox x:Name="TextBoxFolder"
+                             Background="{DynamicResource IdealBackgroundColor}"
+                             Foreground="{DynamicResource IdealForegroundColor}"
+                             Grid.Column="1"  
+                             Width="215" 
+                             TextWrapping="Wrap" 
+                             Text="{Binding CurrentDatacontext.CurrentFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             TextAlignment="Center" 
+                             VerticalContentAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+                <Rectangle Width="10"></Rectangle>
+                <StackPanel>
+                    <Fluent:TwoLineLabel Height="30" 
+                                     HasTwoLines="False"
+                                     HorizontalAlignment="Center"
+                                     HorizontalContentAlignment="Center"
+                                     Grid.Column="1" 
+                                     FontSize="18" 
+                                     Text="{DynamicResource DXF_LabelDrwTemplateName}"/>
+                    <TextBox Height="{Binding ActualHeight, ElementName=TextBoxFolder}"
+                         Background="{DynamicResource IdealBackgroundColor}"
+                         Foreground="{DynamicResource IdealForegroundColor}"
+                         Grid.Column="1"  
+                         TextWrapping="Wrap" 
+                         Text="{Binding CurrentDatacontext.DrawingTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         TextAlignment="Center" 
+                         VerticalContentAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Fluent:CheckBox IsChecked="{Binding CurrentDatacontext.IsDxfSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">DXF</Fluent:CheckBox>
+            <Fluent:CheckBox IsChecked="{Binding CurrentDatacontext.IsDwgSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">DWG</Fluent:CheckBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="BtDXFExportStart" Margin="0,5" Command="{Binding CommandDxfDwgDrawingExport}" IsEnabled="{Binding CurrentDatacontext.IsCreoEnable}"  Height="48" Width="48" ToolTip="{DynamicResource DXF_BtStarExport}">
+                    <Image Source="{StaticResource START}"></Image>
+                </Button>
+                <Rectangle Width="50"></Rectangle>
+                <Button  Margin="0,5" Command="{Binding CommandResetList}" IsEnabled="{Binding CurrentDatacontext.IsCreoEnable}"  Height="48" Width="48" ToolTip="{DynamicResource DXF_BtResetList}">
+                    <Image Source="{StaticResource RESET}"></Image>
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding CurrentDatacontext.StatusBarMessage}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <DataGrid x:Name="DataGridParts"  IsReadOnly="True" ItemsSource="{Binding CurrentDatacontext.ListItems}" SelectedItem="{Binding CurrentDatacontext.SelectedItem}" AutoGenerateColumns="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Number}" >
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource DXF_ColHeader01}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Binding="{Binding Status}" >
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource DXF_ColHeader02}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Binding="{Binding Comment}" >
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource DXF_ColHeader03}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
+</Fluent:RibbonWindow>

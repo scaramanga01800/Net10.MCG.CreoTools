@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
@@ -219,11 +220,9 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
         {
             try
             {
-                EPMDocument CurrentEpm = new EPMDocument()
-                {
-                    PartNumber = CurrentDataContext.SelectedCutLengthPart.PartNumber,
-                    FileName = $"{CurrentDataContext.SelectedCutLengthPart.PartNumber}.{CurrentDataContext.SelectedCutLengthPart.CadDocType}"
-                };
+                EPMDocument CurrentEpm = new EPMDocument(CurrentDataContext.SelectedCutLengthPart.PartNumber, 
+                                                         $"{CurrentDataContext.SelectedCutLengthPart.PartNumber}.{CurrentDataContext.SelectedCutLengthPart.CadDocType}", 
+                                                         CurrentDataContext.SelectedCutLengthPart.PartNumber);
 
                 CurrentEpm.OpenInCreo(_creoSessionProvider, _creoModelService);
             }

@@ -1,0 +1,57 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="DXF_LabelExportFolder">Dossier d’export</system:String>
+    <system:String x:Key="DXF_LabelDrwTemplateName">Gabarit de plan</system:String>
+    <system:String x:Key="DXF_TbExportFolder">Sélectionner un dossier</system:String>
+    <system:String x:Key="DXF_LabelExportFile">Fichier d’export DXF</system:String>
+    <system:String x:Key="DXF_TbExportFile">Sélectionner un fichier</system:String>
+    <system:String x:Key="DXF_BtStarExport">Lancer l’export</system:String>
+    <system:String x:Key="DXF_BtResetList">Réinitialiser la liste</system:String>
+    <system:String x:Key="DXF_MsgFileFilter">Fichier texte (*.txt;*.csv)|*.txt;*.csv</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFileFolder">Sélectionnez un dossier et/ou un fichier, puis relancez.</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFolderError">Le dossier n’existe pas. Veuillez en sélectionner un autre et relancer.</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfSelectionError">Sélectionnez DXF et/ou DWG, puis relancez.</system:String>
+    <system:String x:Key="DXF_ErrorMsgDrwTemplateError">Gabarit de plan non trouvé</system:String>
+    <system:String x:Key="DXF_ErrorMsgTitleDxfFileFolder">Export DXF – Fichier/Dossier</system:String>
+    <system:String x:Key="DXF_MsgDxfInProgress">Export DXF en cours. Voulez-vous interrompre le processus ?</system:String>
+    <system:String x:Key="DXF_MsgTitleDxfInProgress">Export DXF en cours</system:String>
+    <system:String x:Key="DXF_SbMsg1">Nb de pièces : {0}</system:String>
+    <system:String x:Key="DXF_SbMsg2">Nb de pièces : {0} – DXF restants à créer : {1}</system:String>
+    <system:String x:Key="DXF_SbMsg3">Nb de pièces : {0} – {1}</system:String>
+    <system:String x:Key="DXF_Status01">DXF en cours</system:String>
+    <system:String x:Key="DXF_Status02">DXF créé</system:String>
+    <system:String x:Key="DXF_Status03">Erreur DXF</system:String>
+    <system:String x:Key="DXF_Status04">Export DXF annulé</system:String>
+    <system:String x:Key="DXF_Status05">Export DXF terminé</system:String>
+    <system:String x:Key="DXF_Status06">Problème lors de la création du DXF</system:String>
+    <system:String x:Key="DXF_Status07">Le DXF créé est peut-être vide</system:String>
+    <system:String x:Key="DXF_Status08">La pièce n’existe pas</system:String>
+    <system:String x:Key="DXF_Status09">Non exporté</system:String>
+    <system:String x:Key="DXF_Status10">Erreur à l’ouverture de la pièce</system:String>
+    <system:String x:Key="DXF_Status11">9-DECOUPE non trouvée</system:String>
+    <system:String x:Key="DXF_Status12">1_TOP utilisée à la place</system:String>
+    <system:String x:Key="DXF_Status20">En cours</system:String>
+    <system:String x:Key="DXF_Status21">Export effectué</system:String>
+    <system:String x:Key="DXF_Status22">Plan / 3D inexistant</system:String>
+    <system:String x:Key="DXF_Status23">Document CAO inexistant</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFileOpen">Le fichier {0} ne peut pas être ouvert. Veuillez en sélectionner un autre.</system:String>
+    <system:String x:Key="DXF_MiOpenInCreo">Ouvrir la pièce dans CREO</system:String>
+    <system:String x:Key="DXF_TtHelpDxfExport">Aide Export DXF Contour</system:String>
+    <system:String x:Key="DXF_LinkHelpDxfExport">APP014FR.PDF</system:String>
+    <system:String x:Key="DXF_ColHeader01">Numéro</system:String>
+    <system:String x:Key="DXF_ColHeader02">Statut</system:String>
+    <system:String x:Key="DXF_ColHeader03">Commentaires</system:String>
+    <system:String x:Key="DXF_CbSelectFlat">Sélect. FLAT si dispo ?</system:String>
+    <system:String x:Key="DXF_CbToolTipSelectFlat">Si le modèle est une table de famille, sélectionnera le FLAT à la place. Seul le premier FLAT trouvé sera utilisé.</system:String>
+    <system:String x:Key="DXF_TitleDwfDxgExport">Export DXF/DWG</system:String>
+    <system:String x:Key="DXF_TitleBackUpCadDocument">Sauvegarde du document CAO</system:String>
+
+    <system:String x:Key="DXF_AppName">Export Contour DXF</system:String>
+    <system:String x:Key="DXF_RibGrpFileFolder">Fichier et dossier</system:String>
+    <system:String x:Key="DXF_RibGrpCreo">Interaction CREO</system:String>
+    <system:String x:Key="DXF_RibGrpTools">Outils</system:String>
+    <system:String x:Key="DXF_LabelFlatState">État plat</system:String>
+</ResourceDictionary> 

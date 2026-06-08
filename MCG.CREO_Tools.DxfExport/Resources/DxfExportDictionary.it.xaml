@@ -1,0 +1,57 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="DXF_LabelExportFolder">Export folder</system:String>
+    <system:String x:Key="DXF_LabelDrwTemplateName">Drawing template</system:String>
+    <system:String x:Key="DXF_TbExportFolder">Select a folder</system:String>
+    <system:String x:Key="DXF_LabelExportFile">DXF export file</system:String>
+    <system:String x:Key="DXF_TbExportFile">Select a file</system:String>
+    <system:String x:Key="DXF_BtStarExport">Start export</system:String>
+    <system:String x:Key="DXF_BtResetList">Reset list</system:String>
+    <system:String x:Key="DXF_MsgFileFilter">Text files (*.txt;*.csv)|*.txt;*.csv</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFileFolder">Select a folder and/or a file, then try again</system:String>
+    <system:String x:Key="DXF_ErrorMsgTitleDxfFileFolder">DXF Export - File/Folder</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFolderError">Folder does not exist. Please select another one and try again</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfSelectionError">Select DXF and/or DWG, then try again</system:String>
+    <system:String x:Key="DXF_ErrorMsgDrwTemplateError">Drawing template not found</system:String>
+    <system:String x:Key="DXF_MsgDxfInProgress">DXF export in progress. Do you want to stop the current process?</system:String>
+    <system:String x:Key="DXF_MsgTitleDxfInProgress">DXF Export in progress</system:String>
+    <system:String x:Key="DXF_SbMsg1">Number of parts: {0}</system:String>
+    <system:String x:Key="DXF_SbMsg2">Number of parts: {0} - Remaining DXFs to create: {1}</system:String>
+    <system:String x:Key="DXF_SbMsg3">Number of parts: {0} - {1}</system:String>
+    <system:String x:Key="DXF_Status01">DXF in progress</system:String>
+    <system:String x:Key="DXF_Status02">DXF created</system:String>
+    <system:String x:Key="DXF_Status03">DXF error</system:String>
+    <system:String x:Key="DXF_Status04">DXF export aborted</system:String>
+    <system:String x:Key="DXF_Status05">DXF export finished</system:String>
+    <system:String x:Key="DXF_Status06">Error creating DXF</system:String>
+    <system:String x:Key="DXF_Status07">Created DXF may be empty</system:String>
+    <system:String x:Key="DXF_Status08">Part does not exist</system:String>
+    <system:String x:Key="DXF_Status09">Not exported</system:String>
+    <system:String x:Key="DXF_Status10">Error opening part</system:String>
+    <system:String x:Key="DXF_Status11">9-DECOUPE not found</system:String>
+    <system:String x:Key="DXF_Status12">1_TOP used instead</system:String>
+    <system:String x:Key="DXF_Status20">In progress</system:String>
+    <system:String x:Key="DXF_Status21">Export completed</system:String>
+    <system:String x:Key="DXF_Status22">Drawing/3D not found</system:String>
+    <system:String x:Key="DXF_Status23">CAD document not found</system:String>
+    <system:String x:Key="DXF_ErrorMsgDxfFileOpen">Cannot open file {0}. Please select another one</system:String>
+    <system:String x:Key="DXF_MiOpenInCreo">Open part in CREO</system:String>
+    <system:String x:Key="DXF_TtHelpDxfExport">DXF Contour Export Help</system:String>
+    <system:String x:Key="DXF_LinkHelpDxfExport">APP014EN.PDF</system:String>
+    <system:String x:Key="DXF_ColHeader01">Number</system:String>
+    <system:String x:Key="DXF_ColHeader02">Status</system:String>
+    <system:String x:Key="DXF_ColHeader03">Comments</system:String>
+    <system:String x:Key="DXF_CbSelectFlat">Select FLAT if available?</system:String>
+    <system:String x:Key="DXF_CbToolTipSelectFlat">If the model is a family table, the flat will be selected instead. Only the first flat found will be used.</system:String>
+    <system:String x:Key="DXF_TitleDwfDxgExport">DXF/DWG Export</system:String>
+    <system:String x:Key="DXF_TitleBackUpCadDocument">Backup CAD document</system:String>
+
+    <system:String x:Key="DXF_AppName">Export Contour DXF</system:String>
+    <system:String x:Key="DXF_RibGrpFileFolder">File and folder</system:String>
+    <system:String x:Key="DXF_RibGrpCreo">CREO interaction</system:String>
+    <system:String x:Key="DXF_RibGrpTools">Tools</system:String>
+    <system:String x:Key="DXF_LabelFlatState">Flat state</system:String>
+</ResourceDictionary> 
