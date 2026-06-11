@@ -1,0 +1,60 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="JPG_LabelExportFolder">JPG Export Folder</system:String>
+    <system:String x:Key="JPG_TbExportFolder">Select a folder</system:String>
+    <system:String x:Key="JPG_LabelExportFile">JPG Export File</system:String>
+    <system:String x:Key="JPG_TbExportFile">Select a file</system:String>
+    <system:String x:Key="JPG_LabelView">View</system:String>
+    <system:String x:Key="JPG_LabelDisplayStyle">Display Style</system:String>
+    <system:String x:Key="JPG_LabelResolution">Resolution</system:String>
+    <system:String x:Key="JPG_BtStarExport">Start Export</system:String>
+    <system:String x:Key="JPG_MiOpenInCreo">Open part in CREO</system:String>
+    <system:String x:Key="JPG_ValView1">Standard Orientation</system:String>
+    <system:String x:Key="JPG_ValView2">Default Orientation</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle1">Shading with edges</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle2">Shading with reflections</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle3">Shading</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle4">No hidden lines</system:String>
+    <system:String x:Key="JPG_ValResolution1">100 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution2">200 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution3">300 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution4">400 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution5">500 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution6">600 dpi</system:String>
+    <system:String x:Key="JPG_MsgFileFilter">Text files (*.txt;*.csv)|*.txt;*.csv</system:String>
+    <system:String x:Key="JPG_ErrorMsgDxfFileFolder">Select a folder and/or a file, then try again</system:String>
+    <system:String x:Key="JPG_ErrorMsgTitleDxfFileFolder">JPG Export - File/Folder</system:String>
+    <system:String x:Key="JPG_MsgDxfInProgress">JPG export in progress. Do you want to stop the current process?</system:String>
+    <system:String x:Key="JPG_MsgTitleDxfInProgress">JPG Export in Progress</system:String>
+    <system:String x:Key="JPG_SbMsg1">Number of parts:</system:String>
+    <system:String x:Key="JPG_SbMsg2">Number of parts: {0} - Remaining JPGs to create: {1}</system:String>
+    <system:String x:Key="JPG_SbMsg3">Number of parts: {0} - {1}</system:String>
+    <system:String x:Key="JPG_Status01">JPG in progress</system:String>
+    <system:String x:Key="JPG_Status02">JPG created</system:String>
+    <system:String x:Key="JPG_Status03">JPG error</system:String>
+    <system:String x:Key="JPG_Status04">JPG export aborted</system:String>
+    <system:String x:Key="JPG_Status05">JPG export finished</system:String>
+    <system:String x:Key="JPG_Status06">Error creating JPG</system:String>
+    <system:String x:Key="JPG_Status08">Part does not exist</system:String>
+    <system:String x:Key="JPG_Status09">Not exported</system:String>
+    <system:String x:Key="JPG_Status10">Error opening part</system:String>
+    <system:String x:Key="JPG_ErrorMsgDxfFileOpen">Cannot open file {0}. Please select another one.</system:String>
+    <system:String x:Key="JPG_TtHelpJpgExport">JPG Export Help</system:String>
+    <system:String x:Key="JPG_LinkHelpJpgExport">APP015EN.PDF</system:String>
+    <system:String x:Key="JPG_ColHeader01">Number</system:String>
+    <system:String x:Key="JPG_ColHeader02">Status</system:String>
+    <system:String x:Key="JPG_ColHeader03">Comments</system:String>
+
+    <system:String x:Key="JPG_AppName">JPG Export</system:String>
+    <system:String x:Key="JPG_RibGrpFileFolder">File and folder</system:String>
+    <system:String x:Key="JPG_RibGrpCreo">CREO interaction</system:String>
+    <system:String x:Key="JPG_RibGrpTools">Tools</system:String>
+    <system:String x:Key="JPG_RibGrpSettings">Settings</system:String>
+
+    <system:String x:Key="JPG_TextResolution">Select image resolution</system:String>
+    <system:String x:Key="JPG_TextDisplayStyle">Select display style</system:String>
+    <system:String x:Key="JPG_TextView">Select view</system:String>
+</ResourceDictionary> 

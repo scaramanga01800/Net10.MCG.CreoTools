@@ -1,0 +1,60 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="JPG_LabelExportFolder">Dossier d’export JPG</system:String>
+    <system:String x:Key="JPG_TbExportFolder">Sélectionner un dossier</system:String>
+    <system:String x:Key="JPG_LabelExportFile">Fichier d’export JPG</system:String>
+    <system:String x:Key="JPG_TbExportFile">Sélectionner un fichier</system:String>
+    <system:String x:Key="JPG_LabelView">Vue</system:String>
+    <system:String x:Key="JPG_LabelDisplayStyle">Style d’affichage</system:String>
+    <system:String x:Key="JPG_LabelResolution">Résolution</system:String>
+    <system:String x:Key="JPG_BtStarExport">Lancer l’export</system:String>
+    <system:String x:Key="JPG_MiOpenInCreo">Ouvrir la pièce dans CREO</system:String>
+    <system:String x:Key="JPG_ValView1">Orientation standard</system:String>
+    <system:String x:Key="JPG_ValView2">Orientation par défaut</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle1">Ombrage avec arêtes</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle2">Ombrage avec réflexions</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle3">Ombrage</system:String>
+    <system:String x:Key="JPG_ValDisplayStyle4">Sans lignes cachées</system:String>
+    <system:String x:Key="JPG_ValResolution1">100 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution2">200 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution3">300 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution4">400 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution5">500 dpi</system:String>
+    <system:String x:Key="JPG_ValResolution6">600 dpi</system:String>
+    <system:String x:Key="JPG_MsgFileFilter">Fichier texte (*.txt;*.csv)|*.txt;*.csv</system:String>
+    <system:String x:Key="JPG_ErrorMsgDxfFileFolder">Sélectionnez un dossier et/ou un fichier, puis relancez.</system:String>
+    <system:String x:Key="JPG_ErrorMsgTitleDxfFileFolder">Export JPG – Fichier/Dossier</system:String>
+    <system:String x:Key="JPG_MsgDxfInProgress">Export JPG en cours. Voulez-vous interrompre le processus ?</system:String>
+    <system:String x:Key="JPG_MsgTitleDxfInProgress">Export JPG en cours</system:String>
+    <system:String x:Key="JPG_SbMsg1">Nb de pièces :</system:String>
+    <system:String x:Key="JPG_SbMsg2">Nb de pièces : {0} – JPG restants à créer : {1}</system:String>
+    <system:String x:Key="JPG_SbMsg3">Nb de pièces : {0} – {1}</system:String>
+    <system:String x:Key="JPG_Status01">JPG en cours</system:String>
+    <system:String x:Key="JPG_Status02">JPG créé</system:String>
+    <system:String x:Key="JPG_Status03">Erreur JPG</system:String>
+    <system:String x:Key="JPG_Status04">Export JPG annulé</system:String>
+    <system:String x:Key="JPG_Status05">Export JPG terminé</system:String>
+    <system:String x:Key="JPG_Status06">Problème lors de la création du JPG</system:String>
+    <system:String x:Key="JPG_Status08">La pièce n’existe pas</system:String>
+    <system:String x:Key="JPG_Status09">Non exporté</system:String>
+    <system:String x:Key="JPG_Status10">Erreur à l’ouverture de la pièce</system:String>
+    <system:String x:Key="JPG_ErrorMsgDxfFileOpen">Le fichier {0} ne peut pas être ouvert. Veuillez en sélectionner un autre.</system:String>
+    <system:String x:Key="JPG_TtHelpJpgExport">Aide Export JPG</system:String>
+    <system:String x:Key="JPG_LinkHelpJpgExport">APP015FR.PDF</system:String>
+    <system:String x:Key="JPG_ColHeader01">Numéro</system:String>
+    <system:String x:Key="JPG_ColHeader02">Statut</system:String>
+    <system:String x:Key="JPG_ColHeader03">Commentaires</system:String>
+
+    <system:String x:Key="JPG_AppName">Export JPG</system:String>
+    <system:String x:Key="JPG_RibGrpFileFolder">Fichier et dossier</system:String>
+    <system:String x:Key="JPG_RibGrpCreo">Interaction CREO</system:String>
+    <system:String x:Key="JPG_RibGrpTools">Outils</system:String>
+    <system:String x:Key="JPG_RibGrpSettings">Réglages</system:String>
+
+    <system:String x:Key="JPG_TextResolution">Sélectionner la résolution de l’image</system:String>
+    <system:String x:Key="JPG_TextDisplayStyle">Sélectionner le style d’affichage</system:String>
+    <system:String x:Key="JPG_TextView">Sélectionner la vue</system:String>
+</ResourceDictionary> 
