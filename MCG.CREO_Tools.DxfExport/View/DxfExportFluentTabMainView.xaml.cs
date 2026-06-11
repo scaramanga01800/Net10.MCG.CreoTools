@@ -60,6 +60,7 @@ namespace MCG.CREO_Tools.DxfExport.View
             if (!IsAlreadyInit && DataContext != null && DataContext.GetType() == typeof(DxfExportViewModel))
             {
                 DxfExportViewModel CurrentDataContext = DataContext as DxfExportViewModel;
+                CurrentDataContext.Update();
                 CurrentDataContext.ActionDoneEvent += RaiseActionDoneEvent;
                 CurrentDataContext.ActionInProgressEvent += RaiseActionInProgressEvent;
                 IsAlreadyInit = true;

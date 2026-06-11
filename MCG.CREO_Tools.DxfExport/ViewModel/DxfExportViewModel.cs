@@ -83,8 +83,18 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 var creoConnectionStatus = _creoSessionProvider.Connect(false);
                 CurrentDxfExportDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentDxfExportDataContext.IsCreoEnable = e;
+            }
+            catch (Exception ex)
+            {
+                throw new DxfExportException(this.GetType().Name, ex);
+            }
+        }
 
-                CurrentDxfExportDataContext.CurrentFolder =McgWpfTools.GetStringResource("DXF_TbExportFolder");
+        public void Update()
+        {
+            try
+            {
+                CurrentDxfExportDataContext.CurrentFolder = McgWpfTools.GetStringResource("DXF_TbExportFolder");
                 CurrentDxfExportDataContext.CurrentFileName = McgWpfTools.GetStringResource("DXF_TbExportFile");
             }
             catch (Exception ex)
@@ -269,6 +279,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                     return McgWpfTools.GetStringResource("DXF_Status10");
 
                 string ReturnMessage = McgWpfTools.GetStringResource("DXF_Status02");
+
                 string TempNumber;
                 if (CurrentEpmDoc.PartNumber.LastIndexOf('.') < 1)
                 {
@@ -276,19 +287,184 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                     CurrentEpmDoc.PartNumber = $"{CurrentEpmDoc.PartNumber}.PRT";
                     CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.PRT";
-                    //CurrentEpmDoc.EPMType = "PRT";
+                }
+                else
+                    TempNumber = Path.GetFileNameWithoutExtension(CurrentEpmDoc.PartNumber);
+
+                _creoSessionProvider.Session.EraseUndisplayedModels();
+
+                // Check dxf file
+                var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
+
+                string FinalDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}_{currentBackupModel.ReleaseLevel}_{currentBackupModel.Revision}.dxf";
+                string TempDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}.dxf";
+
+                if (File.Exists(TempDXFFileName))
+                    File.Delete(TempDXFFileName);
+
+                IpfcModel ThreeDmodel = currentBackupModel.ReloadedModel;
+
+                // If IsFlatSelected, search Flat instead of 3D
+                IpfcFamilyMember GenericModel;
+                IpfcFamilyTableRows ListRows;
+                if (CurrentDxfExportDataContext.IsFlatSelected)
+                {
+                    GenericModel = (IpfcFamilyMember)ThreeDmodel;
+                    ListRows = GenericModel.ListRows();
+                    bool FirstFlatFound = false;
+                    foreach (IpfcFamilyTableRow row in ListRows)
+                    {
+                        if (!FirstFlatFound && row.InstanceName.Contains("_FLAT"))
+                        {
+                            CurrentEpmDoc.FileName = row.InstanceName;
+                            CurrentEpmDoc.PartNumber = row.InstanceName;
+                            if (CurrentEpmDoc.FileName.LastIndexOf('.') < 1)
+                                if (CurrentEpmDoc.GetStringExtention() == "UNKNOWN")
+                                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.PRT";
+                                else
+                                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.{CurrentEpmDoc.GetStringExtention()}";
+                            currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
+                            ThreeDmodel = currentBackupModel.ReloadedModel;
+                            FirstFlatFound = true;
+                        }
+                    }
+                }
+
+                // If model is a family table, remove all instance before doing the copy
+                GenericModel = (IpfcFamilyMember)ThreeDmodel;
+                ListRows = GenericModel.ListRows();
+                if (ListRows != null && ListRows.Count > 0)
+                {
+                    foreach (IpfcFamilyTableRow row in ListRows)
+                    {
+                        GenericModel.RemoveRow(row);
+                    }
+                }
+
+                ThreeDmodel.Display();
+                ThreeDmodel.Rename("DXF_3D", true);
+
+                _creoSessionProvider.Session.GetModelWindow(ThreeDmodel).Activate();
+
+                // Change 3D model dimensions to "average"
+                _creoMacroService.ChangeDimensionToAverage();
+                Thread.Sleep(1000);
+
+                // Check if view "9_DECOUPE" exists
+                IpfcViewOwner ModelViewOwner = (IpfcViewOwner)ThreeDmodel;
+                IpfcView ExportDxfView = ModelViewOwner.GetView("9_DECOUPE");
+                if (ExportDxfView == null)
+                {
+                    IpfcView TopView = ModelViewOwner.GetView("1_TOP");
+                    ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status11")}";
+                    if (TopView != null)
+                    {
+                        _creoMacroService.Select3DView("1_TOP");
+                        ModelViewOwner.SaveView("9_DECOUPE");
+                        ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status12")}";
+                    }
+                    else
+                    {
+                        TopView = ModelViewOwner.GetView("2_TOP");
+
+                        if (TopView != null)
+                        {
+                            _creoMacroService.Select3DView("2_TOP");
+                            ModelViewOwner.SaveView("9_DECOUPE");
+                            ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status12")}";
+                        }
+                        else
+                        {
+                            ThreeDmodel.Erase();
+                            _creoSessionProvider.Session.EraseUndisplayedModels();
+                            return $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status03")}";
+                        }
+                    }
+                }
+
+                // Create Drawing
+                IpfcModel drwModel = _creoMacroService.CreateDrawing("DXF_3D", "TO_BE_DELETED", "template_dxf");
+
+                // regen drawing
+                _creoMacroService.RegenDrawingInSession(drwModel);
+                Thread.Sleep(1000);
+
+                // Export DXF
+                _creoMacroService.ExportDxf(TempDXFFileName);
+
+                // Wait for complete creation
+                int TotalWait = 0;
+                while (!File.Exists(TempDXFFileName) && TotalWait < 11)
+                {
+                    Thread.Sleep(1000);
+                    TotalWait++;
+                }
+
+                if (TotalWait > 10)
+                    ReturnMessage = McgWpfTools.GetStringResource("DXF_Status06");
+
+                // delete from session DRW
+                drwModel.Erase();
+                Thread.Sleep(1000);
+
+                // erase from session 3D model
+                IpfcWindow CurrentWindow = _creoModelService.GetCadDocWindow(ThreeDmodel);
+                if (CurrentWindow != null)
+                    CurrentWindow.Close();
+                //ThreeDmodel.Erase();
+                _creoSessionProvider.Session.EraseUndisplayedModels();
+
+                if (File.Exists(TempDXFFileName))
+                {
+                    FileInfo Fi = new FileInfo(TempDXFFileName);
+                    if (Fi.Length < 10350)
+                        ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status07")}";
+                    if (File.Exists(FinalDXFFileName))
+                        File.Delete(FinalDXFFileName);
+                    File.Move(TempDXFFileName, FinalDXFFileName);
+                }
+
+                return ReturnMessage;
+            }
+            catch (CREORetrieveModelException ex)
+            {
+                return McgWpfTools.GetStringResource("DXF_Status08");
+            }
+            catch (Exception ex)
+            {
+                return McgWpfTools.GetStringResource("DXF_Status10");
+            }
+        }
+
+        private string ExportOneDxf2(EPMDocument CurrentEpmDoc)
+        {
+            try
+            {
+                if (!_creoSessionProvider.CheckConnection())
+                    return McgWpfTools.GetStringResource("DXF_Status10");
+
+                string ReturnMessage = McgWpfTools.GetStringResource("DXF_Status02");
+                string TempNumber;
+                if (CurrentEpmDoc.PartNumber.LastIndexOf('.') < 1)
+                {
+                    TempNumber = CurrentEpmDoc.PartNumber;
+
+                    CurrentEpmDoc.PartNumber = $"{CurrentEpmDoc.PartNumber}.PRT";
+                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.PRT";
+                    //CurrentEpmDoc.EPMType = "PRT";Sa
                 }
                 else
                     TempNumber = CurrentEpmDoc.PartNumber.Split('.')[0];
 
                 // Start Creo DXF Export
                 _creoSessionProvider.Session.EraseUndisplayedModels();
-                IpfcModel ThreeDmodelRetrieve = CurrentEpmDoc.RetrieveModel(_creoSessionProvider);
+                // IpfcModel ThreeDmodelRetrieve = CurrentEpmDoc.RetrieveModel(_creoSessionProvider,_creoModelService);
+                IpfcModel ThreeDmodelRetrieve = _creoModelService.RetrieveModel(CurrentEpmDoc.PartNumberWithoutExt, CurrentEpmDoc.EPMTypeOrig);
 
                 // Backup model
                 string backupFolder = Path.GetTempPath();
                 string backupFileName = $"{ThreeDmodelRetrieve.InstanceName}.{ThreeDmodelRetrieve?.FileName?.Split('.').LastOrDefault()}";
-                string backupFullPath = Path.Combine(backupFolder, backupFileName);
+                string backupFullPath = System.IO.Path.Combine(backupFolder, backupFileName);
                 IpfcModelDescriptor BackupDir = new CCpfcModelDescriptor().Create(ThreeDmodelRetrieve.Type, null, null);
                 BackupDir.Path = backupFolder;
                 ThreeDmodelRetrieve.Backup(BackupDir);
@@ -320,7 +496,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                         {
                             CurrentEpmDoc.FileName = row.InstanceName;
                             CurrentEpmDoc.PartNumber = row.InstanceName;
-                            ThreeDmodelRetrieve = CurrentEpmDoc.RetrieveModel(_creoSessionProvider);
+                            ThreeDmodelRetrieve = CurrentEpmDoc.RetrieveModel(_creoSessionProvider, _creoModelService);
                             FirstFlatFound = true;
                         }
                     }
@@ -423,7 +599,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 }
                 return ReturnMessage;
             }
-            catch (CREORetrieveModelException)
+            catch (CREORetrieveModelException ex)
             {
                 return McgWpfTools.GetStringResource("DXF_Status08");
             }
@@ -455,7 +631,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                                 Status = McgWpfTools.GetStringResource("DXF_Status09"),
                                 Comment = "",
                                 DxfCreated = false,
-                                CurrentEpmDocument = new EPMDocument(NewLine, NewLine, NewLine) 
+                                CurrentEpmDocument = new EPMDocument(NewLine, NewLine, NewLine)
                             });
                         }
                     }
