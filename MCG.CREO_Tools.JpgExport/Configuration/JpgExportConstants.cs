@@ -1,6 +1,6 @@
 ﻿namespace MCG.CREO_Tools.JpgExport.Configuration
 {
-    internal class JpgExportConstants
+    public static class JpgExportConstants
     {
         public const string MainDictionary = "JpgExportDictionary.xaml";
     }

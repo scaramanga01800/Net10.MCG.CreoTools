@@ -1,0 +1,209 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.CREO_Tools.MassUpdateAttribute.View.MassUpdateAttributeFluentTabMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:MCG.CREO_Tools.MassUpdateAttribute.View"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                      xmlns:s="clr-namespace:System;assembly=mscorlib"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="{DynamicResource MUA_AppName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="EXPORTCAD" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Export_Cad.png" />
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png" />
+            <BitmapImage x:Key="UPDATEPARAM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update_Params.png" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help_32x32.png" />
+            <BitmapImage x:Key="XLS" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Excel.ico" />
+            <BitmapImage x:Key="UPDATELAYER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Layer_Update_32x32.gif" />
+            <BitmapImage x:Key="COLOR_PALETTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/color_palette.ico" />
+            <BitmapImage x:Key="BRUSH" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/brush.ico" />
+            <BitmapImage x:Key="COLOR" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Color.ico"/>
+            <BitmapImage x:Key="COLOR_BW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Color_bw.ico"/>
+            <BitmapImage x:Key="LARGEDELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <s:Boolean x:Key="True">True</s:Boolean>
+            <s:Boolean x:Key="False">False</s:Boolean>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+    
+    <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpCreo}">
+        <Fluent:CheckBox Header="{DynamicResource MUA_CbDisplayedModelsOnly}"
+                         IsChecked="{Binding CurrentMassUpdAttribDataContext.IsOnlyDisplayedModels,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:CheckBox Header="{DynamicResource MUA_CbDisplayedActiveModelOnly}"
+                         IsChecked="{Binding CurrentMassUpdAttribDataContext.IsOnlyActiveModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:Button LargeIcon="{StaticResource EXPORTCAD}"
+                       Command="{Binding CommandListCadDoc}"
+                       IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                       Margin="5,0,5,0"></Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource UPDATE}"
+                       Command="{Binding CommandUpdateCadDoc}"
+                       IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                       Margin="5,0,5,0"></Fluent:Button>
+        <Fluent:Button  LargeIcon="{StaticResource LARGEDELETE}" 
+                        Command="{Binding CommandDeleteSelectedCadDoc}" 
+                        IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                        Margin="5,0,5,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource MUA_BtTitleDeleteSelectedCadDocs}" Width ="250"
+                                  Image="{StaticResource LARGEDELETE}"
+                                  Text="{DynamicResource MUA_BtStartDeleteSelectedCadDocs}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpShow}">
+        <Fluent:CheckBox Header="{DynamicResource MUA_CbIsCheckedOutText}"
+                         IsChecked="{Binding CurrentMassUpdAttribDataContext.IsCheckedOutShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:CheckBox Header="{DynamicResource MUA_CbIsLocallyModifiedText}"
+                         IsChecked="{Binding CurrentMassUpdAttribDataContext.IsLocallyModifiedShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+        <Fluent:CheckBox Header="{DynamicResource MUA_CbIsReadOnlyShownText}"
+                         IsChecked="{Binding CurrentMassUpdAttribDataContext.IsReadOnlyShown,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpTools}">
+        <Fluent:Button LargeIcon="{StaticResource UPDATEPARAM}"
+                       Header="{DynamicResource MUA_MenuUpdateParamRelation}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandUpdateParamRelation}"></Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource UPDATELAYER}"
+                       Header="{DynamicResource MUA_MenuUpdateLayers}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandUpdateLayers}"></Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource XLS}"
+                       Header="{DynamicResource MUA_MenuImportFromXls}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandImportFromExcel}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpAppearnce}">
+
+
+        <Fluent:SplitButton LargeIcon="{StaticResource BRUSH}">
+            <Grid>
+                <ComboBox ItemsSource="{Binding CurrentMassUpdAttribDataContext.ListCreoColor}" 
+                          SelectedItem="{Binding CurrentMassUpdAttribDataContext.SelectedCreoColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                          HorizontalAlignment="Left" 
+                          VerticalAlignment="Top" 
+                          Width="65" 
+                          Margin="0, 5, 0, 0" >
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Background" Value="{Binding ColorCode}" />
+                            <Setter Property="ToolTip" Value="{Binding ColorName}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+
+                <TextBlock HorizontalAlignment="Left" 
+                           VerticalAlignment="Top" 
+                           Margin="1, 6, 0, 0" 
+                           Padding="4,1" 
+                           Width="46" 
+                           Height="20"
+                           IsHitTestVisible="False">
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{Binding CurrentMassUpdAttribDataContext.SelectedCreoColor.ColorCode}"/>
+                    </TextBlock.Background>
+                </TextBlock>
+            </Grid>
+        </Fluent:SplitButton>
+
+        <Fluent:SplitButton LargeIcon="{StaticResource COLOR_PALETTE}">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource MUA_BtSelectColors}" 
+                                 Image="{StaticResource COLOR_PALETTE}"
+                                 Text="{DynamicResource BUT_BtToolTipSelectColors}"
+                                 DisableReason="CREO is not connected" />
+            </Fluent:SplitButton.ToolTip>
+            <StackPanel Orientation="Horizontal">
+                <Fluent:RadioButton GroupName="ColorChoice"
+                                    Header="{Binding CurrentMassUpdAttribDataContext.ColorPalette01.Name}"
+                                    IsChecked="{Binding CurrentMassUpdAttribDataContext.ColorPalette01.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="Checked">
+                            <behaviors:InvokeCommandAction Command="{Binding CommandUpdateColorPalette}"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </Fluent:RadioButton>
+                <ComboBox IsEditable="False"
+                          MinWidth="60"
+                          ItemsSource="{Binding CurrentMassUpdAttribDataContext.ColorPalette01.ListColor}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Background" Value="{Binding ColorCode}" />
+                            <Setter Property="ToolTip" Value="{Binding ColorName}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Fluent:RadioButton GroupName="ColorChoice"
+                                    Header="{Binding CurrentMassUpdAttribDataContext.ColorPalette02.Name}"
+                                    IsChecked="{Binding CurrentMassUpdAttribDataContext.ColorPalette02.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="Checked">
+                            <behaviors:InvokeCommandAction Command="{Binding CommandUpdateColorPalette}"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </Fluent:RadioButton>
+                <ComboBox IsEditable="False"
+                          MinWidth="60"
+                          ItemsSource="{Binding CurrentMassUpdAttribDataContext.ColorPalette02.ListColor}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Background" Value="{Binding ColorCode}" />
+                            <Setter Property="ToolTip" Value="{Binding ColorName}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Fluent:RadioButton GroupName="ColorChoice"
+                                    Header="{Binding CurrentMassUpdAttribDataContext.ColorPalette03.Name}"
+                                    IsChecked="{Binding CurrentMassUpdAttribDataContext.ColorPalette03.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="Checked">
+                            <behaviors:InvokeCommandAction Command="{Binding CommandUpdateColorPalette}"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </Fluent:RadioButton>
+                <ComboBox IsEditable="False"
+                          MinWidth="60"
+                          ItemsSource="{Binding CurrentMassUpdAttribDataContext.ColorPalette03.ListColor}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Background" Value="{Binding ColorCode}" />
+                            <Setter Property="ToolTip" Value="{Binding ColorName}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </StackPanel>
+        </Fluent:SplitButton>
+
+        <Fluent:Button Command="{Binding CommandRemoveColor}" 
+                       CommandParameter="{StaticResource True}"
+                       Header="{DynamicResource MUA_BtRemoveColor}"
+                       IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                       Margin="5,0,5,0"
+                       LargeIcon="{StaticResource COLOR_BW}">
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandUpdateColor}" 
+                       CommandParameter="{StaticResource False}"
+                       Header="{DynamicResource MUA_BtUpdateColor}"
+                       IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                       Margin="5,0,5,0"
+                       LargeIcon="{StaticResource COLOR}">
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpTools}">
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

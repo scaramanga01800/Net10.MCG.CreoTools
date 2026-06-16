@@ -14,10 +14,50 @@ namespace MCG.Tools.NumberingTool.Services
         private Window _NumberingToolUpdateCreateFluentView;
         private Window _NumberingToolFluentMainView;
 
+
+        public event EventHandler? CreateNumberRequested;
+        public event EventHandler? UseNumberRequested;
+
+        private bool _isMainViewSubscribed;
+
         public NumberingToolWindowService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
+
+
+        private void OnCreateNumber(object? sender, EventArgs e)
+            => CreateNumberRequested?.Invoke(sender, e);
+        private void OnUseNumber(object? sender, EventArgs e)
+            => UseNumberRequested?.Invoke(sender, e);
+
+
+        private void SubscribeMainViewEvents(NumberingToolFluentMainView view)
+        {
+            if (_isMainViewSubscribed) return;
+
+            view.CreateNumberEvent += OnCreateNumber;
+            view.UseNumberEvent += OnUseNumber;
+
+            // Nettoyage automatique à la fermeture
+            view.Closed += OnMainViewClosed;
+
+            _isMainViewSubscribed = true;
+        }
+
+        private void OnMainViewClosed(object? sender, EventArgs e)
+        {
+            if (sender is NumberingToolFluentMainView view)
+            {
+                view.CreateNumberEvent -= OnCreateNumber;
+                view.UseNumberEvent -= OnUseNumber;
+                view.Closed -= OnMainViewClosed;
+            }
+
+            _NumberingToolFluentMainView = null;
+            _isMainViewSubscribed = false;
+        }
+
 
         public void ShowNumberingToolCreateSeveralFluentView(NumberingToolViewModel currentVm)
         {
@@ -40,20 +80,27 @@ namespace MCG.Tools.NumberingTool.Services
             }
         }
 
-        public void ShowNumberingToolFluentMainView(bool pNoRangeAuthorized = false)
+        public void ShowNumberingToolFluentMainView(bool pNoRangeAuthorized = false, bool isAlreadyCreated = false)
         {
             try
             {
-                if (_NumberingToolFluentMainView == null || !_NumberingToolFluentMainView.IsLoaded)
+                if (isAlreadyCreated)
                 {
-                    _NumberingToolFluentMainView = _serviceProvider.GetRequiredService<NumberingToolFluentMainView>();
-                    ((NumberingToolFluentMainView)_NumberingToolFluentMainView).SetNumberingToolFluentMainViewProperties(pNoRangeAuthorized);
-                    _NumberingToolFluentMainView.Show();
+                    if (_NumberingToolFluentMainView != null && _NumberingToolFluentMainView.IsVisible)
+                    {
+                        _NumberingToolFluentMainView.Activate();
+                        return;
+                    }
                 }
-                else
-                {
-                    _NumberingToolFluentMainView.Activate();
-                }
+
+
+                var view = _serviceProvider.GetRequiredService<NumberingToolFluentMainView>();
+                _NumberingToolFluentMainView = view;
+                view.SetNumberingToolFluentMainViewProperties(pNoRangeAuthorized);
+
+                SubscribeMainViewEvents(view);
+
+                _NumberingToolFluentMainView.Show();
             }
             catch (Exception ex)
             {
@@ -109,9 +156,15 @@ namespace MCG.Tools.NumberingTool.Services
             {
                 if (_NumberingToolFluentMainView == null || !_NumberingToolFluentMainView.IsLoaded)
                 {
-                    _NumberingToolFluentMainView = _serviceProvider.GetRequiredService<NumberingToolFluentMainView>();
-                    ((NumberingToolFluentMainView)_NumberingToolFluentMainView).SetNumberingToolFluentMainViewProperties(pNoRangeAuthorized);
-                    _NumberingToolFluentMainView.Show();
+
+                    var view = _serviceProvider.GetRequiredService<NumberingToolFluentMainView>();
+                    _NumberingToolFluentMainView = view;
+
+                    view.SetNumberingToolFluentMainViewProperties(pNoRangeAuthorized);
+
+                    SubscribeMainViewEvents(view);
+
+                    _NumberingToolFluentMainView.ShowDialog();
                 }
                 else
                 {

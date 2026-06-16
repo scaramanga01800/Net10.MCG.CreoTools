@@ -633,33 +633,6 @@ namespace MCG.Tools.NumberingTool.ViewModel
                     bool redult = _wtDownloadViewableTools.DownloadPartMainDrawing(SelectedSearchNumber.Number, "Latest", DocumentTypeEnum.PART, IsCreateZip);
                     if(!redult)
                         MessageBox.Show(McgWpfTools.GetStringResource("NUT_DownloadDrawingNotAvailable"), McgWpfTools.GetStringResource("NUT_TitleDownloadDrawingNotAvailable"), MessageBoxButton.OK, MessageBoxImage.Warning); 
-                    
-                    //DownloadVisualizationFileViewModel CurrentDownload = null;
-
-                    //CurrentDownload = new DownloadVisualizationFileViewModel();
-                    //CurrentDownload.CurrentDataContext.SearchedPartList.Add(new VisualizationItem
-                    //{
-                    //    PartNumber = SelectedSearchNumber.Number,
-                    //    PartRevision = "Latest",
-                    //    ItemType = DocumentTypeEnum.PART
-                    //});
-
-                    //if (CurrentDownload != null)
-                    //{
-                    //    CurrentDownload.ExecuteSearchVisuFileNotAsynch();
-                    //    VisualizationItem CurrentVisuItem = CurrentDownload.CurrentDataContext.SearchedPartList.FirstOrDefault();
-                    //    CurrentDownload.CurrentDataContext.IsCreateZip = IsCreateZip;
-                    //    var listDoc = CurrentVisuItem.SearchedDocumentList.Where((item) => item.IsMainDrawing).ToList();
-                    //    if (listDoc != null && listDoc.Count > 0)
-                    //    {
-                    //        foreach (var doc in listDoc)
-                    //            doc.IsSelected = true;
-
-                    //        CurrentDownload.ExecuteDownloadVisuFilesNotAsynch();
-                    //    }
-                    //    else
-                    //        MessageBox.Show(McgWpfTools.GetStringResource("NUT_DownloadDrawingNotAvailable"), McgWpfTools.GetStringResource("NUT_TitleDownloadDrawingNotAvailable"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //}
                 }
             }
             catch (Exception ex)

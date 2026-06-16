@@ -1,0 +1,183 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MassUpdateAttribute.View.CreateNewCadDocumentFluentWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MassUpdateAttribute.View"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     mc:Ignorable="d"
+                     Height="350" Width="490" ResizeMode="NoResize" Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/new_document.ico" 
+                     Title="{DynamicResource MUA_TitleCreateCadDoc}">
+    
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="PRT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Prt.gif" />
+            <BitmapImage x:Key="ASM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Asm.gif" />
+            <BitmapImage x:Key="DRW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Drw.gif" />
+            <BitmapImage x:Key="PRT_SM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_sheetmetal.gif" />
+            <BitmapImage x:Key="CHINA" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/cn.png" />
+            <BitmapImage x:Key="GERMANY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/de.png" />
+            <BitmapImage x:Key="FRANCE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/fr.png" />
+            <BitmapImage x:Key="ITALIA" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/it.png" />
+            <BitmapImage x:Key="PORTUGAL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/pt.png" />
+            <BitmapImage x:Key="US" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/us.png" />
+            <BitmapImage x:Key="PNTOOL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/gearing.gif" />
+            <BitmapImage x:Key="CREATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add_Cross.ico" />
+            <BitmapImage x:Key="CLOSE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Close.png" />
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <DockPanel.Background >
+            <LinearGradientBrush >
+                <GradientStop Color="{DynamicResource Fluent.Ribbon.Colors.AccentColor20}"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
+
+        <StackPanel DockPanel.Dock="Bottom" Height="32" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
+            <Button Name="BtCreateCadDoc" Command="{Binding CommandCreateCadDoc}" ToolTip="{DynamicResource MUA_BtCreateCadDoc}" DockPanel.Dock="Left"  IsEnabled="{Binding CurrentCreateNewCadDocumentDataContext.CreoIsEnable}">
+                <Image Source="{StaticResource CREATE}"></Image>
+            </Button>
+            <Rectangle Width="100"></Rectangle>
+            <Button Name="BtCancel" Command="{Binding CommandCancel}" ToolTip="{DynamicResource MUA_BtCancel}" Grid.Column="1" DockPanel.Dock="Left"  >
+                <Image Source="{StaticResource CLOSE}"></Image>
+            </Button>
+        </StackPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="175"></ColumnDefinition>
+                <ColumnDefinition Width="300"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="2"/>
+
+            <StackPanel Margin="4">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource ResourceKey=PRT}" Height="16" ></Image>
+                    <Fluent:RadioButton GroupName="CadModelType" 
+                                        VerticalAlignment="Center" 
+                                        VerticalContentAlignment="Center" 
+                                        Grid.Column="1" 
+                                        Header="{DynamicResource MUA_RbPart}"  
+                                        IsChecked="{Binding CurrentCreateNewCadDocumentDataContext.PrtSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource ResourceKey=PRT_SM}" Height="16" ></Image>
+                    <Fluent:RadioButton GroupName="CadModelType"  
+                                        VerticalAlignment="Center" 
+                                        VerticalContentAlignment="Center" 
+                                        Grid.Column="1" 
+                                        Header="{DynamicResource MUA_RbPartSm}" 
+                                        IsChecked="{Binding CurrentCreateNewCadDocumentDataContext.PrtSmSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource ResourceKey=ASM}" Height="16" ></Image>
+                    <Fluent:RadioButton GroupName="CadModelType" 
+                                        VerticalAlignment="Center" 
+                                        VerticalContentAlignment="Center" 
+                                        Grid.Column="1" 
+                                        Header="{DynamicResource MUA_RbAssembly}" 
+                                        IsChecked="{Binding CurrentCreateNewCadDocumentDataContext.AsmSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <Grid Margin="2" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource ResourceKey=DRW}" Height="16" ></Image>
+                    <Fluent:RadioButton GroupName="CadModelType"  
+                                        VerticalAlignment="Center" 
+                                        VerticalContentAlignment="Center" 
+                                        Grid.Column="1" 
+                                        Content="{DynamicResource MUA_RbDrawing}" 
+                                        IsChecked="{Binding CurrentCreateNewCadDocumentDataContext.DrwSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:RadioButton>
+                </Grid>
+
+                <Separator Height="10" ></Separator>
+                <Fluent:TwoLineLabel Text="{DynamicResource MUA_LabelNumber}" 
+                                     Height="20" 
+                                     HorizontalAlignment="Center"
+                                     HasTwoLines="False"></Fluent:TwoLineLabel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="35" ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Fluent:TextBox Text="{Binding CurrentCreateNewCadDocumentDataContext.PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Height="20"></Fluent:TextBox>
+                    <Button Name="BtPartNumberGenerator" Command="{Binding CommandPartNumberGenerator}" Grid.Column="1">
+                        <Button.Content>
+                            <Image gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/gearing.gif" ></Image>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+
+                <Separator Height="10" ></Separator>
+                <Fluent:TwoLineLabel Text="{DynamicResource MUA_LabelPtcCommonName}" 
+                                     Height="25"
+                                     HorizontalAlignment="Center"
+                                     HasTwoLines="False"></Fluent:TwoLineLabel>
+                <Fluent:ComboBox ItemsSource="{Binding CurrentCreateNewCadDocumentDataContext.ListWebterm}" 
+                                 Height="20" 
+                                 SelectedItem="{Binding CurrentCreateNewCadDocumentDataContext.SelectedWebterm, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                 IsEditable="True" ></Fluent:ComboBox>
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="45" ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Fluent:TwoLineLabel Text="{DynamicResource MUA_LabelDescription2_1}" 
+                                         Height="25"
+                                         HorizontalAlignment="Center"
+                                         HasTwoLines="False"></Fluent:TwoLineLabel>
+                    <Fluent:ComboBox Grid.Column="1" 
+                                     HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center" 
+                                     Width="45" 
+                                     Height="20" 
+                                     IsEditable="False"
+                                     SelectedIndex="{Binding CurrentCreateNewCadDocumentDataContext.SelectedIndexLanguage}" 
+                                     SelectedItem="{Binding CurrentCreateNewCadDocumentDataContext.CurrentLanguage, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" >
+                        <Fluent:ComboBox.Items>
+                            <Image Name="LangChina" Source="{StaticResource ResourceKey=CHINA}" Margin="1"></Image>
+                            <Image Name="LangFrance" Source="{StaticResource ResourceKey=FRANCE}" Margin="1"></Image>
+                            <Image Name="LangGermany" Source="{StaticResource ResourceKey=GERMANY}" Margin="1"></Image>
+                            <Image Name="LangItalia" Source="{StaticResource ResourceKey=ITALIA}" Margin="1"></Image>
+                            <Image Name="LangPortugal" Source="{StaticResource ResourceKey=PORTUGAL}" Margin="1"></Image>
+                            <Image Name="LangUS" Source="{StaticResource ResourceKey=US}" Margin="1"></Image>
+                        </Fluent:ComboBox.Items>
+                    </Fluent:ComboBox>
+                </Grid>
+                <Fluent:ComboBox ItemsSource="{Binding CurrentCreateNewCadDocumentDataContext.ListWebtermLocal}" 
+                                 Height="20" 
+                                 SelectedItem="{Binding CurrentCreateNewCadDocumentDataContext.Description2_1, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                 IsEditable="True" ></Fluent:ComboBox>
+
+            </StackPanel>
+
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="2"></Border>
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="5">
+                <StackPanel Name="SpOtherAttributes" Grid.Column="1" Margin="2"></StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

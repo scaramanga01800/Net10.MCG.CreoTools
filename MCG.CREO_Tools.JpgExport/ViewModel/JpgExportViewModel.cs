@@ -317,7 +317,108 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
 
                 // Start Creo Jpg Export
                 _creoSessionProvider.Session.EraseUndisplayedModels();
+                if (CurrentEpmDoc.GetStringExtention() == "UNKNOWN")
+                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.PRT";
+                else
+                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.{CurrentEpmDoc.GetStringExtention()}";
+                var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
+
+                var ThreeDmodel = currentBackupModel.ReloadedModel;
+
+                // If model is a fmily table, remove all instance before doing the copy
+                IpfcFamilyMember GenericModel = (IpfcFamilyMember)ThreeDmodel;
+                IpfcFamilyTableRows ListRows = GenericModel.ListRows();
+                if (ListRows != null && ListRows.Count > 0)
+                {
+                    foreach (IpfcFamilyTableRow row in ListRows)
+                    {
+                        GenericModel.RemoveRow(row);
+                    }
+                }
+
+                // Active the model
+                _creoMacroService.ActiveWindow();
+
+                // Set orientation
+                _creoMacroService.Select3DView(CurrentJpgExportDataContext.SelectedView3D.Value);
+
+                // Refit view
+                _creoMacroService.Refit3DView();
+
+                // with or without edges
+                _creoMacroService.Set3DDisplayStyle(CurrentJpgExportDataContext.SelectedDisplayStyle.Value);
+
+                Thread.Sleep(1000);
+                // Create the jpg
+                _creoMacroService.CreateJpg(CurrentJpgExportDataContext.CurrentFolder, TempJPGFileName, CurrentJpgExportDataContext.SelectedResolution.Value);
+
+                // Wait for complete creation
+                int TotalWait = 0;
+                while (!File.Exists(TempCompleteJPGFileName) && TotalWait < 11)
+                {
+                    Thread.Sleep(1000);
+                    TotalWait++;
+                }
+
+                if (TotalWait > 10)
+                    ReturnMessage = McgWpfTools.GetStringResource("JPG_Status06");
+
+                _creoSessionProvider.Session.EraseUndisplayedModels();
+                //ThreeDmodel.Erase();
+
+                // Delete backup file
+                //int index = 1;
+                //string indexedFilePath = $"{backupFullPath}.{index}";
+                //while (File.Exists(indexedFilePath))
+                //{
+                //    File.Delete(indexedFilePath);
+                //    index++;
+                //    indexedFilePath = $"{backupFullPath}.{index}";
+                //}
+
+                return ReturnMessage;
+            }
+            catch (CREORetrieveModelException)
+            {
+                return McgWpfTools.GetStringResource("JPG_Status08");
+            }
+            catch (Exception ex)
+            {
+
+                return McgWpfTools.GetStringResource("JPG_Status10");
+            }
+        }
+
+        private string ExportOneJpg2(EPMDocument CurrentEpmDoc)
+        {
+            try
+            {
+                if (!_creoSessionProvider.CheckConnection())
+                    return McgWpfTools.GetStringResource("JPG_Status10");
+
+                string ReturnMessage = McgWpfTools.GetStringResource("JPG_Status02");
+                string TempCompleteJPGFileName;
+                string TempJPGFileName;
+
+                if (CurrentEpmDoc.PartNumber.LastIndexOf('.') < 1)
+                {
+                    TempJPGFileName = $"{CurrentEpmDoc.PartNumber}.jpg";
+                    TempCompleteJPGFileName = $"{CurrentJpgExportDataContext.CurrentFolder}\\{CurrentEpmDoc.PartNumber}.jpg";
+                }
+                else
+                {
+                    TempJPGFileName = $"{CurrentEpmDoc.PartNumber.Split('.')[0]}.jpg";
+                    TempCompleteJPGFileName = $"{CurrentJpgExportDataContext.CurrentFolder}\\{CurrentEpmDoc.PartNumber.Split('.')[0]}.jpg";
+                }
+
+                if (File.Exists(TempCompleteJPGFileName))
+                    File.Delete(TempCompleteJPGFileName);
+
+                // Start Creo Jpg Export
+                _creoSessionProvider.Session.EraseUndisplayedModels();
+
                 IpfcModel ThreeDmodelRetrieve = CurrentEpmDoc.RetrieveModel(_creoSessionProvider, _creoModelService);
+
 
                 // If model is a fmily table, remove all instance before doing the copy
                 IpfcFamilyMember GenericModel = (IpfcFamilyMember)ThreeDmodelRetrieve;

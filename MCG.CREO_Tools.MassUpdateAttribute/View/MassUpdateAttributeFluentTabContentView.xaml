@@ -1,0 +1,344 @@
+﻿<UserControl x:Class="MCG.CREO_Tools.MassUpdateAttribute.View.MassUpdateAttributeFluentTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.CREO_Tools.MassUpdateAttribute.View"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityCollapseConv"></conv:BoolToVisibilityConverter>
+            <conv:InverseBoolConverter x:Key="InverseBoolConverter"></conv:InverseBoolConverter>
+            <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></conv:InverseBoolToVisibilityConverter>
+            <conv:SelectedItemToVisibilityConverter x:Key="SelectedItemToVisibilityConverter"></conv:SelectedItemToVisibilityConverter>
+            <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityHiddenConverter>
+            <BitmapImage x:Key="CheckOut" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CheckOut.png" />
+            <BitmapImage x:Key="CheckIn" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CheckIn.png" />
+            <BitmapImage x:Key="Part" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" />
+            <BitmapImage x:Key="UNDO" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Undo.ico" />
+            <BitmapImage x:Key="Webterm" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WebTerm.png" />
+            <BitmapImage x:Key="OPEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/open.ico" />
+            <BitmapImage x:Key="RENAME" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Rename.ico" />
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <StackPanel IsEnabled="{Binding CurrentMassUpdAttribDataContext.IsLoadedFromCreo}" 
+                    DockPanel.Dock="Top" 
+                    Orientation="Horizontal" 
+                    Height="32" 
+                    HorizontalAlignment="Left">
+            <Button  Height="{Binding ActualHeight, ElementName=StackPanelAction, Mode=OneWay}" 
+                     Command="{Binding CommandApplyWebtermToSelected}" 
+                     ToolTip="{DynamicResource MUA_ToolTipApplyWebterm}">
+                <Image  Source="{StaticResource Webterm}" />
+            </Button>
+            <Fluent:ComboBox HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center"
+                             IsEditable="False"
+                             Margin="0,0,10,0"
+                             ItemsSource="{Binding CurrentMassUpdAttribDataContext.ListLanguages}" 
+                             SelectedItem="{Binding CurrentMassUpdAttribDataContext.CurrentLanguage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+
+            <Button Height="{Binding ActualHeight, ElementName=StackPanelAction, Mode=OneWay}" 
+                    Command="{Binding CommandCheckInAllCadDoc}" 
+                    ToolTip="{DynamicResource MUA_ToolTipCheckIn}">
+                <Image  Source="{StaticResource CheckIn}" />
+            </Button>
+
+            <Button Height="{Binding ActualHeight, ElementName=StackPanelAction, Mode=OneWay}" 
+                    Command="{Binding CommandCheckOutAllCadDoc}" 
+                    ToolTip="{DynamicResource MUA_ToolTipCheckOut}">
+                <Image  Source="{StaticResource CheckOut}" />
+            </Button>
+
+            <Button Height="{Binding ActualHeight, ElementName=StackPanelAction, Mode=OneWay}" 
+                    Command="{Binding CommandResetUpdateAllSelectedItem}" 
+                    ToolTip="{DynamicResource MUA_ToolTipResetSelected}">
+                <Image  Source="{StaticResource UNDO}" />
+            </Button>
+        </StackPanel>
+
+
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="item 1"
+                                  Margin="5,0,0,0"
+                                  Content="{DynamicResource MUA_StatusBar01}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="item 2"
+                                  Margin="5,0,0,0"
+                                  Content="{Binding CurrentMassUpdAttribDataContext.ShownCadModels.Count}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="item 3"
+                                  Margin="5,0,0,0"
+                                  Content="{Binding CurrentMassUpdAttribDataContext.TextStatusBar}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="ProgressBar"                                     
+                                  HorizontalAlignment="Right"
+                                  Margin="0,0,5,0">
+                <ProgressBar Height="18"
+                             Width="250"
+                             Maximum="{Binding CurrentMassUpdAttribDataContext.NbModelsInSession}" 
+                             Value="{Binding CurrentMassUpdAttribDataContext.NbModelsInSessionInProgress}"
+                             Visibility="{Binding CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress, Converter={StaticResource BoolToVisibilityConv}}">
+                    <ProgressBar.ToolTip>
+                        <StackPanel  Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentMassUpdAttribDataContext.NbModelsInSessionInProgress}"></TextBlock>
+                            <TextBlock Text="/"></TextBlock>
+                            <TextBlock Text="{Binding CurrentMassUpdAttribDataContext.NbModelsInSession}"></TextBlock>
+                        </StackPanel>
+                    </ProgressBar.ToolTip>
+                </ProgressBar>
+
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <DataGrid x:Name="DataGridAttributes" 
+                  FrozenColumnCount="2"  
+                  ItemsSource="{Binding CurrentMassUpdAttribDataContext.ShownCadModels}" 
+                  SelectedItem="{Binding CurrentMassUpdAttribDataContext.SelectedItem,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedIndex="{Binding CurrentMassUpdAttribDataContext.SelectedIndex,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"  
+                  CanUserSortColumns="True" 
+                  VerticalContentAlignment="Center" 
+                  HorizontalContentAlignment="Center" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="False" 
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="False" 
+                  CanUserReorderColumns="True" 
+                  SelectionMode="Single"  >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsUpdated}" Value="False">
+                            <Setter Property="Background" Value="White"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsUpdated}" Value="True">
+                            <Setter Property="Background" Value="Yellow"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsReadOnly}" Value="False">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <!-- the non-editing cell -->
+                <DataTemplate x:Key="ReadonlyCellTemplate">
+                    <TextBlock Text="{Binding PTC_COMMON_NAME}"/>
+                </DataTemplate>
+
+                <!-- the editing cell -->
+                <DataTemplate x:Key="EditableCellTemplate" >
+                    <ComboBox ItemsSource="{Binding WebtermList}" SelectedItem="{Binding PTC_COMMON_NAME}" IsEditable="True" >
+                    </ComboBox>
+                </DataTemplate>
+
+            </DataGrid.Resources>
+
+            <DataGrid.ContextMenu>
+                <Fluent:ContextMenu x:Name="CmMassAttrib" 
+                                    Visibility="{Binding CurrentMassUpdAttribDataContext.SelectedItem, Converter={StaticResource SelectedItemToVisibilityConverter}}">
+                    <Fluent:MenuItem x:Name="MiApplyWebterm" 
+                                     IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}" 
+                                     Command="{Binding CommandApplyWebtermSelectedItem}">
+                        <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource MUA_LabelApplyWebterm}"/>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=Webterm}" Height="20"></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem x:Name="MiApplySameBasePartNumber" 
+                                     IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}" 
+                                     ToolTip="{Binding CurrentMassUpdAttribDataContext.SelectedItem.BasePartNumber}" 
+                                     Visibility="{Binding CurrentMassUpdAttribDataContext.SelectedItem.IsBasePartNumberFound, Converter={StaticResource ResourceKey=BoolToVisibilityCollapseConv}}" 
+                                     Command="{Binding CommandApplyToAllSamePartNumber}">
+                        <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource MUA_MiApplySameBasePartNumber}"/>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=Part}" Height="20"></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem x:Name="MiCheckOut" 
+                                     IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}" 
+                                     Visibility="{Binding CurrentMassUpdAttribDataContext.SelectedItem.IsCheckedIn, Converter={StaticResource ResourceKey=BoolToVisibilityCollapseConv}}" 
+                                     Command="{Binding CommandCheckOutOneCadDoc}" >
+                        <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource MUA_MiCheckOut}"/>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=CheckOut}" Height="20"></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem x:Name="MiCheckIn" 
+                                     IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}" 
+                                     Visibility="{Binding CurrentMassUpdAttribDataContext.SelectedItem.IsCheckedOut, Converter={StaticResource ResourceKey=BoolToVisibilityCollapseConv}}" 
+                                     Command="{Binding CommandCheckInOneCadDoc}" >
+                        <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource MUA_MiCheckIn}"/>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=CheckIn}" Height="20"></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem x:Name="MiReset" 
+                                     IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"  
+                                     Command="{Binding CommandResetUpdateSelectedItem}" >
+                        <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource MUA_MiReset}"/>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=UNDO}" Height="20"></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                                     Command="{Binding CommandOpenModelInCreo}" 
+                                     CommandParameter="{StaticResource TrueValue}" 
+                                     Header="{DynamicResource MUA_BtOpenInCreo}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=OPEN}" Width="16" ></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                    <Fluent:MenuItem IsEnabled="{Binding CurrentMassUpdAttribDataContext.ShowActionButton}"
+                                     Command="{Binding CommandRenameObject}" 
+                                     Header="{DynamicResource MUA_BtRenameObject}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=RENAME}" Width="16" ></Image>
+                        </MenuItem.Icon>
+                    </Fluent:MenuItem>
+
+                </Fluent:ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CanUserResize="False" 
+                                        CanUserSort="True" 
+                                        SortMemberPath="IsSelected">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox  IsChecked="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource proxy}}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="Unchecked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAll, Source={StaticResource proxy}}" 
+                                                                   CommandParameter="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelected, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                                <behaviors:EventTrigger EventName="Checked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAll, Source={StaticResource proxy}}" 
+                                                                   CommandParameter="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelected, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </CheckBox>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CbTemplate" 
+                                      IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      IsEnabled="True"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn x:Name="ColPartNumber" 
+                                    Binding="{Binding PartNumber}" 
+                                    IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource MUA_ColHeader01}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                    <Setter Property="Background" Value="#FFC9C9C9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLocallyModified}" Value="True">
+                                    <Setter Property="Background" Value="#FFE8E8E8"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn x:Name="ColStatus"  
+                                    Binding="{Binding Status}" 
+                                    IsReadOnly="True" 
+                                    Visibility="{Binding Data.CurrentMassUpdAttribDataContext.IsLoadedFromCreo, Source={StaticResource proxy}, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" >
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource MUA_ColHeader06}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                    <Setter Property="Background" Value="#FFC9C9C9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLocallyModified}" Value="True">
+                                    <Setter Property="Background" Value="#FFE8E8E8"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn CellTemplate="{StaticResource ReadonlyCellTemplate}"  
+                                        SortMemberPath="PTC_COMMON_NAME"  
+                                        CanUserSort="True" >
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="{DynamicResource MUA_ColHeader05}"></TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPtcCommonNameModifiable}" 
+                                             Value="True">
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
+
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <!-- the additional layer of content presenter -->
+                            <ContentPresenter x:Name="ColPresPtcCommonNameCbox" 
+                                              Content="{Binding}" 
+                                              ContentTemplate="{StaticResource ReadonlyCellTemplate}"></ContentPresenter>
+                            <DataTemplate.Triggers>
+                                <!-- dynamically switch the content template by IsPtcCommonNameModifiable binding -->
+                                <DataTrigger Binding="{Binding IsPtcCommonNameModifiable}" 
+                                             Value="True">
+                                    <Setter TargetName="ColPresPtcCommonNameCbox" 
+                                            Property="ContentTemplate" 
+                                            Value="{StaticResource EditableCellTemplate}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

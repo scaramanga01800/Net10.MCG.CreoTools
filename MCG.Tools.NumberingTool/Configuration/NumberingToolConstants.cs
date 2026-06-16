@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MCG.Tools.NumberingTool.Configuration
+﻿namespace MCG.Tools.NumberingTool.Configuration
 {
     public static class NumberingToolConstants
     {
@@ -10,6 +6,5 @@ namespace MCG.Tools.NumberingTool.Configuration
         public const string HtmlLinkNewPatNumberGenerator = "https://netapp.erp2.manitowoc.com:50002/SAPIntegration/api/Materials/getMaterialNumberRange/{0}/{1}";
         public const string HtmlLinkNewPatNumberGeneratorDev = "https://netappdev.erp2.manitowoc.com/SAPIntegration/api/Materials/getMaterialNumberRange/{0}/{1}";
         public const string HtmlLinkNewPatNumberGeneratorProd = "https://netapp.erp2.manitowoc.com:50002/SAPIntegration/api/Materials/getMaterialNumberRange/{0}/{1}";
-        public const string HtmlLinkPatNumberGenerator = "http://gusang002/AutoPartNumberGenerator/";
     }
 }

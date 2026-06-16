@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <COMReference Include="pfcls">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>176453f2-6934-4304-8c9d-126d98c1700e</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Fluent.Ribbon" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.CreoInteractionTools\MCG.CommonLib.CreoInteractionTools.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.Webterm\MCG.CommonLib.Webterm.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.MiscTools\MCG.CREO_Tools.MiscTools.csproj" />
+    <ProjectReference Include="..\MCG.Tools.NumberingTool\MCG.Tools.NumberingTool.csproj" />
+  </ItemGroup>
+
+</Project>

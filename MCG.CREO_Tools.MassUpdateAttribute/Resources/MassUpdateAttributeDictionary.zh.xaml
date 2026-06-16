@@ -1,0 +1,109 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Mass Update Attribute UserControl Interface -->
+    <system:String x:Key="MUA_ColHeader01">CAD Document</system:String>
+    <system:String x:Key="MUA_ColHeader02">Group Creator</system:String>
+    <system:String x:Key="MUA_ColHeader03">Quality Inspection Group</system:String>
+    <system:String x:Key="MUA_ColHeader04">Material</system:String>
+    <system:String x:Key="MUA_ColHeader05">PTC Common Name</system:String>
+    <system:String x:Key="MUA_ColHeader06">Status</system:String>
+    <system:String x:Key="MUA_CbIsCheckedOutText">Checked-out / new CAD documents</system:String>
+    <system:String x:Key="MUA_CbIsLocallyModifiedText">Locally modified CAD documents</system:String>
+    <system:String x:Key="MUA_CbIsReadOnlyShownText">Read-only CAD documents</system:String>
+    <system:String x:Key="MUA_MiReset">Reset update</system:String>
+    <system:String x:Key="MUA_MiApplySameBasePartNumber">Apply same part number</system:String>
+    <system:String x:Key="MUA_MiCheckOut">Check out</system:String>
+    <system:String x:Key="MUA_MiCheckIn">Check in</system:String>
+    <system:String x:Key="MUA_BtOpenInCreo">Open in CREO</system:String>
+    <system:String x:Key="MUA_BtListCadDoc">List CAD documents in session</system:String>
+    <system:String x:Key="MUA_BtUpdateCadDoc">Update CAD documents</system:String>
+    <system:String x:Key="MUA_BtApplySelection">Apply to selection</system:String>
+    <system:String x:Key="MUA_CbIsSaveCadDoc">Save CAD documents</system:String>
+    <system:String x:Key="MUA_LabelApplyWebterm">Apply Webterm</system:String>
+    <system:String x:Key="MUA_ToolTipApplyWebterm">Apply Webterm translation to DESCRIPTION2_1 for the current selection</system:String>
+    <system:String x:Key="MUA_ToolTipCheckOut">Check out selection</system:String>
+    <system:String x:Key="MUA_ToolTipCheckIn">Check in selection</system:String>
+    <system:String x:Key="MUA_LabelResetAll">Reset update</system:String>
+    <system:String x:Key="MUA_ToolTipResetSelected">Reset update for the current selection</system:String>
+    <system:String x:Key="MUA_SearchCadDocInProgress">- Searching CAD models in session</system:String>
+    <system:String x:Key="MUA_SearchCadDocInProgressMsg">Searching CAD models in session</system:String>
+    <system:String x:Key="MUA_UpdateCadDocInProgress">- Updating CAD models</system:String>
+    <system:String x:Key="MUA_UpdateCadDocInProgressMsg">Updating CAD models</system:String>
+    <system:String x:Key="MUA_AbordProcessMsg">Abort CAD model search?</system:String>
+    <system:String x:Key="MUA_AbordProcessTitle">Abort process</system:String>
+    <system:String x:Key="MUA_AbordProcessUpdateMsg">Abort CAD model update?</system:String>
+    <system:String x:Key="MUA_CbDisplayedModelsOnly">Only displayed CAD documents</system:String>
+    <system:String x:Key="MUA_CbDisplayedActiveModelOnly">Only active CAD document and components</system:String>
+    <system:String x:Key="MUA_BtCancel">Cancel</system:String>
+    <system:String x:Key="MUA_TtHelpMassUpdateAttribute">Mass Update Attribute Help</system:String>
+    <system:String x:Key="MUA_LinkHelpMassUpdateAttribute">APP016FR.PDF</system:String>
+    <system:String x:Key="MUA_MsgIssueAssignMaterial">Issue assigning material {0} to {1}</system:String>
+    <system:String x:Key="MUA_MenuTools">Tools</system:String>
+    <system:String x:Key="MUA_MenuImportFromXls">Import from Excel</system:String>
+    <system:String x:Key="MUA_MenuUpdateParamRelation">Update parameter relations</system:String>
+    <system:String x:Key="MUA_MenuUpdateLayers">Update layers</system:String>
+    <system:String x:Key="MUA_UpdateStatus01">Not updated</system:String>
+    <system:String x:Key="MUA_UpdateStatus02">Updated</system:String>
+    <system:String x:Key="MUA_UpdateStatus03">CAD document not found</system:String>
+    <system:String x:Key="MUA_UpdateStatus04">Save issue</system:String>
+
+    <system:String x:Key="MUA_AppName">Update Attributes</system:String>
+    <system:String x:Key="MUA_StatusBar01">Number of CAD documents:</system:String>
+    <system:String x:Key="MUA_RibGrpCreo">CREO interaction</system:String>
+    <system:String x:Key="MUA_RibGrpShow">Display</system:String>
+    <system:String x:Key="MUA_RibGrpTools">Tools</system:String>
+    <system:String x:Key="MUA_BtTitleDeleteSelectedCadDocs">Delete selected CAD documents</system:String>
+    <system:String x:Key="MUA_BtStartDeleteSelectedCadDocs">Delete selected CAD documents</system:String>
+
+    <!-- Mass Create New Cad Document  -->
+    <system:String x:Key="MUA_BtCreateCadDoc">Create CAD document</system:String>
+    <system:String x:Key="MUA_RbPart">Solid part</system:String>
+    <system:String x:Key="MUA_RbPartSm">Sheet metal part</system:String>
+    <system:String x:Key="MUA_RbAssembly">Assembly</system:String>
+    <system:String x:Key="MUA_RbDrawing">Drawing</system:String>
+    <system:String x:Key="MUA_LabelNumber">Part number</system:String>
+    <system:String x:Key="MUA_LabelPtcCommonName">PTC common name</system:String>
+    <system:String x:Key="MUA_LabelDescription2_1">Local language</system:String>
+    <system:String x:Key="MUA_TitleCreateCadDoc">Create new CAD document</system:String>
+
+    <!-- Appearance Menu  -->
+    <system:String x:Key="MUA_RibGrpAppearnce">Appearance</system:String>
+    <system:String x:Key="MUA_BtRemoveColor">Remove all appearances</system:String>
+    <system:String x:Key="MUA_BtUpdateColor">Update appearance</system:String>
+    <system:String x:Key="MUA_BtSelectColors">Select color palette</system:String>
+    <system:String x:Key="BUT_BtToolTipSelectColors">Select the color palette to use.</system:String>
+    <system:String x:Key="MUA_TitleNoAppearence">No color selected</system:String>
+    <system:String x:Key="MUA_MsgNoAppearence">No color has been selected. Please select one and try again.</system:String>
+    <system:String x:Key="MUA_TitleNoCadSelected">No model selected</system:String>
+    <system:String x:Key="MUA_MsgNoCadSelected">No model has been selected. Please select at least one and try again.</system:String>
+
+    <!-- Change Name  -->
+    <system:String x:Key="MUA_TitleWindowRename">Rename Windchill Objects</system:String>
+    <system:String x:Key="MUA_RibGrpData">Data</system:String>
+    <system:String x:Key="MUA_BtNewName">New name</system:String>
+    <system:String x:Key="MUA_BtClose">Close</system:String>
+    <system:String x:Key="MUA_BtRemove">Remove</system:String>
+    <system:String x:Key="MUA_BtStartRename">Start renaming</system:String>
+    <system:String x:Key="MUA_ColHeader10">Object</system:String>
+    <system:String x:Key="MUA_ColHeader11">Current name</system:String>
+    <system:String x:Key="MUA_ColHeader12">State</system:String>
+    <system:String x:Key="MUA_BtRenameObject">Rename</system:String>
+    <system:String x:Key="MUA_LabeNoObjectToRename">No object found to rename.</system:String>
+    <system:String x:Key="MUA_LabeSelectTerm">Please select a new term first and try again.</system:String>
+    <system:String x:Key="MUA_LabeStartRename">Are you sure you want to rename the selected objects?</system:String>
+
+    <!-- update relations and parameters  -->
+    <system:String x:Key="MUA_BtStartUpdate">Start update</system:String>
+    <system:String x:Key="MUA_Column_Number">Number</system:String>
+    <system:String x:Key="MUA_Column_Comment">Comment</system:String>
+    <system:String x:Key="MUA_MsgRenamedInProgress">In Rrogress</system:String>
+    <system:String x:Key="MUA_MsgRenamedSuccess">Done</system:String>
+    <system:String x:Key="MUA_MsgRenamedError">Issue</system:String>
+    <system:String x:Key="MUA_RbUpperLevel">Current Model Only</system:String>
+    <system:String x:Key="MUA_RbOneLevel">Include First Level Dependents</system:String>
+    <system:String x:Key="MUA_RbAllLevels">Include All Dependents</system:String>
+    <system:String x:Key="MUA_LabelNoActiveModel">No Active Model</system:String>
+</ResourceDictionary> 

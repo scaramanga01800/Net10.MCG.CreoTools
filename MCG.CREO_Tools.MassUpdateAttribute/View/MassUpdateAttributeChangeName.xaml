@@ -1,0 +1,184 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MassUpdateAttribute.View.MassUpdateAttributeChangeName"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MassUpdateAttribute.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:WindchillRequestTool="clr-namespace:MCG.WindchillRequestTool.Model.Windchill;assembly=MCG.WindchillRequestTool"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource MUA_TitleWindowRename}"
+                     Height="450" 
+                     Width="800">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png" />
+            <BitmapImage x:Key="CLOSE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Close.png" />
+            <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/part.gif" />
+            <BitmapImage x:Key="ASM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Asm.gif" />
+            <BitmapImage x:Key="PRT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Prt.gif" />
+            <BitmapImage x:Key="DRW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Drw.gif" />
+            <BitmapImage x:Key="WTDOC" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/doc_document.gif" />
+            <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Unknown.ico" />
+            <BitmapImage x:Key="REMOVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/remove_32x32.png" />
+            <BitmapImage x:Key="REMOVE_MENU" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Remove.gif" />
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" 
+                       AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem >
+                <Fluent:RibbonGroupBox Header="{DynamicResource MUA_RibGrpData}">
+                    <Fluent:ComboBox Header="{DynamicResource MUA_BtNewName}"
+                                     ItemsSource="{Binding CurrentMassUpdAttribDataContext.WebtermList}"
+                                     SelectedItem="{Binding CurrentMassUpdAttribDataContext.NewTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEditable="False">
+                    </Fluent:ComboBox>
+
+                    <Fluent:Button Command="{Binding CommandRemove}"
+                                   Header="{DynamicResource MUA_BtRemove}"
+                                   LargeIcon="{StaticResource REMOVE}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+
+                    <Fluent:Button Command="{Binding CommandStartRename}"
+                                   Header="{DynamicResource MUA_BtStartRename}"
+                                   LargeIcon="{StaticResource START}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+
+                    <Fluent:Button Command="{Binding CommandClose}"
+                                   CommandParameter="{Binding}"
+                                   Header="{DynamicResource MUA_BtClose}"
+                                   LargeIcon="{StaticResource CLOSE}"
+                                   Margin="5,0,5,0">
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <DataGrid AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserSortColumns="True"
+                  x:Name="ItemDataGrid"
+                  IsReadOnly="False"
+                  ItemsSource="{Binding CurrentMassUpdAttribDataContext.ListToBeRenamedObject}"
+                  SelectedItem="{Binding CurrentMassUpdAttribDataContext.SelectedRenameItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ToBeRenamed}" Value="False">
+                            <Setter Property="Foreground" Value="Gray"/>
+                            <Setter Property="FontStyle" Value="Italic"/>
+                            <Setter Property="Opacity" Value="0.7"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="IsSelected">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox  IsChecked="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelectedRename,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource proxy}}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="Unchecked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAllRename, Source={StaticResource proxy}}" CommandParameter="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelectedRename, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                                <behaviors:EventTrigger EventName="Checked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAllRename, Source={StaticResource proxy}}" CommandParameter="{Binding Data.CurrentMassUpdAttribDataContext.IsAllSelectedRename, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </CheckBox>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CbTemplate" 
+                                      IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      IsEnabled="True"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="ObjectType">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.PART}">
+                                                <Setter Property="Source" Value="{StaticResource PART}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.WTDOC}">
+                                                <Setter Property="Source" Value="{StaticResource WTDOC}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.ASM}">
+                                                <Setter Property="Source" Value="{StaticResource ASM}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.DRW}">
+                                                <Setter Property="Source" Value="{StaticResource DRW}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.PRT}">
+                                                <Setter Property="Source" Value="{StaticResource PRT}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ObjectType}" Value="{x:Static WindchillRequestTool:WindchillObjectType.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource UNKNOWN}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{DynamicResource MUA_ColHeader10}"
+                                    Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsReadOnly="False">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ToBeRenamed}" Value="False">
+                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{DynamicResource MUA_ColHeader11}"
+                                    Binding="{Binding OldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsReadOnly="False">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ToBeRenamed}" Value="False">
+                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{DynamicResource MUA_ColHeader12}"
+                                    Binding="{Binding State, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsReadOnly="False">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ToBeRenamed}" Value="False">
+                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Fluent:RibbonWindow>

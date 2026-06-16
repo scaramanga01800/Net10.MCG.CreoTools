@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassUpdateAttributeConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<ListColumns>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Description 2</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>DESCRIPTION_2</AttributeID>
+			<ClassAttributeID>PARAMSTR01</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+			<MaxCharacters>20</MaxCharacters>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Description2 1</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>DESCRIPTION2_1</AttributeID>
+			<ClassAttributeID>PARAMSTR02</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+			<MaxCharacters>19</MaxCharacters>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Description2 2</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>DESCRIPTION2_2</AttributeID>
+			<ClassAttributeID>PARAMSTR03</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+			<MaxCharacters>20</MaxCharacters>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Modified By</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>MODIFIED_BY</AttributeID>
+			<ClassAttributeID>PARAMSTR04</ClassAttributeID>
+			<IsDesignated>false</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>GROUP CREATOR</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>GROUP_CREATOR</AttributeID>
+			<ClassAttributeID>PARAMSTR05</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>COMBOBOX</ColumnType>
+			<ListValue>
+				<string>ADB</string>
+				<string>BAB</string>
+				<string>BAE</string>
+				<string>BAJ</string>
+				<string>BCB</string>
+				<string>BDB</string>
+				<string>BDE</string>
+				<string>BEB</string>
+				<string>BEE</string>
+				<string>BFB</string>
+				<string>BGB</string>
+				<string>BKB</string>
+				<string>BLB</string>
+				<string>BNJ</string>
+				<string>CAB</string>
+				<string>CCB</string>
+				<string>CDB</string>
+				<string>CEB</string>
+				<string>CFB</string>
+				<string>CGB</string>
+				<string>CLB</string>
+				<string>CNB</string>
+				<string>DDB</string>
+			</ListValue>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>QUAL. INSP GRP.</AttributeName>
+			<AttributeValue>C</AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>QUALINSPGRP</AttributeID>
+			<ClassAttributeID>PARAMSTR06</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>COMBOBOX</ColumnType>
+			<ListValue>
+				<string>A</string>
+				<string>B</string>
+				<string>C</string>
+				<string>X</string>
+			</ListValue>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>MATERIAL</AttributeName>
+			<AttributeValue>NONE</AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>MATERIAL</AttributeID>
+			<ClassAttributeID>PARAMSTR07</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>COMBOBOX</ColumnType>
+			<FolderSource>O:\CREO_Config\TWR\material</FolderSource>
+			<FolderFileFilter>*.mtl</FolderFileFilter>
+			<ListValue>
+				<string>S235</string>
+				<string>S355</string>
+				<string>S315MC</string>
+				<string>ALU</string>
+			</ListValue>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Add. Publishing Format</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>ADDITIONALPUBFORMAT</AttributeID>
+			<ClassAttributeID>PARAMSTR09</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>COMBOBOX</ColumnType>
+			<ListValue>
+				<string></string>
+				<string>Nothing</string>
+				<string>DXF</string>
+				<string>IGES</string>
+				<string>STEP</string>
+				<string>IGES - STEP</string>
+				<string>PVZ</string>
+			</ListValue>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>BRAND</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>BRAND</AttributeID>
+			<ClassAttributeID>SelectedBrand</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEMPLATECOMBOBOX</ColumnType>
+			<PropertyList>ListBrand</PropertyList>
+			<PropertySelectedItem>SelectedBrand</PropertySelectedItem>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>GROUP</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>GROUP</AttributeID>
+			<ClassAttributeID>SelectedGroup</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEMPLATECOMBOBOX</ColumnType>
+			<PropertyList>ListGroup</PropertyList>
+			<PropertySelectedItem>SelectedGroup</PropertySelectedItem>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>SUB GROUP</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>SUB_GROUP</AttributeID>
+			<ClassAttributeID>SelectedSubGroup</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEMPLATECOMBOBOX</ColumnType>
+			<PropertyList>ListSubGroup</PropertyList>
+			<PropertySelectedItem>SelectedSubGroup</PropertySelectedItem>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>OPTION</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>OPTION</AttributeID>
+			<ClassAttributeID>SelectedOption</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEMPLATECOMBOBOX</ColumnType>
+			<PropertyList>ListOption</PropertyList>
+			<PropertySelectedItem>SelectedOption</PropertySelectedItem>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>MODEL</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>MODEL</AttributeID>
+			<ClassAttributeID>PARAMSTR15</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Type</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>TYPE</AttributeID>
+			<ClassAttributeID>PARAMSTR08</ClassAttributeID>
+			<IsDesignated>true</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Sub Type</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>SUB_TYPE</AttributeID>
+			<ClassAttributeID>PARAMSTR10</ClassAttributeID>
+			<IsDesignated>false</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+		</McgAttributeColumnHeaderInfo>
+		<McgAttributeColumnHeaderInfo>
+			<AttributeName>Cad Template</AttributeName>
+			<AttributeValue></AttributeValue>
+			<AttributeType>TEXT</AttributeType>
+			<AttributeID>TEMPLATE</AttributeID>
+			<ClassAttributeID>PARAMSTR11</ClassAttributeID>
+			<IsDesignated>false</IsDesignated>
+			<ColumnType>TEXT</ColumnType>
+		</McgAttributeColumnHeaderInfo>
+	</ListColumns>
+
+	<ListLanguages>
+		<string>CHINESE</string>
+		<string>ENGLISH</string>
+		<string>FRENCH</string>
+		<string>GERMAN</string>
+		<string>ITALIAN</string>
+		<string>PORTUGUESE</string>
+	</ListLanguages>
+
+	<CurrentLanguage>FRENCH</CurrentLanguage>
+
+	<ListStandardLayers>
+		<CadDocLayerItemConfig>
+			<Name>1_REF_PLANES</Name>
+			<IsDisplayed>false</IsDisplayed>
+			<ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+			<RefType>MAINPLAN</RefType>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>2_ALL_CSYS</Name>
+			<IsDisplayed>false</IsDisplayed>
+			<ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+			<RefType>CSYS</RefType>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>1_ALL_PLANES</Name>
+			<IsDisplayed>false</IsDisplayed>
+			<ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+			<RefType>PLAN</RefType>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>3_ALL_AXES</Name>
+			<IsDisplayed>false</IsDisplayed>
+			<ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+			<RefType>AXIS</RefType>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>4_ALL_POINTS</Name>
+			<IsDisplayed>false</IsDisplayed>
+			<ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+			<RefType>POINTS</RefType>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>5_ALL_CURVES</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>6_ALL_SURFS</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>9_ALL_WELDS</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>10_ALL_THREADS</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>11_ALL_COPY_GEOM</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>12_ALL_EXT_COPY_GEOM</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>SKELETON</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>90_BOM_TABLE</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>91_TOL_GEOM</Name>
+			<IsDisplayed>false</IsDisplayed>
+		</CadDocLayerItemConfig>
+		<CadDocLayerItemConfig>
+			<Name>13_SHOWN_FEATURES</Name>
+			<IsDisplayed>true</IsDisplayed>
+		</CadDocLayerItemConfig>
+	</ListStandardLayers>
+
+	<ListTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>a_template_designasm.asm</FileName>
+			<CadDocType>ASM</CadDocType>
+			<Template>DEFAULT ASM</Template>
+			<IsDefaultAsm>true</IsDefaultAsm>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>a_template_solidpart.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT PRT</Template>
+			<IsDefaultPrt>true</IsDefaultPrt>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>b_template_sheetmetalpart.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT SHEET METAL</Template>
+			<IsDefaultSheetMetal>true</IsDefaultSheetMetal>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>template_bulk_item.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT BULK</Template>
+			<IsDefaultBulk>true</IsDefaultBulk>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>template_electrical_cable.prt</FileName>
+			<Template>CUTL TWR ELECTRICAL CABLE</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>attache-tirant.prt</FileName>
+			<Template>JIB TIE BAR BRACKET</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre.prt</FileName>
+			<Template>JIB BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_carre.prt</FileName>
+			<Template>JIB SQUARE TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_cisaillee.prt</FileName>
+			<Template>JIB SHEARED TUBE</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_coffre.prt</FileName>
+			<Template>JIB DOUBLE ANGLE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_corniere.prt</FileName>
+			<Template>JIB ANGLE IRON BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_rect.prt</FileName>
+			<Template>JIB REC TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>barre_tube.prt</FileName>
+			<Template>JIB TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>element.asm</FileName>
+			<Template>JIB ELEMENT STD</Template>
+			<CadDocType>ASM</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>element_generique_v10.asm</FileName>
+			<Template>JIB ELEMENT GEN</Template>
+			<CadDocType>ASM</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>sommier.asm</FileName>
+			<Template>JIB GIRDER</Template>
+			<CadDocType>ASM</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>sommier_inf.asm</FileName>
+			<Template>JIB GIRDER INF</Template>
+			<CadDocType>ASM</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>sommier_sup.asm</FileName>
+			<Template>JIB GIRDER SUP</Template>
+			<CadDocType>ASM</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+		<MassUpdateAttributeCadTemplate>
+			<FileName>template_cable_bus.prt</FileName>
+			<Template>CUTL TWR CABLE BUS</Template>
+			<CadDocType>PRT</CadDocType>
+		</MassUpdateAttributeCadTemplate>
+	</ListTemplate>
+
+</MassUpdateAttributeConfiguration>
