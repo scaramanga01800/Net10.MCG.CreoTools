@@ -6,7 +6,6 @@ using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
-using MCG.CommonLib.DataBaseAccess.Services;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Services;
@@ -133,11 +132,6 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
             {
                 throw new CutLengthException(this.GetType().Name, ex);
             }
-        }
-
-        public void InitApp()
-        {
-            throw new NotImplementedException();
         }
 
         public bool CheckUserAuthorization(string AppName)

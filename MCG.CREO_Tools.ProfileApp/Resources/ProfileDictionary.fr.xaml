@@ -1,0 +1,56 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="APR_LabelLength">Longueur</system:String>
+    <system:String x:Key="APR_CbIsDrwBrokenViewText">Plan avec vue interrompue</system:String>
+    <system:String x:Key="APR_LabelProfileType">Type de profil</system:String>
+    <system:String x:Key="APR_LabelMaterial">Matière</system:String>
+    <system:String x:Key="APR_LabelPartNumber">Numéro</system:String>
+    <system:String x:Key="APR_LabelDrwLovation">Format de plan</system:String>
+    <system:String x:Key="APR_LabelGrpCreator">Groupe créateur</system:String>
+    <system:String x:Key="APR_BtCreateProfile">Créer le profil</system:String>
+    <system:String x:Key="APR_MsgPartNumberMissing">Veuillez renseigner un numéro et relancer</system:String>
+    <system:String x:Key="APR_MsgWinTitleWarning">Avertissement App Profile</system:String>
+    <system:String x:Key="APR_MsgPartSelectedGenMissing">Veuillez sélectionner un profil et relancer</system:String>
+    <system:String x:Key="APR_MsgPartAlreadyInSession">Le document CAO {0} est déjà présent dans la session CREO.</system:String>
+    <system:String x:Key="APR_MsgMaterialMissing">Veuillez sélectionner une matière et relancer</system:String>
+    <system:String x:Key="APR_ToolTipStdType1">Profil standard</system:String>
+    <system:String x:Key="APR_ToolTipStdType2">Produit nécessitant une commande minimale</system:String>
+    <system:String x:Key="APR_ToolTipStdType3">Produit disponible uniquement sur commande spéciale</system:String>
+    <system:String x:Key="APR_ToolTipStdType4">Profil d’origine chinoise</system:String>
+    <system:String x:Key="APR_ColHeader01">Description</system:String>
+    <system:String x:Key="APR_ColHeader02">Largeur ou diamètre</system:String>
+    <system:String x:Key="APR_ColHeader03">Hauteur</system:String>
+    <system:String x:Key="APR_ColHeader04">Épaisseur</system:String>
+    <system:String x:Key="APR_StatusBarText">Nb profil(s) :</system:String>
+
+    <system:String x:Key="APR_AppName">Profil</system:String>
+    <system:String x:Key="APR_RibGrpData">Données</system:String>
+    <system:String x:Key="APR_RibGrpDrawing">Plan</system:String>
+    <system:String x:Key="APR_RibGrpCreo">CREO Intéraction</system:String>
+    <system:String x:Key="APR_RibGrpTools">Outils</system:String>
+    <system:String x:Key="APR_LinkHelpAppProfile">APP017FR.PDF</system:String>
+
+    <system:String x:Key="APR_TitleTipEdit">Mode édition</system:String>
+    <system:String x:Key="APR_TextTipEdit">Basculer l’interface en mode édition pour ajouter ou mettre à jour des profils</system:String>
+    <system:String x:Key="APR_TitleTipAddPart">Ajouter un profil</system:String>
+    <system:String x:Key="APR_TextTipAddPart">Ajouter un nouveau profil au type sélectionné</system:String>
+    <system:String x:Key="APR_WindowTitleUpdateCreatePart">Créer / Mettre à jour un profil</system:String>
+    <system:String x:Key="APR_MenuData">Données</system:String>
+    <system:String x:Key="APR_ErrorMsgPartExist">Ce profil existe déjà pour le type et la matière sélectionnés</system:String>
+    <system:String x:Key="APR_ErrorMsgTitlePartExist">Profil déjà existant</system:String>
+    <system:String x:Key="APR_ErrorMsgNumberBlank">Tous les paramètres doivent être renseignés</system:String>
+    <system:String x:Key="APR_ErrorMsgTitleIssue">Erreur lors de la création ou mise à jour</system:String>
+    <system:String x:Key="APR_MiEditPartNumber">Éditer</system:String>
+    <system:String x:Key="APR_MiDuplicatePartNumber">Dupliquer</system:String>
+    <system:String x:Key="APR_ColHeader05">Type standard</system:String>
+    <system:String x:Key="APR_ColHeader06">Matière</system:String>
+    <system:String x:Key="APR_ColHeader07">Type</system:String>
+    <system:String x:Key="APR_ColHeader08">Numéro</system:String>
+    <system:String x:Key="APR_ColHeader09">Générique 3D</system:String>
+    <system:String x:Key="APR_ColHeader10">Générique plan vue complète</system:String>
+    <system:String x:Key="APR_ColHeader11">Générique plan vue interrompue</system:String>
+    <system:String x:Key="APR_ErrorMsgClassNotSelected">Veuillez sélectionner un type avant de continuer</system:String>
+</ResourceDictionary> 

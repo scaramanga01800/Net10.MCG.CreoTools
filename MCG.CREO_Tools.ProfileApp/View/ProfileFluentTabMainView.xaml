@@ -1,0 +1,116 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.CREO_Tools.ProfileApp.View.ProfileFluentTabMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.CREO_Tools.ProfileApp.View"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:System="clr-namespace:System;assembly=mscorlib"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="{DynamicResource APR_AppName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="CLASS" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_SubClass.ico" />
+            <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exec.ico" />
+            <BitmapImage x:Key="CREATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Create.png" />
+            <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Help.ico" />
+            <BitmapImage x:Key="Edit" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Edit.ico"  />
+            <BitmapImage x:Key="AddPart" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add.ico"  />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+            <conv:InverseBoolConverter x:Key="InverseBoolConv"></conv:InverseBoolConverter>
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource APR_RibGrpData}"
+                       IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Image Height="32" Source="{StaticResource CLASS}"></Image>
+            <Fluent:ComboBox  Width="160" 
+                          IsEditable="False" 
+                          ItemsSource="{Binding CurrentDataContext.ListProfileType}" 
+                          SelectedItem="{Binding CurrentDataContext.CurrentProfileType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{StaticResource ResourceKey=PART}"
+               Height="24"
+               Margin="2"/>
+            <Fluent:TextBox Text="{Binding CurrentDataContext.CurrentPartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Width="165"
+                        TextAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Header="{DynamicResource APR_LabelPartNumber}"/>
+        </StackPanel>
+        <StackPanel Margin="10,0,10,0" Width="150">
+            <Fluent:ComboBox  IsEditable="False" 
+                          ItemsSource="{Binding CurrentDataContext.ListMaterial}" 
+                          SelectedItem="{Binding CurrentDataContext.SelectedMaterial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Header="{DynamicResource APR_LabelMaterial}"></Fluent:ComboBox>
+            <Fluent:ComboBox  IsEditable="False" 
+                          ItemsSource="{Binding CurrentDataContext.ListGrpCreator}" 
+                          SelectedItem="{Binding CurrentDataContext.SelectedGrpCreator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Header="{DynamicResource APR_LabelGrpCreator}"></Fluent:ComboBox>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Fluent:TextBox  Text="{Binding CurrentDataContext.CurrentLength,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=100}"
+                             Header="{DynamicResource APR_LabelLength}"
+                             Width="120"></Fluent:TextBox>
+                <Fluent:TwoLineLabel Width="46" VerticalContentAlignment="Center" 
+                                 Text="mm" 
+                                 Margin="5,0,0,0"
+                                 HasTwoLines="False"></Fluent:TwoLineLabel>
+            </StackPanel>
+        </StackPanel>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource APR_RibGrpDrawing}"
+                       IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:ComboBox  MinWidth="180" 
+                        IsEditable="False" 
+                        Header="{DynamicResource APR_LabelDrwLovation}"
+                        ItemsSource="{Binding CurrentDataContext.ListDrwLocation}" 
+                        SelectedItem="{Binding CurrentDataContext.SelectedDrwLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+        <Fluent:CheckBox Header="{DynamicResource APR_CbIsDrwBrokenViewText}"
+                     IsChecked="{Binding CurrentDataContext.IsDrwBrokenView,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:CheckBox>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource APR_RibGrpCreo}"
+                       IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <Fluent:Button LargeIcon="{StaticResource CREATE}"
+                   Command="{Binding CommandCreateProfile}"
+                   IsEnabled="{Binding CurrentDataContext.IsCreoEnable}"
+                   Margin="5,0,5,0"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource APR_RibGrpTools}">
+        <Fluent:ToggleButton LargeIcon="{StaticResource Edit}" 
+                         IsChecked="{Binding CurrentDataContext.IsEditMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding CurrentDataContext.IsAdminToolsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Fluent:ToggleButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  CT_TitleTipEdit}" 
+                      Image="{StaticResource Edit}"
+                      Text="{DynamicResource  CT_TextTipEdit}"/>
+            </Fluent:ToggleButton.ToolTip>
+        </Fluent:ToggleButton>
+
+        <Fluent:Button LargeIcon="{StaticResource AddPart}" 
+                   Command="{Binding CommandAddNewProfile}" 
+                   CommandParameter="{StaticResource FalseValue}"
+                   Margin="2,0,2,0"
+                   Visibility="{Binding CurrentDataContext.IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  CT_TitleTipAddPart}" 
+                      Image="{StaticResource AddPart}"
+                      Text="{DynamicResource  CT_TextTipAddPart}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource HELP}"
+                   Margin="5,0,5,0"
+                   Command="{Binding CommandOpenHelp}"></Fluent:Button>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

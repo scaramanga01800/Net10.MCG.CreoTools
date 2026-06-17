@@ -1,0 +1,122 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.ProfileApp.View.ProfileUpdateProfileView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.ProfileApp.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:coll="clr-namespace:System.Collections;assembly=mscorlib"
+                     xmlns:System="clr-namespace:System;assembly=mscorlib"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource CT_WindowTitleUpdateCreatePart}" 
+                     Height="450" Width="400"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/SubClass_shortcut.png">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="OK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check.ico"/>
+            <BitmapImage x:Key="CANCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
+            <coll:ArrayList x:Key="ListStdType">
+                <System:String>TYPE1</System:String>
+                <System:String>TYPE2</System:String>
+                <System:String>TYPE3</System:String>
+                <System:String>TYPE4</System:String>
+            </coll:ArrayList>
+            <coll:ArrayList x:Key="ListCadDocType">
+                <System:String>PRT</System:String>
+                <System:String>ASM</System:String>
+            </coll:ArrayList>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource APR_MenuData}">
+                    <Fluent:Button Command="{Binding CommandCreateUpdatePart}" 
+                               LargeIcon="{StaticResource OK}"
+                               Margin="5,0,5,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction MethodName="Close"
+                                                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Fluent:Button>
+                    <Fluent:Button Margin="5,0,5,0"
+                               LargeIcon="{StaticResource CANCEL}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction MethodName="Close"
+                                                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="5">
+            <StackPanel x:Name="SpParameters" Orientation="Vertical">
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader01}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader02}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader03}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader04}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.Thickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:TextBox>
+                <Fluent:ComboBox Header="{StaticResource APR_ColHeader05}"
+                             SelectedItem="{Binding ProfileItem.UpdatedProfile.StandardType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding ListStdType}"
+                             IsEditable="False">
+                    <Fluent:ComboBox.ToolTip>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ProfileItem.UpdatedProfile.StandardType}" Value="TYPE1">
+                                            <Setter Property="Text" Value="{DynamicResource APR_ToolTipStdType1}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ProfileItem.UpdatedProfile.StandardType}" Value="TYPE2">
+                                            <Setter Property="Text" Value="{DynamicResource APR_ToolTipStdType2}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ProfileItem.UpdatedProfile.StandardType}" Value="TYPE3">
+                                            <Setter Property="Text" Value="{DynamicResource APR_ToolTipStdType3}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ProfileItem.UpdatedProfile.StandardType}" Value="TYPE4">
+                                            <Setter Property="Text" Value="{DynamicResource APR_ToolTipStdType4}"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Fluent:ComboBox.ToolTip>
+                </Fluent:ComboBox>
+                <Fluent:ComboBox Header="{StaticResource APR_ColHeader06}"
+                             SelectedItem="{Binding ProfileItem.UpdatedProfile.Material, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding ListAllMaterial}"
+                             IsEditable="False"></Fluent:ComboBox>
+                <Fluent:ComboBox Header="{StaticResource APR_ColHeader09}"
+                             SelectedItem="{Binding ProfileItem.UpdatedProfile.ProfileGeneric, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding ListGeneric3D}"
+                             IsEditable="False"></Fluent:ComboBox>
+                <Fluent:ComboBox Header="{StaticResource APR_ColHeader10}"
+                             SelectedItem="{Binding ProfileItem.UpdatedProfile.DrwNumberCompleteView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding ListGenericDrwComplete}"
+                             IsEditable="False"></Fluent:ComboBox>
+                <Fluent:ComboBox Header="{StaticResource APR_ColHeader11}"
+                             SelectedItem="{Binding ProfileItem.UpdatedProfile.DrwNumberBrokenView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding ListGenericDrwBroken}"
+                             IsEditable="False"></Fluent:ComboBox>
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader08}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="False"></Fluent:TextBox>
+                <Fluent:TextBox Header="{StaticResource APR_ColHeader07}" 
+                            Text="{Binding ProfileItem.UpdatedProfile.IdType}"
+                            IsEnabled="False"></Fluent:TextBox>
+
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Fluent:RibbonWindow>

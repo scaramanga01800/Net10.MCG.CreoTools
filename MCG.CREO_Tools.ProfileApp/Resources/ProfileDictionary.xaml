@@ -1,0 +1,56 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="APR_LabelLength">Length</system:String>
+    <system:String x:Key="APR_CbIsDrwBrokenViewText">Drawing with broken view</system:String>
+    <system:String x:Key="APR_LabelProfileType">Profile type</system:String>
+    <system:String x:Key="APR_LabelMaterial">Material</system:String>
+    <system:String x:Key="APR_LabelPartNumber">Part number</system:String>
+    <system:String x:Key="APR_LabelDrwLovation">Drawing format</system:String>
+    <system:String x:Key="APR_LabelGrpCreator">Group creator</system:String>
+    <system:String x:Key="APR_BtCreateProfile">Create profile</system:String>
+    <system:String x:Key="APR_MsgPartNumberMissing">Please enter a part number and try again</system:String>
+    <system:String x:Key="APR_MsgWinTitleWarning">App Profile Warning</system:String>
+    <system:String x:Key="APR_MsgPartSelectedGenMissing">Please select a profile from the list and try again</system:String>
+    <system:String x:Key="APR_MsgPartAlreadyInSession">CAD document {0} is already loaded in the CREO session</system:String>
+    <system:String x:Key="APR_MsgMaterialMissing">Please select a material and try again</system:String>
+    <system:String x:Key="APR_ToolTipStdType1">Standard profile</system:String>
+    <system:String x:Key="APR_ToolTipStdType2">Product requiring a minimum order quantity</system:String>
+    <system:String x:Key="APR_ToolTipStdType3">Product available only on special order</system:String>
+    <system:String x:Key="APR_ToolTipStdType4">Chinese profile</system:String>
+    <system:String x:Key="APR_ColHeader01">Description</system:String>
+    <system:String x:Key="APR_ColHeader02">Width or diameter</system:String>
+    <system:String x:Key="APR_ColHeader03">Height</system:String>
+    <system:String x:Key="APR_ColHeader04">Thickness</system:String>
+    <system:String x:Key="APR_StatusBarText">Number of profile(s):</system:String>
+    
+    <system:String x:Key="APR_AppName">Profile</system:String>
+    <system:String x:Key="APR_RibGrpData">Data</system:String>
+    <system:String x:Key="APR_RibGrpDrawing">Drawing</system:String>
+    <system:String x:Key="APR_RibGrpCreo">CREO Interaction</system:String>
+    <system:String x:Key="APR_RibGrpTools">Tools</system:String>
+    <system:String x:Key="APR_LinkHelpAppProfile">APP017EN.PDF</system:String>
+
+    <system:String x:Key="APR_TitleTipEdit">Edit mode</system:String>
+    <system:String x:Key="APR_TextTipEdit">Switch the interface to edit mode to add or update profiles</system:String>
+    <system:String x:Key="APR_TitleTipAddPart">Add profile</system:String>
+    <system:String x:Key="APR_TextTipAddPart">Add a new profile to the selected type</system:String>
+    <system:String x:Key="APR_WindowTitleUpdateCreatePart">Create / Update profile</system:String>
+    <system:String x:Key="APR_MenuData">Data</system:String>
+    <system:String x:Key="APR_ErrorMsgPartExist">This profile already exists for the selected type and material</system:String>
+    <system:String x:Key="APR_ErrorMsgTitlePartExist">Profile already exists</system:String>
+    <system:String x:Key="APR_ErrorMsgNumberBlank">All parameters must be filled in</system:String>
+    <system:String x:Key="APR_ErrorMsgTitleIssue">Profile creation/update error</system:String>
+    <system:String x:Key="APR_MiEditPartNumber">Edit</system:String>
+    <system:String x:Key="APR_MiDuplicatePartNumber">Duplicate</system:String>
+    <system:String x:Key="APR_ColHeader05">Standard type</system:String>
+    <system:String x:Key="APR_ColHeader06">Material</system:String>
+    <system:String x:Key="APR_ColHeader07">Type</system:String>
+    <system:String x:Key="APR_ColHeader08">Number</system:String>
+    <system:String x:Key="APR_ColHeader09">3D generic</system:String>
+    <system:String x:Key="APR_ColHeader10">DRW generic - full view</system:String>
+    <system:String x:Key="APR_ColHeader11">DRW generic - broken view</system:String>
+    <system:String x:Key="APR_ErrorMsgClassNotSelected">Please select a type first</system:String>
+</ResourceDictionary> 
