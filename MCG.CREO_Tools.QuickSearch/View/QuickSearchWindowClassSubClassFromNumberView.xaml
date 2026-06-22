@@ -1,0 +1,52 @@
+﻿<Window x:Class="MCG.CREO_Tools.QuickSearch.View.QuickSearchWindowClassSubClassFromNumberView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MCG.CREO_Tools.QuickSearch.View"
+        mc:Ignorable="d"
+        Title="{DynamicResource QS_TitleSearchClassSubClass}" 
+        Height="160" Width="415" ResizeMode="NoResize" 
+        Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_SubClass_search.ico">
+
+    <Window.Resources>
+        <BitmapImage x:Key="OPEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_SubClass_open.gif" />
+        <BitmapImage x:Key="Close" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+        <BitmapImage x:Key="Search" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Search_32x32.png" />
+    </Window.Resources>
+
+    <StackPanel>
+        <Grid Height="32" Background="#FFC9C9CA" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="248"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Content="{DynamicResource QS_LabelNumber}"/>
+            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+        </Grid>
+        <Grid Height="45" Background="#FFC9C9CA" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="216"/>
+                <ColumnDefinition Width="32"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Content="{DynamicResource QS_LabelClassSubClass}"/>
+            <StackPanel Grid.Column="1">
+                <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Text="{Binding ClassSubClass.Class, FallbackValue=Unknown}" Background="#FFE8E8E8" ></TextBox>
+                <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Text="{Binding ClassSubClass.SubClass, FallbackValue=Unknown}" Background="#FFE8E8E8" ></TextBox>
+            </StackPanel>
+            <Button Name="BtOpen" Grid.Column="2" IsEnabled="{Binding IsClassSubFound,FallbackValue=false}" Command="{Binding CommandOpenClassSubClass}" ToolTip="{DynamicResource QS_ToolTipOpenClassSubClass}">
+                <Image Source="{StaticResource OPEN}"/>
+            </Button>
+        </Grid>
+        <StackPanel Name="StackPanelButton"  DockPanel.Dock="Bottom"  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Height="32" Margin="0,2" Width="{Binding ActualWindowWidth,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}">
+            <Button Name="BtSearch" Grid.Column="0" FontSize="14" ToolTip="{DynamicResource QS_BtSearchClassSubClass}" Command="{Binding CommandSearchClassSubClass}">
+                <Image   Source="{StaticResource ResourceKey=Search}"></Image>
+            </Button>
+            <Rectangle Width="50"></Rectangle>
+            <Button Name="BtCancel" Grid.Column="1" FontSize="14" ToolTip="{DynamicResource QS_BtCancel}" Command="{Binding CommandClose}">
+                <Image   Source="{StaticResource ResourceKey=Close}"></Image>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,69 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.QuickSearch.View.QuickSearchUpdatePartView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.QuickSearch.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource QS_WindowTitleUpdateCreatePart}" 
+                     Height="400" Width="350"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/SubClass_shortcut.png">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="OK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check.ico"/>
+            <BitmapImage x:Key="CANCEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
+            <conv:ByteToBitmapSourceConverter x:Key="ImageConverter"></conv:ByteToBitmapSourceConverter>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource QS_MenuData}">
+                    <Fluent:Button Command="{Binding CommandCreateUpdatePart}" 
+                               LargeIcon="{StaticResource OK}"
+                               Margin="5,0,5,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction MethodName="Close"
+                                                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Fluent:Button>
+                    <Fluent:Button Margin="5,0,5,0"
+                               LargeIcon="{StaticResource CANCEL}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction MethodName="Close"
+                                                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="5">
+            <StackPanel>
+                <StackPanel x:Name="SpParameters" Orientation="Vertical"></StackPanel>
+                <Button Command="{Binding CommandChangeImage}" 
+                    CommandParameter="{Binding PartItem}"
+                    AllowDrop="True"
+                    Visibility="{Binding IsPartPictureShow, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="Drop">
+                            <behaviors:InvokeCommandAction Command="{Binding CommandDragAndDropImage}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                    <Image Source="{Binding PartItem.UpdatedImage, Converter={StaticResource ImageConverter}}" Height="100"></Image>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Fluent:RibbonWindow>

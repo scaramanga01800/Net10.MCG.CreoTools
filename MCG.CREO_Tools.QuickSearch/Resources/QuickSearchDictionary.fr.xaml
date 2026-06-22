@@ -1,0 +1,122 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="QS_TtHelpQuickSearch">Aide QuickSearch</system:String>
+    <system:String x:Key="QS_LinkHelpQuickSearch">NOUSERGUIDE.PDF</system:String>
+    <system:String x:Key="QS_MainMenu">Menu</system:String>
+    <system:String x:Key="QS_MenuRelaodDatabase">Recharger la base de données</system:String>
+    <system:String x:Key="QS_MenuManageDatabase">Gérer la base de données</system:String>
+    <system:String x:Key="QS_MenuOtherStandard">Autres standards</system:String>
+    <system:String x:Key="QS_MenuGlobalStd">Standard global</system:String>
+    <system:String x:Key="QS_MenuCRWStd">Standard Crawler</system:String>
+    <system:String x:Key="QS_MenuDGMStd">Standard DG Mobile</system:String>
+    <system:String x:Key="QS_MenuSGMStd">Standard SG Mobile</system:String>
+    <system:String x:Key="QS_MenuTWRStd">Standard Tower</system:String>
+    <system:String x:Key="QS_MenuTWRMFGStd">Standard fabrication Tower</system:String>
+    <system:String x:Key="QS_MenuTools">Outils</system:String>
+    <system:String x:Key="QS_MenuRefDocFromNumber">Document de référence depuis un numéro</system:String>
+    <system:String x:Key="QS_BtHelp">Aide</system:String>
+    <system:String x:Key="QS_BtOpenInCreo">Ouvrir dans CREO</system:String>
+    <system:String x:Key="QS_BtAddToAsm">Ajouter à l’assemblage</system:String>
+    <system:String x:Key="QS_LabelClass">Classe de standard</system:String>
+    <system:String x:Key="QS_LabelSubClass">Sous-classe de standard</system:String>
+    <system:String x:Key="QS_LabelRefDoc">Document de référence</system:String>
+    <system:String x:Key="QS_StatusBarMsg">Nb pièces :</system:String>
+    <system:String x:Key="QS_ErrorMsgGlobal">Problème général QuickSearch. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleGlobal">Problème QuickSearch</system:String>
+    <system:String x:Key="QS_ErrorMsgReloadDb">Problème de rechargement de la base. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleReloadDb">Problème de rechargement de la base</system:String>
+    <system:String x:Key="QS_ErrorMsgSearchSubClass">Problème lors de la recherche des sous-classes. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgSearchClass">Problème lors de la recherche des classes. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgPictureSearch">Image de la classe/sous-classe non trouvée. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgExtraPictureSearch">Image supplémentaire du composant non trouvée. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgExtraCompSearch">Problème lors de la recherche des composants supplémentaires. Contactez votre administrateur CAO. Message d’erreur : {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgPartSearch">L’article {0} n’a pas été trouvé dans Windchill.</system:String>
+    <system:String x:Key="QS_MiAddExtraComp">Ajouter un composant supplémentaire</system:String>
+    <system:String x:Key="QS_MiOpenPartInPdm">Ouvrir l’article dans PDM</system:String>
+    <system:String x:Key="QS_MiOpenRefDocInPdm">Ouvrir le document de référence depuis PDM</system:String>
+    <system:String x:Key="QS_MiCopyPartNumber">Copier le numéro</system:String>
+    <system:String x:Key="QS_ErrorMsgRefDocSearch">Aucun document de référence trouvé dans Windchill.</system:String>
+    <system:String x:Key="QS_MiEditPartNumber">Éditer</system:String>
+    <system:String x:Key="QS_MiDuplicatePartNumber">Dupliquer</system:String>
+    <system:String x:Key="QS_LabelSapPlant">Usine SAP</system:String>
+    <system:String x:Key="QS_StatusBarMsgSapSearch"> - Recherche des informations SAP en cours (coûts et volumes)</system:String>
+    <system:String x:Key="QS_DgToolTipNotRecommended">Pièce non consommée depuis 3 ans dans cette usine, évitez de l’utiliser</system:String>
+    <system:String x:Key="QS_DgToolTipSapSearch">Recherche des informations SAP en cours (coûts et volumes)</system:String>
+    <system:String x:Key="QS_DgToolTipNotRecommended2">Pièce non consommée depuis 3 ans dans toutes les usines de grues à tour, utilisez-la uniquement si absolument nécessaire</system:String>
+    <system:String x:Key="QS_DgToolTipRecommended">Pièce consommée dans cette usine</system:String>
+
+    <system:String x:Key="QS_ColHeader01">Coût usine sélectionnée</system:String>
+    <system:String x:Key="QS_ColHeader02">Volume usine sélectionnée</system:String>
+    <system:String x:Key="QS_ColHeader03">Coût moyen mondial</system:String>
+    <system:String x:Key="QS_ColHeader04">Volume moyen mondial</system:String>
+    <system:String x:Key="QS_ColHeader05">Usine</system:String>
+    <system:String x:Key="QS_ColHeader05b">Volume maximal</system:String>
+    <system:String x:Key="QS_ColHeader06">Coût moyen France</system:String>
+    <system:String x:Key="QS_ColHeader07">Coût moyen Europe</system:String>
+    <system:String x:Key="QS_ColHeader08">Type d’approvisionnement</system:String>
+    <system:String x:Key="QS_ColHeader09">Image</system:String>
+
+    <system:String x:Key="QS_Purchased">Acheté</system:String>
+    <system:String x:Key="QS_Manufactured">Fabriqué</system:String>
+
+    <system:String x:Key="QS_TitleSearchRefDoc">Rechercher un document de référence</system:String>
+    <system:String x:Key="QS_LabelNumber">Numéro</system:String>
+    <system:String x:Key="QS_BtSearchRefDoc">Rechercher doc. de réf.</system:String>
+    <system:String x:Key="QS_BtCancel">Fermer</system:String>
+    <system:String x:Key="QS_ToolTipOpenRefDoc">Ouvrir le document de référence</system:String>
+    <system:String x:Key="QS_RefDocNotfound">Aucun document de référence</system:String>
+
+    <system:String x:Key="QS_TitleSearchClassSubClass">Rechercher une classe / sous-classe</system:String>
+    <system:String x:Key="QS_LabelClassSubClass">Classe / Sous-classe</system:String>
+    <system:String x:Key="QS_ToolTipSearchClassSubClass">Rechercher une classe / sous-classe à partir d’un numéro d’article</system:String>
+    <system:String x:Key="QS_BtSearchClassSubClass">Rechercher classe / sous-classe</system:String>
+    <system:String x:Key="QS_ToolTipOpenClassSubClass">Ouvrir classe / sous-classe</system:String>
+
+    <system:String x:Key="QS_AskRemoveShortCut">Voulez-vous supprimer ce raccourci ?</system:String>
+    <system:String x:Key="QS_AskTitleRemoveShortCut">Supprimer le raccourci</system:String>
+    <system:String x:Key="QS_MenuAddShortCut">Ajouter une classe / sous-classe aux raccourcis</system:String>
+    <system:String x:Key="QS_MenuResetShortCut">Réinitialiser les raccourcis avec ceux par défaut</system:String>
+    <system:String x:Key="QS_AskResetShortCut">Voulez-vous réinitialiser tous les raccourcis avec ceux par défaut ?\nTous vos raccourcis seront supprimés...</system:String>
+    <system:String x:Key="QS_AskTitleResetShortCut">Réinitialiser les raccourcis</system:String>
+    <system:String x:Key="QS_LabelShortCuts">Raccourcis</system:String>
+
+    <system:String x:Key="QS_TabLabelClassSubClass">Classe / Sous-classe</system:String>
+    <system:String x:Key="QS_TabLabelCreoInteraction">Interaction CREO</system:String>
+    <system:String x:Key="QS_TabLabelSap">SAP</system:String>
+    <system:String x:Key="QS_TabLabelShortCuts">Raccourcis</system:String>
+    <system:String x:Key="QS_TabLabelTools">Outils</system:String>
+    <system:String x:Key="QS_TitleTipOpenInCreo">À propos de l’ouverture</system:String>
+    <system:String x:Key="QS_TextTipOpenInCreo">Ouvrir la pièce sélectionnée dans CREO. Choisissez une pièce dans le tableau</system:String>
+    <system:String x:Key="QS_DisableReasonCreo">CREO n’est pas connecté</system:String>
+    <system:String x:Key="QS_TitleTipAddInCreo">À propos de l’ajout</system:String>
+    <system:String x:Key="QS_TextTipAddInCreo">Ajoute la pièce dans l’assemblage actif. Choisissez une pièce dans le tableau</system:String>
+    <system:String x:Key="QS_TitleTipSapPlant">Usine SAP</system:String>
+    <system:String x:Key="QS_TextTipSapPlant">Les informations sur les stocks et les coûts dépendent de l’usine SAP. Sélectionnez l’usine SAP</system:String>
+    <system:String x:Key="QS_TitleTipReferenceDoc">Document de référence</system:String>
+    <system:String x:Key="QS_TextTipReferenceDoc">Rechercher un document de référence à partir d’un numéro d’article</system:String>
+    <system:String x:Key="QS_TitleTipShortCutAdd">Ajouter un raccourci</system:String>
+    <system:String x:Key="QS_TextTipShortCutAdd">Ajouter un nouveau raccourci à la liste</system:String>
+    <system:String x:Key="QS_TitleTipShortCutReset">Réinitialiser les raccourcis</system:String>
+    <system:String x:Key="QS_TextTipShortCutReset">Réinitialiser tous les raccourcis avec ceux par défaut</system:String>
+    <system:String x:Key="QS_TitleTipEdit">Mode édition</system:String>
+    <system:String x:Key="QS_TextTipEdit">Basculer l’interface en mode édition pour ajouter ou mettre à jour des articles</system:String>
+
+    <system:String x:Key="QS_TitleTipAddPart">Ajouter un article</system:String>
+    <system:String x:Key="QS_TextTipAddPart">Ajouter un nouvel article à la classe / sous-classe sélectionnée</system:String>
+    <system:String x:Key="QS_WindowTitleUpdateCreatePart">Créer / Mettre à jour un article</system:String>
+    <system:String x:Key="QS_MenuData">Données</system:String>
+    <system:String x:Key="QS_ErrorMsgPartExist">L’article existe déjà pour cette classe / sous-classe</system:String>
+    <system:String x:Key="QS_ErrorMsgTitlePartExist">Article déjà existant</system:String>
+    <system:String x:Key="QS_ErrorMsgNumberBlank">Le numéro ou le nom de fichier ne doit pas être vide</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleIssue">Erreur de création / mise à jour</system:String>
+    <system:String x:Key="QS_ErrorMsgClassNotSelected">Veuillez sélectionner une classe / sous-classe au préalable</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleFileSize">Taille du fichier</system:String>
+    <system:String x:Key="QS_ErrorMsgFileSize">La taille du fichier image doit être inférieure à {0} Ko</system:String>
+
+    <system:String x:Key="QS_HelpGEN023">GEN023FR.PDF</system:String>
+    <system:String x:Key="QS_HelpGEN023Header">GEN023FR : Créer / Mettre à jour TDFC - GEI</system:String>
+    <system:String x:Key="QS_HelpGEN023Toolitip">GEN023FR : Créer et mettre à jour les documents de référence TDFC ou GEI</system:String>
+</ResourceDictionary> 

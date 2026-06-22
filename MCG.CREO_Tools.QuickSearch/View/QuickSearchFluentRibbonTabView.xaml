@@ -1,0 +1,184 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.CREO_Tools.QuickSearch.View.QuickSearchFluentRibbonTabView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:local="clr-namespace:MCG.CREO_Tools.QuickSearch.View"
+                      xmlns:McgCommonLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+                      xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                      mc:Ignorable="d" 
+                      xmlns:System="clr-namespace:System;assembly=mscorlib"
+                      d:DesignHeight="450" d:DesignWidth="800"
+                      Header="Quick Search">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="Class" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_class.ico"  />
+            <BitmapImage x:Key="SubClass" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_subclass.ico"  />
+            <BitmapImage x:Key="SubClass_shortcut" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/SubClass_shortcut.png"  />
+            <BitmapImage x:Key="SubClass_selection" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/SubClass_selection.png"  />
+            <BitmapImage x:Key="Open" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/open.ico"  />
+            <BitmapImage x:Key="Add" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/add_assembly.png"  />
+            <BitmapImage x:Key="Sap" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/sap.ico"  />
+            <BitmapImage x:Key="Reset" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update_32x32.png" />
+            <BitmapImage x:Key="RefDoc" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Reference_document.ico"  />
+            <BitmapImage x:Key="Help" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"  />
+            <BitmapImage x:Key="Euro" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Euro_48x48.png"  />
+            <BitmapImage x:Key="Yuan" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Yuan_48x48.png"  />
+            <BitmapImage x:Key="Dollar" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Dollar_48x48.png"  />
+            <BitmapImage x:Key="Edit" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Edit.ico"  />
+            <BitmapImage x:Key="AddPart" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Add.ico"  />
+            <BitmapImage x:Key="SubClassSearch" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_SubClass_search.ico"  />
+            <System:Boolean x:Key="FalseValue">False</System:Boolean>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QS_TabLabelClassSubClass}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Image Height="32" Source="{StaticResource Class}"></Image>
+            <Fluent:ComboBox  Width="150" IsEditable="False" ItemsSource="{Binding CurrentQuickSearchDataContext.ListClass, Mode=OneWay}" SelectedItem="{Binding CurrentQuickSearchDataContext.SelectedClassItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Image Height="32" Source="{StaticResource SubClass}"></Image>
+            <Fluent:ComboBox  Width="150" IsEditable="False" ItemsSource="{Binding CurrentQuickSearchDataContext.ListSubClass, Mode=OneWay}" SelectedItem="{Binding CurrentQuickSearchDataContext.SelectedSubClassItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+        </StackPanel>
+
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QS_TabLabelCreoInteraction}" IsEnabled="{Binding CurrentQuickSearchDataContext.IsCreoEnable}">
+        <Fluent:Button  LargeIcon="{StaticResource Open}" Command="{Binding CommandOpenModelInCreo}" CommandParameter="{StaticResource TrueValue}" Margin="2,0,2,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QS_TitleTipOpenInCreo}" Width ="250"
+                        Image="{StaticResource Open}"
+                        Text="{DynamicResource  QS_TextTipOpenInCreo}"
+                        DisableReason="{DynamicResource  QS_DisableReasonCreo}" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button  LargeIcon="{StaticResource Add}" Command="{Binding CommandAddModelInAssembly}" CommandParameter="{StaticResource TrueValue}" Margin="2,0,2,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QS_TitleTipAddInCreo}" Width ="250"
+                        Image="{StaticResource Add}"
+                        Text="{DynamicResource QS_TextTipAddInCreo}"
+                        DisableReason="{DynamicResource  QS_DisableReasonCreo}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox  Header="{DynamicResource QS_TabLabelSap}" Visibility="{Binding CurrentQuickSearchDataContext.ShowSapCostVolumeInfo, Converter={StaticResource BoolToVisibilityConv}}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Image Height="32" Source="{StaticResource Sap}"></Image>
+            <Fluent:ComboBox Width="100" IsEditable="False" ItemsSource="{Binding CurrentQuickSearchDataContext.ListSapPlant, Mode=OneWay}" SelectedItem="{Binding CurrentQuickSearchDataContext.SelectedSapPlant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <Fluent:ComboBox.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipSapPlant}" 
+                        Image="{StaticResource Sap}"
+                        Text="{DynamicResource  QS_TextTipSapPlant}"/>
+                </Fluent:ComboBox.ToolTip>
+            </Fluent:ComboBox>
+        </StackPanel>
+        <Image Height="40" >
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentQuickSearchDataContext.SelectedSapPlant.Currency}" Value="{x:Static McgCommonLib:McgCurrency.EUR}">
+                            <Setter Property="Source" Value="{StaticResource Euro}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentQuickSearchDataContext.SelectedSapPlant.Currency}" Value="{x:Static McgCommonLib:McgCurrency.RMB}">
+                            <Setter Property="Source" Value="{StaticResource Yuan}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentQuickSearchDataContext.SelectedSapPlant.Currency}" Value="{x:Static McgCommonLib:McgCurrency.USD}">
+                            <Setter Property="Source" Value="{StaticResource Dollar}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QS_TabLabelShortCuts}">
+        <Fluent:SplitButton  LargeIcon="{StaticResource SubClass_shortcut}" Command="{Binding CommandShortCutAdd}" Margin="2,0,2,0">
+            <Fluent:SplitButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipShortCutAdd}" 
+                        Image="{StaticResource SubClass_shortcut}"
+                        Text="{DynamicResource  QS_TextTipShortCutAdd}"/>
+            </Fluent:SplitButton.ToolTip>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="240">
+                <StackPanel Name="SbShortcuts">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Fluent:SplitButton>
+        <Fluent:Button LargeIcon="{StaticResource Reset}" Command="{Binding CommandShortCutReset}" Margin="2,0,2,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipShortCutReset}" 
+                        Image="{StaticResource Reset}"
+                        Text="{DynamicResource  QS_TextTipShortCutReset}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QS_TabLabelTools}">
+        <Fluent:Button LargeIcon="{StaticResource RefDoc}" Command="{Binding CommandSearchRefDocFromNumber}" Margin="2,0,2,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipReferenceDoc}" 
+                        Image="{StaticResource RefDoc}"
+                        Text="{DynamicResource  QS_TextTipReferenceDoc}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button LargeIcon="{StaticResource SubClassSearch}" Command="{Binding CommandSearchClassSubClassFromNumber}" Margin="2,0,2,0">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleSearchClassSubClass}" 
+                        Image="{StaticResource SubClassSearch}"
+                        Text="{DynamicResource  QS_ToolTipSearchClassSubClass}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:SplitButton LargeIcon="{StaticResource SubClass_selection}" Margin="2,0,2,0">
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuGlobalStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.STDGlobalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrentQuickSearchDataContext.STDGlobalEnabled}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuCRWStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.CRWLocalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding CurrentQuickSearchDataContext.CRWLocalEnabled}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuDGMStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.DGLocalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding CurrentQuickSearchDataContext.DGLocalEnabled}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuSGMStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.SGLocalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding CurrentQuickSearchDataContext.SGLocalEnabled}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuTWRStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.TWRLocalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding CurrentQuickSearchDataContext.TWRLocalEnabled}"></Fluent:CheckBox>
+            <Fluent:CheckBox Header="{DynamicResource QS_MenuTWRMFGStd}" HorizontalAlignment="Left" IsChecked="{Binding CurrentQuickSearchDataContext.MFGTWRLocalShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="{Binding CurrentQuickSearchDataContext.MFGTWRLocalEnabled}"></Fluent:CheckBox>
+        </Fluent:SplitButton>
+
+        <Fluent:ToggleButton LargeIcon="{StaticResource Edit}" 
+                           IsChecked="{Binding CurrentQuickSearchDataContext.IsEditMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           Visibility="{Binding CurrentQuickSearchDataContext.IsAdminToolsEnabled, Converter={StaticResource BoolToVisibilityConv}}">
+            <Fluent:ToggleButton.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipEdit}" 
+                        Image="{StaticResource Edit}"
+                        Text="{DynamicResource  QS_TextTipEdit}"/>
+            </Fluent:ToggleButton.ToolTip>
+        </Fluent:ToggleButton>
+
+        <Fluent:Button LargeIcon="{StaticResource AddPart}" 
+                     Command="{Binding CommandAddNewPartNumber}" 
+                     CommandParameter="{StaticResource FalseValue}"
+                     Margin="2,0,2,0"
+                     Visibility="{Binding CurrentQuickSearchDataContext.IsEditMode, Converter={StaticResource BoolToVisibilityConv}}">
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource  QS_TitleTipAddPart}" 
+                        Image="{StaticResource AddPart}"
+                        Text="{DynamicResource  QS_TextTipAddPart}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:SplitButton LargeIcon="{StaticResource Help}" 
+                          Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}" 
+                          Margin="2,0,2,0">
+            <Fluent:MenuItem Icon="{StaticResource Help}"
+                           Header="{DynamicResource QS_HelpGEN023Header}"
+                           Command="{Binding CommandBtHelpMouseLeftButtonUpEvent}"
+                           CommandParameter="QS_HelpGEN023">
+                <Fluent:MenuItem.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource QS_HelpGEN023Header}" 
+                                    Width ="250"
+                                    Image="{StaticResource Help}"
+                                    Text="{DynamicResource QS_HelpGEN023Toolitip}"/>
+                </Fluent:MenuItem.ToolTip>
+            </Fluent:MenuItem>
+        </Fluent:SplitButton>
+    </Fluent:RibbonGroupBox>
+</Fluent:RibbonTabItem>

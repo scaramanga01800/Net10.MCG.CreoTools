@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QuickSearchConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CRWLocalEnabled>true</CRWLocalEnabled>
+  <DGLocalEnabled>true</DGLocalEnabled>
+  <SGLocalEnabled>true</SGLocalEnabled>
+  <TWRLocalEnabled>true</TWRLocalEnabled>
+  <MFGTWRLocalEnabled>true</MFGTWRLocalEnabled>
+  <STDGlobalEnabled>true</STDGlobalEnabled>
+  
+  <CRWLocalShown>false</CRWLocalShown>
+  <DGLocalShown>false</DGLocalShown>
+  <SGLocalShown>false</SGLocalShown>
+  <TWRLocalShown>true</TWRLocalShown>
+  <MFGTWRLocalShown>false</MFGTWRLocalShown>
+  <STDGlobalShown>true</STDGlobalShown>
+  
+  <ListSapPlant>
+      <SapPlant>
+        <Name>Portugal Whole Crane</Name>
+        <Number>1000</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>Moulins</Name>
+        <Number>1011</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>Charlieu</Name>
+        <Number>1012</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>Italy Whole Crane</Name>
+        <Number>1050</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>China Whole Crane</Name>
+        <Number>1070</Number>
+        <Currency>RMB</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>China Whole Crane - Devise Euro</Name>
+        <Number>1070</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+      <SapPlant>
+        <Name>Saint-Pierre de Chandieu</Name>
+        <Number>2010</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+    </ListSapPlant>
+  
+  <ExtraListSapPlant>
+      <SapPlant>
+        <Name>Baltar</Name>
+        <Number>2000</Number>
+        <Currency>EUR</Currency>
+      </SapPlant>
+    </ExtraListSapPlant>
+ 
+ <ShowSapCostVolumeInfo>true</ShowSapCostVolumeInfo>
+ 
+  <ListShortCut>
+    <QuickSearchShortCutData>
+      <Class>SCREW</Class>
+      <SubClass>HEXAGON_HEAD_SCREW</SubClass>
+      <Order>1</Order>
+    </QuickSearchShortCutData>
+    <QuickSearchShortCutData>
+      <Class>SCREW</Class>
+      <SubClass>HEXAGON_SOCKET_HEAD_CAP_SCREW</SubClass>
+      <Order>2</Order>
+    </QuickSearchShortCutData>    
+    <QuickSearchShortCutData>
+      <Class>NUT</Class>
+      <SubClass>HEX_NUT</SubClass>
+      <Order>3</Order>
+    </QuickSearchShortCutData>
+    <QuickSearchShortCutData>
+      <Class>NUT</Class>
+      <SubClass>HEX_JAM_NUT</SubClass>
+      <Order>4</Order>
+    </QuickSearchShortCutData>    
+    <QuickSearchShortCutData>
+      <Class>WASHER</Class>
+      <SubClass>F_WASHER</SubClass>
+      <Order>5</Order>
+    </QuickSearchShortCutData>
+  </ListShortCut>
+
+ 
+</QuickSearchConfiguration>

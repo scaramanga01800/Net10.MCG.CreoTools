@@ -1,0 +1,122 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="QS_TtHelpQuickSearch">QuickSearch Help</system:String>
+    <system:String x:Key="QS_LinkHelpQuickSearch">NOUSERGUIDE.PDF</system:String>
+    <system:String x:Key="QS_MainMenu">Menu</system:String>
+    <system:String x:Key="QS_MenuRelaodDatabase">Reload Database</system:String>
+    <system:String x:Key="QS_MenuManageDatabase">Manage Database</system:String>
+    <system:String x:Key="QS_MenuOtherStandard">Other Standards</system:String>
+    <system:String x:Key="QS_MenuGlobalStd">Global Standard</system:String>
+    <system:String x:Key="QS_MenuCRWStd">Crawler Standard</system:String>
+    <system:String x:Key="QS_MenuDGMStd">DG Mobile Standard</system:String>
+    <system:String x:Key="QS_MenuSGMStd">SG Mobile Standard</system:String>
+    <system:String x:Key="QS_MenuTWRStd">Tower Standard</system:String>
+    <system:String x:Key="QS_MenuTWRMFGStd">Tower Manufacturing Standard</system:String>
+    <system:String x:Key="QS_MenuTools">Tools</system:String>
+    <system:String x:Key="QS_MenuRefDocFromNumber">Reference Document from Number</system:String>
+    <system:String x:Key="QS_BtHelp">Help</system:String>
+    <system:String x:Key="QS_BtOpenInCreo">Open in CREO</system:String>
+    <system:String x:Key="QS_BtAddToAsm">Add to Assembly</system:String>
+    <system:String x:Key="QS_LabelClass">Standard Class</system:String>
+    <system:String x:Key="QS_LabelSubClass">Standard Sub-Class</system:String>
+    <system:String x:Key="QS_LabelRefDoc">Reference Document</system:String>
+    <system:String x:Key="QS_StatusBarMsg">Number of parts:</system:String>
+    <system:String x:Key="QS_ErrorMsgGlobal">QuickSearch general issue. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleGlobal">QuickSearch Issue</system:String>
+    <system:String x:Key="QS_ErrorMsgReloadDb">Reload database issue. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleReloadDb">Reload Database Issue</system:String>
+    <system:String x:Key="QS_ErrorMsgSearchSubClass">Issue searching all sub-classes. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgSearchClass">Issue searching all classes. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgPictureSearch">Call/Sub-class picture not found. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgExtraPictureSearch">Extra component picture not found. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgExtraCompSearch">Issue searching extra components. Contact your CAD administrator. Error message: {0}</system:String>
+    <system:String x:Key="QS_ErrorMsgPartSearch">The part {0} was not found in Windchill.</system:String>
+    <system:String x:Key="QS_MiAddExtraComp">Add extra components</system:String>
+    <system:String x:Key="QS_MiOpenPartInPdm">Open part in PDM</system:String>
+    <system:String x:Key="QS_MiOpenRefDocInPdm">Open reference document from PDM</system:String>
+    <system:String x:Key="QS_ErrorMsgRefDocSearch">No reference document was found in Windchill.</system:String>
+    <system:String x:Key="QS_MiCopyPartNumber">Copy part number</system:String>
+    <system:String x:Key="QS_MiEditPartNumber">Edit</system:String>
+    <system:String x:Key="QS_MiDuplicatePartNumber">Duplicate</system:String>
+    <system:String x:Key="QS_LabelSapPlant">SAP Plant</system:String>
+    <system:String x:Key="QS_StatusBarMsgSapSearch">- Searching SAP information in progress (Costs and Volumes)</system:String>
+    <system:String x:Key="QS_DgToolTipNotRecommended">Part not consumed for 3 years in this plant. Avoid using it.</system:String>
+    <system:String x:Key="QS_DgToolTipSapSearch">Searching SAP information in progress (Costs and Volumes)</system:String>
+    <system:String x:Key="QS_DgToolTipNotRecommended2">Part not consumed for 3 years in all Tower Crane plants. Use only if absolutely necessary.</system:String>
+    <system:String x:Key="QS_DgToolTipRecommended">Part consumed in this plant</system:String>
+
+    <system:String x:Key="QS_ColHeader01">Selected plant cost</system:String>
+    <system:String x:Key="QS_ColHeader02">Selected plant volume</system:String>
+    <system:String x:Key="QS_ColHeader03">World average cost</system:String>
+    <system:String x:Key="QS_ColHeader04">World average volume</system:String>
+    <system:String x:Key="QS_ColHeader05">Plant</system:String>
+    <system:String x:Key="QS_ColHeader05b">Max volume</system:String>
+    <system:String x:Key="QS_ColHeader06">France average cost</system:String>
+    <system:String x:Key="QS_ColHeader07">Europe average cost</system:String>
+    <system:String x:Key="QS_ColHeader08">Procurement type</system:String>
+    <system:String x:Key="QS_ColHeader09">Picture</system:String>
+
+    <system:String x:Key="QS_Purchased">Purchased</system:String>
+    <system:String x:Key="QS_Manufactured">Manufactured</system:String>
+
+    <system:String x:Key="QS_TitleSearchRefDoc">Search Reference Document</system:String>
+    <system:String x:Key="QS_LabelNumber">Number</system:String>
+    <system:String x:Key="QS_BtSearchRefDoc">Search Ref. Doc.</system:String>
+    <system:String x:Key="QS_BtCancel">Close</system:String>
+    <system:String x:Key="QS_ToolTipOpenRefDoc">Open reference document</system:String>
+    <system:String x:Key="QS_RefDocNotfound">No reference document found</system:String>
+
+    <system:String x:Key="QS_TitleSearchClassSubClass">Search Class/Sub-Class</system:String>
+    <system:String x:Key="QS_LabelClassSubClass">Class/Sub-Class</system:String>
+    <system:String x:Key="QS_ToolTipSearchClassSubClass">Search a class/sub-class from a part number</system:String>
+    <system:String x:Key="QS_BtSearchClassSubClass">Search Class/Sub-Class</system:String>
+    <system:String x:Key="QS_ToolTipOpenClassSubClass">Open Class/Sub-Class</system:String>
+
+    <system:String x:Key="QS_AskRemoveShortCut">Are you sure you want to remove this shortcut?</system:String>
+    <system:String x:Key="QS_AskTitleRemoveShortCut">Remove Shortcut</system:String>
+    <system:String x:Key="QS_MenuAddShortCut">Add Class/Sub-Class to shortcuts</system:String>
+    <system:String x:Key="QS_MenuResetShortCut">Reset shortcuts to default</system:String>
+    <system:String x:Key="QS_AskResetShortCut">Are you sure you want to reset all shortcuts to the default ones?\nAll your shortcuts will be deleted...</system:String>
+    <system:String x:Key="QS_AskTitleResetShortCut">Reset Shortcuts</system:String>
+    <system:String x:Key="QS_LabelShortCuts">Shortcuts</system:String>
+
+    <system:String x:Key="QS_TabLabelClassSubClass">Class/Sub-Class</system:String>
+    <system:String x:Key="QS_TabLabelCreoInteraction">CREO Interaction</system:String>
+    <system:String x:Key="QS_TabLabelSap">SAP</system:String>
+    <system:String x:Key="QS_TabLabelShortCuts">Shortcuts</system:String>
+    <system:String x:Key="QS_TabLabelTools">Tools</system:String>
+    <system:String x:Key="QS_TitleTipOpenInCreo">About Open</system:String>
+    <system:String x:Key="QS_TextTipOpenInCreo">Open the selected part in CREO. Choose a part from the table</system:String>
+    <system:String x:Key="QS_DisableReasonCreo">CREO is not connected</system:String>
+    <system:String x:Key="QS_TitleTipAddInCreo">About Add</system:String>
+    <system:String x:Key="QS_TextTipAddInCreo">Add the selected part to the current assembly. Choose a part from the table</system:String>
+    <system:String x:Key="QS_TitleTipSapPlant">SAP Plant</system:String>
+    <system:String x:Key="QS_TextTipSapPlant">Stock and cost information depend on the SAP plant. Select an SAP plant</system:String>
+    <system:String x:Key="QS_TitleTipReferenceDoc">Reference Document</system:String>
+    <system:String x:Key="QS_TextTipReferenceDoc">Search a reference document using a part number</system:String>
+    <system:String x:Key="QS_TitleTipShortCutAdd">Add Shortcut</system:String>
+    <system:String x:Key="QS_TextTipShortCutAdd">Add a new shortcut to the list</system:String>
+    <system:String x:Key="QS_TitleTipShortCutReset">Reset Shortcuts</system:String>
+    <system:String x:Key="QS_TextTipShortCutReset">Reset all shortcuts to the default ones</system:String>
+    <system:String x:Key="QS_TitleTipEdit">Edit mode</system:String>
+    <system:String x:Key="QS_TextTipEdit">Switch the interface to edit mode to add or update parts</system:String>
+    <system:String x:Key="QS_TitleTipAddPart">Add part</system:String>
+    <system:String x:Key="QS_TextTipAddPart">Add a new part to the selected class/sub-class</system:String>
+
+    <system:String x:Key="QS_WindowTitleUpdateCreatePart">Create / Update Part</system:String>
+    <system:String x:Key="QS_MenuData">Data</system:String>
+    <system:String x:Key="QS_ErrorMsgPartExist">The part already exists for this class/sub-class</system:String>
+    <system:String x:Key="QS_ErrorMsgTitlePartExist">Part already exists</system:String>
+    <system:String x:Key="QS_ErrorMsgNumberBlank">Part number or file name cannot be blank</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleIssue">Creation / update issue</system:String>
+    <system:String x:Key="QS_ErrorMsgClassNotSelected">Please select a class/sub-class first</system:String>
+    <system:String x:Key="QS_ErrorMsgTitleFileSize">File Size</system:String>
+    <system:String x:Key="QS_ErrorMsgFileSize">Image file size must be less than {0} KB</system:String>
+
+    <system:String x:Key="QS_HelpGEN023">GEN023FR.PDF</system:String>
+    <system:String x:Key="QS_HelpGEN023Header">GEN023FR: Create / Update TDFC - GEI</system:String>
+    <system:String x:Key="QS_HelpGEN023Toolitip">GEN023FR: Create and update TDFC or GEI reference document</system:String>
+</ResourceDictionary> 
