@@ -1,0 +1,84 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="CT_MainAppName">Engineering Hub</system:String>
+    <system:String x:Key="CT_MainAppSubName">Integrated tools for CREO, Windchill &amp; SAP</system:String>
+    <system:String x:Key="CT_MainAppFullName">Engineering Hub - Integrated tools for CREO, Windchill &amp; SAP</system:String>
+    <system:String x:Key="CT_MenuHome">Home</system:String>
+    <system:String x:Key="CT_MenuHomeWelcome">Welcome to Engineering Hub, the integrated platform of Engineering tools.</system:String>
+    <system:String x:Key="CT_MenuTheme">Theme</system:String>
+
+    <system:String x:Key="CT_MenuQuickLaunch">Quick Launch</system:String>
+    <system:String x:Key="CT_MenuLinks">Links &amp; Resources</system:String>
+    <system:String x:Key="CT_MenuTabApplications">Applications (tabs)</system:String>
+    <system:String x:Key="CT_MenuApplicationSubtitle">Enable or hide the features available in Engineering Hub.</system:String>
+
+    <system:String x:Key="CT_MainMenu">Main Menu</system:String>
+    <system:String x:Key="CT_MenuApplication">Application</system:String>
+    <system:String x:Key="CT_MenuAppHome">Home</system:String>
+    <system:String x:Key="CT_MenuAppNewCadDoc">New CAD Document</system:String>
+    <system:String x:Key="CT_MenuAppWebterm">Webterm</system:String>
+    <system:String x:Key="CT_MenuAppPartNumberGenerator">Part Number Generator</system:String>
+    <system:String x:Key="CT_MenuAppPtcELearning">PTC E-Learning</system:String>
+    <system:String x:Key="CT_MenuAppConnectCreo">Connect CREO</system:String>
+    <system:String x:Key="CT_MenuAppExportBom">Export BOM</system:String>
+    <system:String x:Key="CT_MenuAppExportDrwDxfDwg">Export Drawings DXF/DWG</system:String>
+    <system:String x:Key="CT_MenuAppSaveCadDoc">Save CAD Docuemnts</system:String>
+    <system:String x:Key="CT_MenuMcgHelpOnline">Online Help</system:String>
+    <system:String x:Key="CT_MenuMcgEngTime">Engineering Time</system:String>
+    <system:String x:Key="CT_MenuAppMechanismAnalysis">Mechanism Analysis</system:String>
+    <system:String x:Key="CT_MenuAppCreateUpdateWtDocPart">Create/Update Wt Document/Part</system:String>
+    <system:String x:Key="CT_MenuAppCadDocAutoColor">CAD Document AutoColor</system:String>
+    <system:String x:Key="CT_MenuAppNumberCumulation">Number Cumulation</system:String>
+    <system:String x:Key="CT_MenuAppQlWebtermRequest">Webterm Request</system:String>
+    <system:String x:Key="CT_MenuAppSapFertBom">FERT BOM Export</system:String>
+    <system:String x:Key="CT_MenuAppKillCreoPrecesses">Kill CREO sessions</system:String>
+    <system:String x:Key="CT_MenuAppRunMapkey">Run Mapkey</system:String>
+    <system:String x:Key="CT_MenuAppBomComparison">BOM Comparison</system:String>
+    <system:String x:Key="CT_MenuAppSapExportBom">SAP BOM Export</system:String>
+    <system:String x:Key="CT_MenuAppCraneSearch">Crane Search</system:String>
+    <system:String x:Key="CT_MenuAppSapBomExportAllLevel">SAP BOM Export All Level</system:String>
+    <system:String x:Key="CT_MenuAppQuickChange">Quick Change</system:String>
+    <system:String x:Key="CT_MenuAppCadDocumentRename">CAD Document Rename</system:String>
+    <system:String x:Key="CT_MenuAppUpdateRelationsParameters">Update Relations and Parameters</system:String>
+
+    <system:String x:Key="CT_MenuAppTabVisualizationFile">Visualization File</system:String>
+    <system:String x:Key="CT_MenuAppTabQuickSearch">Quick Search</system:String>
+    <system:String x:Key="CT_MenuAppTabEcnDataCheck">ECN Data Check</system:String>
+    <system:String x:Key="CT_MenuAppTabCutLength">Cut Length</system:String>
+    <system:String x:Key="CT_MenuAppTabUpdateAttribute">Update Attributes</system:String>
+    <system:String x:Key="CT_MenuAppTabProfile">Profile</system:String>
+    <system:String x:Key="CT_MenuAppTabShearedTube">Sheared Tube</system:String>
+    <system:String x:Key="CT_MenuAppTabJpgExport">JPG Export</system:String>
+    <system:String x:Key="CT_MenuAppTaDxfExport">DXF Export</system:String>
+    <system:String x:Key="CT_MenuAppEcnFollowUp">ECN/ECO Follow Up</system:String>
+    <system:String x:Key="CT_MenuAppTabCadDocQualityCheck">CAD Doc Quality Check</system:String>
+    <system:String x:Key="CT_MenuAppConvertToPdf">Convert To PDF</system:String>
+    <system:String x:Key="CT_MenuAppPurchaseOrderFollowUp">Purchase Order Follow Up</system:String>
+
+    <system:String x:Key="CT_MenuAppHelp">Help CREO Tools</system:String>
+    <system:String x:Key="CT_MenuUtilitiesOverview">Utilities Overview</system:String>
+    <system:String x:Key="CT_MenuAppAbout">About CREO Tools</system:String>
+    <system:String x:Key="CT_MenuAppDisplay">Display</system:String>
+    <system:String x:Key="CT_MenuAppExit">Exit</system:String>
+    <system:String x:Key="CT_MenuAppChangeWindchillLogin">Change Windchill Login</system:String>
+    <system:String x:Key="CT_MenuAppLanguage">Language</system:String>
+    <system:String x:Key="CT_DisplayDark">Dark</system:String>
+    <system:String x:Key="CT_DisplayLight">Light</system:String>
+    <system:String x:Key="CT_MenuAppAboutVisuTools">About Visualization Tools</system:String>
+
+    <system:String x:Key="CT_AboutTextTitleVisu">MCG Visualization Tool Information</system:String>
+    <system:String x:Key="CT_AboutTextTitle">MCG CREO Tools Information</system:String>
+    <system:String x:Key="CT_AboutText">MCG CREO Tools{0}Version {1}{0}© {2} Manitowoc Crane Group.{0}All rights reserved.{0}{0}This application is the exclusive property of Manitowoc Crane Group. It is intended for internal use only.{0}Any unauthorized reproduction, distribution, modification, or use, in whole or in part, is strictly prohibited and may result in legal action in accordance with applicable laws.</system:String>
+    <system:String x:Key="CT_AboutTextVisu">MCG Visualization Tool {0}Version {1} {0}© {2} Manitowoc Crane Group. {0}All rights reserved.</system:String>
+    <system:String x:Key="CT_LinkHelpCreoTools">APP019EN.PDF</system:String>
+    <system:String x:Key="CT_LinkHelpCreoToolsVisu">APP019EN.PDF</system:String>
+    <system:String x:Key="CT_LinkReleaseNotesCreoTools">Release_Notes_CREO_Tools_EN.PDF</system:String>
+    <system:String x:Key="CT_MenuReleaseNotes">Release Notes</system:String>
+    <system:String x:Key="CT_LinkReleaseNotesVisuTools">Release_Notes_Visualization_Tools_EN.PDF</system:String>
+    <system:String x:Key="CT_LinkUtilitiesOverviews">APP034EN.PDF</system:String>
+
+    <system:String x:Key="CT_MenuFont">Font:</system:String>
+    <system:String x:Key="CT_MenuColor">Color:</system:String>
+</ResourceDictionary>

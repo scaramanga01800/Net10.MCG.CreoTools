@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CREOToolsConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  
+  <!--Define if Applications are available in CREO Tool-->
+  <AppAvailable>
+    <AppQuickSearch>true</AppQuickSearch>
+    <AppExportDXF>true</AppExportDXF>
+    <AppShearedTube>true</AppShearedTube>
+    <AppECNDataCheck>true</AppECNDataCheck>	
+    <AppJpgExport>true</AppJpgExport>
+    <AppFishPlateJoint>false</AppFishPlateJoint>
+    <AppCutLength>true</AppCutLength>
+    <AppMassUpdateAttribute>true</AppMassUpdateAttribute>
+    <AppProfile>true</AppProfile>
+    <AppConvertToPdf>true</AppConvertToPdf>
+	<AppEcnFollowUp>true</AppEcnFollowUp>
+	<AppPurchaseOrderFollowUp>true</AppPurchaseOrderFollowUp>
+    <AppVisualizationFile>true</AppVisualizationFile>
+    <AppCadDocQualityCheck>true</AppCadDocQualityCheck>
+    <AppRunMapkey>false</AppRunMapkey>
+    <QuickLaunch>true</QuickLaunch>
+    <QlNewCadDoc>true</QlNewCadDoc>
+    <QlWebterm>true</QlWebterm>
+    <QlPartNumbering>true</QlPartNumbering>
+    <QlPtcELearning>true</QlPtcELearning>
+    <QlExportBom>true</QlExportBom>
+    <QlExportDwgDxf>true</QlExportDwgDxf>
+    <QlBackupCadDocument>true</QlBackupCadDocument>
+    <QlMcgHelpOnline>true</QlMcgHelpOnline>
+    <QlEngTime>true</QlEngTime>	
+	<QlMechanismAnalysis>true</QlMechanismAnalysis>
+	<QlCreateUpdateWtDocPart>true</QlCreateUpdateWtDocPart>
+	<QlConnectCreo>true</QlConnectCreo>
+	<QlCadDocAutoColor>true</QlCadDocAutoColor>
+	<QlNumberCumulation>true</QlNumberCumulation>
+	<QlBomComparison>true</QlBomComparison>
+	<QlSapExportBom>true</QlSapExportBom>
+    <QlSapFertBom>true</QlSapFertBom>
+	<QlWebtermRequest>true</QlWebtermRequest>
+	<QlCraneSearch>true</QlCraneSearch>
+	<QlKillCreoPrecesses>true</QlKillCreoPrecesses>
+  </AppAvailable>
+  
+  <!--Define if Applications are shown by default in CREO Tool-->
+  <AppVisible>
+    <AppQuickSearch>true</AppQuickSearch>
+    <AppExportDXF>false</AppExportDXF>
+    <AppShearedTube>false</AppShearedTube>
+    <AppECNDataCheck>true</AppECNDataCheck>
+    <AppJpgExport>false</AppJpgExport>
+    <AppFishPlateJoint>false</AppFishPlateJoint>
+    <AppCutLength>true</AppCutLength>
+    <AppMassUpdateAttribute>true</AppMassUpdateAttribute>
+    <AppProfile>true</AppProfile>
+    <AppConvertToPdf>true</AppConvertToPdf>
+    <AppEcnFollowUp>true</AppEcnFollowUp>
+	<AppPurchaseOrderFollowUp>true</AppPurchaseOrderFollowUp>
+	<AppVisualizationFile>true</AppVisualizationFile>
+    <AppCadDocQualityCheck>false</AppCadDocQualityCheck>
+    <AppRunMapkey>true</AppRunMapkey>
+    <QuickLaunch>true</QuickLaunch>
+    <QlNewCadDoc>true</QlNewCadDoc>
+    <QlWebterm>true</QlWebterm>
+    <QlPartNumbering>true</QlPartNumbering>
+    <QlPtcELearning>true</QlPtcELearning>
+    <QlExportBom>true</QlExportBom>
+    <QlExportDwgDxf>true</QlExportDwgDxf>
+    <QlBackupCadDocument>true</QlBackupCadDocument>
+    <QlMcgHelpOnline>true</QlMcgHelpOnline>
+    <QlEngTime>true</QlEngTime>	
+	<QlMechanismAnalysis>true</QlMechanismAnalysis>
+	<QlCreateUpdateWtDocPart>true</QlCreateUpdateWtDocPart>
+	<QlConnectCreo>true</QlConnectCreo>
+	<QlCadDocAutoColor>true</QlCadDocAutoColor>
+	<QlNumberCumulation>true</QlNumberCumulation>
+	<QlBomComparison>true</QlBomComparison>
+	<QlSapExportBom>true</QlSapExportBom>
+	<QlSapFertBom>true</QlSapFertBom>
+	<QlWebtermRequest>true</QlWebtermRequest>
+	<QlCraneSearch>true</QlCraneSearch>
+	<QlKillCreoPrecesses>true</QlKillCreoPrecesses>
+  </AppVisible>  
+    
+  <IsScrollingTextVisible>false</IsScrollingTextVisible>
+  <WebtermDb>GLOBAL</WebtermDb>
+   
+  <LocalDataBase>false</LocalDataBase>
+  <LocalDataBaseType>XML</LocalDataBaseType>
+  <LocalDatabaseFile>CreoToolsLocalDB.xml</LocalDatabaseFile>
+  
+</CREOToolsConfiguration>

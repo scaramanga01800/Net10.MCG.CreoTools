@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="packages\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <None Remove="packages\**" />
+    <Page Remove="packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Fluent.Ribbon" Version="11.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-preview.5.26302.115" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="11.0.0-preview.5.26302.115" />
+    <PackageReference Include="XamlAnimatedGif" Version="2.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.CreoInteractionTools\MCG.CommonLib.CreoInteractionTools.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.Resources\MCG.CommonLib.Resources.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
+  </ItemGroup>
+
+</Project>

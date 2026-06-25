@@ -1,0 +1,687 @@
+﻿<Fluent:RibbonWindow x:Class="MCG.Tools.CREOToolsFluentInterface.View.CREOToolsFluentMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+                     xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                     xmlns:view="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+                     mc:Ignorable="d"
+                     TitleBarHeight="0"
+                     Height="750" 
+                     Width="1100">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closed">
+            <behaviors:InvokeCommandAction Command="{Binding CommandExit}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries/>
+
+            <!-- Icônes -->
+            <BitmapImage x:Key="Tools"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/tools.ico"/>
+            <BitmapImage x:Key="Earth"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Earth.ico"/>
+            <BitmapImage x:Key="Display"      UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/display_32x32.png"/>
+            <BitmapImage x:Key="User"         UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/user_32x32.png"/>
+            <BitmapImage x:Key="Help"         UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help_32x32.png"/>
+            <BitmapImage x:Key="About"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/about_32x32.png"/>
+            <BitmapImage x:Key="ReleaseNotes" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/ReleaseNotes.ico"/>
+            <BitmapImage x:Key="Exit"         UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exit_32x32.png"/>
+            <BitmapImage x:Key="French"       UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_FR.ico"  />
+            <BitmapImage x:Key="Chinese"      UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_ZH.ico"  />
+            <BitmapImage x:Key="German"       UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_DE.ico"  />
+            <BitmapImage x:Key="English"      UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Flag_US.ico"  />
+
+            <!-- Converters -->
+            <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}"/>
+
+            <!-- Styles header -->
+            <Style x:Key="AppTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="AppSubtitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Opacity" Value="0.65"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="8,0,0,0"/>
+            </Style>
+
+            <!-- 🪟 Style boutons Window (min / max / close) -->
+            <Style x:Key="WindowCaptionButton" TargetType="Button">
+                <Setter Property="Width" Value="46"/>
+                <Setter Property="Height" Value="32"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}"/>
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="shell:WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background"
+                                            Value="{DynamicResource MahApps.Brushes.Accent4}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#E81123"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- 🔴 Bouton Close avec hover rouge -->
+            <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowCaptionButton}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#E81123"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top"
+                Height="40"
+                Background="Transparent" 
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource MahApps.Brushes.Accent4}"
+                MouseLeftButtonDown="Header_MouseLeftButtonDown">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="12,0,0,0">
+                    <Image Source="{StaticResource Tools}" Width="22" Height="22"/>
+                    <TextBlock Text="{DynamicResource CT_MainAppName}"
+                               Style="{StaticResource AppTitleStyle}"
+                               VerticalAlignment="Center"
+                               Margin="8,0,0,0"/>
+                    <TextBlock Text="•" Opacity="0.4" 
+                               Margin="8,0,0,0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{DynamicResource CT_MainAppSubName}"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource AppSubtitleStyle}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+
+                    <Button x:Name="BtnMin"
+                            Style="{StaticResource WindowCaptionButton}"
+                            Click="BtnMin_Click"
+                            ToolTip="Réduire"
+                            Content="&#xE921;"/>
+
+                    <Button x:Name="BtnMax"
+                            Style="{StaticResource WindowCaptionButton}"
+                            Click="BtnMax_Click"
+                            ToolTip="Agrandir"
+                            Content="&#xE922;"/>
+
+                    <Button x:Name="BtnClose"
+                            Style="{StaticResource WindowCloseButton}"
+                            Click="BtnClose_Click"
+                            ToolTip="Fermer"
+                            Content="&#xE8BB;"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ============ STATUS BAR ============ -->
+        <StatusBar DockPanel.Dock="Bottom" Height="26">
+            <StatusBarItem>
+                <TextBlock Text="{DynamicResource CT_MainAppName}" FontWeight="SemiBold"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding CurrentDataContext.CurrentUser}"/>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="{Binding CurrentDataContext.AppVersion}" Opacity="0.7"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <!-- ============ RIBBON PRINCIPAL ============ -->
+        <Fluent:Ribbon DockPanel.Dock="Top"
+                       x:Name="MainAppRibbon">
+
+            <!-- 🍔 Backstage moderne -->
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="{DynamicResource CT_MainMenu}">
+                    <Fluent:BackstageTabControl>
+
+                        <!-- 🟢 Accueil -->
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuHome}"
+                         Icon="{StaticResource Tools}">
+
+                            <Grid Margin="30,30">
+
+                                <!-- 3 lignes : header, sous-titre+welcome, cube qui prend le reste -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Logo + Title -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Subtitle + Welcome -->
+                                    <RowDefinition Height="*"/>
+                                    <!-- 🟢 Cube prend TOUT le reste -->
+                                </Grid.RowDefinitions>
+
+                                <!-- 🟢 Header -->
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,0,0,10">
+                                    <Image Source="{StaticResource Tools}"
+                                           Width="48"
+                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="{DynamicResource CT_MainAppName}"
+                                               FontSize="28"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- 🟢 Sous-titre + Welcome -->
+                                <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                                    <TextBlock Text="{DynamicResource CT_MainAppSubName}"
+                                               FontSize="14"
+                                               Opacity="0.7"
+                                               Margin="0,4,0,10"/>
+                                    <TextBlock Text="{DynamicResource CT_MenuHomeWelcome}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="600"
+                                               Opacity="0.8"/>
+                                </StackPanel>
+
+                                <!-- 🟢 Cube 3D : prend tout l’espace restant -->
+                                <view:EngineeringHubCube3D Grid.Row="2"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"/>
+                            </Grid>
+
+                        </Fluent:BackstageTabItem>
+
+                        <!-- 🌍 Langue -->
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuAppLanguage}"
+                                                 Icon="{StaticResource Earth}">
+
+                            <StackPanel Margin="30,30">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,10">
+                                    <Image Source="{StaticResource Earth}"
+                                           Width="48"
+                                           Margin="0,0,15,0"></Image>
+                                    <TextBlock Text="{DynamicResource CT_MenuAppLanguage}"
+                                               FontSize="20" FontWeight="SemiBold"
+                                               Margin="0,0,0,16"/>
+                                </StackPanel>
+                                <StackPanel Margin="30,20">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="32">
+                                        <Image Source="{StaticResource Chinese}"></Image>
+                                        <Fluent:RadioButton GroupName="Language" 
+                                                            Header="{Binding CurrentDataContext.LangCn.Language.Language}"
+                                                            VerticalAlignment="Center"
+                                                            IsChecked="{Binding CurrentDataContext.LangCn.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            ToolTip="{Binding CurrentDataContext.LangCn.Language.Language}"></Fluent:RadioButton>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="32">
+                                        <Image Source="{StaticResource English}"></Image>
+                                        <Fluent:RadioButton GroupName="Language" 
+                                                            Header="{Binding CurrentDataContext.LangEn.Language.Language}"
+                                                            VerticalAlignment="Center"
+                                                            IsChecked="{Binding CurrentDataContext.LangEn.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            ToolTip="{Binding CurrentDataContext.LangEn.Language.Language}"></Fluent:RadioButton>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="32">
+                                        <Image Source="{StaticResource French}"></Image>
+                                        <Fluent:RadioButton GroupName="Language" 
+                                                            Header="{Binding CurrentDataContext.LangFr.Language.Language}"
+                                                            VerticalAlignment="Center"
+                                                            IsChecked="{Binding CurrentDataContext.LangFr.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            ToolTip="{Binding CurrentDataContext.LangFr.Language.Language}"></Fluent:RadioButton>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="32">
+                                        <Image Source="{StaticResource German}"></Image>
+                                        <Fluent:RadioButton GroupName="Language" 
+                                                            Header="{Binding CurrentDataContext.LangDe.Language.Language}" 
+                                                            VerticalAlignment="Center"
+                                                            IsChecked="{Binding CurrentDataContext.LangDe.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            ToolTip="{Binding CurrentDataContext.LangDe.Language.Language}"></Fluent:RadioButton>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+
+                        </Fluent:BackstageTabItem>
+
+                        <!-- 🎨 Apparence -->
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuAppDisplay}"
+                                                 Icon="{StaticResource Display}">
+                            <StackPanel Margin="30,30">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,10">
+                                    <Image Source="{StaticResource Display}"
+                                           Width="48"
+                                           Margin="0,0,15,0"/>
+                                    <TextBlock Text="{DynamicResource CT_MenuAppDisplay}"
+                                           FontSize="20" FontWeight="SemiBold"
+                                           Margin="0,0,0,16"/>
+                                </StackPanel>
+
+                                <!-- Theme -->
+                                <StackPanel Margin="30,20">
+                                    <TextBlock Text="{DynamicResource CT_MenuTheme}"
+                                           FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                        <Fluent:RadioButton Command="{Binding CommandUpdateUserSetting}"
+                                                        GroupName="DarkLight"
+                                                        IsChecked="{Binding CurrentDataContext.IsLight, Mode=TwoWay}"
+                                                        Header="{DynamicResource CT_DisplayLight}"
+                                                        Margin="0,0,16,0"/>
+                                        <Fluent:RadioButton Command="{Binding CommandUpdateUserSetting}"
+                                                        GroupName="DarkLight"
+                                                        IsChecked="{Binding CurrentDataContext.IsDark, Mode=TwoWay}"
+                                                        Header="{DynamicResource CT_DisplayDark}"/>
+                                    </StackPanel>
+
+                                    <!-- Color scheme -->
+                                    <Separator DockPanel.Dock="Top"></Separator>
+                                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{DynamicResource CT_MenuColor}"
+                                                       VerticalAlignment="Center"
+                                                       MinWidth="50"/>
+                                            <Fluent:ComboBox x:Name="CbColor"
+                                                             MouseLeave="DisplayEvent_MouseLeave" 
+                                                             MinWidth="100"
+                                                             ItemsSource="{Binding CurrentDataContext.ListColorSchemes}" 
+                                                             SelectedItem="{Binding CurrentDataContext.SelectedColorScheme,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock MouseEnter="DisplayEvent_MouseEnter" 
+                                                                   Text="{Binding}"
+                                                                   Width="{Binding ElementName=CbColor,Path=ActualWidth}"></TextBlock>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </Fluent:ComboBox>
+                                        </StackPanel>
+
+                                    </StackPanel>
+                                    <Separator DockPanel.Dock="Top"></Separator>
+                                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{DynamicResource CT_MenuFont}"
+                                                       VerticalAlignment="Center"
+                                                       MinWidth="50"/>
+                                            <Fluent:ComboBox x:Name="CbFont"
+                                                             MinWidth="100"
+                                                             ItemsSource="{Binding CurrentDataContext.ListFont}" 
+                                                             SelectedItem="{Binding CurrentDataContext.SelectedFont,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" 
+                                                                   FontFamily="{Binding}"
+                                                                   Width="{Binding ElementName=CbFont,Path=ActualWidth}"></TextBlock>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </Fluent:ComboBox>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </StackPanel>
+                        </Fluent:BackstageTabItem>
+
+                        <!-- 👤 Applications -->
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuApplication}"
+                         Icon="{StaticResource Tools}">
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          Padding="30,30,30,30">
+
+                                <StackPanel MaxWidth="900">
+
+                                    <!-- 🟢 Titre -->
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,10">
+                                        <Image Source="{StaticResource Tools}"
+                                           Width="48"
+                                           Margin="0,0,15,0"/>
+                                        <TextBlock Text="{DynamicResource CT_MenuApplication}"
+                                               FontSize="22" FontWeight="SemiBold"
+                                               Margin="0,0,0,4"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="{DynamicResource CT_MenuApplicationSubtitle}"
+                                               FontSize="12" Opacity="0.7"
+                                               Margin="0,0,0,0"/>
+
+                                    <!-- ============ 🚀 SECTION 1 : QUICK LAUNCH ============ -->
+                                    <Border Background="{DynamicResource MahApps.Brushes.Accent4}"
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource CT_MenuQuickLaunch}"
+                                                       FontSize="16" FontWeight="SemiBold"
+                                                       Margin="0,0,0,12"/>
+
+                                            <!-- 🔹 Master QuickLaunch -->
+                                            <Fluent:CheckBox Header="{DynamicResource CT_MenuAppHome}"
+                                                             Command="{Binding CommandUpdateUserSetting}"
+                                                             Visibility="{Binding CurrentDataContext.AppAvailable.QuickLaunch, Converter={StaticResource BoolConv}}"
+                                                             IsChecked="{Binding CurrentDataContext.AppVisible.QuickLaunch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             FontWeight="SemiBold"/>
+
+                                            <!-- 🔹 Sous-options QuickLaunch (en grille 2 colonnes) -->
+                                            <ItemsControl Margin="22,8,0,0"
+                                                          IsEnabled="{Binding CurrentDataContext.AppVisible.QuickLaunch}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppNewCadDoc}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlNewCadDoc, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlNewCadDoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppPartNumberGenerator}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlPartNumbering, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlPartNumbering, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppConnectCreo}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlConnectCreo, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlConnectCreo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppExportBom}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlExportBom, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlExportBom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppBomComparison}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlBomComparison, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlBomComparison, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSapExportBom}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlSapExportBom, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlSapExportBom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSapBomExportAllLevel}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlSapBomExportAllLevel, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlSapBomExportAllLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSapFertBom}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlSapFertBom, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlSapFertBom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCraneSearch}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlCraneSearch, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlCraneSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppExportDrwDxfDwg}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlExportDwgDxf, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlExportDwgDxf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSaveCadDoc}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlBackupCadDocument, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlBackupCadDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppMechanismAnalysis}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlMechanismAnalysis, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlMechanismAnalysis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppQuickChange}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlQuickChange, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlQuickChange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCadDocumentRename}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlCadDocumentRename, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlCadDocumentRename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppUpdateRelationsParameters}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlUpdateRelationsParameters, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlUpdateRelationsParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCreateUpdateWtDocPart}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlCreateUpdateWtDocPart, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlCreateUpdateWtDocPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCadDocAutoColor}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlCadDocAutoColor, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlCadDocAutoColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppNumberCumulation}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlNumberCumulation, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlNumberCumulation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppQlWebtermRequest}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlWebtermRequest, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlWebtermRequest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppKillCreoPrecesses}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlKillCreoPrecesses, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlKillCreoPrecesses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- ============ 🔗 SECTION 2 : LIENS & RESSOURCES ============ -->
+                                    <Border Background="{DynamicResource MahApps.Brushes.Accent4}"
+                                            CornerRadius="8" 
+                                            Padding="20" 
+                                            Margin="0,0,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource CT_MenuLinks}"
+                                                       FontSize="16" FontWeight="SemiBold"
+                                                       Margin="0,0,0,12"/>
+
+                                            <ItemsControl>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuMcgHelpOnline}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlMcgHelpOnline, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlMcgHelpOnline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppWebterm}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlWebterm, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlWebterm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppPtcELearning}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlPtcELearning, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlPtcELearning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuMcgEngTime}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.QlEngTime, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.QlEngTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- ============ 🛠 SECTION 3 : APPLICATIONS (TABS) ============ -->
+                                    <Border Background="{DynamicResource MahApps.Brushes.Accent4}"
+                                            CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource CT_MenuTabApplications}"
+                                                       FontSize="16" FontWeight="SemiBold"
+                                                       Margin="0,0,0,12"/>
+
+                                            <ItemsControl>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabVisualizationFile}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppVisualizationFile, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppVisualizationFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabQuickSearch}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppQuickSearch, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppQuickSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabEcnDataCheck}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppECNDataCheck, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppECNDataCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabCadDocQualityCheck}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppCadDocQualityCheck, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppCadDocQualityCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabUpdateAttribute}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppMassUpdateAttribute, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppMassUpdateAttribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabCutLength}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppCutLength, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppCutLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppEcnFollowUp}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppEcnFollowUp, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppEcnFollowUp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppPurchaseOrderFollowUp}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppPurchaseOrderFollowUp, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppPurchaseOrderFollowUp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabProfile}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppProfile, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppConvertToPdf}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppConvertToPdf, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppConvertToPdf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabShearedTube}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppShearedTube, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppShearedTube, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTaDxfExport}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppExportDXF, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppExportDXF, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabJpgExport}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppJpgExport, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppJpgExport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Fluent:CheckBox Header="{DynamicResource CT_MenuAppRunMapkey}"
+                                                                 Command="{Binding CommandUpdateUserSetting}"
+                                                                 Visibility="{Binding CurrentDataContext.AppAvailable.AppRunMapkey, Converter={StaticResource BoolConv}}"
+                                                                 IsChecked="{Binding CurrentDataContext.AppVisible.AppRunMapkey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:SeparatorTabItem/>
+
+                        <!-- 👤 Compte Windchill -->
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppChangeWindchillLogin}"
+                                       Icon="{StaticResource User}"
+                                       Command="{Binding CommandChangeWindchillCredential}"/>
+
+                        <Fluent:SeparatorTabItem/>
+
+                        <!-- ❓ Aide -->
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppHelp}"
+                                       Icon="{StaticResource Help}"
+                                       Command="{Binding CommandShowHelp}"/>
+
+                        <Fluent:Button Header="{DynamicResource CT_MenuUtilitiesOverview}"
+                                       Icon="{StaticResource Help}"
+                                       Command="{Binding CommandOpenUtilitiesOverview}"/>
+
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppAbout}"
+                                       Icon="{StaticResource About}"
+                                       Command="{Binding CommandAboutCreoTools}"/>
+
+                        <Fluent:Button Header="{DynamicResource CT_MenuReleaseNotes}"
+                                       Icon="{StaticResource ReleaseNotes}"
+                                       Command="{Binding CommandReleaseNotes}"/>
+
+                        <Fluent:SeparatorTabItem/>
+
+                        <!-- 🚪 Quitter -->
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppExit}"
+                                       Icon="{StaticResource Exit}"
+                                       Command="{Binding CommandExit}"/>
+
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+            <Fluent:RibbonTabItem Header="sdfsdfs" >
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button >
+
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="sdfsdfs">
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button >
+
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <!-- 🔧 Les Tabs des applications viendront ici -->
+            <!-- Ex :
+            <QuickLaunchView:QuickLaunchFluentTabView x:Name="TabQuickLaunchApp"/>
+            <QuickSearch:QuickSearchFluentRibbonTabView x:Name="TabQuickSearchApp"/>
+            ...
+            -->
+
+        </Fluent:Ribbon>
+
+        <!-- ============ CONTENU PRINCIPAL ============ -->
+        <Grid x:Name="MainContent">
+            <!-- 🔧 Les TabContentView correspondants viendront ici -->
+            <TextBlock Text="{DynamicResource CT_MainAppSubName}"
+                       FontSize="16" Opacity="0.4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+    </DockPanel>
+
+</Fluent:RibbonWindow>
