@@ -28,7 +28,7 @@ namespace MCG.WindchillTools.ManageWTObject.Interfaces
                                                  List<WindchillContext> pWindchillContextList,
                                                  List<string> ListGroup,
                                                  List<string> ListBrand);
-        void ShowDialogCreateUpdateWtDocumentWtPartViewModel();
+        void ShowDialogCreateUpdateWtDocumentWtPartViewModel(bool isAlreadyCreated = false);
 
         void CloseSearchWtDocumentPartView();
         void CloseCreateWtDocumentMainView();

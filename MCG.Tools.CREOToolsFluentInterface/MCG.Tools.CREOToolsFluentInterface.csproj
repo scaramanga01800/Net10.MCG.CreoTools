@@ -33,6 +33,21 @@
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.CutLengthApp\MCG.CREO_Tools.CutLengthApp.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.DxfExport\MCG.CREO_Tools.DxfExport.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.JpgExport\MCG.CREO_Tools.JpgExport.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.MassUpdateAttribute\MCG.CREO_Tools.MassUpdateAttribute.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.MiscTools\MCG.CREO_Tools.MiscTools.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.ProfileApp\MCG.CREO_Tools.ProfileApp.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.QuickLaunch\MCG.CREO_Tools.QuickLaunch.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.QuickSearch\MCG.CREO_Tools.QuickSearch.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.ShearedTube\MCG.CREO_Tools.ShearedTube.csproj" />
+    <ProjectReference Include="..\MCG.Tools.EcnDataCheck\MCG.Tools.EcnDataCheck.csproj" />
+    <ProjectReference Include="..\MCG.Tools.EcnEcoFollowUp\MCG.Tools.EcnEcoFollowUp.csproj" />
+    <ProjectReference Include="..\MCG.Tools.NumberingTool\MCG.Tools.NumberingTool.csproj" />
+    <ProjectReference Include="..\MCG.Tools.PurchaseOrderFollowUp\MCG.Tools.PurchaseOrderFollowUp.csproj" />
+    <ProjectReference Include="..\MCG.Tools.VisualizationLib\MCG.Tools.VisualizationLib.csproj" />
+    <ProjectReference Include="..\MCG.WindchillTools.ManageWTObject\MCG.WindchillTools.ManageWTObject.csproj" />
   </ItemGroup>
 
 </Project>

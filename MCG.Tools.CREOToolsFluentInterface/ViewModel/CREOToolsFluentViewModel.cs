@@ -6,8 +6,12 @@ using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent.Interfaces;
+using MCG.CREO_Tools.QuickLaunch.ViewModel;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
 using MCG.Tools.CREOToolsFluentInterface.Interfaces;
+using MCG.Tools.EcnDataCheck.ViewModel;
+using MCG.Tools.EcnEcoFollowUp.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -22,6 +26,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         private readonly ICreoSessionProvider _creoSessionProvider;
         private readonly ISharedAppContext _sharedAppContext;
         private readonly IWindchillCredentialService _windchillCredentialService;
+        private readonly IServiceProvider _serviceProvider;
+
         #endregion
 
         #region [REGION] Properties
@@ -35,20 +41,73 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             Path.Combine(MainAppFolder, "CREOToolsUserConfiguration.xml");
         #endregion
 
+        #region [REGION] ViewModel Properties
+        private QuickLaunchViewModel _quickLaunchViewModel;
+        public QuickLaunchViewModel QuickLaunchViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_quickLaunchViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _quickLaunchViewModel = _serviceProvider.GetRequiredService<QuickLaunchViewModel>();
+                }
+                return _quickLaunchViewModel;
+            }
+        }
+
+        private EcnDataCheckViewModel _ecnDataCheckViewModel;
+        public EcnDataCheckViewModel EcnDataCheckViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_ecnDataCheckViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _ecnDataCheckViewModel = _serviceProvider.GetRequiredService<EcnDataCheckViewModel>();
+                }
+                return _ecnDataCheckViewModel;
+            }
+        }
+
+        private EcnEcoFollowUpViewModel _ecnEcoFollowUpViewModel;
+        public EcnEcoFollowUpViewModel EcnEcoFollowUpViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_ecnEcoFollowUpViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _ecnEcoFollowUpViewModel = _serviceProvider.GetRequiredService<EcnEcoFollowUpViewModel>();
+                }
+                return _ecnEcoFollowUpViewModel;
+            }
+        }
+
+
+        #endregion
+
         #region [REGION] Constructor
         public CREOToolsFluentViewModel(IXmlSerializeTools xmlSerializeTools,
                                         ICreoSessionProvider creoSessionProvider,
                                         ISharedAppContext sharedAppContext,
-                                        IWindchillCredentialService windchillCredentialService)
+                                        IWindchillCredentialService windchillCredentialService,
+                                        ICreoSessionProvider sessionProvider,
+                                        IServiceProvider serviceProvider)
         {
             _xmlSerializeTools = xmlSerializeTools;
             _creoSessionProvider = creoSessionProvider;
             _sharedAppContext = sharedAppContext;
             _windchillCredentialService = windchillCredentialService;
+            _serviceProvider = serviceProvider;
 
             MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
             if (MainAppFolder == null || MainAppFolder == "")
                 MainAppFolder = CommonLibConstants.MainAppFolder;
+  
         }
         #endregion
 
@@ -75,6 +134,13 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 InitLanguages();
                 PublishToSharedContext();
 
+
+                //CurrentDataContext.ColorInterfaceChangeEvent += OnColorInterfaceChanged;
+
+                // 🟢 Application initiale du thème
+                //UpdateThemeAndAccent();
+
+
                 await ConnectToCreoAsync();
             }
             catch (Exception ex)
@@ -83,6 +149,14 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 CREOToolsException.SendMessageBox(nameof(InitializeAsync), ex);
             }
         }
+
+
+        //private void OnColorInterfaceChanged(object sender, EventArgs e)
+        //{
+        //    UpdateThemeAndAccent();
+        //    UpdateUserConfigXmlFile();   // ✅ sauvegarde aussi le choix utilisateur
+        //}
+
 
         private void LoadConfigurations()
         {
@@ -197,6 +271,29 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 }
             });
         }
+
+
+        //public void UpdateThemeAndAccent()
+        //{
+        //    try
+        //    {
+        //        if (CurrentDataContext == null) return;
+
+        //        var themeMode = CurrentDataContext.IsDark ? "Dark" : "Light";
+        //        var accent = CurrentDataContext.SelectedColorScheme;
+
+        //        if (string.IsNullOrWhiteSpace(accent)) return;
+
+        //        ThemeManager.Current.ChangeTheme(
+        //            Application.Current,
+        //            $"{themeMode}.{accent}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TraceLog.AddTraceLog($"UpdateThemeAndAccent failed: {ex.Message}");
+        //    }
+        //}
+
         #endregion
 
         #region [REGION] Save user config

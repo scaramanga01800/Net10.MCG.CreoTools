@@ -1,6 +1,6 @@
 ﻿namespace MCG.Tools.CREOToolsFluentInterface.Configuration
 {
-    class CREOToolsConstants
+    public static class CREOToolsConstants
     {
         public const string MainDictionary = "CREOToolsMainDictionary.xaml";
         public const string ConfigurationFile = "CREOToolsConfiguration.xml";

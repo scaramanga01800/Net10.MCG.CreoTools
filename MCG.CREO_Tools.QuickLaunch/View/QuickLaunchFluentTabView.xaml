@@ -1,0 +1,479 @@
+﻿<Fluent:RibbonTabItem x:Class="MCG.CREO_Tools.QuickLaunch.View.QuickLaunchFluentTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.CREO_Tools.QuickLaunch.View"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Header="{DynamicResource QL_TabName}">
+
+    <Fluent:RibbonTabItem.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="CadDoc" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/new_document.ico"  />
+            <BitmapImage x:Key="Webterm" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/webterm.png"  />
+            <BitmapImage x:Key="PartNumberGen" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/gearing.gif"  />
+            <BitmapImage x:Key="PtcElearning" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Learning.ico"  />
+            <BitmapImage x:Key="ExportBom" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure.ico"  />
+            <BitmapImage x:Key="ExportDwg" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Export_Dwg.ico"  />
+            <BitmapImage x:Key="ExportCadDoc" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/saveas_backup_large.png"  />
+            <BitmapImage x:Key="CreoCn" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Connected-icon.png"  />
+            <BitmapImage x:Key="CreoNotCn" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Disconnected-icon.png"  />
+            <BitmapImage x:Key="InProgress" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/inprogress.gif"  />
+            <BitmapImage x:Key="Help" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help_32x32.png"  />
+            <BitmapImage x:Key="EngTime" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/TimeCalendar.ico"  />
+            <BitmapImage x:Key="MechanismAnalysis" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/chart.ico"  />
+            <BitmapImage x:Key="CreateUpdateWtDocPart" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part.ico"/>
+            <BitmapImage x:Key="KillCreoProcesses" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Kill_Creo.ico"/>
+            <BitmapImage x:Key="CadAutoColor" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Color.ico"/>
+            <BitmapImage x:Key="NumberCumulation" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Cumulation.ico"/>
+            <BitmapImage x:Key="BomComparison" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Bom_comp.ico"/>
+            <BitmapImage x:Key="SapExportBom" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP.ico"  />
+            <BitmapImage x:Key="SapBomExportAllLevel" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP.ico"  />
+            <BitmapImage x:Key="SapFertBom" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP_FERT.ico"  />
+            <BitmapImage x:Key="WebtermRequest" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/WebTerm.png"  />
+            <BitmapImage x:Key="QuickChange" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Exchange.ico"  />
+            <BitmapImage x:Key="CadDocumentRename" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CadRename.png"  />
+            <BitmapImage x:Key="BomEnvirConfig" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/parameter.ico"  />
+            <BitmapImage x:Key="CadUpdateRelationsParameters" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update_Params.png"  />
+            <BitmapImage x:Key="CRANE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/crane.ico" />
+            <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
+            <conv:BoolToVisibilityMultiAndConverter x:Key="MultiAndBoolConv"/>
+            <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolConv"/>
+        </ResourceDictionary>
+    </Fluent:RibbonTabItem.Resources>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QL_RibGrpApp}">
+        <Fluent:Button Command="{Binding CommandNewCadDocument}" 
+                       LargeIcon="{StaticResource CadDoc}"
+                       Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlNewCadDoc" />
+                    <Binding Path="AppAvailable.QlNewCadDoc" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource CT_MenuAppNewCadDoc}" 
+                                  Image="{StaticResource CadDoc}"
+                                  Text="{DynamicResource QL_ToolTipNewCadDoc}"
+                                  DisableReason="CREO is not connected" />
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandPartNumberCreator}"
+                       Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlPartNumbering" />
+                    <Binding Path="AppAvailable.QlPartNumbering" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.LargeIcon>
+                <Image gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/gearing.gif" ForceCursor="True" ></Image>
+            </Fluent:Button.LargeIcon>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource CT_MenuAppPartNumberGenerator}" 
+                                  Image="{StaticResource PartNumberGen}"
+                                  Text="{DynamicResource QL_ToolPartNumberGenerator}">
+                </Fluent:ScreenTip>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandConnectCreoSession}"
+                Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlConnectCreo" />
+                    <Binding Path="AppAvailable.QlConnectCreo" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.LargeIcon>
+                <Grid>
+                    <Image Name="ImageCreoCn" Visibility="{Binding IsCreoConnected, Converter={StaticResource BoolConv}}" 
+                    Source="{StaticResource CreoCn}" />
+                    <Image Name="ImageCreoDiscn" Visibility="{Binding IsCreoConnected, Converter={StaticResource InverseBoolConv}}" 
+                    Source="{StaticResource CreoNotCn}"/>
+                    <Image Visibility="{Binding IsCreoConnectionInProgress, Converter={StaticResource BoolConv}}" 
+                    Name="ImageCreoCnInProgress" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/inprogress.gif"  
+                    ForceCursor="True" 
+                    Cursor="Hand"/>
+                </Grid>
+            </Fluent:Button.LargeIcon>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource CT_MenuAppConnectCreo}" 
+                   Image="{StaticResource CreoCn}"
+                   Text="{DynamicResource QL_ToolTipCreoConnection}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:SplitButton Command="{Binding CommandExportBom}" 
+                   
+                    LargeIcon="{StaticResource ExportBom}"
+                    Margin="2,0,2,0">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="AppVisible.QlExportBom" />
+                        <Binding Path="AppAvailable.QlExportBom" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <Button Background="White"
+               Command="{Binding CommandExportBom}">
+                    <Image Height="32" 
+                  Source="{StaticResource ExportBom}"></Image>
+                </Button>
+                <Fluent:TwoLineLabel Text="{DynamicResource CT_MenuAppExportBom}" 
+                            Margin="5,0,0,0"
+                            Width="80"></Fluent:TwoLineLabel>
+                <StackPanel.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource CT_MenuAppExportBom}" 
+                              Image="{StaticResource ExportBom}"
+                              Text="{DynamicResource QL_ToolExportBom}"/>
+                </StackPanel.ToolTip>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+               Margin="0,2,0,0">
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="AppVisible.QlBomComparison" />
+                        <Binding Path="AppAvailable.QlBomComparison" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <Button Background="White"
+               Command="{Binding CommandBomComparison}">
+                    <Image Height="32" 
+                  Source="{StaticResource BomComparison}"></Image>
+                </Button>
+                <Fluent:TwoLineLabel Text="{DynamicResource QL_ToolBomComparison}"
+                            Margin="5,0,0,0"
+                            Width="80"></Fluent:TwoLineLabel>
+                <StackPanel.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource QL_ToolBomComparison}" 
+                              Image="{StaticResource BomComparison}"
+                              Text="{DynamicResource QL_ToolTipBomComparison}"/>
+                </StackPanel.ToolTip>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+               Margin="0,2,0,0">
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="AppVisible.QlSapExportBom" />
+                        <Binding Path="AppAvailable.QlSapExportBom" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <Button Background="White"
+               Command="{Binding CommandSapExportBom}">
+                    <Image Height="32" 
+                  Source="{StaticResource SapExportBom}"></Image>
+                </Button>
+                <Fluent:TwoLineLabel Text="{DynamicResource QL_ToolBomEXportSap}"
+                            Margin="5,0,0,0"
+                            Width="80"></Fluent:TwoLineLabel>
+                <StackPanel.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource QL_ToolBomEXportSap}" 
+                              Image="{StaticResource SapExportBom}"
+                              Text="{DynamicResource QL_ToolTipBomEXportSap}"/>
+                </StackPanel.ToolTip>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+               Margin="0,2,0,0">
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="AppVisible.QlSapBomExportAllLevel" />
+                        <Binding Path="AppAvailable.QlSapBomExportAllLevel" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <Button Background="White"
+               Command="{Binding CommandSapBomExportAllLevel}">
+                    <Image Height="32" 
+                  Source="{StaticResource SapBomExportAllLevel}"></Image>
+                </Button>
+                <Fluent:TwoLineLabel Text="{DynamicResource QL_ToolSapBomExportAllLevel}"
+                            Margin="5,0,0,0"
+                            Width="80"></Fluent:TwoLineLabel>
+                <StackPanel.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource QL_ToolSapBomExportAllLevel}" 
+                              Image="{StaticResource SapBomExportAllLevel}"
+                              Text="{DynamicResource QL_ToolTipSapBomExportAllLevel}"/>
+                </StackPanel.ToolTip>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+               Margin="0,2,0,0">
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="AppVisible.QlSapFertBom" />
+                        <Binding Path="AppAvailable.QlSapFertBom" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <Button Background="White"
+               Command="{Binding CommandSapFertBom}">
+                    <Image Height="32" 
+                  Source="{StaticResource SapFertBom}"></Image>
+                </Button>
+                <Fluent:TwoLineLabel Text="{DynamicResource QL_ToolBomFertSap}"
+                            Margin="5,0,0,0"
+                            Width="80"></Fluent:TwoLineLabel>
+                <StackPanel.ToolTip>
+                    <Fluent:ScreenTip Title="{DynamicResource QL_ToolBomFertSap}" 
+                              Image="{StaticResource SapFertBom}"
+                              Text="{DynamicResource QL_ToolTipBomFertSap}"/>
+                </StackPanel.ToolTip>
+            </StackPanel>
+        </Fluent:SplitButton>
+
+        <Fluent:Button Command="{Binding CommandCraneSearch}" 
+                LargeIcon="{StaticResource CRANE}"
+                Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlCraneSearch" />
+                    <Binding Path="AppAvailable.QlCraneSearch" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolCraneSearch}" 
+                   Image="{StaticResource CRANE}"
+                   Text="{DynamicResource QL_ToolTipCraneSearch}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandDxfDwgDrawingExport}" 
+               LargeIcon="{StaticResource ExportDwg}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlExportDwgDxf" />
+                    <Binding Path="AppAvailable.QlExportDwgDxf" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolDxfDwgDrawingExport}" 
+                  Image="{StaticResource ExportDwg}"
+                  Text="{DynamicResource QL_ToolTipDxfDwgDrawingExport}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandBackUpCadDocument}" 
+               LargeIcon="{StaticResource ExportCadDoc}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlBackupCadDocument" />
+                    <Binding Path="AppAvailable.QlBackupCadDocument" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolBackUpCadDocument}" 
+                  Image="{StaticResource ExportCadDoc}"
+                  Text="{DynamicResource QL_ToolTipBackUpCadDocument}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandMechanismAnalysis}" 
+               LargeIcon="{StaticResource MechanismAnalysis}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlMechanismAnalysis" />
+                    <Binding Path="AppAvailable.QlMechanismAnalysis" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolMenupMechanismAnalysis}" 
+                          Image="{StaticResource MechanismAnalysis}"
+                          Text="{DynamicResource QL_ToolTipMechanismAnalysis}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandQuickChange}" 
+               LargeIcon="{StaticResource QuickChange}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlQuickChange" />
+                    <Binding Path="AppAvailable.QlQuickChange" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolMenuQuickChange}" 
+                          Image="{StaticResource QuickChange}"
+                          Text="{DynamicResource QL_ToolTipQuickChange}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandCadDocumentRename}" 
+               LargeIcon="{StaticResource CadDocumentRename}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlCadDocumentRename" />
+                    <Binding Path="AppAvailable.QlCadDocumentRename" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolCadDocumentRename}" 
+                          Image="{StaticResource CadDocumentRename}"
+                          Text="{DynamicResource QL_ToolTipCadDocumentRename}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandBomEnvirConfig}" 
+               LargeIcon="{StaticResource BomEnvirConfig}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlBomEnvirConfig" />
+                    <Binding Path="AppAvailable.QlBomEnvirConfig" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolBomEnvirConfig}" 
+                          Image="{StaticResource BomEnvirConfig}"
+                          Text="{DynamicResource QL_ToolTipBomEnvirConfig}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandUpdateRelationsParameters}" 
+               LargeIcon="{StaticResource CadUpdateRelationsParameters}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlUpdateRelationsParameters" />
+                    <Binding Path="AppAvailable.QlUpdateRelationsParameters" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolUpdateRelationsParameters}" 
+                          Image="{StaticResource CadUpdateRelationsParameters}"
+                          Text="{DynamicResource QL_ToolTipUpdateRelationsParameters}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandCreateUpdateWtDocPart}" 
+               LargeIcon="{StaticResource CreateUpdateWtDocPart}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlCreateUpdateWtDocPart" />
+                    <Binding Path="AppAvailable.QlCreateUpdateWtDocPart" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolCreateUpdateWtDocPart}" 
+                          Image="{StaticResource CreateUpdateWtDocPart}"
+                          Text="{DynamicResource QL_ToolTipCreateUpdateWtDocPart}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandCadAutoColor}"
+               LargeIcon="{StaticResource CadAutoColor}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlCadDocAutoColor" />
+                    <Binding Path="AppAvailable.QlCadDocAutoColor" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolCadDocAutoColor}" 
+                          Image="{StaticResource CadAutoColor}"
+                          Text="{DynamicResource QL_ToolTipCadDocAutoColor}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        
+        <Fluent:Button Command="{Binding CommandKillCreoProcesses}" 
+               LargeIcon="{StaticResource KillCreoProcesses}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlKillCreoPrecesses" />
+                    <Binding Path="AppAvailable.QlKillCreoPrecesses" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolKillCreoProcesses}" 
+                          Image="{StaticResource KillCreoProcesses}"
+                          Text="{DynamicResource QL_ToolTipKillCreoProcesses}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+    <Fluent:RibbonGroupBox Header="{DynamicResource QL_RibGrpLink}">
+        <Fluent:Button Command="{Binding CommandMcgHelpOnline}" 
+               LargeIcon="{StaticResource Help}"
+               Header="{DynamicResource QL_ToolTitleMcgHelpOnline}"
+               Margin="2,0,2,0">
+            <Fluent:Button.CommandParameter>
+                <s:Boolean>
+                    False
+                </s:Boolean>
+            </Fluent:Button.CommandParameter>
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlMcgHelpOnline" />
+                    <Binding Path="AppAvailable.QlMcgHelpOnline" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolTitleMcgHelpOnline}" 
+                  Image="{StaticResource Help}"
+                  Text="{DynamicResource QL_ToolMcgHelpOnline}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandWebterm}" 
+               LargeIcon="{StaticResource Webterm}"
+               Header="{DynamicResource CT_MenuAppWebterm}"
+               Margin="2,0,2,0">
+            <Fluent:Button.CommandParameter>
+                <s:Boolean>
+                    False
+                </s:Boolean>
+            </Fluent:Button.CommandParameter>
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlWebterm" />
+                    <Binding Path="AppAvailable.QlWebterm" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource CT_MenuAppWebterm}" 
+                          Image="{StaticResource Webterm}"
+                          Text="{DynamicResource QL_ToolTipWebterm}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandEngTime}" 
+               LargeIcon="{StaticResource EngTime}"
+               Header="{DynamicResource QL_ToolEngTimee}"
+               Margin="2,0,2,0">
+            <Fluent:Button.CommandParameter>
+                <s:Boolean>
+                    False
+                </s:Boolean>
+            </Fluent:Button.CommandParameter>
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlEngTime" />
+                    <Binding Path="AppAvailable.QlEngTime" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolEngTimee}" 
+                  Image="{StaticResource EngTime}"
+                  Text="{DynamicResource QL_ToolTitelEngTime}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+    </Fluent:RibbonGroupBox>
+
+</Fluent:RibbonTabItem>

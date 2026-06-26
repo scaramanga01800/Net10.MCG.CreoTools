@@ -14,6 +14,7 @@
   <Project Path="../MCG.CREO_Tools.MassUpdateAttribute/MCG.CREO_Tools.MassUpdateAttribute.csproj" />
   <Project Path="../MCG.CREO_Tools.MiscTools/MCG.CREO_Tools.MiscTools.csproj" />
   <Project Path="../MCG.CREO_Tools.ProfileApp/MCG.CREO_Tools.ProfileApp.csproj" />
+  <Project Path="../MCG.CREO_Tools.QuickLaunch/MCG.CREO_Tools.QuickLaunch.csproj" Id="b55c21de-9523-4614-9d00-1a663e0e461c" />
   <Project Path="../MCG.CREO_Tools.QuickSearch/MCG.CREO_Tools.QuickSearch.csproj" />
   <Project Path="../MCG.CREO_Tools.ShearedTube/MCG.CREO_Tools.ShearedTube.csproj" />
   <Project Path="../MCG.Tools.EcnDataCheck/MCG.Tools.EcnDataCheck.csproj" />

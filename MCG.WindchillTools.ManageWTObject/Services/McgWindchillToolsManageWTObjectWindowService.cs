@@ -70,8 +70,16 @@ namespace MCG.WindchillTools.ManageWTObject.Services
             return (_CreateWtDocumentMainView.DialogResult, ((CreateWtDocumentMainView)_CreateWtDocumentMainView).WtDocumentItem);
         }
 
-        public void ShowDialogCreateUpdateWtDocumentWtPartViewModel()
+        public void ShowDialogCreateUpdateWtDocumentWtPartViewModel(bool isAlreadyCreated = false)
         {
+            if (isAlreadyCreated)
+            {
+                if (_CreateUpdateWtDocumentWtPartViewModel != null && _CreateUpdateWtDocumentWtPartViewModel.IsVisible)
+                {
+                    _CreateUpdateWtDocumentWtPartViewModel.Activate();
+                    return;
+                }
+            }
             _CreateUpdateWtDocumentWtPartViewModel = _serviceProvider.GetRequiredService<CreateUpdateWtDocumentWtPartMainView>();
             _CreateUpdateWtDocumentWtPartViewModel.ShowDialog();
         }

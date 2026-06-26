@@ -11,6 +11,10 @@
                      xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:view="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+                     
+                     xmlns:QuickLaunch="clr-namespace:MCG.CREO_Tools.QuickLaunch.View;assembly=MCG.CREO_Tools.QuickLaunch"
+                     xmlns:QuickLaunchVM="clr-namespace:MCG.CREO_Tools.QuickLaunch.ViewModel;assembly=MCG.CREO_Tools.QuickLaunch"
+
                      mc:Ignorable="d"
                      TitleBarHeight="0"
                      Height="750" 
@@ -24,7 +28,13 @@
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries/>
+
+            <DataTemplate DataType="{x:Type QuickLaunchVM:QuickLaunchViewModel}">
+                <QuickLaunch:QuickLaunchFluentTabContentView/>
+            </DataTemplate>
+
+            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background"
+                 Color="{DynamicResource Fluent.Ribbon.Colors.Accent20}"/>
 
             <!-- Icônes -->
             <BitmapImage x:Key="Tools"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/tools.ico"/>
@@ -650,6 +660,20 @@
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
 
+
+            <QuickLaunch:QuickLaunchFluentTabView x:Name="TabQuickLaunchApp">
+                <QuickLaunch:QuickLaunchFluentTabView.Style>
+                    <Style TargetType="QuickLaunch:QuickLaunchFluentTabView">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TabQuickLaunchApp, Path=IsSelected}" Value="True">
+                                <Setter Property="DataContext" Value="{Binding QuickLaunchViewModelVM}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </QuickLaunch:QuickLaunchFluentTabView.Style>
+            </QuickLaunch:QuickLaunchFluentTabView>
+
+
             <Fluent:RibbonTabItem Header="sdfsdfs" >
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button >
@@ -675,11 +699,29 @@
 
         <!-- ============ CONTENU PRINCIPAL ============ -->
         <Grid x:Name="MainContent">
-            <!-- 🔧 Les TabContentView correspondants viendront ici -->
+            <ContentControl>
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TabQuickLaunchApp, Path=IsSelected}" Value="True">
+                                <Setter Property="Content" Value="{Binding QuickLaunchViewModelVM}"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+
+
+
+                <!-- 🔧 Les TabContentView correspondants viendront ici --><!--
+            
+            
+            
             <TextBlock Text="{DynamicResource CT_MainAppSubName}"
                        FontSize="16" Opacity="0.4"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Center"/>-->
         </Grid>
 
     </DockPanel>
