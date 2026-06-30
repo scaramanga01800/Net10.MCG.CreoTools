@@ -12,6 +12,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Models;
 using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.Interfaces;
+using MCG.CommonLib.WpfComponent.Services;
 using MCG.CommonLib.WpfComponent.ViewModel;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.CREO_Tools.MassUpdateAttribute.Configuration;
@@ -48,7 +49,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         private string NamingConventionXmlFile { get; set; }
         private bool StopCurrentProcess { get; set; } = false;
         private Thread ListModelThread { get; set; } = null;
-        private string WebtermDb { get; set; } = McgWpfTools.GetPropertiesFromMainApp<string>("WEBTERMDB");
         private string AppearanceFileName { get; set; }
         private bool ChangeColorPaletteInProgress { get; set; } = false;
         private WindchillCredentialItem WindchillNetworkCredential { get; set; } = null;
@@ -133,6 +133,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         private readonly IWindchillDocumentManagementService _windchillDocumentManagementService;
         private readonly IWindchillCustomManagementService _windchillCustomManagementService;
         private readonly IWindchillCheckNumberService _windchillCheckNumberService;
+        private readonly ISharedAppContext _sharedAppContext;
 
         public MassUpdateAttributeViewModel(IXmlSerializeTools xmlSerializeTools,
                                             ICreoSessionProvider creoSessionProvider,
@@ -148,7 +149,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                                             IWindchillEpmDocumentManagementService windchillEpmDocumentManagementService,
                                             IWindchillDocumentManagementService windchillDocumentManagementService,
                                             IWindchillCustomManagementService windchillCustomManagementService,
-                                            IWindchillCheckNumberService windchillCheckNumberService)
+                                            IWindchillCheckNumberService windchillCheckNumberService,
+                                            ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -167,6 +169,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 _windchillDocumentManagementService = windchillDocumentManagementService;
                 _windchillCustomManagementService = windchillCustomManagementService;
                 _windchillCheckNumberService = windchillCheckNumberService;
+                _sharedAppContext = sharedAppContext;
 
                 CurrentMassUpdAttribDataContext = new MassUpdateAttributeDataContext();
 
@@ -183,7 +186,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 CurrentMassUpdAttribDataContext.ShowActionButton = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentMassUpdAttribDataContext.ShowActionButton = e;
 
-                MCGLanguage CurrentMCGLanguage = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+                MCGLanguage CurrentMCGLanguage = _sharedAppContext.CurrentLanguage?.Language;
                 if (CurrentMCGLanguage != null)
                     CurrentMCGLanguage.ChangeLanguageInterface += UpdateInterfaceLanguage;
 
@@ -191,7 +194,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 {
                     NewCol.BtText = McgWpfTools.GetStringResource("MUA_BtApplySelection");
                     if (NewCol.AttributeID == "MODIFIED_BY")
-                        NewCol.AttributeValue = McgMiscTools.GetWindowsSessionUserShortName();
+                        NewCol.AttributeValue = McgActiveDirectoryTools.GetWindowsSessionUserShortName();
                 }
 
                 CurrentMassUpdAttribDataContext.ListColumns = CurrentMassUpdAttriConfiguration.ListColumns;
@@ -211,7 +214,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 List<McgAppearanceItem> ListAppearances;
 
                 AppearanceFileName = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.AppearanceFileName01}";
-                ListAppearances = McgMiscTools.GetListAppearancesFromFile(AppearanceFileName);
+                ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);
                 if (ListAppearances != null && ListAppearances.Count > 0)
                 {
                     CurrentMassUpdAttribDataContext.ColorPalette01 = new CadAutoColorPalette() { IsSelected = true, Name = "Default", ColorPaletteFile = AppearanceFileName };
@@ -224,7 +227,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
 
 
                 AppearanceFileName = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.AppearanceFileName02}";
-                ListAppearances = McgMiscTools.GetListAppearancesFromFile(AppearanceFileName);
+                ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);
                 if (ListAppearances != null && ListAppearances.Count > 0)
                 {
                     CurrentMassUpdAttribDataContext.ColorPalette02 = new CadAutoColorPalette() { IsSelected = false, Name = "CREO Tools", ColorPaletteFile = AppearanceFileName };
@@ -233,7 +236,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 }
 
                 AppearanceFileName = $"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.AppearanceFileName03}";
-                ListAppearances = McgMiscTools.GetListAppearancesFromFile(AppearanceFileName);
+                ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);
                 if (ListAppearances != null && ListAppearances.Count > 0)
                 {
                     CurrentMassUpdAttribDataContext.ColorPalette03 = new CadAutoColorPalette() { IsSelected = false, Name = "Marketing", ColorPaletteFile = AppearanceFileName };
@@ -243,7 +246,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
 
                 AppearanceFileName = CurrentMassUpdAttribDataContext.ColorPalette01.ColorPaletteFile;
 
-                ListBrandGroupSubGroup = McgMiscTools.GetLIstBrandGroupSubGroup();
+                ListBrandGroupSubGroup = McgBusinessTools.GetLIstBrandGroupSubGroup();
                 CurrentMassUpdAttribDataContext.ListBrand.Clear();
                 var brands = ListBrandGroupSubGroup.Select(i => i.Brand).Distinct();
                 foreach (var brand in brands)
@@ -1007,7 +1010,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         {
             try
             {
-                var temWebtermList = _webtermTools.GetListTerm(WebtermLanguage.ENGLISH, null, WebtermDb).OrderBy((elem) => elem);
+                var temWebtermList = _webtermTools.GetListTerm(WebtermLanguage.ENGLISH, null, null).OrderBy((elem) => elem);
 
                 foreach (var term in temWebtermList)
                     CurrentMassUpdAttribDataContext.WebtermList.Add(term);

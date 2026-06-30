@@ -5,6 +5,7 @@ using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.DxfExport.Interfaces;
 using MCG.CREO_Tools.MassUpdateAttribute.Interfaces;
 using MCG.CREO_Tools.MiscTools.Interfaces;
@@ -23,7 +24,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
         private string MainAppFolder { get; set; }
 
         #region [REGION] Properties From Interface
-        private CREOToolsAppAvailability _AppVisible = McgMiscTools.GetPropertiesFromMainApp<CREOToolsAppAvailability>("CREOAPPVISIBILITY");
+        private CREOToolsAppAvailability _AppVisible;
         public CREOToolsAppAvailability AppVisible
         {
             get { return this._AppVisible; }
@@ -37,7 +38,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
             }
         }
 
-        private CREOToolsAppAvailability _AppAvailable = McgMiscTools.GetPropertiesFromMainApp<CREOToolsAppAvailability>("CREOAPPAVAILABLE");
+        private CREOToolsAppAvailability _AppAvailable;
         public CREOToolsAppAvailability AppAvailable
         {
             get { return this._AppAvailable; }
@@ -145,6 +146,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
         private readonly INumberingToolWindowService _numberingToolWindowService;
         private readonly IDxfExportWindchillService _dxfExportWindchillService;
         private readonly IMcgWindchillToolsManageWTObjectWindowService _mcgWindchillToolsManageWTObjectWindowService;
+        private readonly ISharedAppContext _sharedAppContext;
 
         public QuickLaunchViewModel(ICreoSessionProvider creoSessionProvider,
                                     IMassUpdateAttributeWindowService massUpdateAttributeWindowService,
@@ -152,7 +154,8 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                                     IMiscToolsWindchillService miscToolsWindchillService,
                                     INumberingToolWindowService numberingToolWindowService,
                                     IDxfExportWindchillService dxfExportWindchillService,
-                                    IMcgWindchillToolsManageWTObjectWindowService mcgWindchillToolsManageWTObjectWindowService)
+                                    IMcgWindchillToolsManageWTObjectWindowService mcgWindchillToolsManageWTObjectWindowService,
+                                    ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -163,19 +166,20 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                 _numberingToolWindowService = numberingToolWindowService;
                 _dxfExportWindchillService = dxfExportWindchillService;
                 _mcgWindchillToolsManageWTObjectWindowService = mcgWindchillToolsManageWTObjectWindowService;
-
+                _sharedAppContext = sharedAppContext;
 
                 _creoSessionProvider.ConnectionStart += (sender, e) => IsCreoConnectionInProgress = true;
                 _creoSessionProvider.ConnectionEnd += (sender, e) => IsCreoConnectionInProgress = false;
 
                 HtmlPage = QuickLaunchConstants.HtmlLinkMcgDocumentation;
+
+                AppVisible = _sharedAppContext.AppVisible;
+                AppAvailable = _sharedAppContext.AppAvailable;
             }
             catch (Exception ex)
             {
                 QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
             }
-
-            _dxfExportWindchillService = dxfExportWindchillService;
         }
         #endregion
 
@@ -519,7 +523,6 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
             }
         }
         #endregion
-
 
         private void StartConnectCreoSessionAsynch()
         {

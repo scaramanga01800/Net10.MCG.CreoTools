@@ -50,6 +50,13 @@ namespace MCG.CREO_Tools.QuickSearch.View
             }
         }
 
+        public static string ToPascalFromUpper(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+
+            return char.ToUpper(input[0]) + input.Substring(1).ToLower();
+        }
+
         private void UpdateSubClassColumn(object sender = null, EventArgs e = null)
         {
             try
@@ -64,7 +71,7 @@ namespace MCG.CREO_Tools.QuickSearch.View
                         CurrentColHeader = new QuickSearchColumnHeaderSearch();
                         CurrentColHeader.SetProperties(SubClassParam.Name, CurrentQuickSearchViewModel, QuickSearchConstants.ColumnMinWidth, SubClassParam);
                         CurrentCol = new DataGridTextColumn() { Header = CurrentColHeader };
-                        CurrentCol.Binding = new Binding($"CurrentPart.{SubClassParam.IdParam}");
+                        CurrentCol.Binding = new Binding($"CurrentPart.{ToPascalFromUpper(SubClassParam.IdParam)}");
                         DgPart.Columns.Add(CurrentCol);
                     }
                 }

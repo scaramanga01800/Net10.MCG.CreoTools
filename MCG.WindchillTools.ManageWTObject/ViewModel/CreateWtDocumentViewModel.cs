@@ -109,7 +109,6 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
         #region [REGION] Internal variables
         private List<Webterm> AllWebterm { get; set; }
         private MCGLanguage SelectedLanguage { get; set; }
-        private string WebtermDb { get; set; } = McgWpfTools.GetPropertiesFromMainApp<string>("WEBTERMDB");
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
         #endregion
 

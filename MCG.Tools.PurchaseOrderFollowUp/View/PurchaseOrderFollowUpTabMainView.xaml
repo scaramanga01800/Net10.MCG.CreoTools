@@ -208,11 +208,11 @@
     </Fluent:RibbonGroupBox>
 
     <Fluent:RibbonGroupBox Header="{DynamicResource POF_RibGrpA1dmin}"
-                        Visibility="{Binding CurrentDataContext.IsRoleAdmin, Converter={StaticResource BoolToVisibilityConv}}">
+                           Visibility="{Binding CurrentDataContext.IsRoleAdmin, Converter={StaticResource BoolToVisibilityConv}}">
         <Fluent:Button Header="{DynamicResource POF_BtAddRequestFromSapPr}"
-                    Margin="5,0,5,0"
-                    Command="{Binding CommandAddRequestFromSapPr}"
-                    LargeIcon="{StaticResource ADDREQUESTPR}">
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandAddRequestFromSapPr}"
+                       LargeIcon="{StaticResource ADDREQUESTPR}">
             <Fluent:Button.ToolTip>
                 <Fluent:ScreenTip Title="{DynamicResource POF_BtAddRequestFromSapPr}" 
                                Width ="250"
@@ -221,9 +221,9 @@
             </Fluent:Button.ToolTip>
         </Fluent:Button>
         <Fluent:Button Header="{DynamicResource POF_BtAddRequestFromSapPo}"
-                    Margin="5,0,5,0"
-                    Command="{Binding CommandAddRequestFromSapPo}"
-                    LargeIcon="{StaticResource ADDREQUESTPO}">
+                       Margin="5,0,5,0"
+                       Command="{Binding CommandAddRequestFromSapPo}"
+                       LargeIcon="{StaticResource ADDREQUESTPO}">
             <Fluent:Button.ToolTip>
                 <Fluent:ScreenTip Title="{DynamicResource POF_BtAddRequestFromSapPo}" 
                                Width ="250"

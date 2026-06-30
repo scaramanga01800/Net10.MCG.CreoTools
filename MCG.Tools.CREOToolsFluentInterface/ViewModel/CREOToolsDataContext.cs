@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MCG.CommonLib.WpfComponent;
+using MCG.CommonLib.WpfComponent.Models;
 using MCG.Tools.CREOToolsFluentInterface.View;
 using System.Collections.ObjectModel;
 
 namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 {
-   public partial class CREOToolsDataContext : ObservableObject, ICREOToolsDataContext
+    public partial class CREOToolsDataContext : ObservableObject, ICREOToolsDataContext
     {
         #region [REGION] Static data
 
@@ -71,15 +72,22 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
         public ObservableCollection<string> ListFont { get; set; } = new();
 
-        [ObservableProperty] private string _selectedColorScheme;
-        [ObservableProperty] private string _selectedFont;
+        [ObservableProperty]
+        private string _selectedColorScheme;
+
+        [ObservableProperty]
+        private string _selectedFont;
+
 
         partial void OnSelectedColorSchemeChanged(string value)
-            => RaiseColorInterfaceChangeEvent();
+        {
+            RaiseColorInterfaceChangeEvent();
+        }
 
         partial void OnSelectedFontChanged(string value)
-            => RaiseFontInterfaceChangeEvent();
-
+        {
+            RaiseFontInterfaceChangeEvent();
+        }
         #endregion
 
         #region [REGION] Scrolling text
@@ -112,7 +120,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         #endregion
 
         #region [REGION] Events
-
         public event EventHandler ColorInterfaceChangeEvent;
         public event EventHandler FontInterfaceChangeEvent;
 
@@ -121,7 +128,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
         public void RaiseFontInterfaceChangeEvent()
             => FontInterfaceChangeEvent?.Invoke(this, EventArgs.Empty);
-
         #endregion
     }
 }

@@ -84,7 +84,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
         }
 
-
         public ObservableCollection<PurchaseOrderInternalOrder> ListInternalOrder { get; set; } = new ObservableCollection<PurchaseOrderInternalOrder>();
 
         //private PurchaseOrderInternalOrder _SelectedInternalOrder;
@@ -748,7 +747,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                     RaiseUpdateChartFilterEvent();
                     RaiseUpdateDateFilterEvent();
                 }
-
             }
         }
 
@@ -762,7 +760,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             {
                 var newVal = value.HasValue ? DateOnly.FromDateTime(value.Value) : (DateOnly?)null;
                 if (ChartPoCreatedAfter == newVal) return;
-                ChartPoCreatedBefore = newVal;
+                ChartPoCreatedAfter = newVal;
             }
         }
 
@@ -950,7 +948,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
         }
 
-
         public event EventHandler UpdateDateFilterEvent;
 
         public void RaiseUpdateDateFilterEvent()
@@ -963,9 +960,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             {
             }
         }
-
         #endregion
-
 
         #region [REGION] Misc
         public void UpdateDienNlag(PurchaseOrderType CurrentType)

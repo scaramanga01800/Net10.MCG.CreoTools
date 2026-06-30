@@ -1,6 +1,6 @@
 ﻿using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.WpfComponent;
-using MCG.Tools.CREOToolsFluentInterface.ViewModel;
+using MCG.CommonLib.WpfComponent.Models;
 
 namespace MCG.Tools.CREOToolsFluentInterface.Configuration
 {

@@ -6,11 +6,20 @@ using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent.Interfaces;
+using MCG.CommonLib.WpfComponent.Models;
+using MCG.CREO_Tools.CutLengthApp.ViewModel;
+using MCG.CREO_Tools.DxfExport.ViewModel;
+using MCG.CREO_Tools.JpgExport.ViewModel;
+using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
+using MCG.CREO_Tools.ProfileApp.ViewModel;
 using MCG.CREO_Tools.QuickLaunch.ViewModel;
+using MCG.CREO_Tools.QuickSearch.ViewModel;
+using MCG.CREO_Tools.ShearedTube.ViewModel;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
-using MCG.Tools.CREOToolsFluentInterface.Interfaces;
 using MCG.Tools.EcnDataCheck.ViewModel;
 using MCG.Tools.EcnEcoFollowUp.ViewModel;
+using MCG.Tools.PurchaseOrderFollowUp.ViewModel;
+using MCG.Tools.VisualizationLib.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Windows;
@@ -27,7 +36,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         private readonly ISharedAppContext _sharedAppContext;
         private readonly IWindchillCredentialService _windchillCredentialService;
         private readonly IServiceProvider _serviceProvider;
-
         #endregion
 
         #region [REGION] Properties
@@ -37,12 +45,24 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         private CREOToolsUserConfiguration _userConfiguration;
 
         private string MainAppFolder { get; }
-        private string UserConfigPath =>
-            Path.Combine(MainAppFolder, "CREOToolsUserConfiguration.xml");
+        private string UserConfigPath = CREOToolsConstants.CreoToolsUserConfigXmlFile;
         #endregion
 
         #region [REGION] ViewModel Properties
         private QuickLaunchViewModel _quickLaunchViewModel;
+        private EcnEcoFollowUpViewModel _ecnEcoFollowUpViewModel;
+        private PurchaseOrderFollowUpViewModel _purchaseOrderFollowUpViewModel;
+        private ConvertToPdfViewModel _convertToPdfViewModel;
+        private DownloadVisualizationFileViewModel _downloadVisualizationFileViewModel;
+        private EcnDataCheckViewModel _ecnDataCheckViewModel;
+        private CutLengthViewModel _cutLengthViewModel;
+        private DxfExportViewModel _dxfExportViewModel;
+        private JpgExportViewModel _jpgExportViewModel;
+        private MassUpdateAttributeViewModel _massUpdateAttributeViewModel;
+        private ProfileViewModel _profileViewModel;
+        private QuickSearchViewModel _quickSearchViewModel;
+        private ShearedTubeViewModel _shearedTubeViewModel;
+
         public QuickLaunchViewModel QuickLaunchViewModelVM
         {
             get
@@ -57,7 +77,104 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             }
         }
 
-        private EcnDataCheckViewModel _ecnDataCheckViewModel;
+        public CutLengthViewModel CutLengthViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_cutLengthViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _cutLengthViewModel = _serviceProvider.GetRequiredService<CutLengthViewModel>();
+                }
+                return _cutLengthViewModel;
+            }
+        }
+
+        public DxfExportViewModel DxfExportViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_dxfExportViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _dxfExportViewModel = _serviceProvider.GetRequiredService<DxfExportViewModel>();
+                }
+                return _dxfExportViewModel;
+            }
+        }
+
+        public JpgExportViewModel JpgExportViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_jpgExportViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _jpgExportViewModel = _serviceProvider.GetRequiredService<JpgExportViewModel>();
+                }
+                return _jpgExportViewModel;
+            }
+        }
+
+        public MassUpdateAttributeViewModel MassUpdateAttributeViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_massUpdateAttributeViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _massUpdateAttributeViewModel = _serviceProvider.GetRequiredService<MassUpdateAttributeViewModel>();
+                }
+                return _massUpdateAttributeViewModel;
+            }
+        }
+
+        public ProfileViewModel ProfileViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_profileViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _profileViewModel = _serviceProvider.GetRequiredService<ProfileViewModel>();
+                }
+                return _profileViewModel;
+            }
+        }
+
+        public QuickSearchViewModel QuickSearchViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_quickSearchViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _quickSearchViewModel = _serviceProvider.GetRequiredService<QuickSearchViewModel>();
+                }
+                return _quickSearchViewModel;
+            }
+        }
+
+        public ShearedTubeViewModel ShearedTubeViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_shearedTubeViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _shearedTubeViewModel = _serviceProvider.GetRequiredService<ShearedTubeViewModel>();
+                }
+                return _shearedTubeViewModel;
+            }
+        }
+
         public EcnDataCheckViewModel EcnDataCheckViewModelVM
         {
             get
@@ -72,7 +189,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             }
         }
 
-        private EcnEcoFollowUpViewModel _ecnEcoFollowUpViewModel;
         public EcnEcoFollowUpViewModel EcnEcoFollowUpViewModelVM
         {
             get
@@ -87,7 +203,47 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             }
         }
 
+        public PurchaseOrderFollowUpViewModel PurchaseOrderFollowUpViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_purchaseOrderFollowUpViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _purchaseOrderFollowUpViewModel = _serviceProvider.GetRequiredService<PurchaseOrderFollowUpViewModel>();
+                }
+                return _purchaseOrderFollowUpViewModel;
+            }
+        }
 
+        public ConvertToPdfViewModel ConvertToPdfViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_convertToPdfViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _convertToPdfViewModel = _serviceProvider.GetRequiredService<ConvertToPdfViewModel>();
+                }
+                return _convertToPdfViewModel;
+            }
+        }
+
+        public DownloadVisualizationFileViewModel DownloadVisualizationFileViewModelVM
+        {
+            get
+            {
+                // Si c'est la 1ère fois qu'on clique sur l'onglet :
+                if (_downloadVisualizationFileViewModel == null)
+                {
+                    // Le système crée le ViewModel ET lui injecte ISapHupService tout seul !
+                    _downloadVisualizationFileViewModel = _serviceProvider.GetRequiredService<DownloadVisualizationFileViewModel>();
+                }
+                return _downloadVisualizationFileViewModel;
+            }
+        }
         #endregion
 
         #region [REGION] Constructor
@@ -95,7 +251,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                                         ICreoSessionProvider creoSessionProvider,
                                         ISharedAppContext sharedAppContext,
                                         IWindchillCredentialService windchillCredentialService,
-                                        ICreoSessionProvider sessionProvider,
                                         IServiceProvider serviceProvider)
         {
             _xmlSerializeTools = xmlSerializeTools;
@@ -107,7 +262,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
             if (MainAppFolder == null || MainAppFolder == "")
                 MainAppFolder = CommonLibConstants.MainAppFolder;
-  
         }
         #endregion
 
@@ -134,12 +288,16 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 InitLanguages();
                 PublishToSharedContext();
 
+                // Init au démarrage
+                _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;
+                _sharedAppContext.AppAvailable = CurrentDataContext.AppAvailable;
+                _sharedAppContext.AppVisible = CurrentDataContext.AppVisible;
 
-                //CurrentDataContext.ColorInterfaceChangeEvent += OnColorInterfaceChanged;
+                CurrentDataContext.ColorInterfaceChangeEvent += (sender,e) => UpdateUserConfigXmlFile();
+                CurrentDataContext.FontInterfaceChangeEvent += (sender, e) => UpdateUserConfigXmlFile();
 
                 // 🟢 Application initiale du thème
                 //UpdateThemeAndAccent();
-
 
                 await ConnectToCreoAsync();
             }
@@ -149,14 +307,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 CREOToolsException.SendMessageBox(nameof(InitializeAsync), ex);
             }
         }
-
-
-        //private void OnColorInterfaceChanged(object sender, EventArgs e)
-        //{
-        //    UpdateThemeAndAccent();
-        //    UpdateUserConfigXmlFile();   // ✅ sauvegarde aussi le choix utilisateur
-        //}
-
 
         private void LoadConfigurations()
         {
@@ -177,6 +327,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             CurrentDataContext.AppAvailable = _appConfiguration.AppAvailable.GetCREOToolsAppAvailability();
             CurrentDataContext.AppVisible = _userConfiguration.AppVisible.GetCREOToolsAppAvailability()
                                               ?? _appConfiguration.AppAvailable.GetCREOToolsAppAvailability();
+
         }
 
         private void InitTheme()
@@ -271,29 +422,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 }
             });
         }
-
-
-        //public void UpdateThemeAndAccent()
-        //{
-        //    try
-        //    {
-        //        if (CurrentDataContext == null) return;
-
-        //        var themeMode = CurrentDataContext.IsDark ? "Dark" : "Light";
-        //        var accent = CurrentDataContext.SelectedColorScheme;
-
-        //        if (string.IsNullOrWhiteSpace(accent)) return;
-
-        //        ThemeManager.Current.ChangeTheme(
-        //            Application.Current,
-        //            $"{themeMode}.{accent}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TraceLog.AddTraceLog($"UpdateThemeAndAccent failed: {ex.Message}");
-        //    }
-        //}
-
         #endregion
 
         #region [REGION] Save user config
@@ -418,9 +546,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 CREOToolsException.SendMessageBox(this.GetType().Name, ex);
             }
         }
-
         #endregion
-
-
     }
 }

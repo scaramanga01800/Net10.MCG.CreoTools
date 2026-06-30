@@ -68,6 +68,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
         private readonly IWindchillCredentialService _windchillCredentialService;
         private readonly IWindchillRequestMiscService _windchillRequestMiscService;
+        private readonly ISharedAppContext _sharedAppContext;
         #endregion
 
         #region [REGION] Internal variables
@@ -77,7 +78,6 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
         private MassWtDocumentUpdateConfiguration ApplicationConfiguration { get; set; }
 
         private MgtContentItem CurrentPrimaryContent = null;
-        private string WebtermDb { get; set; } = McgWpfTools.GetPropertiesFromMainApp<string>("WEBTERMDB");
         private List<BrandGroupSubGroupItem> ListBrandGroupSubGroup { get; set; }
         #endregion
 
@@ -129,7 +129,8 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                                                      IWindchillDataAdminManagementService windchillDataAdminManagementService,
                                                      IMcgCommonLibWindowService mcgCommonLibWindowService,
                                                      IWindchillCredentialService windchillCredentialService,
-                                                     IWindchillRequestMiscService windchillRequestMiscService)
+                                                     IWindchillRequestMiscService windchillRequestMiscService,
+                                                     ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -142,6 +143,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 _mcgCommonLibWindowService = mcgCommonLibWindowService;
                 _windchillCredentialService = windchillCredentialService;
                 _windchillRequestMiscService = windchillRequestMiscService;
+                _sharedAppContext = sharedAppContext;
 
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
@@ -151,7 +153,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 CurrentDataContext = new CreateUpdateWtDocumentWtPartDataContext();
 
                 // update Webterm list
-                ListWebterm = _webtermTools.GetWebtermList(null, null, WebtermDb)?.OrderBy((item) => item.English).ToList();
+                ListWebterm = _webtermTools.GetWebtermList(null, null, null)?.OrderBy((item) => item.English).ToList();
                 foreach (var term in ListWebterm)
                     CurrentDataContext.ListWebterm.Add(term.English);
 
@@ -166,7 +168,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                     CurrentDataContext.ListBrand.Add(brand);
 
 
-                CurrentDataContext.SelectedLanguage = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+                CurrentDataContext.SelectedLanguage = _sharedAppContext.CurrentLanguage.Language; 
                 if (CurrentDataContext.SelectedLanguage == null || CurrentDataContext.SelectedLanguage.Language == null)
                     CurrentDataContext.SelectedLanguage = (from elem in CurrentDataContext.ListLanguage where Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToUpper() == elem.SAPCode select elem).FirstOrDefault();
                 if (CurrentDataContext.SelectedLanguage == null || CurrentDataContext.SelectedLanguage.Language == null)
@@ -232,6 +234,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 throw new ManageWTObjectException(this.GetType().Name, ex);
             }
 
+            _sharedAppContext = sharedAppContext;
         }
 
         private void UpdateGroups(object sender, EventArgs e)

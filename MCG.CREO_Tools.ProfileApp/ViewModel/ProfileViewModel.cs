@@ -10,6 +10,7 @@ using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Models;
 using MCG.CommonLib.WebtermLib.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.ProfileApp.Configuration;
 using MCG.CREO_Tools.ProfileApp.Exceptions;
 using MCG.CREO_Tools.ProfileApp.Interfaces;
@@ -28,7 +29,7 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
 
         #region [REGION] Internal variables
         private string MainAppFolder { get; set; }
-        private MCGLanguage CurrentMcgLanguage { get; set; } = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+        private MCGLanguage CurrentMcgLanguage { get; set; } 
         private ProfileConfiguration CurrentAppProfileConfiguration { get; set; }
         #endregion
 
@@ -76,6 +77,7 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
         private readonly IProfileAppWindowService _profileAppWindowService;
         private readonly IMcgToolDictionary _mcgToolDictionary;
         private readonly IWebtermTools _webtermTools;
+        private readonly ISharedAppContext _sharedAppContext;
 
 
         public ProfileViewModel(IXmlSerializeTools xmlSerializeTools,
@@ -87,7 +89,8 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                                 IProfileAppService profileAppService,
                                 IProfileAppWindowService profileAppWindowService,
                                 IMcgToolDictionary mcgToolDictionary,
-                                IWebtermTools webtermTools)
+                                IWebtermTools webtermTools,
+                                ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -101,6 +104,7 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                 _profileAppWindowService = profileAppWindowService;
                 _mcgToolDictionary = mcgToolDictionary;
                 _webtermTools = webtermTools;
+                _sharedAppContext = sharedAppContext;
 
                 CurrentDataContext = new ProfileDataContext();
 
@@ -113,6 +117,8 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                 CurrentDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentDataContext.IsCreoEnable = e;
 
+
+                CurrentMcgLanguage = _sharedAppContext.CurrentLanguage?.Language;
                 if (CurrentMcgLanguage != null)
                     CurrentMcgLanguage.ChangeLanguageInterface += UpdateInterfaceLanguage;
 

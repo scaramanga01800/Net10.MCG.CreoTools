@@ -14,7 +14,9 @@ using MCG.CommonLib.WebtermLib.Models;
 using MCG.CommonLib.WebtermLib.Services;
 using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.Interfaces;
+using MCG.CommonLib.WpfComponent.Services;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
+using MCG.CREO_Tools.MiscTools.Interfaces;
 using MCG.Tools.EcnDataCheck.Configuration;
 using MCG.Tools.EcnDataCheck.Exceptions;
 using MCG.Tools.EcnDataCheck.Interfaces;
@@ -32,7 +34,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using MCG.CREO_Tools.MiscTools.Interfaces;
 
 namespace MCG.Tools.EcnDataCheck.ViewModel
 {
@@ -137,6 +138,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         private readonly IEcnDataCheckWindchillService _ecnDataCheckWindchillService;
         private readonly IMiscToolsWindchillService _miscToolsWindchillService;
         private readonly IMcgQuickChangeTools _mcgQuickChangeTools;
+        private readonly ISharedAppContext _sharedAppContext;
 
         public EcnDataCheckViewModel(IXmlSerializeTools xmlSerializeTools,
                                      IRegExTools regExTools,
@@ -157,7 +159,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                                      ISapHupService sapHupService,
                                      IEcnDataCheckWindchillService ecnDataCheckWindchillService,
                                      IMiscToolsWindchillService miscToolsWindchillService,
-                                     IMcgQuickChangeTools mcgQuickChangeTools)
+                                     IMcgQuickChangeTools mcgQuickChangeTools,
+                                     ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -181,6 +184,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 _ecnDataCheckWindchillService = ecnDataCheckWindchillService;
                 _miscToolsWindchillService = miscToolsWindchillService;
                 _mcgQuickChangeTools = mcgQuickChangeTools;
+                _sharedAppContext = sharedAppContext;
 
                 CurrentEcnDataCheckDataContext = new EcnDataCheckDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -241,9 +245,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 CurrentEcnDataCheckDataContext.IsCheckBoxLibraySelected = CurrentEcnDataCheckConfiguration.IsCheckBoxLibraySelected;
                 CurrentEcnDataCheckDataContext.IsCheckBoxProductSelected = CurrentEcnDataCheckConfiguration.IsCheckBoxProductSelected;
 
-                MCGLanguage CurrentMCGLANGUAGE = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+                MCGLanguage CurrentMCGLANGUAGE = _sharedAppContext.CurrentLanguage?.Language;
                 if (CurrentMCGLANGUAGE != null)
-                    McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE").ChangeLanguageInterface += UpdateInterfaceLanguage;
+                    CurrentMCGLANGUAGE.ChangeLanguageInterface += UpdateInterfaceLanguage;
 
                 UpdateInterfaceLanguage();
             }

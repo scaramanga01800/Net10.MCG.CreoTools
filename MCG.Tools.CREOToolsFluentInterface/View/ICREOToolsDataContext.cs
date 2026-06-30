@@ -1,5 +1,5 @@
 ﻿using MCG.CommonLib.WpfComponent;
-using MCG.Tools.CREOToolsFluentInterface.ViewModel;
+using MCG.CommonLib.WpfComponent.Models;
 using System.Collections.ObjectModel;
 
 namespace MCG.Tools.CREOToolsFluentInterface.View

@@ -22,7 +22,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig
         #region [REGION] Internal variables
         private string MainAppFolder { get; set; }
         private Dispatcher MainDispatcher { get; set; }
-        //private CREOConnection CurrentCREOConnection { get; set; } = McgWpfTools.GetPropertiesFromMainApp<CREOConnection>("CREOSESSION");
         private IpfcModel CurrentCadModel { get; set; }
         private List<string> AllAsm { get; set; }
         #endregion

@@ -25,9 +25,7 @@ using Microsoft.Extensions.Hosting;
 using System.Windows;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
 using MCG.Tools.CREOToolsFluentInterface.View;
-using MCG.Tools.CREOToolsFluentInterface.Interfaces;
 using MCG.Tools.CREOToolsFluentInterface.ViewModel;
-using MCG.Tools.CREOToolsFluentInterface.Services;
 
 namespace MCG.Tools.CREOToolsFluentInterface
 {
@@ -50,7 +48,6 @@ namespace MCG.Tools.CREOToolsFluentInterface
              {
                  services.AddSingleton<CREOToolsFluentMainView>();
                  services.AddSingleton<CREOToolsFluentViewModel>();
-                 services.AddSingleton<ISharedAppContext, SharedAppContext>();
 
                  // Service for MCG Common Lib (Json, PDF, TIFF, HTML, Oracle Tools, etc.)
                  services.AddMCGCommonLibServices();

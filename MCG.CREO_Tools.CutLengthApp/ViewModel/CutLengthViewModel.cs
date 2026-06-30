@@ -10,6 +10,7 @@ using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Services;
 using MCG.CommonLib.WebtermLib.Services.Interfaces;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.CutLengthApp.Configuration;
 using MCG.CREO_Tools.CutLengthApp.Exceptions;
 using MCG.CREO_Tools.CutLengthApp.Interfaces;
@@ -67,7 +68,7 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
 
         #region [REGION] Internal variables
         private string MainAppFolder { get; set; }
-        private MCGLanguage CurrentMcgLanguage { get; set; } = McgMiscTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+        private MCGLanguage CurrentMcgLanguage { get; set; }
         private string CryptedLogin { get; set; }
         private string CryptedPassWord { get; set; }
         private string CryptedLoginUpdate { get; set; }
@@ -91,13 +92,15 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
         private readonly IUserAuthorizationService _userAuthorizationService;
         private readonly ICutLengthAppService _cutLengthAppService;
         private readonly IMcgToolDictionary _mcgToolDictionary;
+        private readonly ISharedAppContext _sharedAppContext;
 
         public CutLengthViewModel(ICutLengthWindchillService cutLengthWindchillService,
                                   ICreoSessionProvider creoSessionProvider,
                                   ICreoModelService creoModelService,
                                   IUserAuthorizationService userAuthorizationService,
                                   ICutLengthAppService cutLengthAppService,
-                                  IMcgToolDictionary mcgToolDictionary)
+                                  IMcgToolDictionary mcgToolDictionary,
+                                  ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -107,6 +110,7 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
                 _creoModelService = creoModelService;
                 _cutLengthAppService = cutLengthAppService;
                 _mcgToolDictionary = mcgToolDictionary;
+                _sharedAppContext = sharedAppContext;
 
                 CurrentDataContext = new CutLenghtDataContext();
 
@@ -118,6 +122,8 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
                 CurrentDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentDataContext.IsCreoEnable = e;
 
+                CurrentMcgLanguage = _sharedAppContext.CurrentLanguage?.Language;
+
                 if (CurrentMcgLanguage != null)
                     CurrentMcgLanguage.ChangeLanguageInterface += UpdateInterfaceLanguage;
 
@@ -126,6 +132,7 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
                 UpdateListClass();
 
                 CurrentDataContext.IsAdminToolsEnabled = CheckUserAuthorization(CutLengthAppConstants.KeyUserUpdateAppName);
+
 
             }
             catch (Exception ex)

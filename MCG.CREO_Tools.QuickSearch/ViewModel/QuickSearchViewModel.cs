@@ -37,7 +37,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         #region [REGION] Internal variables
         private string MainAppFolder { get; set; }
         private QuickSearchConfiguration CurrentQuickSearchConfiguration { get; set; }
-        private MCGLanguage CurrentMcgLanguage { get; set; } = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+        private MCGLanguage CurrentMcgLanguage { get; set; }
         private WindchillCredentialItem WindchillNetworkCredential { get; set; }
         private Thread ThreadSearchSapInfo { get; set; }
         #endregion
@@ -107,6 +107,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         private readonly IQuickSearchService _quickSearchService;
         private readonly IQuickSearchWindchillService _quickSearchWindchillService;
         private readonly IWindchillCredentialService _windchillCredentialService;
+        private readonly ISharedAppContext _sharedAppContext;
 
         public QuickSearchViewModel(IXmlSerializeTools xmlSerializeTools,
                                     ICreoSessionProvider creoSessionProvider,
@@ -121,7 +122,8 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                                     ISapHupService sapHupService,
                                     IQuickSearchService quickSearchService,
                                     IQuickSearchWindchillService quickSearchWindchillService,
-                                    IWindchillCredentialService windchillCredentialService)
+                                    IWindchillCredentialService windchillCredentialService,
+                                    ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -139,12 +141,15 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 _quickSearchService = quickSearchService;
                 _quickSearchWindchillService = quickSearchWindchillService;
                 _windchillCredentialService = windchillCredentialService;
+                _sharedAppContext = sharedAppContext;
 
                 CurrentQuickSearchDataContext = new QuickSearchDataContext();
 
                 var creoConnectionStatus = _creoSessionProvider.Connect(false);
                 CurrentQuickSearchDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentQuickSearchDataContext.IsCreoEnable = e;
+
+                CurrentMcgLanguage = _sharedAppContext.CurrentLanguage?.Language;
 
                 if (CurrentMcgLanguage != null)
                     CurrentMcgLanguage.ChangeLanguageInterface += UpdateInterfaceLanguage;
@@ -212,12 +217,6 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
             }
-
-            _creoMacroService = creoMacroService;
-            _htmlTools = htmlTools;
-            _windchillDocumentManagementService = windchillDocumentManagementService;
-            _sapHupService = sapHupService;
-            _quickSearchService = quickSearchService;
         }
 
         public bool CheckUserAuthorization(string AppName)

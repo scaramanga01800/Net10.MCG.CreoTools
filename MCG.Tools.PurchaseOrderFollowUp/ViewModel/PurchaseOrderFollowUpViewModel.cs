@@ -65,10 +65,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         public bool IsBatchMode { get; set; } = false;
 
         private string MainAppFolder { get; set; }
-        private string CryptedPassWordRO { get; set; } = null;
-        private string CryptedLoginRO { get; set; } = null;
-        private string CryptedPassWordUpdate { get; set; } = null;
-        private string CryptedLoginUpdate { get; set; } = null;
+
         private PurchaseOrderFollowUpConfiguration CurrentPurchaseOrderFollowUpConfiguration { get; set; }
         private UserPrincipal LoggedUser { get; set; } = UserPrincipal.Current;
         private string SapHupConnectionString { get; set; }
@@ -329,7 +326,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         #endregion
 
         #region [REGION] Init
-        //public PurchaseOrderFollowUpViewModel(bool IsBatchMode = false)
         public PurchaseOrderFollowUpViewModel(ISapPurchasingService sapPurchasingService,
                                               IXmlSerializeTools xmlSerializeTools,
                                               ISapHupService sapHupService,

@@ -100,6 +100,7 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
         private readonly IWindchillRequestTool _windchillRequestTool;
         private readonly IWindchillCredentialService _windchillCredentialService;
         private readonly IWindchillNavigationService _windchillNavigationService;
+        private readonly ISharedAppContext _sharedAppContext;
         #endregion
 
         #region [REGION] Commands
@@ -150,7 +151,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                                        IWindchillCredentialService windchillCredentialService,
                                        IWindchillNavigationService windchillNavigationService,
                                        ISapEcoService sapEcoService,
-                                       ISapHupService sapHupService)
+                                       ISapHupService sapHupService,
+                                       ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -168,6 +170,7 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 _windchillNavigationService = windchillNavigationService;
                 _sapEcoService = sapEcoService;
                 _sapHupService = sapHupService;
+                _sharedAppContext = sharedAppContext;
 
                 ImageResourcePath = EcnEcoFollowUpConstants.ImageResourcesPath;
                 LoggedUser = UserPrincipal.Current;
@@ -221,9 +224,9 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 UpdateDashboardInformation(DashboardItem);
                 CurrentEcnEcoFollowUpDataContext.PersonalDashboard = _ecnEcoFollowUpWindowService.GetEcnEcoFollowUpDashboardView(DashboardItem);
 
-                MCGLanguage CurrentMCGLANGUAGE = McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE");
+                MCGLanguage CurrentMCGLANGUAGE = _sharedAppContext.CurrentLanguage?.Language;
                 if (CurrentMCGLANGUAGE != null)
-                    McgWpfTools.GetPropertiesFromMainApp<MCGLanguage>("MCGLANGUAGE").ChangeLanguageInterface += UpdateInterfaceLanguage;
+                    CurrentMCGLANGUAGE.ChangeLanguageInterface += UpdateInterfaceLanguage;
 
                 CurrentEcnEcoFollowUpDataContext.IsAdminToolsEnabled = _userAuthorizationService.GetIsAppCadAdmin(Environment.UserName, EcnEcoFollowUpConstants.EcnEcoFollowUpAppName);
             }
@@ -231,6 +234,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
             {
                 EcnEcoFollowUpException.SendMessageBox(this.GetType().Name, ex);
             }
+
+            _sharedAppContext = sharedAppContext;
         }
 
         private void UpdateInterfaceLanguage(object sender = null, EventArgs e = null)
