@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.WindchillTools.ManageWTObject.Configuration;
 using MCG.WindchillTools.ManageWTObject.Exceptions;
 using MCG.WindchillTools.ManageWTObject.ViewModel;
@@ -15,7 +16,7 @@ namespace MCG.WindchillTools.ManageWTObject.View
     /// </summary>
     public partial class CreateUpdateWtDocumentWtPartMainView : RibbonWindow
     {
-        public CreateUpdateWtDocumentWtPartMainView(CreateUpdateWtDocumentWtPartViewModel currentVM)
+        public CreateUpdateWtDocumentWtPartMainView(CreateUpdateWtDocumentWtPartViewModel currentVM, ISharedAppContext sharedAppContext)
         {
             string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
             TraceLog.AddTraceLog($"MechanismAnalysisMainView: Local App Directory {MainAppFolder}");
@@ -27,6 +28,7 @@ namespace MCG.WindchillTools.ManageWTObject.View
 
             DataContext = currentVM;
             InitializeComponent();
+            McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
         }
 
         #region [REGION] Methods for Drag and Drop

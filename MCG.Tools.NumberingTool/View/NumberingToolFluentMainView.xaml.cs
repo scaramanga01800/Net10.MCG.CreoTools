@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.Tools.NumberingTool.Configuration;
 using MCG.Tools.NumberingTool.Exceptions;
 using MCG.Tools.NumberingTool.ViewModel;
@@ -36,7 +37,7 @@ namespace MCG.Tools.NumberingTool.View
             }
         }
 
-        public NumberingToolFluentMainView(NumberingToolViewModel currentVm)
+        public NumberingToolFluentMainView(NumberingToolViewModel currentVm, ISharedAppContext sharedAppContext)
         {
             TraceLog.AddTraceLog($"Enter NumberingToolFluentMainView App");
             string MainAppFolder = Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
@@ -46,6 +47,7 @@ namespace MCG.Tools.NumberingTool.View
             McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{NumberingToolConstants.MainDictionary}", UriKind.Absolute);
             CurrentDataContext = currentVm;
             InitializeComponent();
+            McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
         }
 
         public void SetNumberingToolFluentMainViewProperties(bool pNoRangeAuthorized = false)

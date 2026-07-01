@@ -441,6 +441,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                         UpdateUserConfigXmlFile();
                         CurrentDataContext.RaiseColorInterfaceChangeEvent();
                        // CurrentMCGLanguage.RaiseChangeLanguageInterfaceEvent();
+                         _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;
                     }
                 }
                 TraceLog.AddTraceLog("End UpdateLanguageInterface");

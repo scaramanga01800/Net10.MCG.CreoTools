@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MassUpdateAttribute.Configuration;
 using MCG.CREO_Tools.MassUpdateAttribute.Exceptions;
 using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
@@ -9,7 +10,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
 {
     public partial class UpdateRelationsParametersMainView : RibbonWindow
     {
-        public UpdateRelationsParametersMainView(UpdateRelationsParametersViewModel currentViewModel)
+        public UpdateRelationsParametersMainView(UpdateRelationsParametersViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -23,6 +24,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
                 DataContext = CurrentDataContext;
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

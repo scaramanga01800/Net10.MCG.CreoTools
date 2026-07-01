@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport;
@@ -12,7 +13,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SapBomExport
     {
         public SapBomExportViewModel CurrentDataContext { get; set; }
 
-        public SapBomExportMainView(SapBomExportViewModel currentViewModel)
+        public SapBomExportMainView(SapBomExportViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -27,6 +28,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SapBomExport
                 DataContext = currentViewModel;
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

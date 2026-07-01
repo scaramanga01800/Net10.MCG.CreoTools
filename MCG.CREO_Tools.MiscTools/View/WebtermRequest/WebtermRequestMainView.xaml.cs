@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.ViewModel.WebtermRequest;
@@ -11,7 +12,7 @@ namespace MCG.CREO_Tools.MiscTools.View.WebtermRequest
 {
     public partial class WebtermRequestMainView : RibbonWindow
     {
-        public WebtermRequestMainView(WebtermRequestViewModel currentViewModel)
+        public WebtermRequestMainView(WebtermRequestViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -27,6 +28,7 @@ namespace MCG.CREO_Tools.MiscTools.View.WebtermRequest
                 ((WebtermRequestViewModel)DataContext).CallCloseEvent += (sender, e) => { Close(); };
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

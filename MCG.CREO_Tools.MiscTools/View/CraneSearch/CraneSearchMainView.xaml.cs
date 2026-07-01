@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch;
@@ -13,7 +14,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CraneSearch
     {
         public CraneSearchViewModel CurrentDataContext { get; set; }
 
-        public CraneSearchMainView(CraneSearchViewModel currentVm)
+        public CraneSearchMainView(CraneSearchViewModel currentVm, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -32,6 +33,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CraneSearch
                 CurrentDataContext.CallCloseEvent += (o, e) => { this.Close(); };
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

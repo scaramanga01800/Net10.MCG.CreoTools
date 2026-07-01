@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.ViewModel.NumberCumulation;
@@ -12,7 +13,7 @@ namespace MCG.CREO_Tools.MiscTools.View.NumberCumulation
     {
         public NumberCumulationViewModel CurrentDataContext { get; set; }
 
-        public NumberCumulationMainView(NumberCumulationViewModel currentVm)
+        public NumberCumulationMainView(NumberCumulationViewModel currentVm, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -28,6 +29,7 @@ namespace MCG.CREO_Tools.MiscTools.View.NumberCumulation
                 DataContext = currentVm;
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

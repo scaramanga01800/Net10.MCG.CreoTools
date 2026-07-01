@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.View.Attributecolumn;
 using MCG.CommonLib.WpfComponent.ViewModel;
 using MCG.CREO_Tools.MassUpdateAttribute.Configuration;
@@ -14,7 +15,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
         private CreateNewCadDocumentViewModel CurrentCreateNewCadDocumentViewModel;
         private string MainAppFolder;
 
-        public CreateNewCadDocumentFluentWindow(CreateNewCadDocumentViewModel currentViewModel)
+        public CreateNewCadDocumentFluentWindow(CreateNewCadDocumentViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -29,6 +30,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
 
                 InitializeComponent();
                 AddOtherAttributes();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

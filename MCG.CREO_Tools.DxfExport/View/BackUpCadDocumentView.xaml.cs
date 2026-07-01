@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.DxfExport.Configuration;
 using MCG.CREO_Tools.DxfExport.Exceptions;
 using MCG.CREO_Tools.DxfExport.ViewModel;
@@ -10,7 +11,7 @@ namespace MCG.CREO_Tools.DxfExport.View
     public partial class BackUpCadDocumentView : RibbonWindow
     {
         private BackUpCadDocumentViewModel CurrentBackUpCadDocumentViewModel;
-        public BackUpCadDocumentView(BackUpCadDocumentViewModel currentViewModel)
+        public BackUpCadDocumentView(BackUpCadDocumentViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -25,6 +26,7 @@ namespace MCG.CREO_Tools.DxfExport.View
 
                 currentViewModel.CurrentDatacontext.CurrentFolder = McgWpfTools.GetStringResource("DXF_TbExportFolder");
                 currentViewModel.CurrentDatacontext.CurrentFileName = McgWpfTools.GetStringResource("DXF_TbExportFile");
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0,2));
             }
             catch (Exception ex)
             {

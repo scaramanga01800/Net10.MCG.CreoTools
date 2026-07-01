@@ -34,6 +34,9 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
 
                 CurrentDataContext.CurrentDataContext.FontInterfaceChangeEvent += CurrentCREOToolsDataContext_FontInterfaceChangeEvent;
                 CurrentCREOToolsDataContext_FontInterfaceChangeEvent(null, null);
+
+                McgWpfTools.UpdateMergeDictionaries();
+
             }
             catch (Exception ex)
             {
@@ -109,12 +112,12 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                 if (CurrentDataContext.CurrentDataContext.IsDark)
                 {
                     ControlzEx.Theming.ThemeManager.Current.ChangeTheme(Application.Current, $"Dark.{CurrentDataContext.CurrentDataContext.SelectedColorScheme}");
-                    McgMiscTools.MergeDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CommonLibConstants.InterfaceDictionaryDark}", UriKind.Absolute);
+                    McgWpfTools.MergeDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CommonLibConstants.InterfaceDictionaryDark}", UriKind.Absolute);
                 }
                 else
                 {
                     ControlzEx.Theming.ThemeManager.Current.ChangeTheme(Application.Current, $"Light.{CurrentDataContext.CurrentDataContext.SelectedColorScheme}");
-                    McgMiscTools.MergeDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CommonLibConstants.InterfaceDictionaryLight}", UriKind.Absolute);
+                    McgWpfTools.MergeDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CommonLibConstants.InterfaceDictionaryLight}", UriKind.Absolute);
                 }
                 TraceLog.AddTraceLog("End CREOToolsFluentMainView.UpdateColorInterface");
             }

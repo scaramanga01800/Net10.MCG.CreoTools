@@ -5,6 +5,7 @@ using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using System.IO;
+using MCG.CommonLib.WpfComponent.Interfaces;
 
 namespace MCG.CREO_Tools.MiscTools.View.BomComparison
 {
@@ -13,7 +14,9 @@ namespace MCG.CREO_Tools.MiscTools.View.BomComparison
     /// </summary>
     public partial class BomComparisonView : RibbonWindow
     {
-        public BomComparisonView(BomComparisonViewModel currentViewModel)
+        private readonly ISharedAppContext _sharedAppContext;
+        public BomComparisonView(BomComparisonViewModel currentViewModel,
+                                 ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -25,8 +28,11 @@ namespace MCG.CREO_Tools.MiscTools.View.BomComparison
 
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.MainDictionary}", UriKind.Absolute);
                 DataContext = currentViewModel;
+                _sharedAppContext = sharedAppContext;
 
                 InitializeComponent();
+
+                McgWpfTools.UpdateMergeDictionaries(_sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0,2));
             }
             catch (Exception ex)
             {

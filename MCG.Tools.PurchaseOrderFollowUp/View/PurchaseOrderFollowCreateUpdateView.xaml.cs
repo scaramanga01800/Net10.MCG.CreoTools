@@ -3,19 +3,11 @@ using MCG.CommonLib.Services.Statics;
 using MCG.Tools.PurchaseOrderFollowUp.Configuration;
 using MCG.Tools.PurchaseOrderFollowUp.Exceptions;
 using MCG.Tools.PurchaseOrderFollowUp.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace MCG.Tools.PurchaseOrderFollowUp.View

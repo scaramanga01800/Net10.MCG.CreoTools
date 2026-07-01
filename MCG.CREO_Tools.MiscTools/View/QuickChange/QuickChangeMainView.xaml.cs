@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.ViewModel.QuickChange;
@@ -23,7 +24,7 @@ namespace MCG.CREO_Tools.MiscTools.View.QuickChange
     {
         public QuickChangeViewModel CurrentDataContext { get; set; }
 
-        public QuickChangeMainView(QuickChangeViewModel currentViewModel)
+        public QuickChangeMainView(QuickChangeViewModel currentViewModel, ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -39,6 +40,7 @@ namespace MCG.CREO_Tools.MiscTools.View.QuickChange
                 DataContext = currentViewModel;
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {

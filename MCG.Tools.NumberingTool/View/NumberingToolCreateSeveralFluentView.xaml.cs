@@ -1,6 +1,7 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.Tools.NumberingTool.Configuration;
 using MCG.Tools.NumberingTool.Exceptions;
 using MCG.Tools.NumberingTool.ViewModel;
@@ -23,7 +24,7 @@ namespace MCG.Tools.NumberingTool.View
         }
         #endregion
 
-        public NumberingToolCreateSeveralFluentView()
+        public NumberingToolCreateSeveralFluentView(ISharedAppContext sharedAppContext)
         {
             try
             {
@@ -35,6 +36,7 @@ namespace MCG.Tools.NumberingTool.View
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{NumberingToolConstants.MainDictionary}", UriKind.Absolute);
 
                 InitializeComponent();
+                McgWpfTools.UpdateMergeDictionaries(sharedAppContext.CurrentLanguage?.Language?.CultureInfo?.Substring(0, 2));
             }
             catch (Exception ex)
             {
