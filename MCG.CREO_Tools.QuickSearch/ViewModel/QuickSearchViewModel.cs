@@ -162,7 +162,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
 
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickSearchConstants.MainDictionary}", UriKind.Absolute);
 
-                SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.MainPicture}");
+                //SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.MainPicture}");
 
                 CurrentQuickSearchDataContext.CRWLocalEnabled = CurrentQuickSearchConfiguration.CRWLocalEnabled;
                 CurrentQuickSearchDataContext.DGLocalEnabled = CurrentQuickSearchConfiguration.DGLocalEnabled;
@@ -1134,13 +1134,13 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                     AllMaterial = CurrentQuickSearchDataContext.ListPartItemShown.Select((item) => GetPartNumber(item.CurrentPart.Recpart)).Distinct().ToList();
 
                     var tmpSapCostVolumeInfos = _sapHupService.GetListMaterialMasterCostVolumeInfo(AllMaterial);
-                    CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume = new List<SapCostVolumeInfo>();
+                    CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume = new List<SapCostVolumeInfo>();
                     if (tmpSapCostVolumeInfos != null)
-                        CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.AddRange(tmpSapCostVolumeInfos.Select(x => new SapCostVolumeInfo(x)).ToList());
+                        CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume.AddRange(tmpSapCostVolumeInfos.Select(x => new SapCostVolumeInfo(x)).ToList());
                 }
 
 
-                if (CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
+                if (CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
                 {
                     List<SapCostVolumeInfo> CurrentListMaterialCostVolume;
                     SapCostVolumeInfo CurrentMaterialCostVolume;
@@ -1261,7 +1261,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                         CurrentQuickSearchDataContext.IsPartPictureShown = false;
 
                     var SubClass = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass;
-                    SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{SubClass.Subclasspicture}");
+                    //SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{SubClass.Subclasspicture}");
                     CurrentQuickSearchDataContext.RefDocument = SubClass.Subclassrefdoc;
                     CurrentQuickSearchDataContext.IsExtraComponentPossible = SubClass.Showcontextmenu.ToUpper() == "TRUE";
 
@@ -1273,7 +1273,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 else
                 {
                     CurrentQuickSearchDataContext.RefDocument = "";
-                    SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.MainPicture}");
+                    //SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.MainPicture}");
                     CurrentQuickSearchDataContext.IsExtraComponentPossible = false;
                 }
                 CurrentQuickSearchDataContext.RaiseListSubClassChanged();
@@ -1284,6 +1284,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             }
         }
 
+        [Obsolete]
         private void SetCurrentPicture(string PictureCompleteFileName)
         {
             try

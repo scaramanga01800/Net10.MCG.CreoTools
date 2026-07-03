@@ -30,5 +30,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
         ObservableCollection<string> ListFont { get; set; }
         string SelectedFont { get; set; }
 
+        string CurrentUser { get; set; }
+        string MachineName { get; set; }
+
     }
 }

@@ -19,7 +19,7 @@ using System.Windows.Input;
 
 namespace MCG.CREO_Tools.QuickLaunch.ViewModel
 {
-    public class QuickLaunchViewModel : ObservableObject , IQuickLaunchViewModel
+    public class QuickLaunchViewModel : ObservableObject, IQuickLaunchViewModel
     {
         private string MainAppFolder { get; set; }
 
@@ -136,6 +136,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
         public ICommand CommandCadDocumentRename { get => new RelayCommand(() => ExecuteCadDocumentRename()); }
         public ICommand CommandBomEnvirConfig { get => new RelayCommand(() => ExecuteBomEnvirConfig()); }
         public ICommand CommandUpdateRelationsParameters { get => new RelayCommand(() => ExecuteUpdateRelationsParameters()); }
+        public ICommand CommandOpenCall { get => new RelayCommand<bool>((param) => ExecuteOpenCall(param)); }
         #endregion
 
         #region [REGION] Init
@@ -167,6 +168,11 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                 _dxfExportWindchillService = dxfExportWindchillService;
                 _mcgWindchillToolsManageWTObjectWindowService = mcgWindchillToolsManageWTObjectWindowService;
                 _sharedAppContext = sharedAppContext;
+
+
+                var creoConnectionStatus = _creoSessionProvider.Connect(false);
+                IsCreoConnected = creoConnectionStatus == CreoConnectionStatus.OK;
+                _creoSessionProvider.ConnectionStateChanged += (sender, e) => IsCreoConnected = e;
 
                 _creoSessionProvider.ConnectionStart += (sender, e) => IsCreoConnectionInProgress = true;
                 _creoSessionProvider.ConnectionEnd += (sender, e) => IsCreoConnectionInProgress = false;
@@ -522,13 +528,28 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                 QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
             }
         }
+
+        private void ExecuteOpenCall(bool StartNewBrowser = true)
+        {
+            try
+            {
+                HtmlPage = QuickLaunchConstants.HtmlLinkOpenCall;
+                RaiseHtmlPageChangedEvent();
+                if (StartNewBrowser)
+                    _htmlTools.OpenUrlInIternetExplorer(HtmlPage);
+            }
+            catch (Exception ex)
+            {
+                QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
         #endregion
 
         private void StartConnectCreoSessionAsynch()
         {
             try
             {
-                CreoConnectionStatus CreoCnxStatus = _creoSessionProvider.Connect();
+                CreoConnectionStatus CreoCnxStatus = _creoSessionProvider.Connect(true);
                 switch (CreoCnxStatus)
                 {
                     case CreoConnectionStatus.OK:

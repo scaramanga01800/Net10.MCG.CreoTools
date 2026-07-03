@@ -8,6 +8,7 @@
         public const string HtmlLinkPatNumberGenerator = "http://gusang002/AutoPartNumberGenerator/";
         public const string HtmlLinkPresisionLms = "https://precisionlms.ptc.com/";
         public const string HtmlLinkWebterm = "https://webterm.manitowoc.com/WebTerm/UI7/login.xsl";
+        public const string HtmlLinkOpenCall = "https://manitowoc.service-now.com/";
         public const string MainDictionary = "QuickLaunchDictionary.xaml";
     }
 }

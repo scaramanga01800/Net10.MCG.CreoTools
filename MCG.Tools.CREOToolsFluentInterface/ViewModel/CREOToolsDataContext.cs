@@ -28,6 +28,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
         public CREOToolsLanguageSelection CurrentLang { get; set; }
 
+        [ObservableProperty] private string _currentUser;
+        [ObservableProperty] private string _machineName;
         #endregion
 
         #region [REGION] App availability / visibility
@@ -72,11 +74,9 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
         public ObservableCollection<string> ListFont { get; set; } = new();
 
-        [ObservableProperty]
-        private string _selectedColorScheme;
+        [ObservableProperty] private string _selectedColorScheme;
 
-        [ObservableProperty]
-        private string _selectedFont;
+        [ObservableProperty] private string _selectedFont;
 
 
         partial void OnSelectedColorSchemeChanged(string value)
@@ -88,6 +88,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         {
             RaiseFontInterfaceChangeEvent();
         }
+
+
         #endregion
 
         #region [REGION] Scrolling text

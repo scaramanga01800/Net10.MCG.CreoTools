@@ -50,7 +50,7 @@
                            Grid.Column="1" 
                            Stretch="Fill"
                            Height="{Binding Path=Value, ElementName=SliderImage}"
-                           Source="{Binding CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.SUBCLASSPICTUREBIN, Converter={StaticResource ImageConverter}, FallbackValue={StaticResource ResourceKey=MainPicture}}"/>
+                           Source="{Binding CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Subclasspicturebin, Converter={StaticResource ImageConverter}, FallbackValue={StaticResource ResourceKey=MainPicture}}"/>
                         <Slider x:Name="SliderImage"
                             Minimum="100"
                             Maximum="400"

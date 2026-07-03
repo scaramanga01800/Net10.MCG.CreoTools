@@ -41,6 +41,7 @@
             <BitmapImage x:Key="BomEnvirConfig" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/parameter.ico"  />
             <BitmapImage x:Key="CadUpdateRelationsParameters" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update_Params.png"  />
             <BitmapImage x:Key="CRANE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/crane.ico" />
+            <BitmapImage x:Key="SERVICENOW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/servicenow.ico" />
             <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
             <conv:BoolToVisibilityMultiAndConverter x:Key="MultiAndBoolConv"/>
             <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolConv"/>
@@ -472,6 +473,27 @@
                 <Fluent:ScreenTip Title="{DynamicResource QL_ToolEngTimee}" 
                   Image="{StaticResource EngTime}"
                   Text="{DynamicResource QL_ToolTitelEngTime}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+        <Fluent:Button Command="{Binding CommandOpenCall}" 
+                       LargeIcon="{StaticResource SERVICENOW}"
+                       Header="{DynamicResource QL_ToolOpenCall}"
+                       Margin="2,0,2,0">
+            <Fluent:Button.CommandParameter>
+                <s:Boolean>
+                    False
+                </s:Boolean>
+            </Fluent:Button.CommandParameter>
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlOpenCall" />
+                    <Binding Path="AppAvailable.QlOpenCall" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolOpenCall}" 
+                                  Image="{StaticResource SERVICENOW}"
+                                  Text="{DynamicResource QL_ToolTitelOpenCall}"/>
             </Fluent:Button.ToolTip>
         </Fluent:Button>
     </Fluent:RibbonGroupBox>

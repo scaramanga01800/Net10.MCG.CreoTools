@@ -19,6 +19,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolMcgHelpOnline">Accéder à la documentation CAO en ligne</system:String>
     <system:String x:Key="QL_ToolEngTimee">Engineering Time</system:String>
     <system:String x:Key="QL_ToolTitelEngTime">Accéder au pointage des heures</system:String>
+    <system:String x:Key="QL_ToolOpenCall">Service Now</system:String>
+    <system:String x:Key="QL_ToolTitelOpenCall">Accéder à Service Now pour ouvrir un ticket</system:String>
     <system:String x:Key="QL_ToolMenupMechanismAnalysis">Mechanism Analysis</system:String>
     <system:String x:Key="QL_ToolTipMechanismAnalysis">Ouvrir l’analyse de mécanisme dans CREO</system:String>
     <system:String x:Key="QL_ToolCreateUpdateWtDocPart">Créer / Mettre à jour Document / Article</system:String>

@@ -19,6 +19,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolMcgHelpOnline">Open online help with full CAD documentation</system:String>
     <system:String x:Key="QL_ToolEngTimee">Engineering Time</system:String>
     <system:String x:Key="QL_ToolTitelEngTime">Open Engineering Time for time tracking</system:String>
+    <system:String x:Key="QL_ToolOpenCall">Service Now</system:String>
+    <system:String x:Key="QL_ToolTitelOpenCall">Open Service Now to open a call</system:String>
     <system:String x:Key="QL_ToolMenupMechanismAnalysis">Mechanism Analysis</system:String>
     <system:String x:Key="QL_ToolTipMechanismAnalysis">Open Mechanism Analysis to format results from CREO</system:String>
     <system:String x:Key="QL_ToolCreateUpdateWtDocPart">Create/Update WT Document/Part</system:String>

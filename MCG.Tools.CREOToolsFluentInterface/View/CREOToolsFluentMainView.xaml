@@ -46,7 +46,9 @@
                      mc:Ignorable="d"
                      TitleBarHeight="0"
                      Height="750" 
-                     Width="1100">
+                     Width="1100"
+                     
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/tools.ico">
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closed">
@@ -125,6 +127,7 @@
 
             <!-- Converters -->
             <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
+            <conv:BoolToBrushConverter x:Key="BoolToBrush"/>
             <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}"/>
 
             <!-- Styles header -->
@@ -246,17 +249,71 @@
 
         <!-- ============ STATUS BAR ============ -->
         <StatusBar DockPanel.Dock="Bottom" Height="26">
+            <!-- 🟢 GAUCHE -->
             <StatusBarItem>
-                <TextBlock Text="{DynamicResource CT_MainAppName}" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal"
+                            Margin="10,0">
+                    <Ellipse Width="8" 
+                             Height="8"
+                             Margin="0,0,4,0">
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Fill" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentDataContext.IsCreoConnected}"
+                                                 Value="True">
+                                        <Setter Property="Fill" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="CREO"/>
+                </StackPanel>
             </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock Text="{Binding CurrentDataContext.CurrentUser}"/>
+
+            <!-- 🟡 CENTRE -->
+            <StatusBarItem HorizontalAlignment="Center">
+                <TextBlock Text="{Binding StatusMessage}" Opacity="0.8"/>
             </StatusBarItem>
+
+            <!-- 🔴 DROITE -->
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding CurrentDataContext.AppVersion}" Opacity="0.7"/>
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="👤" Margin="0,0,4,0"/>
+                    <TextBlock Text="{Binding CurrentDataContext.CurrentUser}"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding AppVersion}" Margin="0,0,10,0" Opacity="0.7"/>
+                    <TextBlock Text="{Binding CurrentDataContext.MachineName}"
+                               Margin="0,0,10,0" Opacity="0.7"/>
+                    <TextBlock Text="{Binding CurrentTime}" Opacity="0.7"/>
+                    <!-- 🖼️ Drapeau dynamique -->
+                    <Image Width="16" Height="16" Margin="0,0,4,0">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Source" Value="{StaticResource English}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentDataContext.LangCn.IsSelected}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource Chinese}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CurrentDataContext.LangEn.IsSelected}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource English}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CurrentDataContext.LangFr.IsSelected}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource French}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CurrentDataContext.LangDe.IsSelected}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource German}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
+
 
         <!-- ============ RIBBON PRINCIPAL ============ -->
         <Fluent:Ribbon DockPanel.Dock="Top">
@@ -1085,8 +1142,6 @@
             </JpgExport:JpgExportFluentTabMainView>
 
         </Fluent:Ribbon>
-
-
 
         <!-- ============ CONTENU PRINCIPAL ============ -->
         <Grid x:Name="MainContent">

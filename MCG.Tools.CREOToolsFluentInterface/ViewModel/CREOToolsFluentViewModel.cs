@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.CreoInteractionTools.Models;
+using MCG.CommonLib.CreoInteractionTools.Services;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
@@ -25,6 +26,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 {
@@ -293,9 +295,14 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 _sharedAppContext.AppAvailable = CurrentDataContext.AppAvailable;
                 _sharedAppContext.AppVisible = CurrentDataContext.AppVisible;
 
+                _creoSessionProvider.ConnectionEnd += _creoSessionProvider_ConnectionEnd;
+
                 CurrentDataContext.ColorInterfaceChangeEvent += (sender,e) => UpdateUserConfigXmlFile();
                 CurrentDataContext.FontInterfaceChangeEvent += (sender, e) => UpdateUserConfigXmlFile();
 
+                CurrentDataContext.CurrentUser = McgActiveDirectoryTools.GetWindowsSessionUserFullName();
+                CurrentDataContext.MachineName = System.Environment.MachineName;
+                CurrentDataContext.CurrentLang = _userConfiguration.CurrentLang;
                 // 🟢 Application initiale du thème
                 //UpdateThemeAndAccent();
 
@@ -306,6 +313,12 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 TraceLog.AddTraceLog($"InitializeAsync failed: {ex.Message}");
                 CREOToolsException.SendMessageBox(nameof(InitializeAsync), ex);
             }
+        }
+
+        private void _creoSessionProvider_ConnectionEnd(object? sender, bool e)
+        {
+            CurrentDataContext.IsCreoConnected = _creoSessionProvider.IsConnected;
+
         }
 
         private void LoadConfigurations()
