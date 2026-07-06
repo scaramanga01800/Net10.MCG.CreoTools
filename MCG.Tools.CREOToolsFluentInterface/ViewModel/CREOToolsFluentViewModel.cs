@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.CreoInteractionTools.Models;
-using MCG.CommonLib.CreoInteractionTools.Services;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
@@ -26,7 +25,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 {

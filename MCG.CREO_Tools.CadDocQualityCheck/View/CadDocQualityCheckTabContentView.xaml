@@ -1,0 +1,918 @@
+﻿<UserControl x:Class="MCG.CREO_Tools.CadDocQualityCheck.View.CadDocQualityCheckTabContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.CREO_Tools.CadDocQualityCheck.View"
+             xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:MCGWpfLib="clr-namespace:MCG.CommonLib.WpfComponent.View;assembly=MCG.CommonLib.WpfComponent"
+             xmlns:MCGLib="clr-namespace:MCG.CommonLib.Models.Enums;assembly=MCG.CommonLib"
+             xmlns:CadDataCheckVM="clr-namespace:MCG.CREO_Tools.CadDocQualityCheck.ViewModel"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="DOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Arrow_Down.ico" />
+            <BitmapImage x:Key="UNDO" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Undo.ico" />
+            <BitmapImage x:Key="RELATION" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Relation.gif" />
+            <BitmapImage x:Key="ATTRIBUTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Attribute.gif" />
+            <BitmapImage x:Key="LAYER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Layer.gif" />
+            <BitmapImage x:Key="GREEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_green.jpg" />
+            <BitmapImage x:Key="YELLOW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_yellow.jpg" />
+            <BitmapImage x:Key="RED" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_red.jpg" />
+            <BitmapImage x:Key="QUESTION" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_question.jpg" />
+            <BitmapImage x:Key="NONE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/remove_16x16.png" />
+            <BitmapImage x:Key="LAYER_SHOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Layer_shown.gif" />
+            <BitmapImage x:Key="LAYER_HIDDEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Layer_hidden.gif" />
+            <BitmapImage x:Key="NEW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/New.ico" />
+            <BitmapImage x:Key="DELELTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico" />
+            <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update2.ico" />
+            <BitmapImage x:Key="MATERIAL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Material.gif" />
+            <BitmapImage x:Key="UNITS" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Units.ico" />
+            <BitmapImage x:Key="CAD_ASM" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Asm.gif" />
+            <BitmapImage x:Key="CAD_ASM_GEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Asm_Generic.gif" />
+            <BitmapImage x:Key="CAD_ASM_INST" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Asm_Instance.gif" />
+            <BitmapImage x:Key="CAD_PRT" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Prt.gif" />
+            <BitmapImage x:Key="CAD_PRT_GEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Prt_Generic.gif" />
+            <BitmapImage x:Key="CAD_PRT_INST" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Prt_Instance.gif" />
+            <BitmapImage x:Key="CAD_DRW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Drw.gif" />
+            <BitmapImage x:Key="CAD_BULK" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Bulk.gif" />
+            <BitmapImage x:Key="CAD_SKEL" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Skel.gif" />
+            <BitmapImage x:Key="CAD_ASM_COMP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Component.gif" />
+            <BitmapImage x:Key="CAD_FEATURE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CAD_Feature.gif" />
+            <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/smiley_question.jpg" />
+            <BitmapImage x:Key="OPEN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/open.ico" />
+
+            <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityHiddenConverter>
+            <conv:InverseBoolConverter x:Key="InverseBoolConverter"></conv:InverseBoolConverter>
+            <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></conv:InverseBoolToVisibilityConverter>
+            <conv:BoolToRowDetailVisibilityConverter x:Key="BoolToRowDetailVisibilityConverter"></conv:BoolToRowDetailVisibilityConverter>
+            <conv:SelectedItemToVisibilityConverter x:Key="SelectItemToVisibilityConv"></conv:SelectedItemToVisibilityConverter>
+            <conv:BooleanAndConverter x:Key="MultiAndBoolConv"/>
+            <System:Boolean x:Key="TrueValue">True</System:Boolean>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="item 1"
+                                  Margin="5,0,0,0"
+                                  Content="{DynamicResource CQC_StatusBar01}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="item 2"
+                                  Margin="5,0,0,0"
+                                  Content="{Binding CurrentDataContext.ShownCadModels.Count}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="item 3"
+                                  Margin="5,0,0,0"
+                                  Content="{Binding CurrentDataContext.TextStatusBar}"
+                                  HorizontalAlignment="Left" >
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="ProgressBar"                                     
+                                  HorizontalAlignment="Right"
+                                  Margin="0,0,5,0">
+                <ProgressBar Height="18"
+                             Width="250"
+                             Maximum="{Binding CurrentDataContext.NbModelsInSession}" 
+                             Value="{Binding CurrentDataContext.NbModelsInSessionInProgress}"
+                             Visibility="{Binding CurrentDataContext.IsSearchCadModelInProgress, Converter={StaticResource BoolToVisibilityConv}}">
+                    <ProgressBar.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.NbModelsInSessionInProgress}"></TextBlock>
+                            <TextBlock Text="/"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.NbModelsInSession}"></TextBlock>
+                        </StackPanel>
+                    </ProgressBar.ToolTip>
+                </ProgressBar>
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <DataGrid x:Name="DataGridCadItem" 
+                  IsReadOnly="True"
+                  ItemsSource="{Binding CurrentDataContext.ShownCadModels}" 
+                  SelectedItem="{Binding CurrentDataContext.SelectedItem,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedIndex="{Binding CurrentDataContext.SelectedIndex,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"  
+                  CanUserSortColumns="True" 
+                  VerticalContentAlignment="Center" 
+                  HorizontalContentAlignment="Center" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="False" 
+                  CanUserReorderColumns="True" 
+                  SelectionMode="Single"
+                  SelectionUnit="Cell" 
+                  RowDetailsVisibilityMode="{Binding CurrentDataContext.IsCheckDone,Converter={StaticResource BoolToRowDetailVisibilityConverter}}"
+                  MouseLeftButtonUp="DataGridCadItem_MouseLeftButtonUp">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsUpdated}" Value="False">
+                            <Setter Property="Background" Value="White"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsUpdated}" Value="True">
+                            <Setter Property="Background" Value="Yellow"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFound}" Value="False">
+                            <Setter Property="Background" Value="IndianRed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                MouseEnter="StackPanel_MouseEnter"
+                                MouseLeave="StackPanel_MouseLeave">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,0,0,5">
+                                <StackPanel>
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                                         Text="{DynamicResource CQC_LabelCurrentPreRelations}"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                                    <ListBox ItemsSource="{Binding ListCurrentPreRegenRelations}"
+                                             Height="150"
+                                             Width="240">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Relation}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsExtra}" Value="True">
+                                                                    <Setter Property="Background" Value="Pink" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsMissing}" Value="True">
+                                                                    <Setter Property="Background" Value="LightSteelBlue" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                                         Text="{DynamicResource CQC_LabelCurrentPostRelations}"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                                    <ListBox ItemsSource="{Binding ListCurrentPostRegenRelations}"
+                                             Height="150"
+                                             Width="240">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Relation}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsExtra}" Value="True">
+                                                                    <Setter Property="Background" Value="Pink" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsMissing}" Value="True">
+                                                                    <Setter Property="Background" Value="LightSteelBlue" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                                         Text="{DynamicResource CQC_LabelAttributes}"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                                    <ListBox ItemsSource="{Binding ListAttributes}"
+                                             Height="150"
+                                             Width="240">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}"
+                                                       Width="100"
+                                                       VerticalAlignment="Center">
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Type}"
+                                                               Margin="5,0,0,0"
+                                                               Width="40"
+                                                       VerticalAlignment="Center">
+                                                    </TextBlock>
+                                                    <Fluent:CheckBox IsChecked="{Binding IsDesignated}"
+                                                                     IsEnabled="False"></Fluent:CheckBox>
+                                                    <Image Height="20">
+                                                        <Image.Style>
+                                                            <Style TargetType="{x:Type Image}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding AttributeStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                                        <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip01}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding AttributeStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                                        <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip02}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding AttributeStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                                        <Setter Property="Source" Value="{StaticResource RED}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip03}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding AttributeStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                                        <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                    <Image Height="20" >
+                                                        <Image.Style>
+                                                            <Style TargetType="{x:Type Image}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsMissing}" Value="True">
+                                                                        <Setter Property="Source" Value="{StaticResource NEW}" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsUpdated}" Value="True">
+                                                                        <Setter Property="Source" Value="{StaticResource UPDATE}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Fluent:TwoLineLabel HasTwoLines="False"
+                                                         Text="{DynamicResource CQC_LabelLayers}"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                                    <ListBox ItemsSource="{Binding ListLayers}"
+                                             Height="150"
+                                             Width="205">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}"
+                                                       Width="100"
+                                                       VerticalAlignment="Center">
+                                                    </TextBlock>
+                                                    <Image Height="20" >
+                                                        <Image.Style>
+                                                            <Style TargetType="{x:Type Image}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsDisplayed}" Value="True">
+                                                                        <Setter Property="Source" Value="{StaticResource LAYER_SHOWN}" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsDisplayed}" Value="False">
+                                                                        <Setter Property="Source" Value="{StaticResource LAYER_HIDDEN}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                    <Image Height="20"
+                                                           Margin="5,0">
+                                                        <Image.Style>
+                                                            <Style TargetType="{x:Type Image}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding LayerStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                                        <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip01}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding LayerStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                                        <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip02}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding LayerStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                                        <Setter Property="Source" Value="{StaticResource RED}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip03}"></Setter>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding LayerStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                                        <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                                        <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                    <Image Height="20" >
+                                                        <Image.Style>
+                                                            <Style TargetType="{x:Type Image}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.NEW}">
+                                                                        <Setter Property="Source" Value="{StaticResource NEW}" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.REMOVED}">
+                                                                        <Setter Property="Source" Value="{StaticResource DELELTE}" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding State}" Value="{x:Static MCGLib:ObjectState.TO_BE_REMOVED}">
+                                                                        <Setter Property="Source" Value="{StaticResource DELELTE}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type  StackPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition Width="28"></ColumnDefinition>
+                                            <ColumnDefinition Width="28"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="1"
+                                                Margin="2"
+                                                Command="{Binding Data.CommandCopyPreRelations, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}">
+                                            <Image Source="{StaticResource DOWN}"></Image>
+                                        </Button>
+                                        <Button Grid.Column="2"
+                                                Margin="2"
+                                                Command="{Binding Data.CommandInitPreRelations, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}">
+                                            <Image Source="{StaticResource UNDO}"></Image>
+                                        </Button>
+                                        <Fluent:TwoLineLabel Grid.Column="0"
+                                                             HasTwoLines="False"
+                                                             Text="{DynamicResource CQC_LabelNewPreRelations}"
+                                                             HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <TextBox Height="150"
+                                             Width="240"
+                                             Background="{DynamicResource IdealBackgroundColor}"
+                                             Foreground="{DynamicResource IdealForegroundColor}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                             Text="{Binding NewPreRegenRelations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             AcceptsReturn="True"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition Width="28"></ColumnDefinition>
+                                            <ColumnDefinition Width="28"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="1"
+                                                Margin="2"
+                                                Command="{Binding Data.CommandCopyPostRelations, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}">
+                                            <Image Source="{StaticResource DOWN}"></Image>
+                                        </Button>
+                                        <Button Grid.Column="2"
+                                                Margin="2"
+                                                Command="{Binding Data.CommandInitPostRelations, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}">
+                                            <Image Source="{StaticResource UNDO}"></Image>
+                                        </Button>
+                                        <Fluent:TwoLineLabel Grid.Column="0"
+                                                             HasTwoLines="False"
+                                                             Text="{DynamicResource CQC_LabelNewPostRelations}"
+                                                             HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                                             VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <TextBox Height="150" 
+                                             Width="240"
+                                             Background="{DynamicResource IdealBackgroundColor}"
+                                             Foreground="{DynamicResource IdealForegroundColor}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                             Text="{Binding NewPostRegenRelations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             AcceptsReturn="True"/>
+                                </StackPanel>
+                                <ListBox ItemsSource="{Binding ListQualityCheckResult}"
+                                             Height="178"
+                                             Width="240">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Height="20"
+                                                           Margin="5,0">
+                                                    <Image.Style>
+                                                        <Style TargetType="{x:Type Image}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip01}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                                    <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip02}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip03}"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                                    <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Image.Style>
+                                                </Image>
+                                                <TextBlock Text="{Binding Comments}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+
+            <DataGrid.ContextMenu>
+                <Fluent:ContextMenu x:Name="ExtraCompMenu"  Visibility="{Binding CurrentQuickSearchDataContext.SelectedPartItem, Converter={StaticResource SelectItemToVisibilityConv}}" IsOpen="False">
+                    <Fluent:MenuItem Command="{Binding CommandOpenModelInCreo}" CommandParameter="{StaticResource TrueValue}" Header="{DynamicResource QS_BtOpenInCreo}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=OPEN}" Width="16" ></Image>
+                        </MenuItem.Icon>
+                        <Fluent:MenuItem.IsEnabled>
+                            <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                                <Binding Path="Data.CurrentDataContext.ShowActionButton" Source="{StaticResource proxy}"/>
+                                <Binding Path="Data.CurrentDataContext.IsNoActionInProgress" Source="{StaticResource proxy}"/>
+                                <Binding Path="Data.CurrentDataContext.IsCreoEnable" Source="{StaticResource proxy}"/>
+                            </MultiBinding>
+                        </Fluent:MenuItem.IsEnabled>
+                    </Fluent:MenuItem>
+                </Fluent:ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="IsSelected">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox  IsChecked="{Binding Data.CurrentDataContext.IsAllSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource proxy}}">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="Unchecked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAll, Source={StaticResource proxy}}" CommandParameter="{Binding Data.CurrentDataContext.IsAllSelected, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                                <behaviors:EventTrigger EventName="Checked">
+                                    <behaviors:InvokeCommandAction Command="{Binding Data.CommandSelectUnselectAll, Source={StaticResource proxy}}" CommandParameter="{Binding Data.CurrentDataContext.IsAllSelected, Source={StaticResource proxy}}"></behaviors:InvokeCommandAction>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </CheckBox>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CbTemplate" IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=False}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="CadDocSubType" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.ASM}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_ASM}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.ASM_GEN}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_ASM_GEN}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.ASM_INST}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_ASM_INST}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.PRT}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_PRT}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.PRT_GEN}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_PRT_GEN}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.PRT_INST}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_PRT_INST}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.BULK}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_BULK}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.SKEL}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_SKEL}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.DRW}">
+                                                <Setter Property="Source" Value="{StaticResource CAD_DRW}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CadDocSubType}" Value="{x:Static MCGLib:EpmDocumentTypeEnum.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource UNKNOWN}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn x:Name="ColPartNumber"  Binding="{Binding Number}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource CQC_ColHeader01}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                    <Setter Property="Background" Value="#FFC9C9C9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLocallyModified}" Value="True">
+                                    <Setter Property="Background" Value="#FFE8E8E8"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn x:Name="ColStatus"  
+                        Binding="{Binding Status}" 
+                        IsReadOnly="True" 
+                        CanUserSort="True" 
+                        Visibility="{Binding Data.CurrentDataContext.IsLoadedFromCreo, Source={StaticResource proxy}, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" >
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource CQC_ColHeader02}"></TextBlock>
+                    </DataGridTextColumn.Header>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                    <Setter Property="Background" Value="#FFC9C9C9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLocallyModified}" Value="True">
+                                    <Setter Property="Background" Value="#FFE8E8E8"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="RelationsStatus" >
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource RELATION}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation01}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                    <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation03}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation02}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelationsStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                    <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPreRegenRelationsOk}" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation04}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsPreRegenRelationsOk}" Value="False">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation05}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPostRegenRelationsOk}" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation06}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsPostRegenRelationsOk}" Value="False">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipRelation07}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="AttributesStatus" >
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource ATTRIBUTE}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AttributesStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipAttributes01}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AttributesStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipAttributes03}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AttributesStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                <Setter Property="Source" Value="{StaticResource RED}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipAttributes02}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AttributesStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="LayersStatus" >
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource LAYER}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LayersStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipLayers01}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LayersStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipLayers03}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LayersStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                <Setter Property="Source" Value="{StaticResource RED}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipLayers02}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LayersStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="MaterialStatus" >
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource MATERIAL}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MaterialStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial01}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MaterialStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                    <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial03}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MaterialStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial02}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MaterialStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                    <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMaterialAssigned}" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial04}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsMaterialAssigned}" Value="False">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial05}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMaterialConditionDefined}" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial06}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsMaterialConditionDefined}" Value="False">
+                                                    <Setter Property="Source" Value="{StaticResource RED}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial07}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Height="20" >
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsNotDefaultMaterialAssigned}" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial08}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsNotDefaultMaterialAssigned}" Value="False">
+                                                    <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                    <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipMaterial09}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="IsUnitsOk" >
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource UNITS}" Height="16"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsUnitsOk}" Value="True">
+                                                <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipUnits01}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsUnitsOk}" Value="False">
+                                                <Setter Property="Source" Value="{StaticResource RED}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipUnits02}"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="ComponentStatus">
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource CAD_ASM_COMP}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ComponentStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipComponents01}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ComponentStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipComponents03}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ComponentStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                <Setter Property="Source" Value="{StaticResource RED}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipComponents02}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ComponentStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ComponentStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.NONE}">
+                                                <Setter Property="Source" Value="{StaticResource NONE}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip05}"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn CanUserResize="False" CanUserSort="True" SortMemberPath="FeatureStatus">
+                    <DataGridTemplateColumn.Header>
+                        <Image Source="{StaticResource CAD_FEATURE}"></Image>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="20" >
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FeatureStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.OK}">
+                                                <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipFeatures01}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FeatureStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.WARNING}">
+                                                <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipFeatures03}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FeatureStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.ISSUE}">
+                                                <Setter Property="Source" Value="{StaticResource RED}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTipFeatures02}"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FeatureStatus}" Value="{x:Static CadDataCheckVM:CadDocCheckStatus.UNKNOWN}">
+                                                <Setter Property="Source" Value="{StaticResource QUESTION}" />
+                                                <Setter Property="ToolTip" Value="{DynamicResource CQC_ColToolTip04}"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="{DynamicResource CQC_ColHeader04}" Binding="{Binding Comment}">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{DynamicResource CQC_ColHeader05}" Binding="{Binding Template}">
+
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

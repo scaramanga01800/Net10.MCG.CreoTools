@@ -12,7 +12,6 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Models;
 using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CommonLib.WpfComponent.Interfaces;
-using MCG.CommonLib.WpfComponent.Services;
 using MCG.CommonLib.WpfComponent.ViewModel;
 using MCG.CommonLib.WpfComponent.WindchillCredential;
 using MCG.CREO_Tools.MassUpdateAttribute.Configuration;
@@ -974,20 +973,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
         }
-
-        //private void ExecuteClose()
-        //{
-        //    try
-        //    {
-        //        CurrentRenameWindow.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        RaiseActionDoneEvent();
-        //        StopCurrentProcess = false;
-        //        MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
-        //    }
-        //}
 
         private void ExecuteRemove()
         {

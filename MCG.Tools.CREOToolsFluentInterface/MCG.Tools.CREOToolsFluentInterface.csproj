@@ -35,6 +35,7 @@
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />
+    <ProjectReference Include="..\MCG.CREO_Tools.CadDocQualityCheck\MCG.CREO_Tools.CadDocQualityCheck.csproj" />
     <ProjectReference Include="..\MCG.CREO_Tools.CutLengthApp\MCG.CREO_Tools.CutLengthApp.csproj" />
     <ProjectReference Include="..\MCG.CREO_Tools.DxfExport\MCG.CREO_Tools.DxfExport.csproj" />
     <ProjectReference Include="..\MCG.CREO_Tools.JpgExport\MCG.CREO_Tools.JpgExport.csproj" />

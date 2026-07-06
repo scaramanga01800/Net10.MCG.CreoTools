@@ -8,6 +8,7 @@
   <Project Path="../../Net10.MCG.CommonLib/MCG.CommonLib/MCG.CommonLib.csproj" />
   <Project Path="../../Net10.MCG.CommonLib/MCG.Converters/MCG.Converters.csproj" />
   <Project Path="../../Net10.MCG.CommonLib/MCG.WindchillRequestTool/MCG.WindchillRequestTool.csproj" />
+  <Project Path="../MCG.CREO_Tools.CadDocQualityCheck/MCG.CREO_Tools.CadDocQualityCheck.csproj" Id="298a2589-fe0e-4913-acad-90eb1b876bc3" />
   <Project Path="../MCG.CREO_Tools.CutLengthApp/MCG.CREO_Tools.CutLengthApp.csproj" />
   <Project Path="../MCG.CREO_Tools.DxfExport/MCG.CREO_Tools.DxfExport.csproj" />
   <Project Path="../MCG.CREO_Tools.JpgExport/MCG.CREO_Tools.JpgExport.csproj" />

@@ -1,16 +1,13 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
-using MCG.CREO_Tools.CutLengthApp.Configuration;
-using MCG.CREO_Tools.CutLengthApp.Exceptions;
-using MCG.CREO_Tools.CutLengthApp.ViewModel;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Input;
+using MCG.CREO_Tools.CadDocQualityCheck.Configuration;
+using MCG.CREO_Tools.CadDocQualityCheck.Exceptions;
+using MCG.CREO_Tools.CadDocQualityCheck.ViewModel;
 
-namespace MCG.CREO_Tools.CutLengthApp.View
+namespace MCG.CREO_Tools.CadDocQualityCheck.View
 {
-    public partial class CutLengthMainView : RibbonTabItem
+    public partial class CadDocQualityCheckMainView : RibbonTabItem
     {
         private bool IsAlreadyInit { get; set; } = false;
 
@@ -40,31 +37,32 @@ namespace MCG.CREO_Tools.CutLengthApp.View
         }
         #endregion
 
-        public CutLengthMainView()
+        public CadDocQualityCheckMainView()
         {
             try
             {
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
-                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CutLengthAppConstants.MainDictionary}", UriKind.Absolute);
+                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CadDocQualityCheckConstants.MainDictionary}", UriKind.Absolute);
 
                 InitializeComponent();
-                DataContextChanged += CutLengthMainView_DataContextChanged;
+
+                DataContextChanged += CadDocQualityCheckMainView_DataContextChanged;
             }
             catch (Exception ex)
             {
-                CutLengthException.SendMessageBox(this.GetType().Name, ex);
+                CadDocQualityCheckException.SendMessageBox(this.GetType().Name, ex);
             }
         }
 
-        private void CutLengthMainView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void CadDocQualityCheckMainView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
             try
             {
-                if (!IsAlreadyInit && DataContext != null && DataContext.GetType() == typeof(CutLengthViewModel))
+                if (!IsAlreadyInit && DataContext != null && DataContext.GetType() == typeof(CadDocQualityCheckViewModel))
                 {
-                    CutLengthViewModel CurrentDataContext = DataContext as CutLengthViewModel;
+                    CadDocQualityCheckViewModel CurrentDataContext = DataContext as CadDocQualityCheckViewModel;
                     CurrentDataContext.ActionDoneEvent += RaiseActionDoneEvent;
                     CurrentDataContext.ActionInProgressEvent += RaiseActionInProgressEvent;
                     IsAlreadyInit = true;
@@ -72,15 +70,8 @@ namespace MCG.CREO_Tools.CutLengthApp.View
             }
             catch (Exception ex)
             {
-                CutLengthException.SendMessageBox(this.GetType().Name, ex);
+                CadDocQualityCheckException.SendMessageBox(this.GetType().Name, ex);
             }
         }
-
-        private void TbDoubleInput_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9.]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
     }
 }

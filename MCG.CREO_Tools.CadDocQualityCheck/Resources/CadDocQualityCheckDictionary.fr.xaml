@@ -1,0 +1,92 @@
+<ResourceDictionary 
+xmlns ="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="CQC_AppName">Doc CAO Quality Check</system:String>
+    <system:String x:Key="CQC_RibGrpCreoInteraction">Interaction CREO</system:String>
+    <system:String x:Key="CQC_CbDisplayedModelsOnly">Seulement les documents CAO affichés</system:String>
+    <system:String x:Key="CQC_CbDisplayedActiveModelOnly">Seulement le document CAO actif et ses composants</system:String>
+    <system:String x:Key="CQC_StatusBar01">Nb de documents CAO :</system:String>
+    <system:String x:Key="CQC_ColHeader01">Numéro</system:String>
+    <system:String x:Key="CQC_ColHeader02">Statut</system:String>
+    <system:String x:Key="CQC_ColHeader03">Nom</system:String>
+    <system:String x:Key="CQC_ColHeader04">Commentaire</system:String>
+    <system:String x:Key="CQC_ColHeader05">Générique</system:String>
+    <system:String x:Key="CQC_SearchCadDocInProgress">– Recherche des modèles CAO en cours</system:String>
+    <system:String x:Key="CQC_SearchCadDocRelInProgress">– Recherche des relations en cours</system:String>
+    <system:String x:Key="CQC_SearchCadDocAttribInProgress">– Recherche des attributs en cours</system:String>
+    <system:String x:Key="CQC_SearchCadDocLayerInProgress">– Recherche des couches en cours</system:String>
+    <system:String x:Key="CQC_RibGrpShow">Affichage</system:String>
+    <system:String x:Key="CQC_CbIsCheckedOutText">Documents CAO récupérés / nouveaux</system:String>
+    <system:String x:Key="CQC_CbIsLocallyModifiedText">Documents CAO modifiés localement</system:String>
+    <system:String x:Key="CQC_CbIsReadOnlyShownText">Documents CAO en lecture seule</system:String>
+    <system:String x:Key="CQC_CbCheckUncheckedOutItemText">Vérifier les documents CAO non récupérés</system:String>
+    <system:String x:Key="CQC_CbForceTypeProeUpdateText">Forcer la mise à jour de TYPEPROE</system:String>
+    <system:String x:Key="CQC_LabelCurrentPreRelations">Relations initiales actuelles</system:String>
+    <system:String x:Key="CQC_LabelNewPreRelations">Relations initiales futures</system:String>
+    <system:String x:Key="CQC_LabelCurrentPostRelations">Relations post-régénération actuelles</system:String>
+    <system:String x:Key="CQC_LabelNewPostRelations">Relations post-régénération futures</system:String>
+    <system:String x:Key="CQC_LabelLayers">Couches</system:String>
+    <system:String x:Key="CQC_LabelAttributes">Attributs</system:String>
+    <system:String x:Key="CQC_ColToolTip01">Vérification OK</system:String>
+    <system:String x:Key="CQC_ColToolTip02">Vérification OK avec avertissement(s)</system:String>
+    <system:String x:Key="CQC_ColToolTip03">Vérification NON OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTip04">Vérification inconnue</system:String>
+    <system:String x:Key="CQC_ColToolTip05">Non applicable</system:String>
+    <system:String x:Key="CQC_RibGrpUpdate">Mise à jour CREO</system:String>
+    <system:String x:Key="CQC_UpdateCadDocRelInProgress">– Mise à jour des relations en cours</system:String>
+    <system:String x:Key="CQC_UpdateCadDocAttribInProgress">– Mise à jour des attributs en cours</system:String>
+    <system:String x:Key="CQC_UpdateCadDocLayerInProgress">– Mise à jour des couches en cours</system:String>
+    <system:String x:Key="CQC_CheckCadDocInProgress">– Contrôle des modèles CAO en cours</system:String>
+    <system:String x:Key="CQC_MenuImportFromXls">Importer depuis Excel</system:String>
+
+    <system:String x:Key="CQC_QualCheckMsg001">Composant {0} : échec de placement</system:String>
+    <system:String x:Key="CQC_QualCheckMsg002">Composant {0} : supprimé</system:String>
+    <system:String x:Key="CQC_QualCheckMsg003">Composant {0} : non entièrement contraint</system:String>
+    <system:String x:Key="CQC_QualCheckMsg004">Fonction {0} Id {1} : échec</system:String>
+    <system:String x:Key="CQC_QualCheckMsg005">Fonction {0} Id {1} : supprimée</system:String>
+    <system:String x:Key="CQC_QualCheckMsg006">Fonction {0} Id {1} : non entièrement contrainte</system:String>
+
+    <system:String x:Key="CQC_ColToolTipRelation01">Relations OK</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation02">Relations non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation03">Relations avec avertissement(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation04">Régénération des relations OK</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation05">Régénération des relations non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation06">Régénération post-relations OK</system:String>
+    <system:String x:Key="CQC_ColToolTipRelation07">Régénération post-relations non OK avec erreur(s)</system:String>
+
+    <system:String x:Key="CQC_ColToolTipAttributes01">Attributs OK</system:String>
+    <system:String x:Key="CQC_ColToolTipAttributes02">Attributs non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipAttributes03">Attributs avec avertissement(s)</system:String>
+
+    <system:String x:Key="CQC_ColToolTipLayers01">Couches OK</system:String>
+    <system:String x:Key="CQC_ColToolTipLayers02">Couches non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipLayers03">Couches avec avertissement(s)</system:String>
+
+    <system:String x:Key="CQC_ColToolTipMaterial01">Matière OK</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial02">Matière non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial03">Matière avec avertissement(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial04">Matière assignée</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial05">Matière non assignée</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial06">Paramètre de condition de matière défini</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial07">Paramètre de condition de matière non défini</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial08">Matière non par défaut assignée</system:String>
+    <system:String x:Key="CQC_ColToolTipMaterial09">Matière par défaut assignée</system:String>
+
+    <system:String x:Key="CQC_ColToolTipUnits01">Unités OK</system:String>
+    <system:String x:Key="CQC_ColToolTipUnits02">Unités non OK avec erreur(s)</system:String>
+
+    <system:String x:Key="CQC_ColToolTipComponents01">Composants OK</system:String>
+    <system:String x:Key="CQC_ColToolTipComponents02">Composants non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipComponents03">Composants avec avertissement(s)</system:String>
+
+    <system:String x:Key="CQC_ColToolTipFeatures01">Fonctions OK</system:String>
+    <system:String x:Key="CQC_ColToolTipFeatures02">Fonctions non OK avec erreur(s)</system:String>
+    <system:String x:Key="CQC_ColToolTipFeatures03">Fonctions avec avertissement(s)</system:String>
+
+    <system:String x:Key="CQC_AppNameRunCreoMacro">Macro CREO</system:String>
+    <system:String x:Key="CQC_LabelMacroTitle">Macro CREO à lancer</system:String>
+    <system:String x:Key="CQC_BtTitleDeleteSelectedCadDocs">Supprimer les documents CAO sélectionnés</system:String>
+    <system:String x:Key="CQC_BtStartDeleteSelectedCadDocs">Supprimer les documents CAO sélectionnés</system:String>
+</ResourceDictionary> 

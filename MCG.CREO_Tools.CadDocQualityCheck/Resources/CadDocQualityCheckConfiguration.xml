@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CadDocQualityCheckDataConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   
+  <ListStandardLayers>
+    <CadDocLayerItemConfig>
+      <Name>1_REF_PLANES</Name>
+      <IsDisplayed>false</IsDisplayed>
+      <ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+      <RefType>MAINPLAN</RefType>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>2_ALL_CSYS</Name>
+      <IsDisplayed>false</IsDisplayed>
+      <ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+      <RefType>CSYS</RefType>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>1_ALL_PLANES</Name>
+      <IsDisplayed>false</IsDisplayed>
+      <ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+      <RefType>PLAN</RefType>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>3_ALL_AXES</Name>
+      <IsDisplayed>false</IsDisplayed>
+      <ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+      <RefType>AXIS</RefType>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>4_ALL_POINTS</Name>
+      <IsDisplayed>false</IsDisplayed>
+      <ToBeCreatedIfMissing>true</ToBeCreatedIfMissing>
+      <RefType>POINTS</RefType>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>5_ALL_CURVES</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>6_ALL_SURFS</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>9_ALL_WELDS</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>10_ALL_THREADS</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>11_ALL_COPY_GEOM</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>12_ALL_EXT_COPY_GEOM</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>SKELETON</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>90_BOM_TABLE</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>91_TOL_GEOM</Name>
+      <IsDisplayed>false</IsDisplayed>
+    </CadDocLayerItemConfig>
+    <CadDocLayerItemConfig>
+      <Name>13_SHOWN_FEATURES</Name>
+      <IsDisplayed>true</IsDisplayed>
+    </CadDocLayerItemConfig>
+  </ListStandardLayers>
+
+	<ListTemplate>
+		<CadDocTemplateConfig>
+			<FileName>a_template_designasm.asm</FileName>
+			<CadDocType>ASM</CadDocType>
+			<Template>DEFAULT ASM</Template>
+			<IsDefaultAsm>true</IsDefaultAsm>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>a_template_solidpart.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT PRT</Template>
+			<IsDefaultPrt>true</IsDefaultPrt>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>b_template_sheetmetalpart.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT SHEET METAL</Template>
+			<IsDefaultSheetMetal>true</IsDefaultSheetMetal>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>template_bulk_item.prt</FileName>
+			<CadDocType>PRT</CadDocType>
+			<Template>DEFAULT BULK</Template>
+			<IsDefaultBulk>true</IsDefaultBulk>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>template_electrical_cable.prt</FileName>
+			<Template>CUTL TWR ELECTRICAL CABLE</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>attache-tirant.prt</FileName>
+			<Template>JIB TIE BAR BRACKET</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre.prt</FileName>
+			<Template>JIB BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_carre.prt</FileName>
+			<Template>JIB SQUARE TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_cisaillee.prt</FileName>
+			<Template>JIB SHEARED TUBE</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_coffre.prt</FileName>
+			<Template>JIB DOUBLE ANGLE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_corniere.prt</FileName>
+			<Template>JIB ANGLE IRON BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_rect.prt</FileName>
+			<Template>JIB REC TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>barre_tube.prt</FileName>
+			<Template>JIB TUBE BAR</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>element.asm</FileName>
+			<Template>JIB ELEMENT STD</Template>
+			<CadDocType>ASM</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>element_generique_v10.asm</FileName>
+			<Template>JIB ELEMENT GEN</Template>
+			<CadDocType>ASM</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>sommier.asm</FileName>
+			<Template>JIB GIRDER</Template>
+			<CadDocType>ASM</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>sommier_inf.asm</FileName>
+			<Template>JIB GIRDER INF</Template>
+			<CadDocType>ASM</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>sommier_sup.asm</FileName>
+			<Template>JIB GIRDER SUP</Template>
+			<CadDocType>ASM</CadDocType>
+		</CadDocTemplateConfig>
+		<CadDocTemplateConfig>
+			<FileName>template_cable_bus.prt</FileName>
+			<Template>CUTL TWR CABLE BUS</Template>
+			<CadDocType>PRT</CadDocType>
+		</CadDocTemplateConfig>
+	</ListTemplate>
+
+</CadDocQualityCheckDataConfiguration>
