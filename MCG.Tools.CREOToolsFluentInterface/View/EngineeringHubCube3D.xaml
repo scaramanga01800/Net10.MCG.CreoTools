@@ -78,7 +78,7 @@
                                     <DiffuseMaterial.Brush>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
-                                                <Grid Width="256" Height="256" Background="#0078D4">
+                                                <Grid Width="256" Height="256" Background="#FF5BB73B">
                                                     <TextBlock Text="CREO" Foreground="White"
                                                                FontSize="48" FontWeight="Bold"
                                                                HorizontalAlignment="Center"
@@ -103,7 +103,7 @@
                                     <DiffuseMaterial.Brush>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
-                                                <Grid Width="256" Height="256" Background="#D83B01">
+                                                <Grid Width="256" Height="256" Background="#FF40AA1D">
                                                     <TextBlock Text="Windchill" Foreground="White"
                                                                FontSize="40" FontWeight="Bold"
                                                                HorizontalAlignment="Center"
@@ -128,7 +128,7 @@
                                     <DiffuseMaterial.Brush>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
-                                                <Grid Width="256" Height="256" Background="#107C10">
+                                                <Grid Width="256" Height="256" Background="#FF90A4D0">
                                                     <TextBlock Text="SAP" Foreground="White"
                                                                FontSize="56" FontWeight="Bold"
                                                                HorizontalAlignment="Center"
@@ -176,6 +176,23 @@
                             <GeometryModel3D.Material>
                                 <DiffuseMaterial>
                                     <DiffuseMaterial.Brush>
+                                        <ImageBrush ImageSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/EngHub.png"
+                                                Stretch="Fill"/>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                            </GeometryModel3D.Material>
+                        </GeometryModel3D>
+
+                        <!-- ⚫ Engineering Hub -->
+                        <GeometryModel3D>
+                            <GeometryModel3D.Geometry>
+                                <MeshGeometry3D Positions="-1,-1,-1  1,-1,-1  1,-1,1  -1,-1,1"
+                                                TriangleIndices="0 1 2  0 2 3"
+                                                TextureCoordinates="0,1 1,1 1,0 0,0"/>
+                            </GeometryModel3D.Geometry>
+                            <GeometryModel3D.Material>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
                                                 <Grid Width="256" Height="256" Background="#CA5010">
@@ -190,9 +207,8 @@
                                 </DiffuseMaterial>
                             </GeometryModel3D.Material>
                         </GeometryModel3D>
-
-                        <!-- ⚫ Engineering Hub -->
-                        <GeometryModel3D>
+                        
+                        <!--<GeometryModel3D>
                             <GeometryModel3D.Geometry>
                                 <MeshGeometry3D Positions="-1,-1,-1  1,-1,-1  1,-1,1  -1,-1,1"
                                                 TriangleIndices="0 1 2  0 2 3"
@@ -229,7 +245,7 @@
                                     </DiffuseMaterial.Brush>
                                 </DiffuseMaterial>
                             </GeometryModel3D.Material>
-                        </GeometryModel3D>
+                        </GeometryModel3D>-->
 
                     </Model3DGroup>
                 </ModelVisual3D.Content>

@@ -48,7 +48,7 @@
                      Height="750" 
                      Width="1100"
                      
-                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/tools.ico">
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Engineering_hub.ico">
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closed">
@@ -112,7 +112,7 @@
                  Color="{DynamicResource Fluent.Ribbon.Colors.Accent20}"/>
 
             <!-- Icônes -->
-            <BitmapImage x:Key="Tools"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/tools.ico"/>
+            <BitmapImage x:Key="Tools"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Engineering_hub.ico"/>
             <BitmapImage x:Key="Earth"        UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Earth.ico"/>
             <BitmapImage x:Key="Display"      UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/display_32x32.png"/>
             <BitmapImage x:Key="User"         UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/user_32x32.png"/>
