@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.Configuration;
-using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;

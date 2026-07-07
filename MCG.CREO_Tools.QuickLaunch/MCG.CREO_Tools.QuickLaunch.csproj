@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Fluent.Ribbon" Version="11.0.2" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4071-prerelease" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
     <PackageReference Include="XamlAnimatedGif" Version="2.3.2" />
   </ItemGroup>
 
