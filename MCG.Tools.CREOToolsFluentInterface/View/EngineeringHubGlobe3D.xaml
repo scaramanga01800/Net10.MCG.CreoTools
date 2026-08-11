@@ -1,0 +1,228 @@
+﻿<UserControl x:Class="MCG.Tools.CREOToolsFluentInterface.View.EngineeringHubGlobe3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <Grid>
+        <Viewport3D x:Name="Vp3D"
+                    MouseLeftButtonDown="Vp3D_MouseLeftButtonDown"
+                    MouseLeftButtonUp="Vp3D_MouseLeftButtonUp"
+                    MouseMove="Vp3D_MouseMove"
+                    MouseWheel="Vp3D_MouseWheel"
+                    ClipToBounds="True">
+
+            <!-- Caméra -->
+            <Viewport3D.Camera>
+                <PerspectiveCamera x:Name="Cam"
+                                   Position="0,0,3.2"
+                                   LookDirection="0,0,-1"
+                                   UpDirection="0,1,0"
+                                   FieldOfView="45"/>
+            </Viewport3D.Camera>
+
+            <!-- Lumières FIXES (hors scène => effet de phases lunaires) -->
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <Model3DGroup>
+                        <AmbientLight Color="#FF808080"/>
+                        <DirectionalLight Color="#FFFFFFFF" Direction="-0.5,-0.4,-1"/>
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+
+            <!-- CONTENEUR SCÈNE : piloté par la souris ET l'auto-spin -->
+            <ModelVisual3D x:Name="SceneVisual">
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotX" Axis="1,0,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotY" Axis="0,1,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+
+                <!-- Terre + pins (aucune transform propre : hérite de SceneVisual) -->
+                <ModelVisual3D x:Name="WorldVisual"/>
+
+                <!-- Traînée d'orbite (inclinée à 5°, NON animée) -->
+                <ModelVisual3D x:Name="OrbitVisual">
+                    <ModelVisual3D.Transform>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="0,0,1" Angle="5"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </ModelVisual3D.Transform>
+                </ModelVisual3D>
+
+                <!-- Lune : orbite indépendante (MoonOrbit) + inclinaison 5° -->
+                <ModelVisual3D x:Name="MoonVisual">
+                    <ModelVisual3D.Transform>
+                        <Transform3DGroup>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="MoonOrbit" Axis="0,1,0" Angle="0"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D Axis="0,0,1" Angle="5"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                        </Transform3DGroup>
+                    </ModelVisual3D.Transform>
+                </ModelVisual3D>
+            </ModelVisual3D>
+        </Viewport3D>
+    </Grid>
+
+    <!--<Grid>
+        <Viewport3D x:Name="Vp3D"
+                    MouseLeftButtonDown="Vp3D_MouseLeftButtonDown"
+                    MouseLeftButtonUp="Vp3D_MouseLeftButtonUp"
+                    MouseMove="Vp3D_MouseMove"
+                    MouseWheel="Vp3D_MouseWheel"
+                    ClipToBounds="True">
+
+            <Viewport3D.Camera>
+                <PerspectiveCamera x:Name="Cam"
+                                   Position="0,0,3.2"
+                                   LookDirection="0,0,-1"
+                                   UpDirection="0,1,0"
+                                   FieldOfView="45"/>
+            </Viewport3D.Camera>
+
+            --><!-- Lumières --><!--
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <Model3DGroup>
+                        <AmbientLight Color="#FF808080"/>
+                        <DirectionalLight Color="#FFFFFFFF" Direction="-0.5,-0.4,-1"/>
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+
+            --><!-- Globe + pins dans le même visuel = même rotation --><!--
+            <ModelVisual3D x:Name="WorldVisual">
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotX" Axis="1,0,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotY" Axis="0,1,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+            </ModelVisual3D>
+
+            --><!-- Lune : visuel indépendant avec sa propre orbite --><!--
+            <ModelVisual3D x:Name="MoonVisual">
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        --><!-- Inclinaison de l'orbite (~5°, comme la vraie Lune) --><!--
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="0,0,1" Angle="5"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        --><!-- Angle d'orbite animé --><!--
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="MoonOrbit" Axis="0,1,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+            </ModelVisual3D>
+
+
+        </Viewport3D>
+    </Grid>-->
+</UserControl>
+    
+    <!--<UserControl x:Class="MCG.Tools.CREOToolsFluentInterface.View.EngineeringHubGlobe3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Viewport3D x:Name="Vp3D"
+                    MouseLeftButtonDown="Vp3D_MouseLeftButtonDown"
+                    MouseLeftButtonUp="Vp3D_MouseLeftButtonUp"
+                    MouseMove="Vp3D_MouseMove"
+                    MouseWheel="Vp3D_MouseWheel"
+                    ClipToBounds="True">
+
+            --><!-- Camera --><!--
+            <Viewport3D.Camera>
+                <PerspectiveCamera x:Name="Cam"
+                                   Position="0,0,3.2"
+                                   LookDirection="0,0,-1"
+                                   UpDirection="0,1,0"
+                                   FieldOfView="45"/>
+            </Viewport3D.Camera>
+
+            --><!-- Lights + geometry --><!--
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <Model3DGroup>
+                        <AmbientLight Color="#FF808080"/>
+                        <DirectionalLight Color="#FFFFFFFF" Direction="-0.5,-0.4,-1"/>
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+
+            --><!-- Globe : géométrie générée en code-behind --><!--
+            <ModelVisual3D x:Name="GlobeVisual">
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotX" Axis="1,0,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="RotY" Axis="0,1,0" Angle="0"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+            </ModelVisual3D>
+
+            --><!-- Pins pays : générés en code-behind --><!--
+            <ModelVisual3D x:Name="PinsVisual">
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="1,0,0"
+                                                     Angle="{Binding Angle, ElementName=RotX}"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="0,1,0"
+                                                     Angle="{Binding Angle, ElementName=RotY}"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+            </ModelVisual3D>
+        </Viewport3D>
+    </Grid>
+</UserControl>-->

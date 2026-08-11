@@ -28,6 +28,7 @@
         public const char CsvSeparator = ',';
         public const int DefaultRepDigit = 4;
         public const string ExcelTemplateBomComparison = "BOM_COMPARISON_Template.xlsx";
+        public const string ExcelTemplateBomComparisonTab = "BOM_COMPARISON";
         public const string RegexPartNumberToExcludeBomSearch = "^7\\d{9}$|^7\\d{8}[A-Z]$|^7\\d{7}[A-Z]\\d$";
         public const string RegexStateCumulationNumber = "INWORK|REWORK";
         public const int MaxBomLevel = 12;

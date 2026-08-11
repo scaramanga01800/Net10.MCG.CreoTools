@@ -5,12 +5,14 @@ using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WpfComponent;
 using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.Models;
 using MCG.CREO_Tools.CutLengthApp.ViewModel;
 using MCG.CREO_Tools.DxfExport.ViewModel;
 using MCG.CREO_Tools.JpgExport.ViewModel;
 using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
+using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.ProfileApp.ViewModel;
 using MCG.CREO_Tools.QuickLaunch.ViewModel;
 using MCG.CREO_Tools.QuickSearch.ViewModel;
@@ -21,6 +23,7 @@ using MCG.Tools.EcnEcoFollowUp.ViewModel;
 using MCG.Tools.PurchaseOrderFollowUp.ViewModel;
 using MCG.Tools.VisualizationLib.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -295,7 +298,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
                 _creoSessionProvider.ConnectionEnd += _creoSessionProvider_ConnectionEnd;
 
-                CurrentDataContext.ColorInterfaceChangeEvent += (sender,e) => UpdateUserConfigXmlFile();
+                CurrentDataContext.ColorInterfaceChangeEvent += (sender, e) => UpdateUserConfigXmlFile();
                 CurrentDataContext.FontInterfaceChangeEvent += (sender, e) => UpdateUserConfigXmlFile();
 
                 CurrentDataContext.CurrentUser = McgActiveDirectoryTools.GetWindowsSessionUserFullName();
@@ -325,6 +328,42 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             {
                 _appConfiguration = _xmlSerializeTools.GetDeserializedXml<CREOToolsConfiguration>(Path.Combine(MainAppFolder, CommonLibConstants.ResourcesFolder, "CREOToolsConfiguration.xml"));
                 _userConfiguration = _xmlSerializeTools.GetDeserializedXmlFromAppData<CREOToolsUserConfiguration>(CREOToolsConstants.CreoToolsUserConfigXmlFile) ?? new CREOToolsUserConfiguration();
+
+                // Langue Windows
+                if (_userConfiguration.CurrentLang == null) 
+                {
+                    _userConfiguration.CurrentLang = GetDefaultLanguage(_appConfiguration); 
+                }
+
+                // Police par défaut
+                if (string.IsNullOrWhiteSpace(_userConfiguration.DefaultFont))
+                {
+                    _userConfiguration.DefaultFont = "Segoe UI";
+                }
+
+                // Theme par défaut
+                if (!_userConfiguration.IsDark && !_userConfiguration.IsLight)
+                {
+                    _userConfiguration.IsLight = true;
+                }
+
+                // Version config
+                if (string.IsNullOrWhiteSpace(_userConfiguration.ConfigVersion))
+                {
+                    _userConfiguration.ConfigVersion = "12.10";
+                }
+
+                // Couleur
+                if (string.IsNullOrWhiteSpace(_userConfiguration.ColorScheme))
+                {
+                    _userConfiguration.ColorScheme = "Blue";
+                }
+
+                // AppVisible => toutes les apps disponibles
+                if (_userConfiguration.AppVisible == null )
+                {
+                    _userConfiguration.AppVisible = _appConfiguration.AppAvailable ;
+                }
             }
             catch (Exception ex)
             {
@@ -332,6 +371,32 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 throw;
             }
         }
+
+        private CREOToolsLanguageSelection GetDefaultLanguage(CREOToolsConfiguration _appConfiguration)
+        {
+            string currentCulture =
+                CultureInfo.CurrentUICulture.Name.ToLowerInvariant();
+
+            // Chinois
+            if (currentCulture.StartsWith("zh"))
+                return _appConfiguration.LangCn ?? _appConfiguration.LangEn;
+
+            // Allemand
+            if (currentCulture.StartsWith("de"))
+                return _appConfiguration.LangDe ?? _appConfiguration.LangEn;
+
+            // Français
+            if (currentCulture.StartsWith("fr"))
+                return _appConfiguration.LangFr ?? _appConfiguration.LangEn;
+
+            // Anglais
+            if (currentCulture.StartsWith("en"))
+                return _appConfiguration.LangEn ?? _appConfiguration.LangEn;
+
+            // Fallback
+            return _appConfiguration.LangEn ?? _appConfiguration.LangEn;
+        }
+
 
         private void InitAppAvailability()
         {
@@ -451,8 +516,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                         McgWpfTools.UpdateMergeDictionaries();
                         UpdateUserConfigXmlFile();
                         CurrentDataContext.RaiseColorInterfaceChangeEvent();
-                       // CurrentMCGLanguage.RaiseChangeLanguageInterfaceEvent();
-                         _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;
+                        // CurrentMCGLanguage.RaiseChangeLanguageInterfaceEvent();
+                        _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;
                     }
                 }
                 TraceLog.AddTraceLog("End UpdateLanguageInterface");

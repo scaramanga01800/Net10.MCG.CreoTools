@@ -44,6 +44,24 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             }
         }
 
+
+        private void Globe_LanguageSelected(object? sender, string culture)
+        {
+            // DataContext est le VM parent ; on récupère "CurrentDataContext"
+            if (DataContext is not { } vm) return;
+
+            // Récupère l'objet CurrentDataContext par reflection ou cast fort
+            dynamic ctx = vm;
+            var current = ctx.CurrentDataContext;
+
+            // Reset tout le monde puis coche la bonne langue
+            current.LangCn.IsSelected = (culture == "zh-CN");
+            current.LangEn.IsSelected = (culture == "en-US");
+            current.LangFr.IsSelected = (culture == "fr-FR");
+            current.LangDe.IsSelected = (culture == "de-DE");
+        }
+
+
         private void BtnMin_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;

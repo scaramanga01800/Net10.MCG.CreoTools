@@ -261,8 +261,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomComparison
                 Process newExcelProcess = NewExcelCurrentProcess.FirstOrDefault((proc) => !OldExcelCurrentProcess.ToList().Exists((oldprc) => proc.Id == oldprc.Id));
 
 
-                CurrentExcel.CurrentSheet = "BOM_COMPARISON";
-
+                CurrentExcel.CurrentSheet = MiscToolsConstants.ExcelTemplateBomComparisonTab;
+                CurrentDataContext.BomComparison.XlsFileTemplateSheetName = MiscToolsConstants.ExcelTemplateBomComparisonTab;
+                CurrentDataContext.BomComparison.PartNumber = MiscToolsConstants.ExcelTemplateBomComparisonTab;
                 CurrentDataContext.BomComparison.ExportExcelGenericBomComparison(CurrentExcel);
 
                 if (CurrentExcel.SaveClose() != ExcelStatus.OK)

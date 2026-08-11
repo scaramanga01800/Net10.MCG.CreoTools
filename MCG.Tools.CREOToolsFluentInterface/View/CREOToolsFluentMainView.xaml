@@ -11,7 +11,7 @@
                      xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:view="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
-                     
+
                      xmlns:QuickLaunch="clr-namespace:MCG.CREO_Tools.QuickLaunch.View;assembly=MCG.CREO_Tools.QuickLaunch"
                      xmlns:QuickLaunchVM="clr-namespace:MCG.CREO_Tools.QuickLaunch.ViewModel;assembly=MCG.CREO_Tools.QuickLaunch"
                      xmlns:BomComparison="clr-namespace:MCG.CREO_Tools.MiscTools.View.BomComparison;assembly=MCG.CREO_Tools.MiscTools"
@@ -45,9 +45,9 @@
 
                      mc:Ignorable="d"
                      TitleBarHeight="0"
-                     Height="750" 
+                     Height="800" 
                      Width="1100"
-                     
+
                      Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Engineering_hub.ico">
 
     <behaviors:Interaction.Triggers>
@@ -58,7 +58,6 @@
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
-
             <DataTemplate DataType="{x:Type QuickLaunchVM:QuickLaunchViewModel}">
                 <QuickLaunch:QuickLaunchFluentTabContentView/>
             </DataTemplate>
@@ -279,7 +278,7 @@
 
             <!-- 🔴 DROITE -->
             <StatusBarItem HorizontalAlignment="Right">
-                
+
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="👤" Margin="0,0,4,0"/>
                     <TextBlock Text="{Binding CurrentDataContext.CurrentUser}"
@@ -322,10 +321,24 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Header="{DynamicResource CT_MainMenu}" 
                                   Background="Transparent">
+                    <Fluent:Backstage.Resources>
+                        <Style TargetType="{x:Type Fluent:BackstageTabItem}">
+                            <Setter Property="FontSize" Value="17"/>
+                        </Style>
+                    </Fluent:Backstage.Resources>
+
                     <Fluent:BackstageTabControl >
                         <!-- 🟢 Accueil -->
-                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuHome}"
-                                                 Icon="{StaticResource Tools}">
+
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuHome}" >  
+
+                            <Fluent:BackstageTabItem.Icon>
+                                <Image Width="16"
+                                       Height="16"
+                                       Source="{StaticResource Tools}" />
+                            </Fluent:BackstageTabItem.Icon>
+
+
                             <Grid Margin="30,0" >
                                 <!-- 3 lignes : header, sous-titre+welcome, cube qui prend le reste -->
                                 <Grid.RowDefinitions>
@@ -375,7 +388,7 @@
                                            Width="48"
                                            Margin="0,0,15,0"/>
                                     <TextBlock Text="{DynamicResource CT_MainAppName}"
-                                               FontSize="28"
+                                               FontSize="40"
                                                FontWeight="SemiBold"
                                                VerticalAlignment="Center"/>
                                 </StackPanel>
@@ -399,7 +412,7 @@
                             </Grid>
 
                         </Fluent:BackstageTabItem>
-
+   
                         <!-- 🌍 Langue -->
                         <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuAppLanguage}"
                                                  Icon="{StaticResource Earth}">
@@ -407,6 +420,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <Rectangle Fill="Transparent"
@@ -441,8 +455,9 @@
                                                Width="48"
                                                Margin="0,0,15,0"></Image>
                                         <TextBlock Text="{DynamicResource CT_MenuAppLanguage}"
-                                                   FontSize="20" FontWeight="SemiBold"
-                                                   Margin="0,0,0,16"/>
+                                                   VerticalAlignment="Center"
+                                                   FontSize="40" FontWeight="SemiBold"
+                                                   Margin="0,0,0,0"/>
                                     </StackPanel>
                                     <StackPanel Margin="30,20">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="32">
@@ -479,6 +494,11 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
+                                <view:EngineeringHubGlobe3D x:Name="Globe"
+                                                            LanguageSelected="Globe_LanguageSelected"
+                                                            Grid.Row="2"
+                                                            HorizontalAlignment="Stretch"
+                                                            VerticalAlignment="Stretch"/>
                             </Grid>
                         </Fluent:BackstageTabItem>
 
@@ -523,8 +543,9 @@
                                                    Width="48"
                                                    Margin="0,0,15,0"/>
                                         <TextBlock Text="{DynamicResource CT_MenuAppDisplay}"
-                                                   FontSize="20" FontWeight="SemiBold"
-                                                   Margin="0,0,0,16"/>
+                                                   FontSize="40" 
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0"/>
                                     </StackPanel>
 
                                     <!-- Theme -->
@@ -626,8 +647,15 @@
 
                                 <ScrollViewer VerticalScrollBarVisibility="Auto"
                                               Grid.Row="1"
+                                              Margin="30,0,0,0"
+                                              HorizontalAlignment="Left"
                                               HorizontalScrollBarVisibility="Disabled"
-                                              Padding="30,0,30,30">
+                                              Padding="0,0,0,0">
+                                    <ScrollViewer.Resources>
+                                        <Style TargetType="{x:Type Fluent:CheckBox}">
+                                            <Setter Property="FontSize" Value="15"/>
+                                        </Style>
+                                    </ScrollViewer.Resources>
 
                                     <StackPanel MaxWidth="900">
                                         <!-- 🟢 Titre -->
@@ -637,12 +665,14 @@
                                                    Width="48"
                                                    Margin="0,0,15,0"/>
                                             <TextBlock Text="{DynamicResource CT_MenuApplication}"
-                                                       FontSize="22" FontWeight="SemiBold"
-                                                       Margin="0,0,0,4"/>
+                                                       FontSize="40" 
+                                                       FontWeight="SemiBold"
+                                                       Margin="0,0,0,0"/>
                                         </StackPanel>
 
                                         <TextBlock Text="{DynamicResource CT_MenuApplicationSubtitle}"
-                                                   FontSize="12" Opacity="0.7"
+                                                   FontSize="20" 
+                                                   Opacity="0.7"
                                                    Margin="0,0,0,0"/>
 
                                         <!-- ============ 🚀 SECTION 1 : QUICK LAUNCH ============ -->
@@ -653,7 +683,7 @@
                                             <StackPanel>
                                                 <TextBlock Text="{DynamicResource CT_MenuQuickLaunch}"
                                                            FontSize="16" FontWeight="SemiBold"
-                                                           Margin="0,0,0,12"/>
+                                                           Margin="0,0,0,5"/>
 
                                                 <!-- 🔹 Master QuickLaunch -->
                                                 <Fluent:CheckBox Header="{DynamicResource CT_MenuAppHome}"
@@ -663,8 +693,8 @@
                                                                  FontWeight="SemiBold"/>
 
                                                 <!-- 🔹 Sous-options QuickLaunch (en grille 2 colonnes) -->
-                                                <ItemsControl Margin="22,8,0,0"
-                                                          IsEnabled="{Binding CurrentDataContext.AppVisible.QuickLaunch}">
+                                                <ItemsControl Margin="22,0,0,0"
+                                                              IsEnabled="{Binding CurrentDataContext.AppVisible.QuickLaunch}">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
                                                             <UniformGrid Columns="2"/>
@@ -758,11 +788,12 @@
                                         <!-- ============ 🔗 SECTION 2 : LIENS & RESSOURCES ============ -->
                                         <Border Background="{DynamicResource MahApps.Brushes.Accent4}"
                                                 CornerRadius="8" 
-                                                Padding="20" 
+                                                Padding="20,0,0,0" 
                                                 Margin="0,0,0,0">
                                             <StackPanel>
                                                 <TextBlock Text="{DynamicResource CT_MenuLinks}"
-                                                           FontSize="16" FontWeight="SemiBold"
+                                                           FontSize="16" 
+                                                           FontWeight="SemiBold"
                                                            Margin="0,0,0,12"/>
 
                                                 <ItemsControl>
@@ -790,10 +821,12 @@
 
                                         <!-- ============ 🛠 SECTION 3 : APPLICATIONS (TABS) ============ -->
                                         <Border Background="{DynamicResource MahApps.Brushes.Accent4}"
-                                                CornerRadius="8" Padding="20">
+                                                CornerRadius="8" 
+                                                Padding="20,20,0,0">
                                             <StackPanel>
                                                 <TextBlock Text="{DynamicResource CT_MenuTabApplications}"
-                                                           FontSize="16" FontWeight="SemiBold"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
                                                            Margin="0,0,0,12"/>
 
                                                 <ItemsControl>
@@ -872,33 +905,33 @@
                         <Fluent:SeparatorTabItem/>
 
                         <!-- 👤 Compte Windchill -->
-                        <Fluent:Button Header="{DynamicResource CT_MenuAppChangeWindchillLogin}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppChangeWindchillLogin}" FontSize="17"
                                        Icon="{StaticResource User}"
                                        Command="{Binding CommandChangeWindchillCredential}"/>
-
+                        
                         <Fluent:SeparatorTabItem/>
 
                         <!-- ❓ Aide -->
-                        <Fluent:Button Header="{DynamicResource CT_MenuAppHelp}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppHelp}" FontSize="17"
                                        Icon="{StaticResource Help}"
                                        Command="{Binding CommandShowHelp}"/>
 
-                        <Fluent:Button Header="{DynamicResource CT_MenuUtilitiesOverview}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuUtilitiesOverview}" FontSize="17"
                                        Icon="{StaticResource Help}"
                                        Command="{Binding CommandOpenUtilitiesOverview}"/>
 
-                        <Fluent:Button Header="{DynamicResource CT_MenuAppAbout}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppAbout}" FontSize="17"
                                        Icon="{StaticResource About}"
                                        Command="{Binding CommandAboutCreoTools}"/>
 
-                        <Fluent:Button Header="{DynamicResource CT_MenuReleaseNotes}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuReleaseNotes}" FontSize="17"
                                        Icon="{StaticResource ReleaseNotes}"
                                        Command="{Binding CommandReleaseNotes}"/>
 
                         <Fluent:SeparatorTabItem/>
 
                         <!-- 🚪 Quitter -->
-                        <Fluent:Button Header="{DynamicResource CT_MenuAppExit}"
+                        <Fluent:Button Header="{DynamicResource CT_MenuAppExit}" FontSize="17"
                                        Icon="{StaticResource Exit}"
                                        Command="{Binding CommandExit}"/>
 
