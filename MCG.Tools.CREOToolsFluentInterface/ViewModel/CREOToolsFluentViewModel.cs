@@ -12,7 +12,6 @@ using MCG.CREO_Tools.CutLengthApp.ViewModel;
 using MCG.CREO_Tools.DxfExport.ViewModel;
 using MCG.CREO_Tools.JpgExport.ViewModel;
 using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
-using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.ProfileApp.ViewModel;
 using MCG.CREO_Tools.QuickLaunch.ViewModel;
 using MCG.CREO_Tools.QuickSearch.ViewModel;
@@ -307,7 +306,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 // 🟢 Application initiale du thème
                 //UpdateThemeAndAccent();
 
-                await ConnectToCreoAsync();
+                //await ConnectToCreoAsync();
             }
             catch (Exception ex)
             {

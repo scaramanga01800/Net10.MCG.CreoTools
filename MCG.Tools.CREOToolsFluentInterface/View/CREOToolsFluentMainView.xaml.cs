@@ -3,6 +3,7 @@ using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
 using MCG.Tools.CREOToolsFluentInterface.ViewModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +20,9 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
         {
             try
             {
+
+                var sw = Stopwatch.StartNew();
+
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

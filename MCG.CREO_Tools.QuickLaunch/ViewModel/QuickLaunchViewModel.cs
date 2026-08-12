@@ -170,8 +170,9 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                 _sharedAppContext = sharedAppContext;
 
 
-                var creoConnectionStatus = _creoSessionProvider.Connect(false);
-                IsCreoConnected = creoConnectionStatus == CreoConnectionStatus.OK;
+                //var creoConnectionStatus = _creoSessionProvider.Connect(false);
+                //IsCreoConnected = creoConnectionStatus == CreoConnectionStatus.OK;
+
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => IsCreoConnected = e;
 
                 _creoSessionProvider.ConnectionStart += (sender, e) => IsCreoConnectionInProgress = true;
@@ -187,6 +188,23 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
                 QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
             }
         }
+
+        public async Task ConnectToCreoAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var status = _creoSessionProvider.Connect(false);
+                    IsCreoConnected = status == CreoConnectionStatus.OK;
+                }
+                catch (Exception ex)
+                {
+                    TraceLog.AddTraceLog($"CREO connection failed: {ex.Message}");
+                }
+            });
+        }
+
         #endregion
 
         #region [REGION] Execution Command Methods

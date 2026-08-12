@@ -41,6 +41,7 @@ namespace MCG.CREO_Tools.QuickLaunch.View
                 if (!IsAlreadyInit && DataContext != null && DataContext.GetType() == typeof(QuickLaunchViewModel))
                 {
                     CurrentQuickLaunchViewModel = DataContext as QuickLaunchViewModel;
+                    Loaded += async (s, e) => await CurrentQuickLaunchViewModel.ConnectToCreoAsync();
                 }
             }
             catch (Exception ex)
