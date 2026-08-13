@@ -17,6 +17,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SapBomExport
         {
             try
             {
+                TraceLog.AddTraceLog("Create SapBomExportMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 

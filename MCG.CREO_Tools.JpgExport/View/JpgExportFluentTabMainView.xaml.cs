@@ -41,6 +41,7 @@ namespace MCG.CREO_Tools.JpgExport.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create JpgExportFluentTabMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

@@ -16,6 +16,7 @@ namespace MCG.CREO_Tools.MiscTools.View.MechanismTool
         {
             try
             {
+                TraceLog.AddTraceLog("Create MechanismAnalysisMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"MechanismAnalysisMainView: Local App Directory {MainAppFolder}");
 

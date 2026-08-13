@@ -43,6 +43,7 @@ namespace MCG.Tools.VisualizationLib.View
         public ConvertToPdfTabMainView()
         {
 
+            TraceLog.AddTraceLog("Create ConvertToPdfTabMainView");
             string MainAppFolder = Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
 
             if (MainAppFolder == null || MainAppFolder == "")

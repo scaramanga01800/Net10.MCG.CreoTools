@@ -315,7 +315,8 @@
 
 
         <!-- ============ RIBBON PRINCIPAL ============ -->
-        <Fluent:Ribbon DockPanel.Dock="Top">
+        <Fluent:Ribbon DockPanel.Dock="Top"
+                       x:Name="MainRibbon">
 
             <!-- 🍔 Backstage moderne -->
             <Fluent:Ribbon.Menu>
@@ -1030,7 +1031,7 @@
                 </MassUpdateAttrib:MassUpdateAttributeFluentTabMainView.Visibility>
             </MassUpdateAttrib:MassUpdateAttributeFluentTabMainView>
 
-            <CutLength:CutLengthMainView x:Name="TabCutLengthApp">
+            <!--<CutLength:CutLengthMainView x:Name="TabCutLengthApp">
                 <CutLength:CutLengthMainView.Style>
                     <Style TargetType="CutLength:CutLengthMainView">
                         <Style.Triggers>
@@ -1046,7 +1047,20 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppCutLength" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </CutLength:CutLengthMainView.Visibility>
-            </CutLength:CutLengthMainView>
+            </CutLength:CutLengthMainView>-->
+
+            <Fluent:RibbonTabItem
+                    x:Name="TabCutLengthApp"
+                    Header="{DynamicResource CT_MenuAppTabCutLength}">
+                <Fluent:RibbonTabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                        <Binding Path="Data.CurrentDataContext.AppVisible.AppCutLength"
+                     Source="{StaticResource proxy}" />
+                        <Binding Path="Data.CurrentDataContext.AppAvailable.AppCutLength"
+                     Source="{StaticResource proxy}" />
+                    </MultiBinding>
+                </Fluent:RibbonTabItem.Visibility>
+            </Fluent:RibbonTabItem>
 
             <EcnEcoFollowUp:EcnEcoFollowUpFluentTabView x:Name="TabEcnEcoFollowUpApp">
                 <EcnEcoFollowUp:EcnEcoFollowUpFluentTabView.Style>
@@ -1178,7 +1192,7 @@
 
         <!-- ============ CONTENU PRINCIPAL ============ -->
         <Grid x:Name="MainContent">
-            <ContentControl>
+            <ContentControl x:Name="MainContentControl">
                 <ContentControl.Style>
                     <Style TargetType="ContentControl">
                         <Style.Triggers>
@@ -1190,9 +1204,9 @@
                                 <Setter Property="Content" Value="{Binding EcnDataCheckViewModelVM}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding ElementName=TabCutLengthApp, Path=IsSelected}" Value="True">
+                            <!--<DataTrigger Binding="{Binding ElementName=TabCutLengthApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding CutLengthViewModelVM}"/>
-                            </DataTrigger>
+                            </DataTrigger>-->
 
                             <DataTrigger Binding="{Binding ElementName=TabDxfExportApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding DxfExportViewModelVM}"/>
@@ -1238,7 +1252,8 @@
                 </ContentControl.Style>
             </ContentControl>
 
-
+            <ContentControl Content="{Binding RelativeSource={RelativeSource AncestorType=local:CREOToolsFluentMainView},
+                                      Path=CurrentTabContent}" />
 
             <!-- 🔧 Les TabContentView correspondants viendront ici -->
             <!--

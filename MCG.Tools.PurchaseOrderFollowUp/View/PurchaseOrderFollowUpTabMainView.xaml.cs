@@ -59,6 +59,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create PurchaseOrderFollowUpTabMainView");
                 string MainAppFolder = Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
 
                 if (MainAppFolder == null || MainAppFolder == "")

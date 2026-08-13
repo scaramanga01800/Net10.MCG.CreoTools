@@ -39,7 +39,8 @@ namespace MCG.Tools.NumberingTool.View
 
         public NumberingToolFluentMainView(NumberingToolViewModel currentVm, ISharedAppContext sharedAppContext)
         {
-            TraceLog.AddTraceLog($"Enter NumberingToolFluentMainView App");
+            TraceLog.AddTraceLog("Create NumberingToolFluentMainView");
+
             string MainAppFolder = Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
             if (MainAppFolder == null || MainAppFolder == "")
                 MainAppFolder = CommonLibConstants.MainAppFolder;

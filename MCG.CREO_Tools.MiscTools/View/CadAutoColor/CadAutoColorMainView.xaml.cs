@@ -22,6 +22,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CadAutoColor
         {
             try
             {
+                TraceLog.AddTraceLog("Create CadAutoColorMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadAutoColorMainView: Local App Directory {MainAppFolder}");
 

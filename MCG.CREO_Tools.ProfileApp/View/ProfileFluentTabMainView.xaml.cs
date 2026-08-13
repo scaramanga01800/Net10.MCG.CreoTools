@@ -4,6 +4,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.ProfileApp.Configuration;
 using MCG.CREO_Tools.ProfileApp.Exceptions;
 using MCG.CREO_Tools.ProfileApp.ViewModel;
+using System.Diagnostics;
 
 namespace MCG.CREO_Tools.ProfileApp.View
 {
@@ -42,12 +43,22 @@ namespace MCG.CREO_Tools.ProfileApp.View
         {
             try
             {
+                var sw = Stopwatch.StartNew();
+
+                TraceLog.AddTraceLog("Create ProfileFluentTabMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
+                
+                TraceLog.AddTraceLog($"Before ProfileFluentTabMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+                
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{ProfileAppConstants.MainDictionary}", UriKind.Absolute);
-
+                
+                TraceLog.AddTraceLog($"After ProfileFluentTabMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+                
                 InitializeComponent();
+
+                TraceLog.AddTraceLog($"After ProfileFluentTabMainView InitializeComponent : {sw.ElapsedMilliseconds} ms");
 
                 DataContextChanged += ProfileFluentTabMainView_DataContextChanged;
             }

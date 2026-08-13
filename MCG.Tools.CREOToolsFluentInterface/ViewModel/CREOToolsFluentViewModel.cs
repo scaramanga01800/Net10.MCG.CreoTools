@@ -21,6 +21,7 @@ using MCG.Tools.EcnEcoFollowUp.ViewModel;
 using MCG.Tools.PurchaseOrderFollowUp.ViewModel;
 using MCG.Tools.VisualizationLib.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -304,7 +305,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
 
                 TraceLog.StartTimer(nameof(PublishToSharedContext));
                 PublishToSharedContext();
-                TraceLog.StopTimer(nameof(PublishToSharedContext)); 
+                TraceLog.StopTimer(nameof(PublishToSharedContext));
 
                 // Init au démarrage
                 _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;
@@ -341,14 +342,22 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         {
             try
             {
+                var sw = Stopwatch.StartNew();
+
+                TraceLog.AddTraceLog($"Before CREOToolsFluentViewModel LoadConfigurations : {sw.ElapsedMilliseconds} ms");
+
                 _appConfiguration = _xmlSerializeTools.GetDeserializedXml<CREOToolsConfiguration>(Path.Combine(MainAppFolder, CommonLibConstants.ResourcesFolder, "CREOToolsConfiguration.xml"));
+                TraceLog.AddTraceLog($"After CREOToolsFluentViewModel CREOToolsConfiguration : {sw.ElapsedMilliseconds} ms");
+
                 _userConfiguration = _xmlSerializeTools.GetDeserializedXmlFromAppData<CREOToolsUserConfiguration>(CREOToolsConstants.CreoToolsUserConfigXmlFile) ?? new CREOToolsUserConfiguration();
+                TraceLog.AddTraceLog($"After CREOToolsFluentViewModel CREOToolsUserConfiguration : {sw.ElapsedMilliseconds} ms");
 
                 // Langue Windows
-                if (_userConfiguration.CurrentLang == null) 
+                if (_userConfiguration.CurrentLang == null)
                 {
-                    _userConfiguration.CurrentLang = GetDefaultLanguage(_appConfiguration); 
+                    _userConfiguration.CurrentLang = GetDefaultLanguage(_appConfiguration);
                 }
+                TraceLog.AddTraceLog($"After CREOToolsFluentViewModel GetDefaultLanguage : {sw.ElapsedMilliseconds} ms");
 
                 // Police par défaut
                 if (string.IsNullOrWhiteSpace(_userConfiguration.DefaultFont))
@@ -375,9 +384,9 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 }
 
                 // AppVisible => toutes les apps disponibles
-                if (_userConfiguration.AppVisible == null )
+                if (_userConfiguration.AppVisible == null)
                 {
-                    _userConfiguration.AppVisible = _appConfiguration.AppAvailable ;
+                    _userConfiguration.AppVisible = _appConfiguration.AppAvailable;
                 }
             }
             catch (Exception ex)

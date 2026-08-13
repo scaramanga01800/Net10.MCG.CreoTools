@@ -28,6 +28,7 @@ namespace MCG.CREO_Tools.MiscTools.View.QuickChange
         {
             try
             {
+                TraceLog.AddTraceLog("Create QuickChangeMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 

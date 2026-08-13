@@ -41,6 +41,8 @@ namespace MCG.CREO_Tools.CadDocQualityCheck.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create CadDocQualityCheckTabContentView");
+
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

@@ -17,6 +17,7 @@ namespace MCG.CREO_Tools.MiscTools.View.NumberCumulation
         {
             try
             {
+                TraceLog.AddTraceLog("Create NumberCumulationMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"NumberCumulationMainView: Local App Directory {MainAppFolder}");
 

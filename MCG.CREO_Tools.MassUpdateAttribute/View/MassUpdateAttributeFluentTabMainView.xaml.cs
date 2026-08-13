@@ -42,6 +42,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create MassUpdateAttributeFluentTabMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

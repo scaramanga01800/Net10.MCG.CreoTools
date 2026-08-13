@@ -21,6 +21,7 @@ namespace MCG.CREO_Tools.MiscTools.View.BomEnvirConfig
         {
             try
             {
+                TraceLog.AddTraceLog("Create BomEnvirConfigMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"BomEnvirConfigViewModel: Local App Directory {MainAppFolder}");
 

@@ -42,6 +42,7 @@ namespace MCG.Tools.EcnDataCheck.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create EcnDataCheckRibbonTabView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

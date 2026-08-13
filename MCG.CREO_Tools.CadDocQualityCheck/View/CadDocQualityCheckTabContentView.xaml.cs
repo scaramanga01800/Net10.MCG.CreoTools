@@ -1,4 +1,5 @@
-﻿using MCG.CREO_Tools.CadDocQualityCheck.Exceptions;
+﻿using MCG.CommonLib.Services.Statics;
+using MCG.CREO_Tools.CadDocQualityCheck.Exceptions;
 using MCG.CREO_Tools.CadDocQualityCheck.ViewModel;
 using System.Windows;
 using System.Windows.Controls;

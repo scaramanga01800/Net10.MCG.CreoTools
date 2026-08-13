@@ -44,6 +44,7 @@ namespace MCG.WindchillTools.ManageWTObject.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create MassWtDocumentUpdateRibbonView");
                 string MainAppFolder = Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"MassWtDocumentUpdateRibbonView: Local App Directory {MainAppFolder}");
 

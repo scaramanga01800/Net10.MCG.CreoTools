@@ -14,6 +14,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create UpdateRelationsParametersMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

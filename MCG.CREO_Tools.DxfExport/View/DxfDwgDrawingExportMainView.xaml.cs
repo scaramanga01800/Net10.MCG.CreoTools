@@ -16,6 +16,7 @@ namespace MCG.CREO_Tools.DxfExport.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create DxfDwgDrawingExportMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

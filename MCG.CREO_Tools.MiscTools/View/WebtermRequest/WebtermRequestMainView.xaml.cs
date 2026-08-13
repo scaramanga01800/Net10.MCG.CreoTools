@@ -16,6 +16,7 @@ namespace MCG.CREO_Tools.MiscTools.View.WebtermRequest
         {
             try
             {
+                TraceLog.AddTraceLog("Create WebtermRequestMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 

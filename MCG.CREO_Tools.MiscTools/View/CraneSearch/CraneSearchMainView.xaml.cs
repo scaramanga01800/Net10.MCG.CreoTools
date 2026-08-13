@@ -18,6 +18,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CraneSearch
         {
             try
             {
+                TraceLog.AddTraceLog("Create CraneSearchMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CraneSearchMainView: Local App Directory {MainAppFolder}");
 

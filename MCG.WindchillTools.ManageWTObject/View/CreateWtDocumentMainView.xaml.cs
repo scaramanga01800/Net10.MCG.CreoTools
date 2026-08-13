@@ -32,6 +32,7 @@ namespace MCG.WindchillTools.ManageWTObject.View
 
         public CreateWtDocumentMainView(CreateWtDocumentViewModel currentVM)
         {
+            TraceLog.AddTraceLog("Create CreateWtDocumentMainView");
             InitializeComponent();
             CurrentDataContext = currentVM;
             DataContext = CurrentDataContext;

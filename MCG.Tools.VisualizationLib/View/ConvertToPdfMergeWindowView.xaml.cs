@@ -1,4 +1,5 @@
 ﻿using Fluent;
+using MCG.CommonLib.Services.Statics;
 using MCG.Tools.VisualizationLib.Exceptions;
 using MCG.Tools.VisualizationLib.ViewModel;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace MCG.Tools.VisualizationLib.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create ConvertToPdfMergeWindowView");
                 InitializeComponent();
                 CurrentDataContext = currentVM;
                 DataContext = CurrentDataContext;

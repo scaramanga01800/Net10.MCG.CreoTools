@@ -4,6 +4,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.QuickSearch.Configuration;
 using MCG.CREO_Tools.QuickSearch.Exceptions;
 using MCG.CREO_Tools.QuickSearch.ViewModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace MCG.CREO_Tools.QuickSearch.View
@@ -57,14 +58,22 @@ namespace MCG.CREO_Tools.QuickSearch.View
         {
             try
             {
+                var sw = Stopwatch.StartNew();
+
+                TraceLog.AddTraceLog("Create QuickSearchFluentRibbonTabView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
-                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickSearchConstants.MainDictionary}", UriKind.Absolute);
+                
+                TraceLog.AddTraceLog($"Before QuickSearchFluentRibbonTabView MergeDictionary : {sw.ElapsedMilliseconds} ms");
 
+                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickSearchConstants.MainDictionary}", UriKind.Absolute);
+                
+                TraceLog.AddTraceLog($"After QuickSearchFluentRibbonTabView MergeDictionary : {sw.ElapsedMilliseconds} ms");
                 DataContextChanged += QuickSearchFluentRibbonTabView_DataContextChanged;
 
                 InitializeComponent();
+                TraceLog.AddTraceLog($"After QuickSearchFluentRibbonTabView InitializeComponent : {sw.ElapsedMilliseconds} ms");    
             }
             catch (Exception ex)
             {

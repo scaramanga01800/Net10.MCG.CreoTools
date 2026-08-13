@@ -4,6 +4,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.Tools.VisualizationLib.Configuration;
 using MCG.Tools.VisualizationLib.Exceptions;
 using MCG.Tools.VisualizationLib.ViewModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -43,15 +44,25 @@ namespace MCG.Tools.VisualizationLib.View
         {
             try
             {
+                var sw = Stopwatch.StartNew();
+
+                TraceLog.AddTraceLog("Create DownloadVisualizationFileMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"DownloadVisualizationFileMainView: Local App Directory {MainAppFolder}");
 
                 if (MainAppFolder == null || MainAppFolder == "" || !Directory.Exists(MainAppFolder))
                     MainAppFolder = CommonLibConstants.MainAppFolder;
 
+                TraceLog.AddTraceLog($"Before DownloadVisualizationFileMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{VisualizationLibConstants.MainDictionary}", UriKind.Absolute);
 
+                TraceLog.AddTraceLog($"After DownloadVisualizationFileMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
                 InitializeComponent();
+
+                TraceLog.AddTraceLog($"After DownloadVisualizationFileMainView InitializeComponent : {sw.ElapsedMilliseconds} ms");
+
                 DataContextChanged += DownloadVisualizationFileMainView_DataContextChanged;
             }
             catch (Exception ex)

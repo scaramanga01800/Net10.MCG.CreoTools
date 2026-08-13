@@ -20,6 +20,7 @@ namespace MCG.CREO_Tools.MiscTools.View.BomComparison
         {
             try
             {
+                TraceLog.AddTraceLog("Create BomComparisonView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 

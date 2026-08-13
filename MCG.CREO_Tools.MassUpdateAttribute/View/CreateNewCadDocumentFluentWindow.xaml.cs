@@ -19,6 +19,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
         {
             try
             {
+                TraceLog.AddTraceLog("Create CreateNewCadDocumentFluentWindow");
                 CurrentCreateNewCadDocumentViewModel = currentViewModel;
                 DataContext = CurrentCreateNewCadDocumentViewModel;
 

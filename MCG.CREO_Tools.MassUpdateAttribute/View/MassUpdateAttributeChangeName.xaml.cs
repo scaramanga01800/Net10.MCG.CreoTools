@@ -1,4 +1,5 @@
 ﻿using Fluent;
+using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
 
 namespace MCG.CREO_Tools.MassUpdateAttribute.View
@@ -7,6 +8,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
     {
         public MassUpdateAttributeChangeName()
         {
+            TraceLog.AddTraceLog("Create MassUpdateAttributeChangeName");
             InitializeComponent();
         }
 

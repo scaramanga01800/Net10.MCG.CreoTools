@@ -14,11 +14,13 @@ namespace MCG.CREO_Tools.CutLengthApp.Services
 
             services.AddSingleton<ICutLengthWindchillService, CutLengthWindchillService>();
 
+
             services.AddTransient<CutLengthBulkQuantity>();
 
             services.AddTransient<CutLengthCutUpdatePartView>();
             services.AddTransient<CutLengthCutUpdatePartViewModel>();
 
+            services.AddSingleton<CutLengthMainView>();
             services.AddTransient<CutLengthViewModel>();
 
             TraceLog.StopTimer("AddCutLengthServices");

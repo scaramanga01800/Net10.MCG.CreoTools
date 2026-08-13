@@ -4,6 +4,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.QuickLaunch.Configuration;
 using MCG.CREO_Tools.QuickLaunch.Exceptions;
 using MCG.CREO_Tools.QuickLaunch.ViewModel;
+using System.Diagnostics;
 
 namespace MCG.CREO_Tools.QuickLaunch.View
 {
@@ -15,23 +16,47 @@ namespace MCG.CREO_Tools.QuickLaunch.View
 
         public QuickLaunchFluentTabView()
         {
-            try
-            {
-                MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
-                if (MainAppFolder == null || MainAppFolder == "")
-                    MainAppFolder = CommonLibConstants.MainAppFolder;
-                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickLaunchConstants.MainDictionary}", UriKind.Absolute);
+            var sw = Stopwatch.StartNew();
 
-                InitializeComponent();
-                DataContextChanged += Initialize;
-            }
-            catch (Exception ex)
-            {
-                QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
+            TraceLog.AddTraceLog("Create QuickLaunchFluentTabView");
 
-            }
+            MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
+            if (MainAppFolder == null || MainAppFolder == "")
+                MainAppFolder = CommonLibConstants.MainAppFolder;
+
+            TraceLog.AddTraceLog($"Before QuickLaunchFluentTabView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
+            McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickLaunchConstants.MainDictionary}", UriKind.Absolute);
+
+            TraceLog.AddTraceLog($"After QuickLaunchFluentTabView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
+            InitializeComponent();
+
+            TraceLog.AddTraceLog($"After QuickLaunchFluentTabView InitializeComponent : {sw.ElapsedMilliseconds} ms");
+
+            DataContextChanged += Initialize;
         }
 
+        //public QuickLaunchFluentTabView()
+        //{
+        //    try
+        //    {
+        //        TraceLog.AddTraceLog("Create QuickLaunchFluentTabView");
+        //        MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
+        //        if (MainAppFolder == null || MainAppFolder == "")
+        //            MainAppFolder = CommonLibConstants.MainAppFolder;
+        //        McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{QuickLaunchConstants.MainDictionary}", UriKind.Absolute);
+
+        //        InitializeComponent();
+
+        //        DataContextChanged += Initialize;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
+
+        //    }
+        //}
 
 
         private void Initialize(object sender, System.Windows.DependencyPropertyChangedEventArgs e)

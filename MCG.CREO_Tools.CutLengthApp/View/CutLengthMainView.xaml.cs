@@ -4,6 +4,7 @@ using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.CutLengthApp.Configuration;
 using MCG.CREO_Tools.CutLengthApp.Exceptions;
 using MCG.CREO_Tools.CutLengthApp.ViewModel;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -44,13 +45,26 @@ namespace MCG.CREO_Tools.CutLengthApp.View
         {
             try
             {
+                var sw = Stopwatch.StartNew();
+
+                TraceLog.AddTraceLog("Create CutLengthMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
+
+                TraceLog.AddTraceLog($"Before CutLengthMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CutLengthAppConstants.MainDictionary}", UriKind.Absolute);
 
+                TraceLog.AddTraceLog($"After CutLengthMainView MergeDictionary : {sw.ElapsedMilliseconds} ms");
+
                 InitializeComponent();
+
+                TraceLog.AddTraceLog($"After CutLengthMainView InitializeComponent : {sw.ElapsedMilliseconds} ms");
+
                 DataContextChanged += CutLengthMainView_DataContextChanged;
+
+                TraceLog.AddTraceLog($"CutLength ctor DataContext : {DataContext?.GetType().Name ?? "NULL"}");
             }
             catch (Exception ex)
             {
@@ -62,6 +76,7 @@ namespace MCG.CREO_Tools.CutLengthApp.View
         {
             try
             {
+                TraceLog.AddTraceLog($"CutLength DataContextChanged : {DataContext?.GetType().Name ?? "NULL"}");
                 if (!IsAlreadyInit && DataContext != null && DataContext.GetType() == typeof(CutLengthViewModel))
                 {
                     CutLengthViewModel CurrentDataContext = DataContext as CutLengthViewModel;

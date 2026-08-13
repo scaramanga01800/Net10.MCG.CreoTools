@@ -58,6 +58,7 @@ namespace MCG.Tools.EcnEcoFollowUp.View
         #region [REGION] Init
         public EcnEcoFollowUpFluentTabView()
         {
+                TraceLog.AddTraceLog("Create EcnEcoFollowUpFluentTabView");
             ImageResourcePath = EcnEcoFollowUpConstants.ImageResourcesPath;
 
             string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);

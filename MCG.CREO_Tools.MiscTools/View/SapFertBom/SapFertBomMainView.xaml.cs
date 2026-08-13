@@ -17,6 +17,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SapFertBom
         {
             try
             {
+                TraceLog.AddTraceLog("Create SapFertBomMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadAutoColorMainView: Local App Directory {MainAppFolder}");
 

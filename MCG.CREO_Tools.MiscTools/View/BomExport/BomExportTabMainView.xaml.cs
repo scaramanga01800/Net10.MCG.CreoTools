@@ -49,7 +49,7 @@ namespace MCG.CREO_Tools.MiscTools.View.BomExport
         {
             try
             {
-                TraceLog.AddTraceLog($"BomExportWindowViewModel: Init app");
+                TraceLog.AddTraceLog("Create BomExportWindowViewModel");
 
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")

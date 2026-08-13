@@ -17,6 +17,7 @@ namespace MCG.CREO_Tools.MiscTools.View.CadDocRename
         {
             try
             {
+                TraceLog.AddTraceLog("Create CadDocRenameMainView");
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 TraceLog.AddTraceLog($"CadDocRenameMainView: Local App Directory {MainAppFolder}");
 

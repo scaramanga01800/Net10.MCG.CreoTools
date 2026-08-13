@@ -18,6 +18,7 @@ namespace MCG.WindchillTools.ManageWTObject.View
     {
         public CreateUpdateWtDocumentWtPartMainView(CreateUpdateWtDocumentWtPartViewModel currentVM, ISharedAppContext sharedAppContext)
         {
+            TraceLog.AddTraceLog("Create CreateUpdateWtDocumentWtPartMainView");
             string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
             TraceLog.AddTraceLog($"MechanismAnalysisMainView: Local App Directory {MainAppFolder}");
 

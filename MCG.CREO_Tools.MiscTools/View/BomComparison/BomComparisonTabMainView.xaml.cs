@@ -44,7 +44,7 @@ namespace MCG.CREO_Tools.MiscTools.View.BomComparison
         {
             try
             {
-                TraceLog.AddTraceLog($"BomComparisonTabMainView: Init app");
+                TraceLog.AddTraceLog("Create BomComparisonTabMainView");
 
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
