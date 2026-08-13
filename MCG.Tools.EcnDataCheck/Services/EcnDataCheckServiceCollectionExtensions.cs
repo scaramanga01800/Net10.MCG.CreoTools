@@ -14,6 +14,7 @@ namespace MCG.Tools.EcnDataCheck.Services
 
             services.AddSingleton<IEcnDataCheckWindchillService, EcnDataCheckWindchillService>();
 
+            services.AddSingleton<EcnDataCheckRibbonTabView>();
             services.AddSingleton<EcnDataCheckViewModel>();
 
             services.AddTransient<EcnDataCheckEcaSelection>();

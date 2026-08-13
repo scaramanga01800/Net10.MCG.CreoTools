@@ -2,8 +2,18 @@
 using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.CutLengthApp.View;
+using MCG.CREO_Tools.DxfExport.View;
+using MCG.CREO_Tools.JpgExport.View;
+using MCG.CREO_Tools.MassUpdateAttribute.View;
+using MCG.CREO_Tools.ProfileApp.View;
+using MCG.CREO_Tools.QuickSearch.View;
+using MCG.CREO_Tools.ShearedTube.View;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
 using MCG.Tools.CREOToolsFluentInterface.ViewModel;
+using MCG.Tools.EcnDataCheck.View;
+using MCG.Tools.EcnEcoFollowUp.View;
+using MCG.Tools.PurchaseOrderFollowUp.View;
+using MCG.Tools.VisualizationLib.View;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using System.Windows;
@@ -77,6 +87,50 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                 if (MainRibbon.SelectedTabItem == TabCutLengthApp)
                 {
                     EnsureCutLengthLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabQuickSearchApp)
+                {
+                    EnsureQuickSearchLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabDownloadVisualizationFileApp)
+                {
+                    EnsureDownloadVisuFileLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabEcnDataCheckApp)
+                {
+                    EnsureEcnDataCheckLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabMassUpdateAttributeApp)
+                {
+                    EnsureMassUpdateAttributeLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabEcnEcoFollowUpApp)
+                {
+                    EnsureEcnEcoFollowUpLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabPurchaseOrderFollowUpApp)
+                {
+                    EnsurePurchaseOrderViewLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabProfileApp)
+                {
+                    EnsureProfileViewLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabConvertToPdfApp)
+                {
+                    EnsureConvertToPdfViewLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabShearedTubeApp)
+                {
+                    EnsureShearedTubeViewLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabDxfExportApp)         
+                {
+                    EnsureDxfExportViewLoaded();
+                }
+                else if (MainRibbon.SelectedTabItem == TabJpgExportApp)
+                {
+                    EnsureJpgExportViewLoaded();
                 }
             }
             catch (Exception ex)
@@ -302,6 +356,52 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             return loadedTab;
         }
 
+        // ECN Data Check Tab
+        private EcnDataCheckRibbonTabView? _ecnDataCheckView;
+        private bool _ecnDataCheckLoaded;
+
+        private void EnsureEcnDataCheckLoaded()
+        {
+            if (_ecnDataCheckLoaded)
+                return;
+            _ecnDataCheckLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .EcnDataCheckViewModelVM;
+                    LoadRibbonTab(
+                        TabEcnDataCheckApp,
+                        ref _ecnDataCheckView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Mass Update Attribute Tab
+        private MassUpdateAttributeFluentTabMainView? _massUpdateAttributeView;
+        private bool _massUpdateAttributeLoaded;
+
+        private void EnsureMassUpdateAttributeLoaded()
+        {
+            if (_massUpdateAttributeLoaded)
+                return;
+            _massUpdateAttributeLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .MassUpdateAttributeViewModelVM;
+                    LoadRibbonTab(
+                        TabMassUpdateAttributeApp,
+                        ref _massUpdateAttributeView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
         // Cut Lenght Tab
         private CutLengthMainView? _cutLengthView;
         private bool _cutLengthLoaded;
@@ -323,6 +423,216 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                     LoadRibbonTab(
                         TabCutLengthApp,
                         ref _cutLengthView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Quick Search Tab
+        private QuickSearchFluentRibbonTabView? _quickSearchView;
+        private bool _quickSearchLoaded;
+
+        private void EnsureQuickSearchLoaded()
+        {
+            if (_quickSearchLoaded)
+                return;
+
+            _quickSearchLoaded = true;
+
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .QuickSearchViewModelVM;
+
+                    LoadRibbonTab(
+                        TabQuickSearchApp,
+                        ref _quickSearchView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Ecn Eco Follow Up Tab
+        private EcnEcoFollowUpFluentTabView? _ecnEcoFollowUpView;
+        private bool _ecnEcoFollowUpLoaded;
+
+        private void EnsureEcnEcoFollowUpLoaded()
+        {
+            if (_ecnEcoFollowUpLoaded)
+                return;
+            _ecnEcoFollowUpLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .EcnEcoFollowUpViewModelVM;
+                    LoadRibbonTab(
+                        TabEcnEcoFollowUpApp,
+                        ref _ecnEcoFollowUpView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Purchase Order Tab
+        private PurchaseOrderFollowUpTabMainView? _purchaseOrderView;
+        private bool _purchaseOrderViewLoaded;
+
+        private void EnsurePurchaseOrderViewLoaded()
+        {
+            if (_purchaseOrderViewLoaded)
+                return;
+            _purchaseOrderViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .PurchaseOrderFollowUpViewModelVM;
+                    LoadRibbonTab(
+                        TabPurchaseOrderFollowUpApp,
+                        ref _purchaseOrderView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Profile tab
+        private ProfileFluentTabMainView? _profileView;
+        private bool _profileViewLoaded;
+
+        private void EnsureProfileViewLoaded()
+        {
+            if (_profileViewLoaded)
+                return;
+            _profileViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .ProfileViewModelVM;
+                    LoadRibbonTab(
+                        TabProfileApp,
+                        ref _profileView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Convert To Pdf Tab
+        private ConvertToPdfTabMainView? _convertToPdfView;
+        private bool _convertToPdfViewLoaded;
+
+        private void EnsureConvertToPdfViewLoaded()
+        {
+            if (_convertToPdfViewLoaded)
+                return;
+            _convertToPdfViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .ConvertToPdfViewModelVM;
+                    LoadRibbonTab(
+                        TabConvertToPdfApp,
+                        ref _convertToPdfView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Sheared Tube Tab
+        private ShearedTubeFluentTabMainView? _shearedTubeView;
+        private bool _shearedTubeViewLoaded;
+
+        private void EnsureShearedTubeViewLoaded()
+        {
+            if (_shearedTubeViewLoaded)
+                return;
+            _shearedTubeViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .ShearedTubeViewModelVM;
+                    LoadRibbonTab(
+                        TabShearedTubeApp,
+                        ref _shearedTubeView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // DXF Export Tab
+        private DxfExportFluentTabMainView? _dxfExportView;
+        private bool _dxfExportViewLoaded;
+
+        private void EnsureDxfExportViewLoaded()
+        {
+            if (_dxfExportViewLoaded)
+                return;
+            _dxfExportViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .DxfExportViewModelVM;
+                    LoadRibbonTab(
+                        TabDxfExportApp,
+                        ref _dxfExportView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // JPG Export Tab
+        private JpgExportFluentTabMainView? _jpgExportView;
+        private bool _jpgExportViewLoaded;
+
+        private void EnsureJpgExportViewLoaded()
+        {
+            if (_jpgExportViewLoaded)
+                return;
+            _jpgExportViewLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .JpgExportViewModelVM;
+                    LoadRibbonTab(
+                        TabJpgExportApp,
+                        ref _jpgExportView,
+                        vm);
+                }),
+                DispatcherPriority.Background);
+        }
+
+        // Download Visualization File Tab
+        private DownloadVisualizationFileMainView? _downloadVisuFileView;
+        private bool _downloadVisuFileLoaded;
+
+        private void EnsureDownloadVisuFileLoaded()
+        {
+            if (_downloadVisuFileLoaded)
+                return;
+            _downloadVisuFileLoaded = true;
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var vm =
+                        ((CREOToolsFluentViewModel)DataContext)
+                        .DownloadVisualizationFileViewModelVM;
+                    LoadRibbonTab(
+                        TabDownloadVisualizationFileApp,
+                        ref _downloadVisuFileView,
                         vm);
                 }),
                 DispatcherPriority.Background);

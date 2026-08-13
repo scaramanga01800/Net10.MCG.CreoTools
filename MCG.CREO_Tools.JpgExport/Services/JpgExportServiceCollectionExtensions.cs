@@ -1,4 +1,5 @@
 ﻿using MCG.CommonLib.Services.Statics;
+using MCG.CREO_Tools.JpgExport.View;
 using MCG.CREO_Tools.JpgExport.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ namespace MCG.CREO_Tools.JpgExport.Services
         {
             TraceLog.StartTimer("AddJpgExportServices");
 
+            services.AddSingleton<JpgExportFluentTabMainView>();
             services.AddSingleton<JpgExportViewModel>();
 
             TraceLog.StopTimer("AddJpgExportServices");

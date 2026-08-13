@@ -20,6 +20,7 @@ namespace MCG.CREO_Tools.DxfExport.Services
             services.AddTransient<DxfDwgDrawingExportMainView>();
             services.AddTransient<DxfDwgDrawingExportViewModel>();
 
+            services.AddSingleton<DxfExportFluentTabMainView>();
             services.AddTransient<DxfExportViewModel>();
 
             TraceLog.StopTimer("AddDxfExportServices");

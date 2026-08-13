@@ -2,6 +2,7 @@
 using MCG.CREO_Tools.MassUpdateAttribute.Interfaces;
 using MCG.CREO_Tools.MassUpdateAttribute.View;
 using MCG.CREO_Tools.MassUpdateAttribute.ViewModel;
+using MCG.Tools.VisualizationLib.View;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MCG.CREO_Tools.MassUpdateAttribute.Services
@@ -17,6 +18,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.Services
             services.AddTransient<CreateNewCadDocumentFluentWindow>();
             services.AddTransient<CreateNewCadDocumentViewModel>();
 
+            services.AddSingleton<MassUpdateAttributeFluentTabMainView>();
             services.AddTransient<MassUpdateAttributeChangeName>();
             services.AddTransient<MassUpdateAttributeViewModel>();
 

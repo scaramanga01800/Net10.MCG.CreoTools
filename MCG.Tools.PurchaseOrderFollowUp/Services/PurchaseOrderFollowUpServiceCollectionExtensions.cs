@@ -12,6 +12,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
         {
             TraceLog.StartTimer("AddPurchaseOrderFollowUpServices");
             // Services pour l'outil de suivi des commandes d'achat
+            services.AddSingleton<PurchaseOrderFollowUpTabMainView>();
             services.AddSingleton<PurchaseOrderFollowUpViewModel>();
             services.AddTransient<PurchaseOrderColumnHeaderSearchViewModel>();
 

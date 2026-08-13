@@ -15,6 +15,7 @@ namespace MCG.CREO_Tools.ProfileApp.Services
             services.AddSingleton<IProfileAppWindowService, ProfileAppWindowService>();
             services.AddTransient<ProfileUpdateProfileView>();
 
+            services.AddSingleton<ProfileFluentTabMainView>();
             services.AddTransient<ProfileViewModel>();
             
             TraceLog.StopTimer("AddProfileAppServices");

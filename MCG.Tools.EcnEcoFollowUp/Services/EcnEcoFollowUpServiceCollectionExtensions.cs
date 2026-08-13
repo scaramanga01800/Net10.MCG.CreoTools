@@ -22,6 +22,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             services.AddTransient<EcnEcoFollowUpDashboardViewModel>();
             services.AddTransient<EcnEcoFollowUpDashboardView>();
 
+            services.AddSingleton<EcnEcoFollowUpFluentTabView>();
             services.AddSingleton<EcnEcoFollowUpViewModel>();
             
             services.AddTransient<EcoWorkFlowTasksViewModel>();

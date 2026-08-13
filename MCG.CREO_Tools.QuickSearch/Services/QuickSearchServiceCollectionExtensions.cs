@@ -14,6 +14,7 @@ namespace MCG.CREO_Tools.QuickSearch.Services
 
             services.AddSingleton<IQuickSearchWindchillService, QuickSearchWindchillService>();
 
+            services.AddSingleton<QuickSearchFluentRibbonTabView>();
             services.AddTransient<QuickSearchViewModel>();
 
             services.AddTransient<QuickSearchUpdatePartView>();

@@ -18,12 +18,14 @@ namespace MCG.Tools.VisualizationLib.Services
 
             services.AddTransient<IMcgToolsVisualizationLibWindowService, McgToolsVisualizationLibWindowService>();
 
+            services.AddSingleton<ConvertToPdfTabMainView>();
             services.AddSingleton<ConvertToPdfDataContext>();
             services.AddSingleton<ConvertToPdfViewModel>();
 
             services.AddTransient<ConvertToPdfMergeWindowView>();
             services.AddTransient<ConvertToPdfMergeWindowViewModel>();
 
+            services.AddSingleton<DownloadVisualizationFileMainView>();
             services.AddTransient<DownloadVisualizationFileViewModel>();
             services.AddTransient<DownloadVisualizationFileDataContext>();
             
