@@ -3,7 +3,6 @@ using MCG.CommonLib.Configuration;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.CREOToolsFluentInterface.Configuration;
 using MCG.Tools.CREOToolsFluentInterface.ViewModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,15 +19,17 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
         {
             try
             {
-
-                var sw = Stopwatch.StartNew();
+                TraceLog.AddTraceLog($"Start CREOToolsFluentMainView");
 
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CREOToolsConstants.MainDictionary}", UriKind.Absolute);
 
+                TraceLog.StartTimer(nameof(InitializeComponent));
                 InitializeComponent();
+                TraceLog.StopTimer(nameof(InitializeComponent));
+
                 CurrentDataContext = currentViewModel;
                 DataContext = CurrentDataContext;
                 Loaded += async (s, e) => await currentViewModel.InitializeAsync();
@@ -40,14 +41,12 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                 CurrentCREOToolsDataContext_FontInterfaceChangeEvent(null, null);
 
                 McgWpfTools.UpdateMergeDictionaries();
-
             }
             catch (Exception ex)
             {
                 CREOToolsException.SendMessageBox(this.GetType().Name, ex);
             }
         }
-
 
         private void Globe_LanguageSelected(object? sender, string culture)
         {
@@ -64,7 +63,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             current.LangFr.IsSelected = (culture == "fr-FR");
             current.LangDe.IsSelected = (culture == "de-DE");
         }
-
 
         private void BtnMin_Click(object sender, RoutedEventArgs e)
         {

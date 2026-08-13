@@ -1,4 +1,5 @@
-﻿using MCG.Tools.NumberingTool.Interfaces;
+﻿using MCG.CommonLib.Services.Statics;
+using MCG.Tools.NumberingTool.Interfaces;
 using MCG.Tools.NumberingTool.View;
 using MCG.Tools.NumberingTool.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ namespace MCG.Tools.NumberingTool.Services
     {
         public static IServiceCollection AddNumberingToolServices(this IServiceCollection services)
         {
+            TraceLog.StartTimer("AddNumberingToolServices");
+
             services.AddSingleton<INumberingToolWindowService, NumberingToolWindowService>();
 
             services.AddTransient<NumberingToolUpdateCreateViewModel>();
@@ -18,7 +21,8 @@ namespace MCG.Tools.NumberingTool.Services
 
             services.AddTransient<NumberingToolViewModel>();
             services.AddTransient<NumberingToolFluentMainView>();
-
+            
+            TraceLog.StopTimer("AddNumberingToolServices");
             return services;
         }
     }

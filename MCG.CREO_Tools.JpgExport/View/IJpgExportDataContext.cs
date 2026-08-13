@@ -20,5 +20,6 @@ namespace MCG.CREO_Tools.JpgExport.View
         ObservableCollection<JpgExportItem> ListItems { get; set; }
         bool IsCreoEnable { get; set; }
         JpgExportItem SelectedItem { get; set; }
+        bool IsRemoveColor { get; set; }
     }
 }

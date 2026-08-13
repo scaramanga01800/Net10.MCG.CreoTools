@@ -57,4 +57,5 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="JPG_TextResolution">Select image resolution</system:String>
     <system:String x:Key="JPG_TextDisplayStyle">Select display style</system:String>
     <system:String x:Key="JPG_TextView">Select view</system:String>
+    <system:String x:Key="JPG_BtRemoveColor">Remove appearances</system:String>
 </ResourceDictionary> 

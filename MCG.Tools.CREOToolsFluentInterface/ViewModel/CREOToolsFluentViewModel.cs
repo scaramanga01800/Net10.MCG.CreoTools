@@ -5,7 +5,6 @@ using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
-using MCG.CommonLib.WpfComponent;
 using MCG.CommonLib.WpfComponent.Interfaces;
 using MCG.CommonLib.WpfComponent.Models;
 using MCG.CREO_Tools.CutLengthApp.ViewModel;
@@ -283,12 +282,29 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         {
             try
             {
+                TraceLog.StartTimer(nameof(LoadConfigurations));
                 LoadConfigurations();
+                TraceLog.StopTimer(nameof(LoadConfigurations));
+
+                TraceLog.StartTimer(nameof(InitAppAvailability));
                 InitAppAvailability();
+                TraceLog.StopTimer(nameof(InitAppAvailability));
+
+                TraceLog.StartTimer(nameof(InitTheme));
                 InitTheme();
+                TraceLog.StopTimer(nameof(InitTheme));
+
+                TraceLog.StartTimer(nameof(InitFonts));
                 InitFonts();
+                TraceLog.StopTimer(nameof(InitFonts));
+
+                TraceLog.StartTimer(nameof(InitLanguages));
                 InitLanguages();
+                TraceLog.StopTimer(nameof(InitLanguages));
+
+                TraceLog.StartTimer(nameof(PublishToSharedContext));
                 PublishToSharedContext();
+                TraceLog.StopTimer(nameof(PublishToSharedContext)); 
 
                 // Init au démarrage
                 _sharedAppContext.CurrentLanguage = _userConfiguration.CurrentLang;

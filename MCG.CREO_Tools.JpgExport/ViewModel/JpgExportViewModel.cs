@@ -259,7 +259,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                             CurrentItem.Status = McgWpfTools.GetStringResource("JPG_Status02");
                             CurrentItem.JpgCreated = true;
                         }
-                        else 
+                        else
                         {
                             CurrentItem.Status = McgWpfTools.GetStringResource("JPG_Status03");
                             CurrentItem.JpgCreated = false;
@@ -318,9 +318,9 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                 // Start Creo Jpg Export
                 _creoSessionProvider.Session.EraseUndisplayedModels();
                 if (CurrentEpmDoc.GetStringExtention() == "UNKNOWN")
-                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.PRT";
+                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.PartNumber.Split('.')[0]}.PRT";
                 else
-                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.FileName}.{CurrentEpmDoc.GetStringExtention()}";
+                    CurrentEpmDoc.FileName = $"{CurrentEpmDoc.PartNumber.Split('.')[0]}.{CurrentEpmDoc.GetStringExtention()}";
                 var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
 
                 var ThreeDmodel = currentBackupModel.ReloadedModel;
@@ -347,6 +347,10 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
 
                 // with or without edges
                 _creoMacroService.Set3DDisplayStyle(CurrentJpgExportDataContext.SelectedDisplayStyle.Value);
+
+                // Clear Appearances
+                if (CurrentJpgExportDataContext.IsRemoveColor)
+                    _creoMacroService.ClearAppearances();
 
                 Thread.Sleep(1000);
                 // Create the jpg
@@ -445,7 +449,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                 ThreeDmodelRetrieve.Backup(BackupDir);
 
                 IpfcWindow CurrentWindow = _creoModelService.GetCadDocWindow(ThreeDmodelRetrieve);
-                if(CurrentWindow != null)
+                if (CurrentWindow != null)
                     CurrentWindow.Close();
 
                 _creoSessionProvider.Session.EraseUndisplayedModels();
@@ -490,7 +494,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
 
                 // Delete backup file
                 int index = 1;
-                string indexedFilePath =$"{backupFullPath}.{index}";
+                string indexedFilePath = $"{backupFullPath}.{index}";
                 while (File.Exists(indexedFilePath))
                 {
                     File.Delete(indexedFilePath);
@@ -506,7 +510,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             }
             catch (Exception ex)
             {
-                
+
                 return McgWpfTools.GetStringResource("JPG_Status10");
             }
         }
@@ -533,7 +537,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                                 Status = McgWpfTools.GetStringResource("JPG_Status09"),
                                 Comment = "",
                                 JpgCreated = false,
-                                CurrentEpmDocument = new EPMDocument(NewLine, NewLine, NewLine) 
+                                CurrentEpmDocument = new EPMDocument(NewLine, NewLine, NewLine)
                             });
                         }
                     }

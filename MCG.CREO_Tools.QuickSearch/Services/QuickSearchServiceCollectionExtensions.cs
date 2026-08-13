@@ -1,4 +1,5 @@
-﻿using MCG.CREO_Tools.QuickSearch.Interfaces;
+﻿using MCG.CommonLib.Services.Statics;
+using MCG.CREO_Tools.QuickSearch.Interfaces;
 using MCG.CREO_Tools.QuickSearch.View;
 using MCG.CREO_Tools.QuickSearch.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ namespace MCG.CREO_Tools.QuickSearch.Services
     {
         public static IServiceCollection AddQuickSearchServices(this IServiceCollection services)
         {
+            TraceLog.StartTimer("AddQuickSearchServices");
+
             services.AddSingleton<IQuickSearchWindchillService, QuickSearchWindchillService>();
 
             services.AddTransient<QuickSearchViewModel>();
@@ -20,7 +23,8 @@ namespace MCG.CREO_Tools.QuickSearch.Services
             services.AddTransient<QuickSearchWindowClassSubClassFromNumberViewModel>();
 
             services.AddTransient<QuickSearchWindowRefDocFromNumberViewModel>();
-
+            
+            TraceLog.StopTimer("AddQuickSearchServices");
             return services;
         }
     }

@@ -21,6 +21,7 @@
             <BitmapImage x:Key="VIEW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/View_20x20.png" />
             <BitmapImage x:Key="STYLE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Style_20x20.png" />
             <BitmapImage x:Key="DPI" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Image.ico" />
+            <BitmapImage x:Key="COLOR_BW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Color_bw.ico"/>
         </ResourceDictionary>
     </Fluent:RibbonTabItem.Resources>
 
@@ -32,6 +33,12 @@
         <Fluent:Button Header="{DynamicResource JPG_LabelExportFile}"
                        LargeIcon="{StaticResource FILE}"
                        Command="{Binding CommandOpenFile}"></Fluent:Button>
+
+        <Fluent:ToggleButton Header="{DynamicResource JPG_BtRemoveColor}"
+                             IsChecked="{Binding CurrentJpgExportDataContext.IsRemoveColor}"
+                             Margin="5,0,5,0"
+                             LargeIcon="{StaticResource COLOR_BW}">
+        </Fluent:ToggleButton>
     </Fluent:RibbonGroupBox>
 
     <Fluent:RibbonGroupBox Header="{DynamicResource JPG_RibGrpSettings}" 

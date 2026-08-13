@@ -1,4 +1,4 @@
-﻿using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
+﻿using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.MiscTools.Interfaces;
 using MCG.CREO_Tools.MiscTools.View.BomComparison;
 using MCG.CREO_Tools.MiscTools.View.BomEnvirConfig;
@@ -15,6 +15,7 @@ using MCG.CREO_Tools.MiscTools.View.SapFertBom;
 using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
+using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr;
 using MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename;
 using MCG.CREO_Tools.MiscTools.ViewModel.CraneSearch;
@@ -33,6 +34,8 @@ namespace MCG.CREO_Tools.MiscTools.Services
     {
         public static IServiceCollection AddMiscToolsServices(this IServiceCollection services)
         {
+            TraceLog.StartTimer("AddMiscToolsServices");
+
             services.AddSingleton<IMiscToolsWindchillService, MiscToolsWindchillService>();
 
             services.AddTransient<BomComparisonView>();
@@ -78,7 +81,8 @@ namespace MCG.CREO_Tools.MiscTools.Services
 
             services.AddTransient<WebtermRequestMainView>();
             services.AddTransient<WebtermRequestViewModel>();
-
+            
+            TraceLog.StopTimer("AddMiscToolsServices");
             return services;
         }
     }

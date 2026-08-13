@@ -1,4 +1,5 @@
-﻿using MCG.CREO_Tools.DxfExport.Interfaces;
+﻿using MCG.CommonLib.Services.Statics;
+using MCG.CREO_Tools.DxfExport.Interfaces;
 using MCG.CREO_Tools.DxfExport.View;
 using MCG.CREO_Tools.DxfExport.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ namespace MCG.CREO_Tools.DxfExport.Services
     {
         public static IServiceCollection AddDxfExportServices(this IServiceCollection services)
         {
+            TraceLog.StartTimer("AddDxfExportServices");
+
             services.AddSingleton<IDxfExportWindchillService, DxfExportWindchillService>();
             
             services.AddTransient<BackUpCadDocumentView>();
@@ -19,6 +22,7 @@ namespace MCG.CREO_Tools.DxfExport.Services
 
             services.AddTransient<DxfExportViewModel>();
 
+            TraceLog.StopTimer("AddDxfExportServices");
             return services;
         }
     }

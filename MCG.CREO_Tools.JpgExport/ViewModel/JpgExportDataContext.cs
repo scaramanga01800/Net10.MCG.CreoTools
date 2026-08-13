@@ -124,6 +124,20 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                 }
             }
         }
+
+        private bool _IsRemoveColor = false;
+        public bool IsRemoveColor
+        {
+            get { return this._IsRemoveColor; }
+            set
+            {
+                if (this._IsRemoveColor != value)
+                {
+                    this._IsRemoveColor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         #endregion
     }
 }

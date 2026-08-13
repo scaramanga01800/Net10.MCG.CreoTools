@@ -1,4 +1,5 @@
-﻿using MCG.Tools.VisualizationLib.Interfaces;
+﻿using MCG.CommonLib.Services.Statics;
+using MCG.Tools.VisualizationLib.Interfaces;
 using MCG.Tools.VisualizationLib.View;
 using MCG.Tools.VisualizationLib.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ namespace MCG.Tools.VisualizationLib.Services
     {
         public static IServiceCollection AddMCGToolsVisualizationLibServices(this IServiceCollection services)
         {
+            TraceLog.StartTimer("AddMCGToolsVisualizationLibServices");
+
             services.AddSingleton<VisualizationUpdateService>();
 
             services.AddSingleton<IWtDownloadViewableTools, WtDownloadViewableTools>();
@@ -23,7 +26,8 @@ namespace MCG.Tools.VisualizationLib.Services
 
             services.AddTransient<DownloadVisualizationFileViewModel>();
             services.AddTransient<DownloadVisualizationFileDataContext>();
-
+            
+            TraceLog.StopTimer("AddMCGToolsVisualizationLibServices");
             // On retourne la collection pour permettre le chaînage (fluent pattern)
             return services;
         }

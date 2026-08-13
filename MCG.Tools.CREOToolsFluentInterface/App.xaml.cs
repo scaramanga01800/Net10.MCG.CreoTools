@@ -41,8 +41,11 @@ namespace MCG.Tools.CREOToolsFluentInterface
             TraceLog.AddTraceLog($"CREO Tools Version:{CREOToolsConstants.Version}");
             TraceLog.AddTraceLog("******************************************************************");
 
+            TraceLog.StartTimer("SetupGlobalExceptionHandling");
             SetupGlobalExceptionHandling();
+            TraceLog.StopTimer("SetupGlobalExceptionHandling");
 
+            TraceLog.StartTimer("CreateDefaultBuilder");
             _host = Host.CreateDefaultBuilder()
              .ConfigureServices((context, services) =>
              {
@@ -119,6 +122,7 @@ namespace MCG.Tools.CREOToolsFluentInterface
                  // Register your services here
              })
              .Build();
+            TraceLog.StopTimer("CreateDefaultBuilder");
         }
 
         private void SetupGlobalExceptionHandling()
@@ -155,12 +159,20 @@ namespace MCG.Tools.CREOToolsFluentInterface
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            TraceLog.StartTimer("AppStartup");
             await _host.StartAsync();
+            TraceLog.StopTimer("AppStartup");
 
             // On demande la MainWindow au système d'injection
+            TraceLog.StartTimer("GetRequiredService<CREOToolsFluentMainView>");
             var mainWindow = _host.Services.GetRequiredService<CREOToolsFluentMainView>();
+            TraceLog.StopTimer("GetRequiredService<CREOToolsFluentMainView>");
 
+            TraceLog.AddTraceLog($"Showing MainWindow: {mainWindow.GetType().Name}");
+
+            TraceLog.StartTimer("MainWindowShow");
             mainWindow.Show();
+            TraceLog.StopTimer("MainWindowShow");
 
             base.OnStartup(e);
         }
