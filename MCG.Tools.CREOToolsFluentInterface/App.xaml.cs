@@ -45,84 +45,156 @@ namespace MCG.Tools.CREOToolsFluentInterface
             SetupGlobalExceptionHandling();
             TraceLog.StopTimer("SetupGlobalExceptionHandling");
 
-            TraceLog.StartTimer("CreateDefaultBuilder");
-            _host = Host.CreateDefaultBuilder()
-             .ConfigureServices((context, services) =>
-             {
-                 services.AddSingleton<CREOToolsFluentMainView>();
-                 services.AddSingleton<CREOToolsFluentViewModel>();
 
-                 // Service for MCG Common Lib (Json, PDF, TIFF, HTML, Oracle Tools, etc.)
-                 services.AddMCGCommonLibServices();
+            TraceLog.StartTimer("Host.CreateDefaultBuilder ONLY");
 
-                 // For CREO
-                 services.AddCreoIntegrationServices();
+            var hostBuilder = Host.CreateDefaultBuilder().UseEnvironment("Production");
 
-                 // For Quick Launch
-                 services.AddQuickLaunchServices();
+            hostBuilder.UseDefaultServiceProvider(options =>
+            {
+                options.ValidateScopes = false;
+                options.ValidateOnBuild = false;
+            });
 
-                 // Services pour l'accès aux données (bases de données)
-                 services.AddMcgDataBaseAccessServices();
-
-                 // For SAP Tools
-                 services.AddMCGCommonLibSapToolsServices();
-
-                 // For WebtermTools
-                 services.AddMCGCommonLibWebtermServices();
-
-                 // For McgCommonlib.WpfComponents
-                 services.AddMCGCommonLibWpfComponentServices();
-
-                 // For MCG Tools Cut Length
-                 services.AddCutLengthServices();
-
-                 // For MCG Tools Dxf Export
-                 services.AddDxfExportServices();
-
-                 // For MCG Tools Jpg Export
-                 services.AddJpgExportServices();
-
-                 // for Mass Update Attribute Tool
-                 services.AddMassUpdateAttributeServices();
-
-                 // Misc Tools Services
-                 services.AddMiscToolsServices();
-
-                 // For Profile Tools Services
-                 services.AddProfileAppServices();
-
-                 // For Quick Search Services
-                 services.AddQuickSearchServices();
-
-                 // For Sheared Tube Services
-                 services.AddShearedTubeServices();
-
-                 // Ecn Data Check Services
-                 services.AddEcnDataCheckServices();
-
-                 // EcnEcoFollowUp Services
-                 services.AddEcnEcoFollowUpServices();
-
-                 // Numbering Tool Services
-                 services.AddNumberingToolServices();
-
-                 // Purchase Order Follow Up Services
-                 services.AddPurchaseOrderFollowUpServices();
-
-                 // Visualization Lib Services
-                 services.AddMCGToolsVisualizationLibServices();
-
-                 // MCG Windchill Request Tool Services
-                 services.AddMCGWindchillRequestToolServices();
-
-                 // MCG Windchill Tools Manage WT Object Services
-                 services.AddMCGWindchillToolsManageWTObjectServices();
+            TraceLog.StopTimer("Host.CreateDefaultBuilder ONLY");
 
 
-                 // Register your services here
-             })
-             .Build();
-            TraceLog.StopTimer("CreateDefaultBuilder");
+            TraceLog.StartTimer("Host.ConfigureServices registration");
+
+            hostBuilder.ConfigureServices((context, services) =>
+            {
+                TraceLog.StartTimer("ConfigureServices delegate");
+
+                services.AddSingleton<CREOToolsFluentMainView>();
+                services.AddSingleton<CREOToolsFluentViewModel>();
+                services.AddMCGCommonLibServices();
+                services.AddCreoIntegrationServices();
+                services.AddQuickLaunchServices();
+                services.AddMcgDataBaseAccessServices();
+                services.AddMCGCommonLibSapToolsServices();
+                services.AddMCGCommonLibWebtermServices();
+                services.AddMCGCommonLibWpfComponentServices();
+                services.AddCutLengthServices();
+                services.AddDxfExportServices();
+                services.AddJpgExportServices();
+                services.AddMassUpdateAttributeServices();
+                services.AddMiscToolsServices();
+                services.AddProfileAppServices();
+                services.AddQuickSearchServices();
+                services.AddShearedTubeServices();
+                services.AddEcnDataCheckServices();
+                services.AddEcnEcoFollowUpServices();
+                services.AddNumberingToolServices();
+                services.AddPurchaseOrderFollowUpServices();
+                services.AddMCGToolsVisualizationLibServices();
+                services.AddMCGWindchillRequestToolServices();
+                services.AddMCGWindchillToolsManageWTObjectServices();
+
+                var hostedServices = services.Where(s => s.ServiceType == typeof(IHostedService)).ToList();
+                TraceLog.AddTraceLog( $"IHostedService count = {hostedServices.Count}");
+
+                foreach (var service in hostedServices)
+                {
+                    TraceLog.AddTraceLog(
+                        $"IHostedService = {service.ImplementationType?.FullName ?? service.ImplementationInstance?.GetType().FullName ?? "factory"}");
+                }
+
+                TraceLog.AddTraceLog($"Total services count = {services.Count}");
+
+                TraceLog.StopTimer("ConfigureServices delegate");
+            });
+
+            TraceLog.StopTimer("Host.ConfigureServices registration");
+
+
+            TraceLog.StartTimer("Host.Build ONLY");
+
+            _host = hostBuilder.Build();
+
+            TraceLog.StopTimer("Host.Build ONLY");
+
+            TraceLog.AddTraceLog($"DOTNET_ENVIRONMENT={Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
+
+            TraceLog.AddTraceLog($"ASPNETCORE_ENVIRONMENT={Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
+
+            //TraceLog.StartTimer("CreateDefaultBuilder");
+            //_host = Host.CreateDefaultBuilder()
+            // .ConfigureServices((context, services) =>
+            // {
+            //     services.AddSingleton<CREOToolsFluentMainView>();
+            //     services.AddSingleton<CREOToolsFluentViewModel>();
+
+            //     // Service for MCG Common Lib (Json, PDF, TIFF, HTML, Oracle Tools, etc.)
+            //     services.AddMCGCommonLibServices();
+
+            //     // For CREO
+            //     services.AddCreoIntegrationServices();
+
+            //     // For Quick Launch
+            //     services.AddQuickLaunchServices();
+
+            //     // Services pour l'accès aux données (bases de données)
+            //     services.AddMcgDataBaseAccessServices();
+
+            //     // For SAP Tools
+            //     services.AddMCGCommonLibSapToolsServices();
+
+            //     // For WebtermTools
+            //     services.AddMCGCommonLibWebtermServices();
+
+            //     // For McgCommonlib.WpfComponents
+            //     services.AddMCGCommonLibWpfComponentServices();
+
+            //     // For MCG Tools Cut Length
+            //     services.AddCutLengthServices();
+
+            //     // For MCG Tools Dxf Export
+            //     services.AddDxfExportServices();
+
+            //     // For MCG Tools Jpg Export
+            //     services.AddJpgExportServices();
+
+            //     // for Mass Update Attribute Tool
+            //     services.AddMassUpdateAttributeServices();
+
+            //     // Misc Tools Services
+            //     services.AddMiscToolsServices();
+
+            //     // For Profile Tools Services
+            //     services.AddProfileAppServices();
+
+            //     // For Quick Search Services
+            //     services.AddQuickSearchServices();
+
+            //     // For Sheared Tube Services
+            //     services.AddShearedTubeServices();
+
+            //     // Ecn Data Check Services
+            //     services.AddEcnDataCheckServices();
+
+            //     // EcnEcoFollowUp Services
+            //     services.AddEcnEcoFollowUpServices();
+
+            //     // Numbering Tool Services
+            //     services.AddNumberingToolServices();
+
+            //     // Purchase Order Follow Up Services
+            //     services.AddPurchaseOrderFollowUpServices();
+
+            //     // Visualization Lib Services
+            //     services.AddMCGToolsVisualizationLibServices();
+
+            //     // MCG Windchill Request Tool Services
+            //     services.AddMCGWindchillRequestToolServices();
+
+            //     // MCG Windchill Tools Manage WT Object Services
+            //     services.AddMCGWindchillToolsManageWTObjectServices();
+
+
+            //     // Register your services here
+            // })
+            // .Build();
+            //TraceLog.StopTimer("CreateDefaultBuilder");
         }
 
         private void SetupGlobalExceptionHandling()
@@ -189,5 +261,5 @@ namespace MCG.Tools.CREOToolsFluentInterface
 
 
 
-}
+    }
 }
