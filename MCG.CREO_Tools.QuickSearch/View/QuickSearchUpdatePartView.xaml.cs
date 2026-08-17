@@ -1,4 +1,5 @@
 ﻿using Fluent;
+using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.QuickSearch.Exceptions;
 using MCG.CREO_Tools.QuickSearch.ViewModel;
 using System.Windows.Data;
@@ -29,10 +30,11 @@ namespace MCG.CREO_Tools.QuickSearch.View
             {
                 CurrentDataContext = new QuickSearchUpdatePartViewModel();
                 CurrentDataContext.PartItem = selectedPartItem;
+                DataContext = CurrentDataContext;
                 UpdateSubClassColumn();
             }
             catch (Exception ex)
-            {
+            { 
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
             }
         }
@@ -53,7 +55,7 @@ namespace MCG.CREO_Tools.QuickSearch.View
                     {
                         CurrentTextBox = new Fluent.TextBox();
                         CurrentTextBox.Header = SubClassParam.Name;
-                        CurrentTextBox.SetBinding(Fluent.TextBox.TextProperty, new Binding($"PartItem.UpdatedPart.{SubClassParam.IdParam}"));
+                        CurrentTextBox.SetBinding(Fluent.TextBox.TextProperty, new Binding($"PartItem.UpdatedPart.{McgBusinessTools.Capitalize(SubClassParam.IdParam)}"));
                         SpParameters.Children.Add(CurrentTextBox);
                     }
 

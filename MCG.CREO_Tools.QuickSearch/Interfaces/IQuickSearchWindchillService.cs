@@ -19,5 +19,7 @@ namespace MCG.CREO_Tools.QuickSearch.Interfaces
 
         Task<QuickSearchShortCutViewModel?> ShowDialogQuickSearchWindowClassSubClassFromNumberViewAsync(List<string> listStdShown);
         Task<QuickSearchShortCutViewModel?> ShowQuickSearchWindowClassSubClassFromNumberViewAsync(List<string> listStdShown, bool isAlreadyCreated = false);
+
+        event EventHandler<QuickSearchShortCutViewModel>? OpenClassSubClassEvent;
     }
 }

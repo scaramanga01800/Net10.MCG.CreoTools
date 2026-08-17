@@ -19,10 +19,11 @@ namespace MCG.CREO_Tools.QuickSearch.Services
 
             services.AddTransient<QuickSearchUpdatePartView>();
             services.AddTransient<QuickSearchUpdatePartViewModel>();
-
+            
             services.AddTransient<QuickSearchWindowClassSubClassFromNumberView>();
             services.AddTransient<QuickSearchWindowClassSubClassFromNumberViewModel>();
 
+            services.AddTransient<QuickSearchWindowRefDocFromNumberView>();
             services.AddTransient<QuickSearchWindowRefDocFromNumberViewModel>();
             
             TraceLog.StopTimer("AddQuickSearchServices");

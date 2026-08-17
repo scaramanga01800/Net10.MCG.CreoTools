@@ -212,6 +212,9 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
 
                 CurrentQuickSearchDataContext.IsAdminToolsEnabled = CheckUserAuthorization(QuickSearchConstants.KeyUserUpdateAppName);
 
+                // manage event for opening class/subclass from number
+                _quickSearchWindchillService.OpenClassSubClassEvent += QuickSearchWindchillService_OpenClassSubClassEvent;
+
             }
             catch (Exception ex)
             {
@@ -544,26 +547,22 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         {
             try
             {
-
-
                 var selected = await _quickSearchWindchillService
                     .ShowDialogQuickSearchWindowClassSubClassFromNumberViewAsync(
                         CurrentQuickSearchDataContext.ListStandardShown);
 
                 if (selected != null)
                     await ExecuteShortCutClassSubClassAsync(selected);
-
-                //QuickSearchWindowClassSubClassFromNumberViewModel aQuickSearchWindowClassSubClassFromNumberViewModel = new QuickSearchWindowClassSubClassFromNumberViewModel(CurrentQuickSearchDataContext.ListStandardShown);
-
-                //EventHandler handler = (s, e) => ExecuteShortCutClassSubClass(aQuickSearchWindowClassSubClassFromNumberViewModel.ClassSubClass);
-                //aQuickSearchWindowClassSubClassFromNumberViewModel.OpenClassSubClassEvent += handler;
-
-                //aQuickSearchWindowClassSubClassFromNumberViewModel.Show();
             }
             catch (Exception ex)
             {
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
             }
+        }
+
+        private async void QuickSearchWindchillService_OpenClassSubClassEvent(object? sender, QuickSearchShortCutViewModel item)
+        {
+            await ExecuteShortCutClassSubClassAsync(item);
         }
 
         private void ExecuteCopyPartNumber()
@@ -746,21 +745,21 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 if (CurrentQuickSearchDataContext.SelectedSubClassItem != null)
                 {
-                    Part pART;
+                    Part part;
                     if (FromSelected)
-                        pART = McgMiscTools.CopyInstanceFromObject<Part>(CurrentQuickSearchDataContext.SelectedPartItem.CurrentPart);
+                        part = McgReflectionTools.CopyInstanceFromObject<Part>(CurrentQuickSearchDataContext.SelectedPartItem.CurrentPart);
                     else
-                        pART = new Part() { Idsubclass = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Idsubclass };
+                        part = new Part() { Idsubclass = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Idsubclass };
 
                     QuickSearchPart CurrentPart = new QuickSearchPart()
                     {
-                        UpdatedPart = pART,
+                        UpdatedPart = part,
                         SubClassItem = CurrentQuickSearchDataContext.SelectedSubClassItem
                     };
                     if (FromSelected)
                     {
                         CurrentPart.PartPicturePath = CurrentQuickSearchDataContext.SelectedPartItem.PartPicturePath;
-                        CurrentPart.UpdatedImage = pART.Partpicturebin;
+                        CurrentPart.UpdatedImage = part.Partpicturebin;
                     }
 
                     bool IsCrationOk = false;
@@ -773,14 +772,14 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                         {
                             if (CurrentPart.UpdatedPart.Recpart != null && CurrentPart.UpdatedPart.Recpart.Trim() != "" && CurrentPart.UpdatedPart.Epmdoc != null && CurrentPart.UpdatedPart.Epmdoc.Trim() != "")
                             {
-                                CurrentPart.CurrentPart = McgMiscTools.CopyInstanceFromObject<Part>(CurrentPart.UpdatedPart);
+                                CurrentPart.CurrentPart = McgReflectionTools.CopyInstanceFromObject<Part>(CurrentPart.UpdatedPart);
 
                                 Part DbPart = _quickSearchService.GetOnePart(CurrentPart.CurrentPart.Recpart, CurrentPart.CurrentPart.Idsubclass);
                                 if (DbPart != null)
                                     MessageBox.Show(McgWpfTools.GetStringResource("QS_ErrorMsgPartExist"), McgWpfTools.GetStringResource("QS_ErrorMsgTitlePartExist"), MessageBoxButton.OK, MessageBoxImage.Warning);
                                 else
                                 {
-                                    DbPart = McgMiscTools.CopyInstanceFromObject<Part>(CurrentPart.CurrentPart);
+                                    DbPart = McgReflectionTools.CopyInstanceFromObject<Part>(CurrentPart.CurrentPart);
                                     DbPart.Id = _quickSearchService.GetNextPartId();
                                     _quickSearchService.AddOnePart(DbPart);
                                     IsCrationOk = true;

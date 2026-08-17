@@ -141,7 +141,9 @@ namespace MCG.CREO_Tools.QuickSearch.Services
 
             _quickSearchWindowClassSubClassFromNumberView = view;
 
+            view.CurrentDataContext.ActionOpenClassSubClassEvent += View_OpenClassSubClassEvent;
             bool? dialogResult = view.ShowDialog();
+            view.CurrentDataContext.ActionOpenClassSubClassEvent -= View_OpenClassSubClassEvent;
 
             var selected = dialogResult == true
                 ? view.CurrentDataContext?.ClassSubClass
@@ -185,6 +187,12 @@ namespace MCG.CREO_Tools.QuickSearch.Services
             view.Show();   // ✅ Non modale → fenêtre principale toujours utilisable
 
             return tcs.Task;
+        }
+
+        public event EventHandler<QuickSearchShortCutViewModel>? OpenClassSubClassEvent;
+        private void View_OpenClassSubClassEvent(QuickSearchShortCutViewModel item)
+        {
+            OpenClassSubClassEvent?.Invoke(this, item);
         }
     }
 }

@@ -72,7 +72,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
 
                 McgWpfTools.UpdateMergeDictionaries();
 
-                MainRibbon.SelectedTabChanged += MainRibbon_SelectionChanged;
+                //MainRibbon.SelectedTabChanged += MainRibbon_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                 {
                     EnsureShearedTubeViewLoaded();
                 }
-                else if (MainRibbon.SelectedTabItem == TabDxfExportApp)         
+                else if (MainRibbon.SelectedTabItem == TabDxfExportApp)
                 {
                     EnsureDxfExportViewLoaded();
                 }
@@ -315,6 +315,43 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             {
                 CREOToolsException.SendMessageBox(this.GetType().Name, ex);
             }
+        }
+
+
+
+        private TTab LoadRibbonTab2<TTab>(RibbonTabItem placeHolder, ref TTab? loadedTab, object viewModel) where TTab : RibbonTabItem
+        {
+            // Déjà chargé
+            if (loadedTab != null)
+            {
+                CurrentTabContent = viewModel;
+                return loadedTab;
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            TraceLog.AddTraceLog(
+                $"Lazy loading {typeof(TTab).Name}...");
+
+            loadedTab =
+                _serviceProvider.GetRequiredService<TTab>();
+
+            loadedTab.DataContext = viewModel;
+
+            // Copie des groupes du ribbon réel
+            placeHolder.Groups.Clear();
+
+            foreach (var group in loadedTab.Groups)
+            {
+                placeHolder.Groups.Add(group);
+            }
+
+            CurrentTabContent = viewModel;
+
+            TraceLog.AddTraceLog(
+                $"Lazy loading {typeof(TTab).Name} : {sw.ElapsedMilliseconds} ms");
+
+            return loadedTab;
         }
 
 

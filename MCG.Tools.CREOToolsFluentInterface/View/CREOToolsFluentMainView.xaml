@@ -958,7 +958,7 @@
                 </QuickLaunch:QuickLaunchFluentTabView.Visibility>
             </QuickLaunch:QuickLaunchFluentTabView>
 
-            <!--<VisualizationLib:DownloadVisualizationFileMainView x:Name="TabDownloadVisualizationFileApp">
+            <VisualizationLib:DownloadVisualizationFileMainView x:Name="TabDownloadVisualizationFileApp">
                 <VisualizationLib:DownloadVisualizationFileMainView.Style>
                     <Style TargetType="VisualizationLib:DownloadVisualizationFileMainView">
                         <Style.Triggers>
@@ -974,9 +974,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppVisualizationFile" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </VisualizationLib:DownloadVisualizationFileMainView.Visibility>
-            </VisualizationLib:DownloadVisualizationFileMainView>-->
+            </VisualizationLib:DownloadVisualizationFileMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabDownloadVisualizationFileApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabDownloadVisualizationFileApp"
                                   Header="{DynamicResource CT_MenuAppTabVisualizationFile}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -986,9 +986,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<QuickSearch:QuickSearchFluentRibbonTabView x:Name="TabQuickSearchApp">
+            <QuickSearch:QuickSearchFluentRibbonTabView x:Name="TabQuickSearchApp">
                 <QuickSearch:QuickSearchFluentRibbonTabView.Style>
                     <Style TargetType="QuickSearch:QuickSearchFluentRibbonTabView">
                         <Style.Triggers>
@@ -1004,9 +1004,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppQuickSearch" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </QuickSearch:QuickSearchFluentRibbonTabView.Visibility>
-            </QuickSearch:QuickSearchFluentRibbonTabView>-->
+            </QuickSearch:QuickSearchFluentRibbonTabView>
 
-            <Fluent:RibbonTabItem x:Name="TabQuickSearchApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabQuickSearchApp"
                                   Header="{DynamicResource CT_MenuAppTabQuickSearch}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1016,9 +1016,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<EcnDataCheck:EcnDataCheckRibbonTabView x:Name="TabEcnDataCheckApp">
+            <EcnDataCheck:EcnDataCheckRibbonTabView x:Name="TabEcnDataCheckApp">
                 <EcnDataCheck:EcnDataCheckRibbonTabView.Style>
                     <Style TargetType="EcnDataCheck:EcnDataCheckRibbonTabView">
                         <Style.Triggers>
@@ -1034,9 +1034,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppECNDataCheck" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </EcnDataCheck:EcnDataCheckRibbonTabView.Visibility>
-            </EcnDataCheck:EcnDataCheckRibbonTabView>-->
+            </EcnDataCheck:EcnDataCheckRibbonTabView>
 
-            <Fluent:RibbonTabItem x:Name="TabEcnDataCheckApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabEcnDataCheckApp"
                                   Header="{DynamicResource CT_MenuAppTabEcnDataCheck}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1046,9 +1046,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<MassUpdateAttrib:MassUpdateAttributeFluentTabMainView x:Name="TabMassUpdateAttributeApp">
+            <MassUpdateAttrib:MassUpdateAttributeFluentTabMainView x:Name="TabMassUpdateAttributeApp">
                 <MassUpdateAttrib:MassUpdateAttributeFluentTabMainView.Style>
                     <Style TargetType="MassUpdateAttrib:MassUpdateAttributeFluentTabMainView">
                         <Style.Triggers>
@@ -1064,9 +1064,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppMassUpdateAttribute" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </MassUpdateAttrib:MassUpdateAttributeFluentTabMainView.Visibility>
-            </MassUpdateAttrib:MassUpdateAttributeFluentTabMainView>-->
+            </MassUpdateAttrib:MassUpdateAttributeFluentTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabMassUpdateAttributeApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabMassUpdateAttributeApp"
                                   Header="{DynamicResource CT_MenuAppTabUpdateAttribute}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1076,9 +1076,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<CutLength:CutLengthMainView x:Name="TabCutLengthApp">
+            <CutLength:CutLengthMainView x:Name="TabCutLengthApp">
                 <CutLength:CutLengthMainView.Style>
                     <Style TargetType="CutLength:CutLengthMainView">
                         <Style.Triggers>
@@ -1094,9 +1094,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppCutLength" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </CutLength:CutLengthMainView.Visibility>
-            </CutLength:CutLengthMainView>-->
+            </CutLength:CutLengthMainView>
 
-            <Fluent:RibbonTabItem
+            <!--<Fluent:RibbonTabItem
                     x:Name="TabCutLengthApp"
                     Header="{DynamicResource CT_MenuAppTabCutLength}">
                 <Fluent:RibbonTabItem.Visibility>
@@ -1107,9 +1107,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<EcnEcoFollowUp:EcnEcoFollowUpFluentTabView x:Name="TabEcnEcoFollowUpApp">
+            <EcnEcoFollowUp:EcnEcoFollowUpFluentTabView x:Name="TabEcnEcoFollowUpApp">
                 <EcnEcoFollowUp:EcnEcoFollowUpFluentTabView.Style>
                     <Style TargetType="EcnEcoFollowUp:EcnEcoFollowUpFluentTabView">
                         <Style.Triggers>
@@ -1125,9 +1125,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppEcnFollowUp" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </EcnEcoFollowUp:EcnEcoFollowUpFluentTabView.Visibility>
-            </EcnEcoFollowUp:EcnEcoFollowUpFluentTabView>-->
+            </EcnEcoFollowUp:EcnEcoFollowUpFluentTabView>
 
-            <Fluent:RibbonTabItem x:Name="TabEcnEcoFollowUpApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabEcnEcoFollowUpApp"
                                   Header="{DynamicResource CT_MenuAppEcnFollowUp}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1137,9 +1137,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<POFollowUp:PurchaseOrderFollowUpTabMainView x:Name="TabPurchaseOrderFollowUpApp">
+            <POFollowUp:PurchaseOrderFollowUpTabMainView x:Name="TabPurchaseOrderFollowUpApp">
                 <POFollowUp:PurchaseOrderFollowUpTabMainView.Style>
                     <Style TargetType="POFollowUp:PurchaseOrderFollowUpTabMainView">
                         <Style.Triggers>
@@ -1155,9 +1155,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppPurchaseOrderFollowUp" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </POFollowUp:PurchaseOrderFollowUpTabMainView.Visibility>
-            </POFollowUp:PurchaseOrderFollowUpTabMainView>-->
+            </POFollowUp:PurchaseOrderFollowUpTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabPurchaseOrderFollowUpApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabPurchaseOrderFollowUpApp"
                                   Header="{DynamicResource CT_MenuAppPurchaseOrderFollowUp}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1167,9 +1167,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<ProfileApp:ProfileFluentTabMainView x:Name="TabProfileApp">
+            <ProfileApp:ProfileFluentTabMainView x:Name="TabProfileApp">
                 <ProfileApp:ProfileFluentTabMainView.Style>
                     <Style TargetType="ProfileApp:ProfileFluentTabMainView">
                         <Style.Triggers>
@@ -1185,9 +1185,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppProfile" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </ProfileApp:ProfileFluentTabMainView.Visibility>
-            </ProfileApp:ProfileFluentTabMainView>-->
+            </ProfileApp:ProfileFluentTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabProfileApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabProfileApp"
                                   Header="{DynamicResource CT_MenuAppTabProfile}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1197,9 +1197,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<VisualizationLib:ConvertToPdfTabMainView x:Name="TabConvertToPdfApp">
+            <VisualizationLib:ConvertToPdfTabMainView x:Name="TabConvertToPdfApp">
                 <VisualizationLib:ConvertToPdfTabMainView.Style>
                     <Style TargetType="VisualizationLib:ConvertToPdfTabMainView">
                         <Style.Triggers>
@@ -1215,9 +1215,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppConvertToPdf" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </VisualizationLib:ConvertToPdfTabMainView.Visibility>
-            </VisualizationLib:ConvertToPdfTabMainView>-->
+            </VisualizationLib:ConvertToPdfTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabConvertToPdfApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabConvertToPdfApp"
                                   Header="{DynamicResource CT_MenuAppConvertToPdf}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1227,9 +1227,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
             
-            <!--<ShearedTube:ShearedTubeFluentTabMainView x:Name="TabShearedTubeApp">
+            <ShearedTube:ShearedTubeFluentTabMainView x:Name="TabShearedTubeApp">
                 <ShearedTube:ShearedTubeFluentTabMainView.Style>
                     <Style TargetType="ShearedTube:ShearedTubeFluentTabMainView">
                         <Style.Triggers>
@@ -1245,9 +1245,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppShearedTube" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </ShearedTube:ShearedTubeFluentTabMainView.Visibility>
-            </ShearedTube:ShearedTubeFluentTabMainView>-->
+            </ShearedTube:ShearedTubeFluentTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabShearedTubeApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabShearedTubeApp"
                                   Header="{DynamicResource CT_MenuAppTabShearedTube}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1257,9 +1257,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<DxfExport:DxfExportFluentTabMainView x:Name="TabDxfExportApp">
+            <DxfExport:DxfExportFluentTabMainView x:Name="TabDxfExportApp">
                 <DxfExport:DxfExportFluentTabMainView.Style>
                     <Style TargetType="DxfExport:DxfExportFluentTabMainView">
                         <Style.Triggers>
@@ -1275,9 +1275,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppExportDXF" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </DxfExport:DxfExportFluentTabMainView.Visibility>
-            </DxfExport:DxfExportFluentTabMainView>-->
+            </DxfExport:DxfExportFluentTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabDxfExportApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabDxfExportApp"
                                   Header="{DynamicResource CT_MenuAppTaDxfExport}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1287,9 +1287,9 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
-            <!--<JpgExport:JpgExportFluentTabMainView x:Name="TabJpgExportApp">
+            <JpgExport:JpgExportFluentTabMainView x:Name="TabJpgExportApp">
                 <JpgExport:JpgExportFluentTabMainView.Style>
                     <Style TargetType="JpgExport:JpgExportFluentTabMainView">
                         <Style.Triggers>
@@ -1305,9 +1305,9 @@
                         <Binding Path="Data.CurrentDataContext.AppAvailable.AppJpgExport" Source="{StaticResource proxy}"/>
                     </MultiBinding>
                 </JpgExport:JpgExportFluentTabMainView.Visibility>
-            </JpgExport:JpgExportFluentTabMainView>-->
+            </JpgExport:JpgExportFluentTabMainView>
 
-            <Fluent:RibbonTabItem x:Name="TabJpgExportApp"
+            <!--<Fluent:RibbonTabItem x:Name="TabJpgExportApp"
                                   Header="{DynamicResource CT_MenuAppTabJpgExport}">
                 <Fluent:RibbonTabItem.Visibility>
                     <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
@@ -1317,7 +1317,7 @@
                      Source="{StaticResource proxy}" />
                     </MultiBinding>
                 </Fluent:RibbonTabItem.Visibility>
-            </Fluent:RibbonTabItem>
+            </Fluent:RibbonTabItem>-->
 
         </Fluent:Ribbon>
 
@@ -1331,60 +1331,60 @@
                                 <Setter Property="Content" Value="{Binding QuickLaunchViewModelVM}"/>
                             </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabEcnDataCheckApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabEcnDataCheckApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding EcnDataCheckViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabCutLengthApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabCutLengthApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding CutLengthViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabDxfExportApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabDxfExportApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding DxfExportViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabJpgExportApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabJpgExportApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding JpgExportViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabMassUpdateAttributeApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabMassUpdateAttributeApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding MassUpdateAttributeViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabProfileApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabProfileApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding ProfileViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabQuickSearchApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabQuickSearchApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding QuickSearchViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabShearedTubeApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabShearedTubeApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding ShearedTubeViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabEcnEcoFollowUpApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabEcnEcoFollowUpApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding EcnEcoFollowUpViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabPurchaseOrderFollowUpApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabPurchaseOrderFollowUpApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding PurchaseOrderFollowUpViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabConvertToPdfApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabConvertToPdfApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding ConvertToPdfViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding ElementName=TabDownloadVisualizationFileApp, Path=IsSelected}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=TabDownloadVisualizationFileApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding DownloadVisualizationFileViewModelVM}"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </ContentControl.Style>
             </ContentControl>
 
-            <ContentControl Content="{Binding RelativeSource={RelativeSource AncestorType=local:CREOToolsFluentMainView},
-                                      Path=CurrentTabContent}" />
+            <!--<ContentControl Content="{Binding RelativeSource={RelativeSource AncestorType=local:CREOToolsFluentMainView},
+                                      Path=CurrentTabContent}" />-->
         </Grid>
     </DockPanel>
 </Fluent:RibbonWindow>

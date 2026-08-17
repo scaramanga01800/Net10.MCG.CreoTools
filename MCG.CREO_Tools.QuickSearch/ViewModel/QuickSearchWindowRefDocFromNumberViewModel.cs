@@ -63,7 +63,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
 
         #region [REGION] Internal variables
         //private QuickSearchWindowRefDocFromNumberView CurrentQuickSearchWindowRefDocFromNumberView = new QuickSearchWindowRefDocFromNumberView();
-        private NetworkCredential WindchillNetworkCredential = new NetworkCredential();
+        //private NetworkCredential WindchillNetworkCredential = new NetworkCredential();
         string CompleteReferenceFileName = null;
         string UrlReferenceFileName = null;
         bool IsFirstDownload = true;
@@ -74,7 +74,6 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         public ICommand CommandSearchRefDoc { get => new RelayCommand(() => ExecuteSearchRefDoc()); }
         public ICommand CommandClose { get => new RelayCommand(() => RaiseCloseEvent()); }
         #endregion
-
 
         public event EventHandler CloseEvent;
 
@@ -89,13 +88,12 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             }
         }
 
-
         #region [REGION] Init
         private readonly IHtmlTools _htmlTools;
         private readonly IWindchillCredentialService _windchillCredentialService;
         private readonly IWindchillPartManagementService _windchillPartManagementService;
 
-        public QuickSearchWindowRefDocFromNumberViewModel(IHtmlTools htmlTools, 
+        public QuickSearchWindowRefDocFromNumberViewModel(IHtmlTools htmlTools,
                                                           IWindchillCredentialService windchillCredentialService,
                                                           IWindchillPartManagementService windchillPartManagementService)
         {
@@ -103,7 +101,6 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             _windchillCredentialService = windchillCredentialService;
             _windchillPartManagementService = windchillPartManagementService;
         }
-
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -116,7 +113,8 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                     if (!IsFirstDownload)
                         ExecuteSearchRefDoc();
                     IsFirstDownload = false;
-                    _htmlTools.DownloadFileFromUrl(UrlReferenceFileName, WindchillNetworkCredential, CompleteReferenceFileName);
+                    WindchillCredentialItem WindchillCrendential = _windchillCredentialService.GetWindchillCredential(CommonLibConstants.WindchillUrl, CommonLibConstants.WindchillUrl);
+                    _htmlTools.DownloadFileFromUrl(UrlReferenceFileName, WindchillCrendential.WindchillCredential, CompleteReferenceFileName);
                     McgFileAndSystemTools.OpenFile(CompleteReferenceFileName);
                 }
             }
@@ -132,7 +130,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 IsRefDocFound = false;
                 IsFirstDownload = true;
-                WindchillNetworkCredential = new NetworkCredential();
+                //WindchillNetworkCredential = new NetworkCredential();
 
                 WindchillCredentialItem WindchillCrendential = _windchillCredentialService.GetWindchillCredential(CommonLibConstants.WindchillUrl, CommonLibConstants.WindchillUrl);
 
@@ -143,7 +141,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 else
                 {
 
-                    RestOdataWtPart CurrentRestOdataWtPart = _windchillPartManagementService.GetOneWtPartWithWtDocumentAssociation(WindchillNetworkCredential, Number.Trim().ToUpper());
+                    RestOdataWtPart CurrentRestOdataWtPart = _windchillPartManagementService.GetOneWtPartWithWtDocumentAssociation(WindchillCrendential.WindchillCredential, Number.Trim().ToUpper());
 
                     if (CurrentRestOdataWtPart != null && CurrentRestOdataWtPart.References != null && CurrentRestOdataWtPart.References.Count > 0)
                     {

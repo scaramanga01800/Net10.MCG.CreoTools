@@ -67,8 +67,9 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         #endregion
 
         #region [REGION] Events
-        public event EventHandler OpenClassSubClassEvent;
+        public event Action<QuickSearchShortCutViewModel>? ActionOpenClassSubClassEvent;
 
+        public event EventHandler OpenClassSubClassEvent;
         public void RaiseOpenClassSubClassEvent()
         {
             try
@@ -126,7 +127,10 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             try
             {
                 if (ClassSubClass != null)
+                {
                     RaiseOpenClassSubClassEvent();
+                    ActionOpenClassSubClassEvent?.Invoke(ClassSubClass);
+                }
             }
             catch (Exception ex)
             {
@@ -144,7 +148,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 var CurrentPart = _IQuickSearchService.GetOnePartByRecPart(Number);
                 if (CurrentPart != null)
                 {
-                    var CurrentSubClass = _IQuickSearchService.GetPartSubClasses(CurrentPart.Idsubclass, listStandard).FirstOrDefault();
+                    var CurrentSubClass = _IQuickSearchService.GetPartSubClassesFromSubClass(CurrentPart.Idsubclass, listStandard).FirstOrDefault();
                     if (CurrentSubClass != null)
                     {
 
