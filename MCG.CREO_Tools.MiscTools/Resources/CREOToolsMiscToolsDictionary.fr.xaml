@@ -307,7 +307,9 @@
     <system:String x:Key="CDR_MsgTitleCadDocRenameIssue">Problème de renommage du document CAO</system:String>
     <system:String x:Key="CDR_MsgNotAnAssembly">Le modèle actif n'est pas une assemblage (ASM). Veuillez ouvrir un ASM et réessayer.</system:String>
     <system:String x:Key="CDR_MsgNotCadDocActivated">Aucun modèle actif trouvé. Veuillez ouvrir un ASM et réessayer.</system:String>
-
+    <system:String x:Key="CDR_MsgCadNumberEmpty">Le nouveau numéro est vide ; veuillez en saisir un valide.</system:String>
+    <system:String x:Key="CDR_IssueCadNumberEmpty">Problème de Numéro</system:String>
+    
     <system:String x:Key="BEC_WindowTitle">BOM Environment Configuration</system:String>
     <system:String x:Key="BEC_Column_Number">Numéro</system:String>
     <system:String x:Key="BEC_Column_AsmName">Nouvelle valeur ASM__NAME</system:String>

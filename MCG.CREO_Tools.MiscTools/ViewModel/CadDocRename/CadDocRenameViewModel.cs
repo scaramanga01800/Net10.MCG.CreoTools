@@ -244,6 +244,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadDocRename
         {
             try
             {
+                if (string.IsNullOrEmpty(CurrentDataContext.CadNumber))
+                {
+                    MessageBox.Show(McgWpfTools.GetStringResource("CDR_MsgCadNumberEmpty"), McgWpfTools.GetStringResource("CDR_IssueCadNumberEmpty"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+                    return;
+                }
+
                 // back up current model
                 string backupFolder = Path.GetTempPath();
                 CurrentDataContext.IsRenamedPossible = false;
