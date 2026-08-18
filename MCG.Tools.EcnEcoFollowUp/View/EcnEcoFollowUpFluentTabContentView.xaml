@@ -65,8 +65,11 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <TabControl Name="TabControlDashboard" SelectionChanged="TabControlDashboard_SelectionChanged" SelectedItem="{Binding CurrentEcnEcoFollowUpDataContext.SelectedTab}" >
-            <TabItem Header="{DynamicResource EFU_TabMain}">
+        <!--<TabControl Name="TabControlDashboard" SelectionChanged="TabControlDashboard_SelectionChanged" SelectedItem="{Binding CurrentEcnEcoFollowUpDataContext.SelectedTab}" >-->
+        <TabControl Name="TabControlDashboard"
+                    SelectedItem="{Binding CurrentEcnEcoFollowUpDataContext.SelectedTab}" >
+            <TabItem x:Name="TabMain"
+                     Header="{DynamicResource EFU_TabMain}">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
 

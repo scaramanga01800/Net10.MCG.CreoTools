@@ -307,11 +307,18 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig
         {
             try
             {
-                foreach (var item in CurrentDataContext.ListItem)
+                if (_creoModelService.IsLocallyModifiable(CurrentCadModel))
                 {
-                    item.Comment = McgWpfTools.GetStringResource("BEC_MsgRenamedInProgress");
-                    UpdateParameterString((IpfcComponentFeat)item.CreoFeature, "ASM_NAME", item.AsmName);
-                    item.Comment = McgWpfTools.GetStringResource("BEC_MsgRenamedSuccess");
+                    foreach (var item in CurrentDataContext.ListItem)
+                    {
+                        item.Comment = McgWpfTools.GetStringResource("BEC_MsgRenamedInProgress");
+                        UpdateParameterString((IpfcComponentFeat)item.CreoFeature, "ASM_NAME", item.AsmName);
+                        item.Comment = McgWpfTools.GetStringResource("BEC_MsgRenamedSuccess");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(McgWpfTools.GetStringResource("BEC_MsgAsmReadOnly"), McgWpfTools.GetStringResource("BEC_IssueAsmReadOnly"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                 }
             }
             catch (Exception ex)

@@ -329,6 +329,8 @@
     <system:String x:Key="BEC_MsgNotCadDocActivated">No active model found. Please open an ASM and try again.</system:String>
     <system:String x:Key="BEC_UserGuide">APP036EN.PDF</system:String>
     <system:String x:Key="BEC_LabelNoActiveModel">No Active Model</system:String>
+    <system:String x:Key="BEC_MsgAsmReadOnly">The CAD model is read-only; it needs to be checked out.</system:String>
+    <system:String x:Key="BEC_IssueAsmReadOnly">Issue CAD model</system:String>
 
     <system:String x:Key="BCE_AppName">Windchill BOM Export</system:String>
     <system:String x:Key="BCE_HeaderTabBomCompPdm">CAD/Part BOM</system:String>

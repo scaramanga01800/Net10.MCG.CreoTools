@@ -11,7 +11,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
         public static IServiceCollection AddEcnEcoFollowUpServices(this IServiceCollection services)
         {
             TraceLog.StartTimer("AddEcnEcoFollowUpServices");
-
+            
             services.AddSingleton<IEcnEcoFollowUpWindowService, EcnEcoFollowUpWindowService>();
 
             services.AddTransient<EcnEcaWorkFlowTasksViewModel>();

@@ -329,6 +329,8 @@
     <system:String x:Key="BEC_MsgNotCadDocActivated">Aucun modèle actif trouvé. Veuillez ouvrir un ASM et réessayer.</system:String>
     <system:String x:Key="BEC_UserGuide">APP036FR.PDF</system:String>
     <system:String x:Key="BEC_LabelNoActiveModel">Pas de modèle actif</system:String>
+    <system:String x:Key="BEC_MsgAsmReadOnly">Le modèle CAO est en lecture seul, il faut le récupérer.</system:String>
+    <system:String x:Key="BEC_IssueAsmReadOnly">Problème modèle CAO</system:String>
 
     <system:String x:Key="BCE_AppName">Export Nomenclature Windchill</system:String>
     <system:String x:Key="BCE_HeaderTabBomCompPdm">Nomenclature CAO / Article</system:String>

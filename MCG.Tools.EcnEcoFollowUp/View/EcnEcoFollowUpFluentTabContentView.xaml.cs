@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace MCG.Tools.EcnEcoFollowUp.View
 {
@@ -36,9 +37,15 @@ namespace MCG.Tools.EcnEcoFollowUp.View
                     CurrentEcnEcoFollowUpViewModel = ((EcnEcoFollowUpViewModel)DataContext);
                     CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.DashboardListEvent += UpdateMenuDashboard;
                     UpdateMenuDashboard();
+
                     IsAppAlreadyInit = true;
                     CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.EcnShownList.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((sender, e) => SubscribeToIsSelectedEvent(sender, e));
                     SubscribeToIsSelectedEvent(null, null);
+
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.SelectedTab = (TabItem) TabControlDashboard.Items[0];
+                    }));
                 }
             }
             catch (Exception ex)
@@ -48,6 +55,97 @@ namespace MCG.Tools.EcnEcoFollowUp.View
         }
 
         private void UpdateMenuDashboard(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                if (CurrentEcnEcoFollowUpViewModel?.CurrentEcnEcoFollowUpDataContext?.DashboardList == null)
+                {
+                    return;
+                }
+
+                MiSearchAddEcnEcoToDashboard.Items.Clear();
+
+                foreach (var dashboard in CurrentEcnEcoFollowUpViewModel.CurrentEcnEcoFollowUpDataContext.DashboardList)
+                {
+                    // Vérifie si l'onglet existe déjà dans le TabControl
+                    bool tabExists = TabControlDashboard.Items
+                        .OfType<System.Windows.Controls.TabItem>()
+                        .Any(tab => tab.DataContext == dashboard);
+
+                    if (!tabExists)
+                    {
+                        System.Windows.Controls.TabItem currentTabItem =
+                            new System.Windows.Controls.TabItem();
+
+                        EcnEcoFollowUpDashboardView dashboardView =
+                            new EcnEcoFollowUpDashboardView(dashboard);
+
+                        currentTabItem.Content = dashboardView;
+                        currentTabItem.DataContext =
+                            dashboardView.CurrentEcnEcoFollowUpDashboardViewModel;
+
+                        Binding visibilityBinding = new Binding("DashboardItem.IsShown")
+                        {
+                            Converter = new BoolToVisibilityConverter()
+                        };
+
+                        currentTabItem.SetBinding(
+                            System.Windows.Controls.TabItem.VisibilityProperty,
+                            visibilityBinding);
+
+                        currentTabItem.SetBinding(
+                            System.Windows.Controls.TabItem.HeaderProperty,
+                            new Binding("DashboardItem.Name"));
+
+                        dashboard.DashboardHideEvent -= SelectMainTab;
+                        dashboard.DashboardHideEvent += SelectMainTab;
+
+                        dashboard.DashboardShowEvent -= SelectShownTab;
+                        dashboard.DashboardShowEvent += SelectShownTab;
+
+                        TabControlDashboard.Items.Add(currentTabItem);
+                    }
+
+                    // Menu contextuel
+                    if (!dashboard.DashboardItem.IsReadOnly ||
+                        dashboard.DashboardItem.IsCreator)
+                    {
+                        MenuItem newMenuDashboard = new MenuItem()
+                        {
+                            DataContext = dashboard
+                        };
+
+                        newMenuDashboard.SetBinding(
+                            MenuItem.HeaderProperty,
+                            new Binding("DashboardItem.Name"));
+
+                        newMenuDashboard.SetBinding(
+                            MenuItem.CommandProperty,
+                            new Binding("ParentApp.CommandMenutItemAddEcnEcoToDashboard"));
+
+                        newMenuDashboard.CommandParameter = dashboard;
+
+                        MiSearchAddEcnEcoToDashboard.Items.Add(newMenuDashboard);
+                    }
+                }
+
+                // Sélection par défaut du premier onglet
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (TabControlDashboard.Items.Count > 0 &&
+                        TabControlDashboard.SelectedItem == null)
+                    {
+                        TabControlDashboard.SelectedIndex = 0;
+                    }
+                }), DispatcherPriority.Loaded);
+            }
+            catch (Exception ex)
+            {
+                EcnEcoFollowUpException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void UpdateMenuDashboard2(object sender = null, EventArgs e = null)
         {
             try
             {
@@ -120,7 +218,7 @@ namespace MCG.Tools.EcnEcoFollowUp.View
                     for (int index = 0; index < TabControlDashboard.Items.Count; index++)
                     {
                         if (((TabItem)TabControlDashboard.Items[index]).Content.GetType() == typeof(EcnEcoFollowUpDashboardView)
-                            && ((EcnEcoFollowUpDashboardView)((System.Windows.Controls.TabItem)TabControlDashboard.Items[index]).Content).CurrentEcnEcoFollowUpDashboardViewModel.GetHashCode() == sender.GetHashCode())
+                            && ((EcnEcoFollowUpDashboardView)((System.Windows.Controls.TabItem)TabControlDashboard.Items[index]).Content)?.CurrentEcnEcoFollowUpDashboardViewModel.GetHashCode() == sender.GetHashCode())
                             CurrentTabItem = (System.Windows.Controls.TabItem)TabControlDashboard.Items[index];
                     }
                     if (CurrentTabItem != null)
@@ -243,32 +341,32 @@ namespace MCG.Tools.EcnEcoFollowUp.View
         }
         #endregion
 
-        private void TabControlDashboard_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (e.AddedItems != null && e.AddedItems.Count > 0)
-                {
-                    object CurrentApp = e.AddedItems[0];
-                    if (CurrentApp != null && CurrentApp.GetType() == typeof(TabItem))
-                    {
-                        var currentDataContext = ((TabItem)CurrentApp).Content;
-                        if (currentDataContext.GetType() == typeof(EcnEcoFollowUpDashboardView))
-                        {
-                            MethodInfo CurrentMethodInit = currentDataContext.GetType().GetMethod("InitApp");
-                            if (CurrentMethodInit != null)
-                            {
-                                TraceLog.AddTraceLog($"Enter {CurrentApp.GetType().Name} App");
-                                CurrentMethodInit.Invoke(currentDataContext, null);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EcnEcoFollowUpException.SendMessageBox(this.GetType().Name, ex);
-            }
-        }
+        //private void TabControlDashboard_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.AddedItems != null && e.AddedItems.Count > 0)
+        //        {
+        //            object CurrentApp = e.AddedItems[0];
+        //            if (CurrentApp != null && CurrentApp.GetType() == typeof(TabItem))
+        //            {
+        //                //var currentDataContext = ((TabItem)CurrentApp).Content;
+        //                //if (currentDataContext?.GetType() == typeof(EcnEcoFollowUpDashboardView))
+        //                //{
+        //                //    MethodInfo CurrentMethodInit = currentDataContext.GetType().GetMethod("InitApp");
+        //                //    if (CurrentMethodInit != null)
+        //                //    {
+        //                //        TraceLog.AddTraceLog($"Enter {CurrentApp.GetType().Name} App");
+        //                //        CurrentMethodInit.Invoke(currentDataContext, null);
+        //                //    }
+        //                //}
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        EcnEcoFollowUpException.SendMessageBox(this.GetType().Name, ex);
+        //    }
+        //}
     }
 }

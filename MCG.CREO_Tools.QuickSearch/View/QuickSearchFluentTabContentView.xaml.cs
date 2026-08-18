@@ -41,6 +41,7 @@ namespace MCG.CREO_Tools.QuickSearch.View
                     CurrentQuickSearchViewModel = (QuickSearchViewModel)DataContext;
                     IsAppAlreadyInit = true;
                     CurrentQuickSearchViewModel.CurrentQuickSearchDataContext.SubClassChangedEvent += UpdateSubClassColumn;
+                    UpdateSubClassColumn();
                 }
 
             }
