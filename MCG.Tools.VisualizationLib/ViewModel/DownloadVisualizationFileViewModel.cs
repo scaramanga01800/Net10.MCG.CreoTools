@@ -106,8 +106,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         public ICommand CommandApplyFilters { get => new RelayCommand(() => ApplyFiltersVisuFile()); }
         public ICommand CommandDownloadVisuFiles { get => new RelayCommand(() => ExecuteDownloadVisuFiles()); }
         public ICommand CommandUpdateColumn { get => new RelayCommand(() => ExecuteUpdateColumn()); }
-        public ICommand CommandMenuItemSearchBom { get => new RelayCommand<string>((level) => ExecuteUMenuItemSearchBom(level)); }
-        public ICommand CommandMenuItemSearchSapBom { get => new RelayCommand<string>((level) => ExecuteUMenuItemSearchSapBom(level)); }
+        public ICommand CommandMenuItemSearchBom { get => new RelayCommand<string>((level) => ExecuteMenuItemSearchBom(level)); }
+        public ICommand CommandMenuItemSearchSapBom { get => new RelayCommand<string>((level) => ExecuteMenuItemSearchSapBom(level)); }
         public ICommand CommandOpenHelp { get => new RelayCommand(() => ExecuteOpenHelp()); }
         public ICommand CommandChangeExportFolder { get => new RelayCommand(() => ExecuteChangeExportFolder()); }
         public ICommand CommandOpenFolder { get => new RelayCommand(() => McgFileAndSystemTools.OpenFolder(CurrentDataContext.ExportFolder)); }
@@ -515,7 +515,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
-        private void ExecuteUMenuItemSearchBom(string Level)
+        private void ExecuteMenuItemSearchBom(string Level)
         {
             try
             {
@@ -534,7 +534,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
-        private void ExecuteUMenuItemSearchSapBom(string Level)
+        private void ExecuteMenuItemSearchSapBom(string Level)
         {
             try
             {
@@ -788,6 +788,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                     PartNumber = item.Number,
                                     PartRevision = item.Revision,
                                     State = item.State.Display,
+                                    LatestRevision = item.Revisions?.FirstOrDefault()?.Revision ?? item.Revision,
                                     ItemType = DocumentTypeEnum.PART,
                                     ItemFrom = DocumentTypeEnum.FROMECN,
                                     IsEcnInformationSearched = true,
@@ -859,7 +860,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
                             RestOdataWtPart partToDisplay = GetPartToDisplay(item);
 
-                            CurrentWindchillPart = _windchillRequestMiscService.GetWindchillPart(item);
+                            CurrentWindchillPart = _windchillRequestMiscService.GetWindchillPart(partToDisplay);
 
                             CurrentItem = new VisualizationItem()
                             {
@@ -867,26 +868,13 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                 PartRevision = partToDisplay.Revision,
                                 State = partToDisplay.State?.Display,
                                 ItemType = DocumentTypeEnum.PART,
+                                LatestRevision = item.Revisions?.FirstOrDefault()?.Revision ?? item.Revision,
                                 WindchillPart = CurrentWindchillPart,
                                 DescriptionEng = $"{CurrentWindchillPart.Name}|{CurrentWindchillPart.DescriptionEn2}",
                                 DescriptionLocal = $"{CurrentWindchillPart.DescriptionLocal1}|{CurrentWindchillPart.DescriptionLocal2}",
                                 PdmContext = CurrentWindchillPart.Context.Name,
                                 AddedFrom = McgWpfTools.GetStringResource("VIS_FromSearch")
                             };
-
-                            //CurrentItem = new VisualizationItem()
-                            //{
-                            //    PartNumber = item.Number,
-                            //    PartRevision = item.Revision,
-                            //    State = item.State.Display,
-                            //    ItemType = DocumentTypeEnum.PART,
-                            //    WindchillPart = CurrentWindchillPart,
-                            //    DescriptionEng = $"{CurrentWindchillPart.Name}|{CurrentWindchillPart.DescriptionEn2}",
-                            //    DescriptionLocal = $"{CurrentWindchillPart.DescriptionLocal1}|{CurrentWindchillPart.DescriptionLocal2}",
-                            //    PdmContext = CurrentWindchillPart.Context.Name,
-                            //    AddedFrom = McgWpfTools.GetStringResource("VIS_FromSearch")
-
-                            //};
 
                             if (item.Revisions != null)
                             {
@@ -982,9 +970,13 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                             RestOdataWtPart TempPart = ListPartResult.FirstOrDefault();
                             if (TempPart != null)
                             {
-                                CurrentWindchillPart = _windchillRequestMiscService.GetWindchillPart(TempPart);
-                                itemPart.PartRevision = TempPart.Revision;
-                                itemPart.State = TempPart.State.Display;
+                                RestOdataWtPart partToDisplay = GetPartToDisplay(TempPart);
+
+
+                                CurrentWindchillPart = _windchillRequestMiscService.GetWindchillPart(partToDisplay);
+                                itemPart.PartRevision = partToDisplay.Revision;
+                                itemPart.LatestRevision = TempPart.Revisions?.FirstOrDefault()?.Revision ?? TempPart.Revision;
+                                itemPart.State = partToDisplay.State.Display;
                                 itemPart.WindchillPart = CurrentWindchillPart;
                                 itemPart.DescriptionEng = $"{CurrentWindchillPart.Name}|{CurrentWindchillPart.DescriptionEn2}";
                                 itemPart.DescriptionLocal = $"{CurrentWindchillPart.DescriptionLocal1}|{CurrentWindchillPart.DescriptionLocal2}";
@@ -1054,6 +1046,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                         PartNumber = item.Number,
                                         PartRevision = item.Revision,
                                         State = item.State.Display,
+                                        LatestRevision = item.Revisions?.FirstOrDefault()?.Revision ?? item.Revision,
                                         ItemType = DocumentTypeEnum.PART,
                                         ItemFrom = DocumentTypeEnum.FROMECN,
                                         WindchillPart = CurrentWindchillPart,

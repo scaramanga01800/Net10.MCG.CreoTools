@@ -44,6 +44,7 @@
             <BitmapImage x:Key="STRUCTURE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure.ico" />
             <BitmapImage x:Key="STRUCTURE_SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP.ico" />
             <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
+            <BitmapImage x:Key="NEW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/new.ico" />
             <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
             <System:Boolean x:Key="FalseValue">False</System:Boolean>
@@ -624,9 +625,44 @@
                         </DataGridTemplateColumn.CellEditingTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding PartRevision}"/>
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <Image Width="12"
+                                           Height="12"
+                                           Margin="0,0,4,0"
+                                           Source="{StaticResource NEW}">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed"/>
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLatestRevisionSelected}"
+                                                                 Value="False">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                        <Image.ToolTip>
+                                            <ToolTip>
+                                                A newer revision exists.
+                                                The displayed revision is the latest approved revision.
+                                            </ToolTip>
+                                        </Image.ToolTip>
+                                    </Image>
+
+                                    <TextBlock Text="{Binding PartRevision}"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                        <!--<DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding PartRevision}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>-->
                     </DataGridTemplateColumn>
 
                     <DataGridTextColumn  Binding="{Binding State}" IsReadOnly="True">

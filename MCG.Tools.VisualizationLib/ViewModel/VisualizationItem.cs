@@ -47,6 +47,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
         partial void OnPartRevisionChanged(string value)
         {
+            OnPropertyChanged(nameof(IsLatestRevisionSelected));
             // On crie dans le vide : "Ma révision a changé !"
             WeakReferenceMessenger.Default.Send(new PartRevisionChangedMessage(this));
         }
@@ -208,6 +209,11 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
         }
 
+        public bool IsLatestRevisionSelected
+        {
+            get => PartRevision == LatestRevision;
+        }
+
         private DocumentTypeEnum _ItemType = DocumentTypeEnum.UNKNOWN;
         public DocumentTypeEnum ItemType
         {
@@ -252,6 +258,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         public RestOdataChangeNotice WindchillEcn { get; set; }
 
         public List<RestOdataWtObject> AllOdataWtPartRevision { get; set; }
+
+        public string LatestRevision { get; set; }
         #endregion
 
         public VisualizationItem() { }

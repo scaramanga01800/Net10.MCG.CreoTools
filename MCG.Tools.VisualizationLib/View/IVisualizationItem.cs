@@ -25,6 +25,7 @@ namespace MCG.Tools.VisualizationLib.View
         bool IsDocumentFound { get; set; }
         bool IsSelected { get; set; }
         bool IsAllSelected { get; set; }
+        bool IsLatestRevisionSelected { get; }
         DocumentTypeEnum ItemType { get; set; }
         DocumentTypeEnum ItemFrom { get; set; }
 
