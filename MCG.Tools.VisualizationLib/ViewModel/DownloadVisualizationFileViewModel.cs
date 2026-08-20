@@ -552,7 +552,6 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
-
         private void ExecuteOpenHelp()
         {
             try
@@ -858,20 +857,36 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                         {
                             TraceLog.AddTraceLog($"Start Search PART {item.Number} ");
 
+                            RestOdataWtPart partToDisplay = GetPartToDisplay(item);
+
                             CurrentWindchillPart = _windchillRequestMiscService.GetWindchillPart(item);
+
                             CurrentItem = new VisualizationItem()
                             {
-                                PartNumber = item.Number,
-                                PartRevision = item.Revision,
-                                State = item.State.Display,
+                                PartNumber = partToDisplay.Number,
+                                PartRevision = partToDisplay.Revision,
+                                State = partToDisplay.State?.Display,
                                 ItemType = DocumentTypeEnum.PART,
                                 WindchillPart = CurrentWindchillPart,
                                 DescriptionEng = $"{CurrentWindchillPart.Name}|{CurrentWindchillPart.DescriptionEn2}",
                                 DescriptionLocal = $"{CurrentWindchillPart.DescriptionLocal1}|{CurrentWindchillPart.DescriptionLocal2}",
                                 PdmContext = CurrentWindchillPart.Context.Name,
                                 AddedFrom = McgWpfTools.GetStringResource("VIS_FromSearch")
-
                             };
+
+                            //CurrentItem = new VisualizationItem()
+                            //{
+                            //    PartNumber = item.Number,
+                            //    PartRevision = item.Revision,
+                            //    State = item.State.Display,
+                            //    ItemType = DocumentTypeEnum.PART,
+                            //    WindchillPart = CurrentWindchillPart,
+                            //    DescriptionEng = $"{CurrentWindchillPart.Name}|{CurrentWindchillPart.DescriptionEn2}",
+                            //    DescriptionLocal = $"{CurrentWindchillPart.DescriptionLocal1}|{CurrentWindchillPart.DescriptionLocal2}",
+                            //    PdmContext = CurrentWindchillPart.Context.Name,
+                            //    AddedFrom = McgWpfTools.GetStringResource("VIS_FromSearch")
+
+                            //};
 
                             if (item.Revisions != null)
                             {
@@ -908,6 +923,24 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
             }
+        }
+
+        private RestOdataWtPart GetPartToDisplay(RestOdataWtPart latestPart)
+        {
+            if (latestPart == null)
+                return null;
+
+            // Comportement actuel
+            if (!CurrentDataContext.ShowLatestApproved)
+                return latestPart;
+
+            if (latestPart.Revisions == null || latestPart.Revisions.Count == 0)
+                return latestPart;
+
+            // Les révisions étant déjà triées, on prend simplement la dernière approuvée
+            RestOdataWtObject approvedPart = latestPart.Revisions.FirstOrDefault(r => CommonLibConstants.WindchillApprovedStates.Contains(r.State?.Value));
+            // Si aucune révision approuvée, on conserve le comportement actuel
+            return approvedPart.GetWtPart() ?? latestPart;
         }
 
         private void SearchListPartEcnAsynch(bool UpdateAddFrom = true)
@@ -1141,7 +1174,6 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 CurrentDataContext.IsSearchInProgress = false;
             }
         }
-
 
         private void SearchVisualizationFileAsynch()
         {
@@ -1427,7 +1459,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
-        private void GetVisuItemFromSapBom (List<BomComponent> Structure, string UpperLevel, int BomLevel)
+        private void GetVisuItemFromSapBom(List<BomComponent> Structure, string UpperLevel, int BomLevel)
         {
             try
             {

@@ -192,4 +192,8 @@
     <system:String x:Key="VIS_LbBomUsage">Utilisation BOM SAP</system:String>
     <system:String x:Key="VIS_LbValidFrom">Date Validité SAP</system:String>
 
+    <system:String x:Key="VIS_LabelApprovedState">Etats Validés</system:String>
+    <system:String x:Key="VIS_ToolTipApprovedState">
+        Lorsqu'elle est activée, la dernière révision approuvée est affichée par défaut. Les états considérés comme valides sont : Pre-Released, Officiel, Prototype, Obsolète et Superseded. Si aucune révision valide n'existe, la dernière révision disponible est utilisée.
+    </system:String>
 </ResourceDictionary>

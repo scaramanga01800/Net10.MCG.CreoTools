@@ -71,5 +71,7 @@ namespace MCG.Tools.VisualizationLib.View
         ObservableCollection<SapBomUsage> AllBomUsage { get; set; }
         SapBomUsage BomUsage { get; set; }
         DateTime DateValidity { get; set; }
+
+        bool ShowLatestApproved { get; set; }
     }
 }

@@ -694,6 +694,20 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
+        private bool _ShowLatestApproved = false;
+        public bool ShowLatestApproved
+        {
+            get { return _ShowLatestApproved; }
+            set
+            {
+                if (this._ShowLatestApproved != value)
+                {
+                    this._ShowLatestApproved = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event EventHandler UserConfigurationUpdateEvent;
         public void RaiseUserConfigurationUpdateEvent()
         {

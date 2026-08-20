@@ -65,6 +65,14 @@
                 </TextBox.InputBindings>
             </Fluent:TextBox>
         </StackPanel>
+        <Fluent:CheckBox IsChecked="{Binding CurrentDataContext.ShowLatestApproved,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Header="{DynamicResource VIS_LabelApprovedState}">
+            <Fluent:CheckBox.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource VIS_LabelApprovedState}" Width ="250"
+                                  Text="{DynamicResource VIS_ToolTipApprovedState}"/>
+            </Fluent:CheckBox.ToolTip>
+        </Fluent:CheckBox>
+
         <Fluent:SplitButton   LargeIcon="{StaticResource SEARCHECN}" Command="{Binding CommandSearchEcn}" Margin="5,0,5,0">
             <Fluent:SplitButton.ToolTip>
                 <Fluent:ScreenTip Title="{DynamicResource VIS_BtTitleStartSearchEcn}" Width ="250"
