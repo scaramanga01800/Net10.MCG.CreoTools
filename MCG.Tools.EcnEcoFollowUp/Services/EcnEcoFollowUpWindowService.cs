@@ -37,11 +37,13 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
         public void ShowEcoWorkFlowTasksView(EFU_EcnEcoToShowEndUser currentEcn, List<EFU_SapHupOracle_DmEcoTasks> listAllTask)
         {
             _EcoWorkFlowTasksView = _serviceProvider.GetRequiredService<EcoWorkFlowTasksView>();
+            ((EcoWorkFlowTasksView)_EcoWorkFlowTasksView).SetEcoWorkFlowTasksViewProperties(currentEcn, listAllTask);
             _EcoWorkFlowTasksView.Show();
         }
         public void ShowEcnEcaWorkFlowTasksView(EFU_EcnEcoToShowEndUser currentEcn, List<EFU_EcnEcoWorkflowItem> listAllTask)
         {
             _EcnEcaWorkFlowTasksView = _serviceProvider.GetRequiredService<EcnEcaWorkFlowTasksView>();
+            ((EcnEcaWorkFlowTasksView) _EcnEcaWorkFlowTasksView).SetEcnEcaWorkFlowTasksViewProperties(currentEcn, listAllTask);
             _EcnEcaWorkFlowTasksView.Show();
         }
         public void ShowEcnEcoFollowUpDashboardSearchWindow()
@@ -53,11 +55,13 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
         public void ShowDialogEcoWorkFlowTasksView(EFU_EcnEcoToShowEndUser currentEcn, List<EFU_SapHupOracle_DmEcoTasks> listAllTask)
         {
             _EcoWorkFlowTasksView = _serviceProvider.GetRequiredService<EcoWorkFlowTasksView>();
+            ((EcoWorkFlowTasksView)_EcoWorkFlowTasksView).SetEcoWorkFlowTasksViewProperties(currentEcn, listAllTask);
             _EcoWorkFlowTasksView.ShowDialog();
         }
         public void ShowDialogEcnEcaWorkFlowTasksView(EFU_EcnEcoToShowEndUser currentEcn, List<EFU_EcnEcoWorkflowItem> listAllTask)
         {
             _EcnEcaWorkFlowTasksView = _serviceProvider.GetRequiredService<EcnEcaWorkFlowTasksView>();
+            ((EcnEcaWorkFlowTasksView) _EcnEcaWorkFlowTasksView).SetEcnEcaWorkFlowTasksViewProperties(currentEcn, listAllTask);
             _EcnEcaWorkFlowTasksView.ShowDialog();
         }
         public (MessageBoxResult DialogValue, List<EFU_DashboardItem> SelectedDashboards) ShowDialogEcnEcoFollowUpDashboardSearchWindow()

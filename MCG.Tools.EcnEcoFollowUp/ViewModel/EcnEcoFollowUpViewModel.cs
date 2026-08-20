@@ -1176,9 +1176,10 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 {
                     WindchillCredentialItem WindchillCredential = _windchillCredentialService.GetWindchillCredential(CommonLibConstants.WindchillUrl, CommonLibConstants.WindchillUrl);
                     if (!WindchillCredential.IsCredentialOk) return false;
-                    WindchillNetworkCredential = new NetworkCredential();
-                    WindchillNetworkCredential.UserName = WindchillCredential.Login;
-                    WindchillNetworkCredential.Password = WindchillCredential.PassWord;
+                    WindchillNetworkCredential = WindchillCredential.WindchillCredential;
+                    //WindchillNetworkCredential = new NetworkCredential();
+                    //WindchillNetworkCredential.UserName = WindchillCredential.Login;
+                    //WindchillNetworkCredential.Password = WindchillCredential.PassWord;
                 }
                 return true;
             }

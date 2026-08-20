@@ -335,9 +335,17 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                         GenericModel.RemoveRow(row);
                     }
                 }
+                _creoMacroService.DeleteFamilyTable();
 
                 // Active the model
                 _creoMacroService.ActiveWindow();
+
+                // Clear Appearances
+                if (CurrentJpgExportDataContext.IsRemoveColor)
+                    _creoMacroService.ClearAppearances();
+
+                // change norm to ISO
+                _creoMacroService.ChangeNormToIso();
 
                 // Set orientation
                 _creoMacroService.Select3DView(CurrentJpgExportDataContext.SelectedView3D.Value);
@@ -348,9 +356,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                 // with or without edges
                 _creoMacroService.Set3DDisplayStyle(CurrentJpgExportDataContext.SelectedDisplayStyle.Value);
 
-                // Clear Appearances
-                if (CurrentJpgExportDataContext.IsRemoveColor)
-                    _creoMacroService.ClearAppearances();
+
 
                 Thread.Sleep(1000);
                 // Create the jpg

@@ -698,9 +698,9 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 {
                     WindchillCredentialItem WindchillCrendential = _windchillCredentialService.GetWindchillCredential($"{CommonLibConstants.WindchillUrl}/", $"{CommonLibConstants.WindchillUrl}/");
                     if (!WindchillCrendential.IsCredentialOk) return false;
-                    WindchillNetworkCredential = new NetworkCredential();
-                    WindchillNetworkCredential.UserName = WindchillCrendential.Login;
-                    WindchillNetworkCredential.Password = WindchillCrendential.PassWord;
+                    WindchillNetworkCredential = WindchillCrendential.WindchillCredential;
+                    //WindchillNetworkCredential.UserName = WindchillCrendential.Login;
+                    //WindchillNetworkCredential.Password = WindchillCrendential.PassWord;
                 }
                 return true;
             }
