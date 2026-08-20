@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MCG.CommonLib;
+using MCG.CommonLib.Models.SAP;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.Tools.VisualizationLib.View;
 using System;
@@ -644,6 +645,54 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
+        public ObservableCollection<SapPlant> AllSapPlants { get; set; } = new ObservableCollection<SapPlant>();
+
+        private SapPlant _Plant;
+        public SapPlant Plant
+        {
+            get { return _Plant; }
+            set
+            {
+                if (this._Plant != value)
+                {
+                    this._Plant = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
+        public ObservableCollection<SapBomUsage> AllBomUsage { get; set; } = new ObservableCollection<SapBomUsage>();
+
+        private SapBomUsage _BomUsage;
+        public SapBomUsage BomUsage
+        {
+            get { return _BomUsage; }
+            set
+            {
+                if (this._BomUsage != value)
+                {
+                    this._BomUsage = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
+        private DateTime _DateValidity = DateTime.Today;
+        public DateTime DateValidity
+        {
+            get { return _DateValidity; }
+            set
+            {
+                if (this._DateValidity != value)
+                {
+                    this._DateValidity = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
 
         public event EventHandler UserConfigurationUpdateEvent;
         public void RaiseUserConfigurationUpdateEvent()

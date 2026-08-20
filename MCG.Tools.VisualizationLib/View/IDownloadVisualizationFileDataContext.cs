@@ -1,4 +1,5 @@
-﻿using MCG.Tools.VisualizationLib.ViewModel;
+﻿using MCG.CommonLib.Models.SAP;
+using MCG.Tools.VisualizationLib.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -64,5 +65,11 @@ namespace MCG.Tools.VisualizationLib.View
         string ExportFolder { get; set; }
 
         bool IsCreateZip { get; set; }
+
+        ObservableCollection<SapPlant> AllSapPlants { get; set; }
+        SapPlant Plant { get; set; }
+        ObservableCollection<SapBomUsage> AllBomUsage { get; set; }
+        SapBomUsage BomUsage { get; set; }
+        DateTime DateValidity { get; set; }
     }
 }

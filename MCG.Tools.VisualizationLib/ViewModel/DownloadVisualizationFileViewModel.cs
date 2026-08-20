@@ -5,6 +5,7 @@ using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
+using MCG.CommonLib.SapTools.Interfaces;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent.Interfaces;
@@ -14,6 +15,7 @@ using MCG.Tools.VisualizationLib.Exceptions;
 using MCG.Tools.VisualizationLib.Interfaces;
 using MCG.Tools.VisualizationLib.View;
 using MCG.WindchillRequestTool;
+using MCG.WindchillRequestTool.Model.BomComparison;
 using MCG.WindchillRequestTool.Model.RestOdata;
 using MCG.WindchillRequestTool.Model.Windchill;
 using MCG.WindchillRequestTool.Services.Interfaces;
@@ -82,6 +84,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         private readonly IWindchillBomManagementService _windchillBomManagementService;
         private readonly IWindchillVisualizationManagementService _windchillVisualizationManagementService;
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
+        private readonly ISapBomService _sapBomService;
         #endregion
 
 
@@ -103,7 +106,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         public ICommand CommandApplyFilters { get => new RelayCommand(() => ApplyFiltersVisuFile()); }
         public ICommand CommandDownloadVisuFiles { get => new RelayCommand(() => ExecuteDownloadVisuFiles()); }
         public ICommand CommandUpdateColumn { get => new RelayCommand(() => ExecuteUpdateColumn()); }
-        public ICommand CommandMenuItemSerchBom { get => new RelayCommand<string>((level) => ExecuteUMenuItemSerchBom(level)); }
+        public ICommand CommandMenuItemSearchBom { get => new RelayCommand<string>((level) => ExecuteUMenuItemSearchBom(level)); }
+        public ICommand CommandMenuItemSearchSapBom { get => new RelayCommand<string>((level) => ExecuteUMenuItemSearchSapBom(level)); }
         public ICommand CommandOpenHelp { get => new RelayCommand(() => ExecuteOpenHelp()); }
         public ICommand CommandChangeExportFolder { get => new RelayCommand(() => ExecuteChangeExportFolder()); }
         public ICommand CommandOpenFolder { get => new RelayCommand(() => McgFileAndSystemTools.OpenFolder(CurrentDataContext.ExportFolder)); }
@@ -126,7 +130,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                                   IWindchillCredentialService windchillCredentialService,
                                                   IWindchillBomManagementService windchillBomManagementService,
                                                   IWindchillVisualizationManagementService windchillVisualizationManagementService,
-                                                  IMcgCommonLibWindowService mcgCommonLibWindowService)
+                                                  IMcgCommonLibWindowService mcgCommonLibWindowService,
+                                                  ISapBomService sapBomService)
         {
             try
             {
@@ -143,7 +148,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 _mcgCommonLibWindowService = mcgCommonLibWindowService;
                 _xmlSerializeTools = xmlSerializeTools;
                 _pdfTools = pdfTools;
-                
+                _sapBomService = sapBomService;
+
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "" || !Directory.Exists(MainAppFolder))
                     MainAppFolder = CommonLibConstants.MainAppFolder;
@@ -202,7 +208,17 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                     foreach (var value in CurrentDownloadVisuConfiguration.OptionalWatermarkValues)
                         CurrentDataContext.OptionalWatermarkValues.Add(value);
                     CurrentDataContext.OptionalWatermark = CurrentDataContext.OptionalWatermarkValues.FirstOrDefault();
+
+                    foreach (var item in CurrentDownloadVisuConfiguration.ListSapPlant)
+                        CurrentDataContext.AllSapPlants.Add(item);
+                    CurrentDataContext.Plant = CurrentDataContext.AllSapPlants.FirstOrDefault();
                 }
+
+                var listBomUsage = McgBusinessTools.GetLIstSapBomUsage();
+                if (listBomUsage != null && listBomUsage.Count > 0)
+                    foreach (var usage in listBomUsage)
+                        CurrentDataContext.AllBomUsage.Add(usage);
+                CurrentDataContext.BomUsage = CurrentDataContext.AllBomUsage.FirstOrDefault(item => item.Usage == "3");
 
                 ActionInProgressEvent += (sender, e) => CurrentDataContext.ActionInProgress = true;
                 ActionDoneEvent += (sender, e) => CurrentDataContext.ActionInProgress = false;
@@ -216,6 +232,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 throw new VisualizationException(this.GetType().Name, ex); ;
             }
         }
+
         public void InitApp()
         {
         }
@@ -498,7 +515,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
-        private void ExecuteUMenuItemSerchBom(string Level)
+        private void ExecuteUMenuItemSearchBom(string Level)
         {
             try
             {
@@ -516,6 +533,25 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 VisualizationException.SendMessageBox(this.GetType().Name, ex);
             }
         }
+
+        private void ExecuteUMenuItemSearchSapBom(string Level)
+        {
+            try
+            {
+                int BomLevel = 1;
+                if (Level != null)
+                    BomLevel = Int32.Parse(Level);
+
+                RaiseActionInProgressEvent();
+                Thread ThreadSearchPart = new Thread(() => SearchSapBomComponentAsynch(BomLevel));
+                ThreadSearchPart.Start();
+            }
+            catch (Exception ex)
+            {
+                VisualizationException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
 
         private void ExecuteOpenHelp()
         {
@@ -815,7 +851,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                     Dictionary<string, string> ListPart = new Dictionary<string, string>();
                     ListPart.Add(CurrentDataContext.FilterNumber, "Latest");
                     List<RestOdataWtPart> ListPartResult = _windchillPartManagementService.GetListPartAllRevisions(WindchillNetworkCredential, ListPart, CommonLibConstants.WindchillUrl);
- 
+
                     if (ListPartResult != null && ListPartResult.Count > 0)
                     {
                         foreach (var item in ListPartResult)
@@ -1068,6 +1104,44 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 CurrentDataContext.IsSearchInProgress = false;
             }
         }
+
+        private void SearchSapBomComponentAsynch(int BomLevel)
+        {
+            try
+            {
+                TraceLog.AddTraceLog($"Start Search SAP BOM for {CurrentDataContext.SelectedPart.PartNumber}.{CurrentDataContext.SelectedPart.PartRevision}, level {BomLevel}");
+
+                CurrentDataContext.IsSearchInProgress = true;
+                CurrentDataContext.CurrentStep = 0;
+                CurrentDataContext.StatusBarTextRight = McgWpfTools.GetStringResource("VIS_StatusBarBomInProgress");
+
+                string tempNumber = CurrentDataContext.Plant.Number == "0000" ? "" : CurrentDataContext.Plant.Number;
+
+                List<BomComponent> extractedBom = _sapBomService.ExtractOneMaterialMasterSapBom(CurrentDataContext.SelectedPart.PartNumber?.Trim(), CurrentDataContext.DateValidity.ToString("yyyyMMdd"), tempNumber, CurrentDataContext.BomUsage.Usage);
+                extractedBom.RemoveAll(c => c.Level == 0);
+                extractedBom.RemoveAll(c => c.Level > BomLevel);
+                extractedBom.RemoveAll(c => string.IsNullOrEmpty(c.Number));
+
+                if (extractedBom != null && extractedBom.Count > 0)
+                {
+                    GetVisuItemFromSapBom(extractedBom, CurrentDataContext.SelectedPart.PartNumber, 1);
+                    SearchListPartEcnAsynch(false);
+                }
+                else
+                    MessageBox.Show(McgWpfTools.GetStringResource("VIS_ErrorMsgBomNotFound"), McgWpfTools.GetStringResource("VIS_TitleWindowSearch"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                VisualizationException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                RaiseActionDoneEvent();
+                CurrentDataContext.StatusBarTextRight = "";
+                CurrentDataContext.IsSearchInProgress = false;
+            }
+        }
+
 
         private void SearchVisualizationFileAsynch()
         {
@@ -1353,6 +1427,36 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
         }
 
+        private void GetVisuItemFromSapBom (List<BomComponent> Structure, string UpperLevel, int BomLevel)
+        {
+            try
+            {
+                VisualizationItem NewValue = null;
+                if (BomLevel == 1)
+                    ListItemInProgress = new List<VisualizationItem>();
+                foreach (var component in Structure)
+                {
+                    NewValue = new VisualizationItem()
+                    {
+                        PartNumber = component.Number,
+                        ItemType = DocumentTypeEnum.PART,
+                        ItemFrom = DocumentTypeEnum.FROMBOM,
+                        AddedFrom = $"{McgWpfTools.GetStringResource("VIS_LabelComponentOf")} {UpperLevel} - {McgWpfTools.GetStringResource("VIS_MiSearchBomLevel")} {component.Level}"
+                    };
+                    if (!string.IsNullOrEmpty(component.Revision))
+                        NewValue.PartRevision = component.Revision;
+
+                    ListItemInProgress.Add(NewValue);
+                    if (component.Structure != null && component.Structure.Count > 0)
+                        GetVisuItemFromSapBom(component.Structure.ToList(), UpperLevel, BomLevel + 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new VisualizationException(this.GetType().Name, ex);
+            }
+        }
+
         private void GetVisuItemFromClipboard()
         {
             try
@@ -1496,7 +1600,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                             {
                                 if (visuDoc.WindchillEcn != null)
                                 {
-                                    _windchillRequestMiscService.Download(visuDoc.WindchillEcn,WindchillNetworkCredential, TempFolder);
+                                    _windchillRequestMiscService.Download(visuDoc.WindchillEcn, WindchillNetworkCredential, TempFolder);
 
                                     if (!visuDoc.WindchillEcn.IsDownloadedOk)
                                     {

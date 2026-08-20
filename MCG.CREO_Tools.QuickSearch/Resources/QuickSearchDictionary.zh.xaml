@@ -79,7 +79,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QS_AskTitleRemoveShortCut">Remove Shortcut</system:String>
     <system:String x:Key="QS_MenuAddShortCut">Add Class/Sub-Class to shortcuts</system:String>
     <system:String x:Key="QS_MenuResetShortCut">Reset shortcuts to default</system:String>
-    <system:String x:Key="QS_AskResetShortCut">Are you sure you want to reset all shortcuts to the default ones?\nAll your shortcuts will be deleted...</system:String>
+    <system:String x:Key="QS_AskResetShortCut">Are you sure you want to reset all shortcuts to the default ones? All your shortcuts will be deleted...</system:String>
     <system:String x:Key="QS_AskTitleResetShortCut">Reset Shortcuts</system:String>
     <system:String x:Key="QS_LabelShortCuts">Shortcuts</system:String>
 

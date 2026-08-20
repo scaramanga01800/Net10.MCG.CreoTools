@@ -105,6 +105,7 @@
     <system:String x:Key="VIS_BtTitleFolder">Dossier d’export</system:String>
 
     <system:String x:Key="VIS_MiSearchBom">Recherche des composants de nomenclature</system:String>
+    <system:String x:Key="VIS_MiSearchSapBom">Recherche des composants de nomenclature SAP</system:String>
     <system:String x:Key="VIS_MiSearchBomLevel">Niveau</system:String>
     <system:String x:Key="VIS_LabelComponentOf">Composant de</system:String>
 
@@ -185,5 +186,10 @@
     <system:String x:Key="VIS_ExporExcelClose">Fermer</system:String>
     <system:String x:Key="VIS_ExporExcelOpenFolder">Ouvrir le dossier</system:String>
     <system:String x:Key="VIS_RibGrpData">Données</system:String>
+
+    <system:String x:Key="VIS_GrpSapData">Données SAP</system:String>
+    <system:String x:Key="VIS_LbPlant">Usine SAP</system:String>
+    <system:String x:Key="VIS_LbBomUsage">Utilisation BOM SAP</system:String>
+    <system:String x:Key="VIS_LbValidFrom">Date Validité SAP</system:String>
 
 </ResourceDictionary>

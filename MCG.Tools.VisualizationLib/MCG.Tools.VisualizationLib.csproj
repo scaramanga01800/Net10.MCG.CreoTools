@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.Resources\MCG.CommonLib.Resources.csproj" />
+    <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.SapTools\MCG.CommonLib.SapTools.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib.WpfComponent\MCG.CommonLib.WpfComponent.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.CommonLib\MCG.CommonLib.csproj" />
     <ProjectReference Include="..\..\Net10.MCG.CommonLib\MCG.Converters\MCG.Converters.csproj" />

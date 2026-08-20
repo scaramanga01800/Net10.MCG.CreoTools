@@ -29,7 +29,8 @@ namespace MCG.Tools.VisualizationLib.View
         ICommand CommandApplyFilters { get; }
         ICommand CommandDownloadVisuFiles { get; }
         ICommand CommandUpdateColumn { get; }
-        ICommand CommandMenuItemSerchBom { get; }
+        ICommand CommandMenuItemSearchBom { get; }
+        ICommand CommandMenuItemSearchSapBom { get; }
         ICommand CommandOpenHelp { get; }
         ICommand CommandChangeExportFolder { get; }
         ICommand CommandOpenFolder { get; }

@@ -4,6 +4,49 @@
       <string>For Consultation Only</string>
       <string>For Quotation</string>
       <string>Patent In Progress, Do Not Share Externaly</string>
-    </OptionalWatermarkValues>   
+    </OptionalWatermarkValues>
+
+	<ListSapPlant>
+		<SapPlant>
+			<Number>0000</Number>
+			<Name>Without</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1000</Number>
+			<Name>Baltar</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1011</Number>
+			<Name>Moulins</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1012</Number>
+			<Name>Charlieu</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1015</Number>
+			<Name>Lusigny</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1050</Number>
+			<Name>Niella</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1070</Number>
+			<Name>Zhangjagang</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>1090</Number>
+			<Name>Pune</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>2010</Number>
+			<Name>St Pierre De Chandieu</Name>
+		</SapPlant>
+		<SapPlant>
+			<Number>8010</Number>
+			<Name>Dardilly</Name>
+		</SapPlant>
+	</ListSapPlant>
 </DownloadVisualizationFileConfiguration>
 

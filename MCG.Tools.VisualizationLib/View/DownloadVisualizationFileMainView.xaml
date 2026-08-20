@@ -273,6 +273,30 @@
         </Fluent:Button>
     </Fluent:RibbonGroupBox>
 
+    <Fluent:RibbonGroupBox Header="{DynamicResource VIS_GrpSapData}"
+                           IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
+        <StackPanel MinWidth="120"
+                    Margin="2,0,2,0">
+            <Fluent:ComboBox Header="{DynamicResource VIS_LbPlant}"
+                             IsEditable="False"
+                             ItemsSource="{Binding CurrentDataContext.AllSapPlants}"
+                             SelectedItem="{Binding CurrentDataContext.Plant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+            <Fluent:ComboBox Header="{DynamicResource VIS_LbBomUsage}"
+                             IsEditable="False"
+                             ItemsSource="{Binding CurrentDataContext.AllBomUsage}"
+                             SelectedItem="{Binding CurrentDataContext.BomUsage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Fluent:ComboBox>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Fluent:TwoLineLabel Text="{DynamicResource VIS_LbValidFrom}"
+                                     HasTwoLines="False"
+                                     VerticalContentAlignment="Center"  
+                                     HorizontalContentAlignment="Center"></Fluent:TwoLineLabel>
+                <DatePicker Width="100" 
+                            SelectedDate="{Binding CurrentDataContext.DateValidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            </StackPanel>
+        </StackPanel>
+    </Fluent:RibbonGroupBox>
+
     <Fluent:RibbonGroupBox Header="{DynamicResource VIS_LabelTools}"
                            IsEnabled="{Binding CurrentDataContext.ActionInProgress, Converter={StaticResource InverseBoolConv}}">
         <Fluent:SplitButton Header="{DynamicResource VIS_BtTitleColumn}"

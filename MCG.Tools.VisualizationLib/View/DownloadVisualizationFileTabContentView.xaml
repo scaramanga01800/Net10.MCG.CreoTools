@@ -42,6 +42,7 @@
             <BitmapImage x:Key="OTHER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Document_64x64.png" />
             <BitmapImage x:Key="UNKNOWN" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/unknown_doc.gif" />
             <BitmapImage x:Key="STRUCTURE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure.ico" />
+            <BitmapImage x:Key="STRUCTURE_SAP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure_SAP.ico" />
             <BitmapImage x:Key="DRAGDROP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/drag_and_drop.png" />
             <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></conv:BoolToVisibilityConverter>
@@ -202,7 +203,7 @@
                             <Fluent:MenuItem.Icon>
                                 <Image Source="{StaticResource STRUCTURE}"></Image>
                             </Fluent:MenuItem.Icon>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="1">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="1">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -210,7 +211,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="2">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="2">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -218,7 +219,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="3">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="3">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -226,7 +227,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="4">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="4">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -234,7 +235,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="5">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="5">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -242,7 +243,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="6">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="6">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -250,7 +251,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="7">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="7">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -258,7 +259,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="8">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="8">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -266,7 +267,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="9">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="9">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -274,7 +275,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="10">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -282,7 +283,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="11">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -290,7 +291,7 @@
                                     </StackPanel>
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
-                            <Fluent:MenuItem Command="{Binding CommandMenuItemSerchBom}" CommandParameter="10">
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchBom}" CommandParameter="12">
                                 <Fluent:MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
@@ -299,6 +300,124 @@
                                 </Fluent:MenuItem.Header>
                             </Fluent:MenuItem>
                         </Fluent:MenuItem>
+
+                        <Fluent:MenuItem Header="{DynamicResource VIS_MiSearchSapBom}" >
+                            <Fluent:MenuItem.Style>
+                                <Style TargetType="Fluent:MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.ECN}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart.ItemType}" Value="{x:Static MCGEnum:DocumentTypeEnum.PART}">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentDataContext.SelectedPart}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Fluent:MenuItem.Style>
+                            <Fluent:MenuItem.Icon>
+                                <Image Source="{StaticResource STRUCTURE_SAP}"></Image>
+                            </Fluent:MenuItem.Icon>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="1">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="1"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="2">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="2"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="3">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="3"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="4">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="4"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="5">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="5"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="6">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="6"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="7">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="7"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="8">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="8"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="9">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="9"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="10">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="10"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="11">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="11"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                            <Fluent:MenuItem Command="{Binding CommandMenuItemSearchSapBom}" CommandParameter="12">
+                                <Fluent:MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource VIS_MiSearchBomLevel}"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="12"></TextBlock>
+                                    </StackPanel>
+                                </Fluent:MenuItem.Header>
+                            </Fluent:MenuItem>
+                        </Fluent:MenuItem>
+
                         <Fluent:MenuItem Header="{DynamicResource VIS_MiDeletePart}" Command="{Binding CommandMenuItemDeletePart}"  >
                             <Fluent:MenuItem.Style>
                                 <Style TargetType="Fluent:MenuItem">
