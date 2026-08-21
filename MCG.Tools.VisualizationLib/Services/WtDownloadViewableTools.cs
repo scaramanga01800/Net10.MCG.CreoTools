@@ -1,4 +1,5 @@
-﻿using MCG.CommonLib.Models.Enums;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using MCG.CommonLib.Models.Enums;
 using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
@@ -6,6 +7,7 @@ using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.VisualizationLib.Exceptions;
 using MCG.Tools.VisualizationLib.Interfaces;
+using MCG.Tools.VisualizationLib.Messages;
 using MCG.Tools.VisualizationLib.ViewModel;
 using MCG.WindchillRequestTool;
 using MCG.WindchillRequestTool.Model.RestOdata;
@@ -38,6 +40,15 @@ namespace MCG.Tools.VisualizationLib.Services
             _windchillVisualizationManagementService = windchillVisualizationManagementService;
             _windchillChangeManagementService = windchillChangeManagementService;
             _serviceProvider = serviceProvider;
+
+            TraceLog.AddTraceLog("Register PartRevisionChangedMessage");
+            WeakReferenceMessenger.Default.Register<PartRevisionChangedMessage>(
+                            this,
+                            (recipient, message) =>
+                            {
+                                UpdateSelectedRevisionInformation(message.Item);
+                            });
+
         }
 
         #region [REGION] Methods to search and download viewables

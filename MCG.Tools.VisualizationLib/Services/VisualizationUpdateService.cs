@@ -14,10 +14,16 @@ namespace MCG.Tools.VisualizationLib.Services
             _wtTools = wtTools;
 
             // On s'abonne à tous les messages de ce type
-            WeakReferenceMessenger.Default.Register<PartRevisionChangedMessage>(this, (recipient, message) =>
-            {
-                _wtTools.UpdateSelectedRevisionInformation(message.Item);
-            });
+            WeakReferenceMessenger.Default.Register<PartRevisionChangedMessage>(this, OnPartRevisionChanged);
+            //WeakReferenceMessenger.Default.Register<PartRevisionChangedMessage>(this, (recipient, message) =>
+            //{
+            //    _wtTools.UpdateSelectedRevisionInformation(message.Item);
+            //});
+        }
+
+        private void OnPartRevisionChanged(object recipient, PartRevisionChangedMessage message)
+        {
+            _wtTools.UpdateSelectedRevisionInformation(message.Item);
         }
     }
 }

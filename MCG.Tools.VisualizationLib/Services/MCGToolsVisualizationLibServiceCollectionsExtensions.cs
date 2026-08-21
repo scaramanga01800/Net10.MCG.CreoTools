@@ -28,7 +28,7 @@ namespace MCG.Tools.VisualizationLib.Services
             services.AddSingleton<DownloadVisualizationFileMainView>();
             services.AddTransient<DownloadVisualizationFileViewModel>();
             services.AddTransient<DownloadVisualizationFileDataContext>();
-            
+
             TraceLog.StopTimer("AddMCGToolsVisualizationLibServices");
             // On retourne la collection pour permettre le chaînage (fluent pattern)
             return services;
