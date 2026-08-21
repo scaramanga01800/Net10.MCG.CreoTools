@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using MCG.CommonLib.Models.Enums;
 using MCG.Tools.VisualizationLib.Exceptions;
-using MCG.Tools.VisualizationLib.Interfaces;
 using MCG.Tools.VisualizationLib.Messages;
 using MCG.Tools.VisualizationLib.View;
 using MCG.WindchillRequestTool.Model.RestOdata;
@@ -31,19 +30,6 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
         [ObservableProperty]
         private string _PartRevision;
-        //public string PartRevision
-        //{
-        //    get { return _PartRevision; }
-        //    set
-        //    {
-        //        if (this._PartRevision != value)
-        //        {
-        //            this._PartRevision = value;
-        //            OnPropertyChanged();
-        //            //_wtDownloadViewableTools.UpdateSelectedRevisionInformation(this);
-        //        }
-        //    }
-        //}
 
         partial void OnPartRevisionChanged(string value)
         {
@@ -51,7 +37,6 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             // On crie dans le vide : "Ma révision a changé !"
             WeakReferenceMessenger.Default.Send(new PartRevisionChangedMessage(this));
         }
-
 
         public ObservableCollection<string> AllPartRevision { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<VisualizationItemRevisionState> AllPartRevisionState { get; set; } = new ObservableCollection<VisualizationItemRevisionState>();

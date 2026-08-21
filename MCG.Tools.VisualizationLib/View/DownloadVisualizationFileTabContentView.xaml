@@ -436,6 +436,19 @@
                     </Fluent:ContextMenu>
                 </DataGrid.ContextMenu>
 
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip" Value="{x:Null}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLatestRevisionSelected}"
+                                         Value="False">
+                                <Setter Property="ToolTip"
+                                        Value="{DynamicResource VIS_ToolTipNotLatestRevision}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
                 <DataGrid.RowDetailsTemplate >
                     <DataTemplate>
                         <StackPanel x:Name="SpRowDetailTemplate"
@@ -645,12 +658,6 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Image.Style>
-                                        <Image.ToolTip>
-                                            <ToolTip>
-                                                A newer revision exists.
-                                                The displayed revision is the latest approved revision.
-                                            </ToolTip>
-                                        </Image.ToolTip>
                                     </Image>
 
                                     <TextBlock Text="{Binding PartRevision}"
@@ -658,11 +665,6 @@
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                        <!--<DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding PartRevision}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>-->
                     </DataGridTemplateColumn>
 
                     <DataGridTextColumn  Binding="{Binding State}" IsReadOnly="True">

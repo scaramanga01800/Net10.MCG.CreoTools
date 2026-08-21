@@ -196,4 +196,5 @@
     <system:String x:Key="VIS_ToolTipApprovedState">
         Lorsqu'elle est activée, la dernière révision approuvée est affichée par défaut. Les états considérés comme valides sont : Pre-Released, Officiel, Prototype, Obsolète et Superseded. Si aucune révision valide n'existe, la dernière révision disponible est utilisée.
     </system:String>
+    <system:String x:Key="VIS_ToolTipNotLatestRevision">Une révision plus récente existe.</system:String>
 </ResourceDictionary>

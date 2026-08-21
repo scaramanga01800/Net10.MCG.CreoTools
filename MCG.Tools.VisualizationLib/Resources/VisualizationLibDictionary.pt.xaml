@@ -196,5 +196,6 @@
     <system:String x:Key="VIS_ToolTipApprovedState">
         When enabled, the latest approved revision is displayed by default. Approved states: Pre-Released, Released, Prototype, Obsolete or Superseded. If no approved revision exists, the latest available revision is displayed.
     </system:String>
+    <system:String x:Key="VIS_ToolTipNotLatestRevision">A newer revision exists.</system:String>
 
 </ResourceDictionary>
