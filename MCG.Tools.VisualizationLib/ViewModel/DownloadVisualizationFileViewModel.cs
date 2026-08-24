@@ -6,6 +6,7 @@ using MCG.CommonLib.Models.Excel;
 using MCG.CommonLib.Models.Main;
 using MCG.CommonLib.Models.Pdf;
 using MCG.CommonLib.SapTools.Interfaces;
+using MCG.CommonLib.Services;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WpfComponent.Interfaces;
@@ -85,6 +86,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         private readonly IWindchillVisualizationManagementService _windchillVisualizationManagementService;
         private readonly IMcgCommonLibWindowService _mcgCommonLibWindowService;
         private readonly ISapBomService _sapBomService;
+        private readonly IBusyService _busyService;
         #endregion
 
 
@@ -131,7 +133,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                                                   IWindchillBomManagementService windchillBomManagementService,
                                                   IWindchillVisualizationManagementService windchillVisualizationManagementService,
                                                   IMcgCommonLibWindowService mcgCommonLibWindowService,
-                                                  ISapBomService sapBomService)
+                                                  ISapBomService sapBomService,
+                                                  IBusyService busyService)
         {
             try
             {
@@ -149,6 +152,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 _xmlSerializeTools = xmlSerializeTools;
                 _pdfTools = pdfTools;
                 _sapBomService = sapBomService;
+                _busyService = busyService;
 
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "" || !Directory.Exists(MainAppFolder))
@@ -265,6 +269,19 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 VisualizationException.SendMessageBox(this.GetType().Name, ex);
             }
         }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -273,9 +290,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchEcnAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchEcnAsynch());
             }
             catch (Exception ex)
             {
@@ -288,14 +304,13 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchPartAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchPartAsynch());
             }
             catch (Exception ex)
             {
                 VisualizationException.SendMessageBox(this.GetType().Name, ex);
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
             }
         }
 
@@ -316,7 +331,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             catch (Exception ex)
             {
                 VisualizationException.SendMessageBox(this.GetType().Name, ex);
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
             }
         }
 
@@ -343,9 +358,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchVisualizationFileAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchVisualizationFileAsynch());
             }
             catch (Exception ex)
             {
@@ -371,9 +385,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             {
                 GetVisuItemFromClipboard();
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchListPartEcnAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchListPartEcnAsynch());
             }
             catch (Exception ex)
             {
@@ -493,9 +506,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => DownloadSelectedVisuFileAsynch(CurrentDataContext.IsDefaultWatermark));
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => DownloadSelectedVisuFileAsynch(CurrentDataContext.IsDefaultWatermark));
             }
             catch (Exception ex)
             {
@@ -524,9 +536,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                     BomLevel = Int32.Parse(Level);
 
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchBomComponentAsynch(BomLevel));
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchBomComponentAsynch(BomLevel));
             }
             catch (Exception ex)
             {
@@ -542,9 +553,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 if (Level != null)
                     BomLevel = Int32.Parse(Level);
 
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => SearchSapBomComponentAsynch(BomLevel));
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => SearchSapBomComponentAsynch(BomLevel));
             }
             catch (Exception ex)
             {
@@ -614,9 +624,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => DownloadEcnFlashAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => DownloadEcnFlashAsynch());
             }
             catch (Exception ex)
             {
@@ -629,9 +638,8 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             try
             {
                 CheckWindchillCredential();
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => DownloadPartFlashAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => DownloadPartFlashAsynch());
             }
             catch (Exception ex)
             {
@@ -833,7 +841,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
             }
         }
@@ -908,7 +916,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
             }
         }
@@ -1083,7 +1091,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
                 CurrentDataContext.IsSearchInProgress = false;
             }
@@ -1125,7 +1133,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
                 CurrentDataContext.IsSearchInProgress = false;
             }
@@ -1162,7 +1170,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
                 CurrentDataContext.IsSearchInProgress = false;
             }
@@ -1336,7 +1344,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
                 CurrentDataContext.IsSearchInProgress = false;
             }
@@ -1731,7 +1739,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
                 CurrentDataContext.IsSearchInProgress = false;
             }
@@ -1827,12 +1835,14 @@ namespace MCG.Tools.VisualizationLib.ViewModel
         {
             try
             {
-                RaiseActionInProgressEvent();
+                //RaiseActionInProgressEvent();
+                using var _ = _busyService.BeginOperation();
+
                 SearchEcnAsynch();
                 VisualizationItem CurrentVizuItem = CurrentDataContext.SearchedPartList.FirstOrDefault(item => item.EcnNumber == CurrentDataContext.FilterNumber);
                 if (CurrentVizuItem != null)
                 {
-                    RaiseActionInProgressEvent();
+                    //RaiseActionInProgressEvent();
                     SearchVisualizationFileAsynch();
 
                     // Search all Item from the ECN
@@ -1849,7 +1859,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                         ExecuteCheckUncheckAll(false);
                         foreach (var item in AllDoc)
                             item.IsSelected = true;
-                        RaiseActionInProgressEvent();
+                        //RaiseActionInProgressEvent();
                         DownloadSelectedVisuFileAsynch(CurrentDataContext.IsDefaultWatermark);
                         ExecuteCheckUncheckAll(false);
                     }
@@ -1864,7 +1874,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
             }
         }
@@ -1878,7 +1888,9 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                 VisualizationItem CurrentVizuItem = CurrentDataContext.SearchedPartList.FirstOrDefault(item => item.PartNumber == CurrentDataContext.FilterNumber);
                 if (CurrentVizuItem != null)
                 {
-                    RaiseActionInProgressEvent();
+                    using var _ = _busyService.BeginOperation();
+
+                    //RaiseActionInProgressEvent();
                     SearchVisualizationFileAsynch();
 
                     if (CurrentVizuItem.SearchedCompleteDocumentList.Count > 0)
@@ -1890,7 +1902,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
                             foreach (var item in ListDrw)
                                 item.IsSelected = true;
 
-                            RaiseActionInProgressEvent();
+                            //RaiseActionInProgressEvent();
                             DownloadSelectedVisuFileAsynch(CurrentDataContext.IsDefaultWatermark);
                             ExecuteCheckUncheckAll(false);
                         }
@@ -1909,7 +1921,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.StatusBarTextRight = "";
             }
         }
@@ -2028,7 +2040,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
+                //RaiseActionDoneEvent();
                 CurrentDataContext.IsSearchInProgress = false;
             }
         }

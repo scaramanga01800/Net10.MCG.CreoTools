@@ -133,6 +133,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         private readonly IWindchillCustomManagementService _windchillCustomManagementService;
         private readonly IWindchillCheckNumberService _windchillCheckNumberService;
         private readonly ISharedAppContext _sharedAppContext;
+        private readonly IBusyService _busyService;
 
         public MassUpdateAttributeViewModel(IXmlSerializeTools xmlSerializeTools,
                                             ICreoSessionProvider creoSessionProvider,
@@ -149,7 +150,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                                             IWindchillDocumentManagementService windchillDocumentManagementService,
                                             IWindchillCustomManagementService windchillCustomManagementService,
                                             IWindchillCheckNumberService windchillCheckNumberService,
-                                            ISharedAppContext sharedAppContext)
+                                            ISharedAppContext sharedAppContext,
+                                            IBusyService busyService)
         {
             try
             {
@@ -169,6 +171,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 _windchillCustomManagementService = windchillCustomManagementService;
                 _windchillCheckNumberService = windchillCheckNumberService;
                 _sharedAppContext = sharedAppContext;
+                _creoLayerService = creoLayerService;
+                _busyService = busyService;
 
                 CurrentMassUpdAttribDataContext = new MassUpdateAttributeDataContext();
 
@@ -262,10 +266,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             {
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
-
-            _creoLayerService = creoLayerService;
-            _windchillCustomManagementService = windchillCustomManagementService;
-            _windchillCheckNumberService = windchillCheckNumberService;
         }
 
         private void UpdateInterfaceLanguage(object sender, EventArgs e)
@@ -397,6 +397,20 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 throw new MassUpdateAttributeException(this.GetType().Name, ex);
             }
         }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -418,13 +432,9 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             {
                 if (!CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress)
                 {
-
-                    RaiseActionInProgressEvent();
                     CurrentMassUpdAttribDataContext.IsLoadedFromCreo = true;
 
-                    ListModelThread = new Thread(new ThreadStart(SearchListModelsInSession));
-                    ListModelThread.IsBackground = true;
-                    ListModelThread.Start();
+                    RunBusy(SearchListModelsInSession);
                 }
                 else if (System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("MUA_AbordProcessMsg"), McgWpfTools.GetStringResource("MUA_AbordProcessTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && ListModelThread != null)
                 {
@@ -434,7 +444,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 StopCurrentProcess = false;
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
@@ -447,10 +456,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             {
                 if (!CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress)
                 {
-                    RaiseActionInProgressEvent();
-                    ListModelThread = new Thread(new ThreadStart(UpdateAllCadDocuments));
-                    ListModelThread.IsBackground = true;
-                    ListModelThread.Start();
+                    RunBusy(UpdateAllCadDocuments);
                 }
                 else if (System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("MUA_AbordProcessUpdateMsg"), McgWpfTools.GetStringResource("MUA_AbordProcessTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && ListModelThread != null)
                 {
@@ -460,7 +466,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
@@ -663,12 +668,9 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             {
                 if (!CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress)
                 {
-                    RaiseActionInProgressEvent();
                     CurrentMassUpdAttribDataContext.IsLoadedFromCreo = true;
 
-                    ListModelThread = new Thread(new ThreadStart(UpdateParamRelationAsynch));
-                    ListModelThread.IsBackground = true;
-                    ListModelThread.Start();
+                    RunBusy(UpdateParamRelationAsynch);
                 }
                 else if (System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("MUA_AbordProcessMsg"), McgWpfTools.GetStringResource("MUA_AbordProcessTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && ListModelThread != null)
                 {
@@ -688,12 +690,9 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             {
                 if (!CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress)
                 {
-                    RaiseActionInProgressEvent();
                     CurrentMassUpdAttribDataContext.IsLoadedFromCreo = true;
 
-                    ListModelThread = new Thread(new ThreadStart(UpdateLayersAsynch));
-                    ListModelThread.IsBackground = true;
-                    ListModelThread.Start();
+                    RunBusy(UpdateLayersAsynch);
                 }
                 else if (System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("MUA_AbordProcessMsg"), McgWpfTools.GetStringResource("MUA_AbordProcessTitle"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && ListModelThread != null)
                 {
@@ -717,16 +716,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
 
                     if (InAsynch)
                     {
-                        RaiseActionInProgressEvent();
-
-
-                        Thread aThread = new Thread(new ThreadStart(() =>
-                        {
-                            CurrentEpm.OpenInCreo(_creoSessionProvider, _creoModelService);
-                            RaiseActionDoneEvent();
-                        }));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        RunBusy(() => CurrentEpm.OpenInCreo(_creoSessionProvider, _creoModelService));
                     }
                     else
                         CurrentEpm.OpenInCreo(_creoSessionProvider, _creoModelService);
@@ -734,7 +724,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 StopCurrentProcess = false;
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
@@ -898,12 +887,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                     {
                         if (CurrentMassUpdAttribDataContext.ShownCadModels.Where((item) => item.IsSelected).Count() > 0)
                         {
-                            RaiseActionInProgressEvent();
                             CurrentMassUpdAttribDataContext.IsLoadedFromCreo = true;
-
-                            ListModelThread = new Thread(new ThreadStart(() => { RemoveUpdateColorAsynch(isOnlyRemove); }));
-                            ListModelThread.IsBackground = true;
-                            ListModelThread.Start();
+                            RunBusy(() => RemoveUpdateColorAsynch(isOnlyRemove));
                         }
                         else
                         {
@@ -937,7 +922,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 StopCurrentProcess = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
@@ -968,7 +952,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 StopCurrentProcess = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
@@ -983,7 +966,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 StopCurrentProcess = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
@@ -1276,10 +1258,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             catch (Exception ex)
             {
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
-            }
-            finally
-            {
-                RaiseActionDoneEvent();
             }
         }
 
@@ -1624,10 +1602,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
                 MassUpdateAttributeException.SendMessageBox(this.GetType().Name, ex);
             }
-            finally
-            {
-                RaiseActionDoneEvent();
-            }
         }
 
         private void UpdateOneCadDocument()
@@ -1924,7 +1898,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             finally
             {
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
-                RaiseActionDoneEvent();
             }
         }
 
@@ -2091,7 +2064,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             finally
             {
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
-                RaiseActionDoneEvent();
             }
         }
 
@@ -2598,7 +2570,6 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
             finally
             {
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
-                RaiseActionDoneEvent();
             }
         }
         #endregion

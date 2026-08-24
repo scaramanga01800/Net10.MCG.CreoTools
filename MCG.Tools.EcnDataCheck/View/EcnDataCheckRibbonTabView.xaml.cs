@@ -1,5 +1,6 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
+using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.EcnDataCheck.Configuration;
 using MCG.Tools.EcnDataCheck.Exceptions;
@@ -38,11 +39,13 @@ namespace MCG.Tools.EcnDataCheck.View
 
         private bool IsAlreadyInit { get; set; } = false;
 
+        private readonly IBusyService _busyService;
         public EcnDataCheckRibbonTabView()
         {
             try
             {
                 TraceLog.AddTraceLog("Create EcnDataCheckRibbonTabView");
+
                 string MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
                 if (MainAppFolder == null || MainAppFolder == "")
                     MainAppFolder = CommonLibConstants.MainAppFolder;

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.CreoInteractionTools.CREOExceptions;
 using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
+using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.DxfExport.Exceptions;
 using MCG.CREO_Tools.DxfExport.View;
@@ -66,16 +67,19 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         private readonly ICreoSessionProvider _creoSessionProvider;
         private readonly ICreoModelService _creoModelService;
         private readonly ICreoMacroService _creoMacroService;
+        private readonly IBusyService _busyService;
 
         public DxfExportViewModel(ICreoSessionProvider creoSessionProvider,
                                   ICreoModelService creoModelService,
-                                  ICreoMacroService creoMacroService)
+                                  ICreoMacroService creoMacroService,
+                                  IBusyService busyService)
         {
             try
             {
                 _creoSessionProvider = creoSessionProvider;
                 _creoModelService = creoModelService;
                 _creoMacroService = creoMacroService;
+                _busyService = busyService;
 
                 CurrentDxfExportDataContext = new DxfExportDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -186,7 +190,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         {
             try
             {
-                RaiseActionInProgressEvent();
+                using var _ = _busyService.BeginOperation();
                 if (CurrentDxfExportDataContext.CurrentFileName == null || CurrentDxfExportDataContext.CurrentFileName.Trim() == "" || CurrentDxfExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("DXF_TbExportFile") ||
                     CurrentDxfExportDataContext.CurrentFolder == null || CurrentDxfExportDataContext.CurrentFolder.Trim() == "" || CurrentDxfExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("DXF_TbExportFolder"))
                     MessageBox.Show(McgWpfTools.GetStringResource("DXF_ErrorMsgDxfFileFolder"), McgWpfTools.GetStringResource("DXF_ErrorMsgTitleDxfFileFolder"), MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -213,7 +217,6 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 isInProgress = false;
                 throw new DxfExportException(this.GetType().Name, ex);
             }
@@ -266,7 +269,6 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
                 isInProgress = false;
             }
         }

@@ -11,6 +11,7 @@
                      xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:view="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
 
                      xmlns:QuickLaunch="clr-namespace:MCG.CREO_Tools.QuickLaunch.View;assembly=MCG.CREO_Tools.QuickLaunch"
                      xmlns:QuickLaunchVM="clr-namespace:MCG.CREO_Tools.QuickLaunch.ViewModel;assembly=MCG.CREO_Tools.QuickLaunch"
@@ -127,6 +128,7 @@
             <!-- Converters -->
             <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
             <conv:BoolToBrushConverter x:Key="BoolToBrush"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
             <MCGWpfLib:BindingProxy x:Key="proxy" Data="{Binding}"/>
 
             <!-- Styles header -->
@@ -1385,6 +1387,15 @@
 
             <!--<ContentControl Content="{Binding RelativeSource={RelativeSource AncestorType=local:CREOToolsFluentMainView},
                                       Path=CurrentTabContent}" />-->
+
+            <Image  Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}" 
+                    Stretch="Fill" 
+                    gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif" 
+                    ForceCursor="True" 
+                    Cursor="Hand" 
+                    Opacity="0.4"
+                    IsHitTestVisible="False"></Image>
+
         </Grid>
     </DockPanel>
 </Fluent:RibbonWindow>

@@ -6,6 +6,7 @@ using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.CommonLib.Models.Main;
+using MCG.CommonLib.Services;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Models;
@@ -78,7 +79,7 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
         private readonly IMcgToolDictionary _mcgToolDictionary;
         private readonly IWebtermTools _webtermTools;
         private readonly ISharedAppContext _sharedAppContext;
-
+        private readonly IBusyService _busyService;
 
         public ProfileViewModel(IXmlSerializeTools xmlSerializeTools,
                                 ICreoSessionProvider creoSessionProvider,
@@ -90,7 +91,8 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                                 IProfileAppWindowService profileAppWindowService,
                                 IMcgToolDictionary mcgToolDictionary,
                                 IWebtermTools webtermTools,
-                                ISharedAppContext sharedAppContext)
+                                ISharedAppContext sharedAppContext,
+                                IBusyService busyService)
         {
             try
             {
@@ -105,6 +107,7 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                 _mcgToolDictionary = mcgToolDictionary;
                 _webtermTools = webtermTools;
                 _sharedAppContext = sharedAppContext;
+                _busyService = busyService;
 
                 CurrentDataContext = new ProfileDataContext();
 
@@ -191,6 +194,19 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
                 throw new ProfileException(this.GetType().Name, ex);
             }
         }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -198,9 +214,8 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
         {
             try
             {
-                RaiseActionInProgressEvent();
-                Thread ThreadSearchPart = new Thread(() => StartCreateProfileAsynch());
-                ThreadSearchPart.Start();
+                //RaiseActionInProgressEvent();
+                RunBusy(() => StartCreateProfileAsynch());
             }
             catch (Exception ex)
             {
@@ -544,10 +559,6 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
             catch (Exception ex)
             {
                 throw new ProfileException(this.GetType().Name, ex);
-            }
-            finally
-            {
-                RaiseActionDoneEvent();
             }
         }
 

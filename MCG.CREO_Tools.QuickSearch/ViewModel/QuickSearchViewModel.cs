@@ -108,6 +108,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         private readonly IQuickSearchWindchillService _quickSearchWindchillService;
         private readonly IWindchillCredentialService _windchillCredentialService;
         private readonly ISharedAppContext _sharedAppContext;
+        private readonly IBusyService _busyService;
 
         public QuickSearchViewModel(IXmlSerializeTools xmlSerializeTools,
                                     ICreoSessionProvider creoSessionProvider,
@@ -123,7 +124,8 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                                     IQuickSearchService quickSearchService,
                                     IQuickSearchWindchillService quickSearchWindchillService,
                                     IWindchillCredentialService windchillCredentialService,
-                                    ISharedAppContext sharedAppContext)
+                                    ISharedAppContext sharedAppContext,
+                                    IBusyService busyService)
         {
             try
             {
@@ -142,6 +144,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 _quickSearchWindchillService = quickSearchWindchillService;
                 _windchillCredentialService = windchillCredentialService;
                 _sharedAppContext = sharedAppContext;
+                _busyService = busyService;
 
                 CurrentQuickSearchDataContext = new QuickSearchDataContext();
 
@@ -220,6 +223,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
             }
+
         }
 
         public bool CheckUserAuthorization(string AppName)
@@ -324,6 +328,20 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 throw new QuickSearchException(this.GetType().Name, ex);
             }
         }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -347,15 +365,10 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 {
                     if (InAsynch)
                     {
-                        RaiseActionInProgressEvent();
-
-                        Thread aThread = new Thread(new ThreadStart(() =>
+                        RunBusy(() =>
                         {
                             CurrentQuickSearchDataContext.SelectedPartItem.CurrentEpmDocument.OpenInCreo(_creoSessionProvider, _creoModelService);
-                            RaiseActionDoneEvent();
-                        }));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        });
                     }
                     else
                         CurrentQuickSearchDataContext.SelectedPartItem.CurrentEpmDocument.OpenInCreo(_creoSessionProvider, _creoModelService);
@@ -374,15 +387,10 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 if (CurrentQuickSearchDataContext.SelectedPartItem != null)
                     if (InAsynch)
                     {
-                        RaiseActionInProgressEvent();
-
-                        Thread aThread = new Thread(new ThreadStart(() =>
+                        RunBusy(() =>
                         {
                             CurrentQuickSearchDataContext.SelectedPartItem.CurrentEpmDocument.AddInAssembly(_creoModelService, _creoMacroService, _creoSessionProvider);
-                            RaiseActionDoneEvent();
-                        }));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        });
                     }
                     else
                         CurrentQuickSearchDataContext.SelectedPartItem.CurrentEpmDocument.AddInAssembly(_creoModelService, _creoMacroService, _creoSessionProvider);
@@ -421,11 +429,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                     CheckwindchillCredential();
                     if (InAsynch)
                     {
-                        RaiseActionInProgressEvent();
-
-                        Thread aThread = new Thread(new ThreadStart(() => SearchRefDocInPdm()));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        RunBusy(() => SearchRefDocInPdm());
                     }
                     else
                         SearchRefDocInPdm();
@@ -456,15 +460,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 if (menu != null && menu.ExtraEpmDoc != null)
                 {
                     // menu.ExtraEpmDoc.AddInAssembly();
-                    RaiseActionInProgressEvent();
-
-                    Thread aThread = new Thread(new ThreadStart(() =>
-                    {
-                        menu.ExtraEpmDoc.AddInAssembly(_creoModelService, _creoMacroService, _creoSessionProvider);
-                        RaiseActionDoneEvent();
-                    }));
-                    aThread.IsBackground = true;
-                    aThread.Start();
+                    RunBusy(() => menu.ExtraEpmDoc.AddInAssembly(_creoModelService, _creoMacroService, _creoSessionProvider));
                 }
             }
             catch (Exception ex)
@@ -812,11 +808,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 CheckwindchillCredential();
                 if (InAsynch)
                 {
-                    RaiseActionInProgressEvent();
-
-                    Thread aThread = new Thread(new ThreadStart(() => SearchRefDocInPdmFromDocNumber(CurrentQuickSearchDataContext.RefDocument)));
-                    aThread.IsBackground = true;
-                    aThread.Start();
+                    RunBusy(() => SearchRefDocInPdmFromDocNumber(CurrentQuickSearchDataContext.RefDocument));
                 }
                 else
                     SearchRefDocInPdmFromDocNumber(CurrentQuickSearchDataContext.RefDocument);
@@ -877,10 +869,6 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
             }
-            finally
-            {
-                RaiseActionDoneEvent();
-            }
         }
 
         private void SearchRefDocInPdmFromDocNumber(string RefNumber)
@@ -903,10 +891,6 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             catch (Exception ex)
             {
                 QuickSearchException.SendMessageBox(this.GetType().Name, ex);
-            }
-            finally
-            {
-                RaiseActionDoneEvent();
             }
         }
 

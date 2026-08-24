@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.CreoInteractionTools.CREOExceptions;
 using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
+using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.JpgExport.Exceptions;
 using MCG.CREO_Tools.JpgExport.View;
@@ -66,15 +67,19 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
         private readonly ICreoSessionProvider _creoSessionProvider;
         private readonly ICreoModelService _creoModelService;
         private readonly ICreoMacroService _creoMacroService;
+        private readonly IBusyService _busyService;
+
         public JpgExportViewModel(ICreoSessionProvider creoSessionProvider,
                                   ICreoModelService creoModelService,
-                                  ICreoMacroService creoMacroService)
+                                  ICreoMacroService creoMacroService,
+                                  IBusyService busyService)
         {
             try
             {
                 _creoSessionProvider = creoSessionProvider;
                 _creoModelService = creoModelService;
                 _creoMacroService = creoMacroService;
+                _busyService = busyService;
 
                 CurrentJpgExportDataContext = new JpgExportDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -87,6 +92,19 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             {
                 throw new JpgExportException(this.GetType().Name, ex);
             }
+        }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void Update()
@@ -203,7 +221,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
         {
             try
             {
-                RaiseActionInProgressEvent();
+                using var _ = _busyService.BeginOperation();
                 if (CurrentJpgExportDataContext.CurrentFileName == null || CurrentJpgExportDataContext.CurrentFileName.Trim() == "" || CurrentJpgExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("JPG_TbExportFile") ||
                     CurrentJpgExportDataContext.CurrentFolder == null || CurrentJpgExportDataContext.CurrentFolder.Trim() == "" || CurrentJpgExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("JPG_TbExportFolder"))
                     MessageBox.Show(McgWpfTools.GetStringResource("JPG_ErrorMsgDxfFileFolder"), McgWpfTools.GetStringResource("JPG_ErrorMsgTitleDxfFileFolder"), MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -230,7 +248,6 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             }
             catch (Exception ex)
             {
-                RaiseActionDoneEvent();
                 isInProgress = false;
                 StopCurrentExport = false;
                 throw new JpgExportException(this.GetType().Name, ex);
@@ -284,7 +301,6 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             }
             finally
             {
-                RaiseActionDoneEvent();
                 StopCurrentExport = false;
                 isInProgress = false;
             }

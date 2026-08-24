@@ -6,6 +6,7 @@ using MCG.Tools.VisualizationLib.Messages;
 using MCG.Tools.VisualizationLib.View;
 using MCG.WindchillRequestTool.Model.RestOdata;
 using MCG.WindchillRequestTool.Model.Windchill;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.ObjectModel;
 
 namespace MCG.Tools.VisualizationLib.ViewModel
@@ -196,7 +197,7 @@ namespace MCG.Tools.VisualizationLib.ViewModel
 
         public bool IsLatestRevisionSelected
         {
-            get => PartRevision == LatestRevision;
+            get => PartRevision == LatestRevision || string.IsNullOrEmpty(LatestRevision) || string.IsNullOrEmpty(LatestRevision);
         }
 
         private DocumentTypeEnum _ItemType = DocumentTypeEnum.UNKNOWN;

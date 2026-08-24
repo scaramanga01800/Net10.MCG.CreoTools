@@ -1,5 +1,6 @@
 ﻿using Fluent;
 using MCG.CommonLib.Configuration;
+using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.CutLengthApp.View;
 using MCG.CREO_Tools.DxfExport.View;
@@ -43,16 +44,20 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
                 new PropertyMetadata(null));
 
         private readonly IServiceProvider _serviceProvider;
+        private readonly IBusyService _busyService;
 
-        public CREOToolsFluentMainView(CREOToolsFluentViewModel currentViewModel, IServiceProvider serviceProvider)
+        public CREOToolsFluentMainView(CREOToolsFluentViewModel currentViewModel,
+                                       IServiceProvider serviceProvider,
+                                       IBusyService busyService)
         {
             try
             {
                 TraceLog.AddTraceLog($"Start CREOToolsFluentMainView");
                 _serviceProvider = serviceProvider;
+                _busyService = busyService;
 
                 MainAppFolder = System.Environment.GetEnvironmentVariable(CommonLibConstants.MainAppFolderEnvirName);
-                if (MainAppFolder == null || MainAppFolder == "")
+                if (string.IsNullOrWhiteSpace(MainAppFolder))
                     MainAppFolder = CommonLibConstants.MainAppFolder;
                 McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{CREOToolsConstants.MainDictionary}", UriKind.Absolute);
 
@@ -62,7 +67,13 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
 
                 CurrentDataContext = currentViewModel;
                 DataContext = CurrentDataContext;
-                Loaded += async (s, e) => await currentViewModel.InitializeAsync();
+
+                Loaded += CREOToolsFluentMainView_Loaded;
+                Closed += CREOToolsFluentMainView_Closed;
+                
+                _busyService.BusyStateChanged += BusyService_BusyStateChanged;
+
+                //Loaded += async (s, e) => await currentViewModel.InitializeAsync();
 
                 CurrentDataContext.CurrentDataContext.ColorInterfaceChangeEvent += UpdateColorInterface;
                 UpdateColorInterface(null, null);
@@ -78,6 +89,43 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             {
                 CREOToolsException.SendMessageBox(this.GetType().Name, ex);
             }
+        }
+
+        private async void CREOToolsFluentMainView_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await CurrentDataContext.InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                CREOToolsException.SendMessageBox(GetType().Name, ex);
+            }
+        }
+
+        private void BusyService_BusyStateChanged(object? sender, bool isBusy)
+        {
+            if (Dispatcher.CheckAccess())
+            {
+                CurrentDataContext.CurrentDataContext.IsPleaseWaitShown = isBusy;
+                return;
+            }
+
+            Dispatcher.Invoke(() =>
+            {
+                CurrentDataContext.CurrentDataContext.IsPleaseWaitShown = isBusy;
+            });
+        }
+
+        private void CREOToolsFluentMainView_Closed(object? sender, EventArgs e)
+        {
+            _busyService.BusyStateChanged -= BusyService_BusyStateChanged;
+
+            CurrentDataContext.CurrentDataContext.ColorInterfaceChangeEvent -= UpdateColorInterface;
+
+            CurrentDataContext.CurrentDataContext.FontInterfaceChangeEvent -= CurrentCREOToolsDataContext_FontInterfaceChangeEvent;
+
+            MainRibbon.SelectedTabChanged -= MainRibbon_SelectionChanged;
         }
 
         private void MainRibbon_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -317,8 +365,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             }
         }
 
-
-
         private TTab LoadRibbonTab2<TTab>(RibbonTabItem placeHolder, ref TTab? loadedTab, object viewModel) where TTab : RibbonTabItem
         {
             // Déjà chargé
@@ -353,7 +399,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
 
             return loadedTab;
         }
-
 
         private TTab LoadRibbonTab<TTab>(RibbonTabItem placeHolder, ref TTab? loadedTab, object viewModel) where TTab : RibbonTabItem
         {

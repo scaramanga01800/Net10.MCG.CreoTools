@@ -139,6 +139,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         private readonly IMiscToolsWindchillService _miscToolsWindchillService;
         private readonly IMcgQuickChangeTools _mcgQuickChangeTools;
         private readonly ISharedAppContext _sharedAppContext;
+        private readonly IBusyService _busyService;
 
         public EcnDataCheckViewModel(IXmlSerializeTools xmlSerializeTools,
                                      IRegExTools regExTools,
@@ -160,7 +161,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                                      IEcnDataCheckWindchillService ecnDataCheckWindchillService,
                                      IMiscToolsWindchillService miscToolsWindchillService,
                                      IMcgQuickChangeTools mcgQuickChangeTools,
-                                     ISharedAppContext sharedAppContext)
+                                     ISharedAppContext sharedAppContext,
+                                     IBusyService busyService)
         {
             try
             {
@@ -185,6 +187,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 _miscToolsWindchillService = miscToolsWindchillService;
                 _mcgQuickChangeTools = mcgQuickChangeTools;
                 _sharedAppContext = sharedAppContext;
+                _busyService = busyService;
 
                 CurrentEcnDataCheckDataContext = new EcnDataCheckDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -194,11 +197,6 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             {
                 EcnDataCheckException.SendMessageBox(this.GetType().Name, ex);
             }
-
-            _regExTools = regExTools;
-            _windchillCheckNumberService = windchillCheckNumberService;
-            _mcgCommonLibWindowService = mcgCommonLibWindowService;
-            _bomComparisonToolService = bomComparisonToolService;
         }
 
         public void InitApp()
@@ -270,6 +268,18 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 throw new EcnDataCheckException(this.GetType().Name, ex);
             }
         }
+
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -328,10 +338,11 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                         ReadPdmContextList();
 
                         // Start new thread
-                        RaiseActionInProgressEvent();
-                        Thread aThread = new Thread(new ThreadStart(StartCompleteEcnCheckAsynch));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        RunBusy(StartCompleteEcnCheckAsynch);
+                        //RaiseActionInProgressEvent();
+                        //Thread aThread = new Thread(new ThreadStart(StartCompleteEcnCheckAsynch));
+                        //aThread.IsBackground = true;
+                        //aThread.Start();
                     }
                 }
                 else
@@ -814,10 +825,6 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             {
                 ResetInterface();
                 EcnDataCheckException.SendMessageBox(this.GetType().Name, ex);
-            }
-            finally
-            {
-                RaiseActionDoneEvent();
             }
         }
 
@@ -3398,7 +3405,6 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             {
                 CurrentEcnDataCheckDataContext.EcnDataCheckInProgress = false;
                 CurrentEcnDataCheckDataContext.ShowActionButton = true;
-                RaiseActionDoneEvent();
             }
             catch (Exception ex)
             {
