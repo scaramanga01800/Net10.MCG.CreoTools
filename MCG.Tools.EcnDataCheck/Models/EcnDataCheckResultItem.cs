@@ -5,7 +5,7 @@ using MCG.WindchillRequestTool.Model.Windchill;
 
 namespace MCG.Tools.EcnDataCheck.Models
 {
-    public class EcnDataCheckResultItem : ObservableObject, IEcnDataCheckResultItem
+    public partial class EcnDataCheckResultItem : ObservableObject, IEcnDataCheckResultItem
     {
         #region [REGION] Properties from Interface
         private IEcnDataCheckItem _ParentEcnDataCheckItem;
@@ -121,6 +121,12 @@ namespace MCG.Tools.EcnDataCheck.Models
 
             }
         }
+
+        [ObservableProperty] 
+        private string _aiExplanation;
+
+        [ObservableProperty]
+        private bool _aiExplanationLoaded;
         #endregion
 
         #region [REGION] Properties not from Interface
@@ -129,6 +135,7 @@ namespace MCG.Tools.EcnDataCheck.Models
         public WindchillObject LinkedObj { get; set; }
         public string KeyString { get; set; }
         public EcnDataCheckItem CurrentDataCheckItem { get; set; }
+        public DateTime? AiExplanationCreationDate { get; set; }
         #endregion
 
         public string GetFullString()

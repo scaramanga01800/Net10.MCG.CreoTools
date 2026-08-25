@@ -3,6 +3,7 @@ using MCG.Tools.EcnDataCheck.Interfaces;
 using MCG.Tools.EcnDataCheck.View;
 using MCG.Tools.EcnDataCheck.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
 namespace MCG.Tools.EcnDataCheck.Services
 {
@@ -13,6 +14,11 @@ namespace MCG.Tools.EcnDataCheck.Services
             TraceLog.StartTimer("AddEcnDataCheckServices");
 
             services.AddSingleton<IEcnDataCheckWindchillService, EcnDataCheckWindchillService>();
+            services.AddSingleton<IAiExplanationService, AiExplanationService>();
+            services.AddSingleton<IPdfKnowledgeService, PdfKnowledgeService>();
+
+            services.AddSingleton<HttpClient>();
+            services.AddSingleton<IRetrievalService, RetrievalService>();
 
             services.AddSingleton<EcnDataCheckRibbonTabView>();
             services.AddSingleton<EcnDataCheckViewModel>();

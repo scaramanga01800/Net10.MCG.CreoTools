@@ -21,6 +21,7 @@ using MCG.Tools.EcnDataCheck.Configuration;
 using MCG.Tools.EcnDataCheck.Exceptions;
 using MCG.Tools.EcnDataCheck.Interfaces;
 using MCG.Tools.EcnDataCheck.Models;
+using MCG.Tools.EcnDataCheck.Services;
 using MCG.Tools.EcnDataCheck.View;
 using MCG.WindchillRequestTool;
 using MCG.WindchillRequestTool.Model.BomComparison;
@@ -30,6 +31,7 @@ using MCG.WindchillRequestTool.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -82,8 +84,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         #endregion
 
         #region [REGION] Properties
-        private IEcnDataCheckDataContext _CurrentEcnDataCheckDataContext;
-        public IEcnDataCheckDataContext CurrentEcnDataCheckDataContext
+        private EcnDataCheckDataContext _CurrentEcnDataCheckDataContext;
+        public EcnDataCheckDataContext CurrentEcnDataCheckDataContext
         {
             get { return this._CurrentEcnDataCheckDataContext; }
             set
@@ -140,6 +142,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         private readonly IMcgQuickChangeTools _mcgQuickChangeTools;
         private readonly ISharedAppContext _sharedAppContext;
         private readonly IBusyService _busyService;
+        private readonly IAiExplanationService _aiExplanationService;
+        private readonly IRetrievalService _retrievalService;
 
         public EcnDataCheckViewModel(IXmlSerializeTools xmlSerializeTools,
                                      IRegExTools regExTools,
@@ -162,7 +166,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                                      IMiscToolsWindchillService miscToolsWindchillService,
                                      IMcgQuickChangeTools mcgQuickChangeTools,
                                      ISharedAppContext sharedAppContext,
-                                     IBusyService busyService)
+                                     IBusyService busyService,
+                                     IAiExplanationService aiExplanationService,
+                                     IRetrievalService retrievalService)
         {
             try
             {
@@ -188,6 +194,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 _mcgQuickChangeTools = mcgQuickChangeTools;
                 _sharedAppContext = sharedAppContext;
                 _busyService = busyService;
+                _aiExplanationService = aiExplanationService;
+                _retrievalService = retrievalService;
 
                 CurrentEcnDataCheckDataContext = new EcnDataCheckDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -197,6 +205,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             {
                 EcnDataCheckException.SendMessageBox(this.GetType().Name, ex);
             }
+
         }
 
         public void InitApp()
@@ -248,6 +257,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                     CurrentMCGLANGUAGE.ChangeLanguageInterface += UpdateInterfaceLanguage;
 
                 UpdateInterfaceLanguage();
+
+                CurrentEcnDataCheckDataContext.SelectedDataCheckResultItemChanged += OnSelectedResultChanged;
             }
             catch (Exception ex)
             {
@@ -280,6 +291,11 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
             thread.IsBackground = true;
             thread.Start();
         }
+
+        private async void OnSelectedResultChanged(EcnDataCheckResultItem item)
+        {
+           // await UpdateAiExplanationAsync(item);
+        }
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -297,7 +313,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
 
                 CheckWindchillCredential();
 
-               // WindchillChangeNotice CurrentWindchillObjectEcn = _windchillReportingManagementService.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
+                // WindchillChangeNotice CurrentWindchillObjectEcn = _windchillReportingManagementService.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
                 WindchillChangeNotice CurrentWindchillObjectEcn = _windchillRequestTool.GetQueryBuilderEcn(WindchillNetworkCredential.WindchillCredential, CurrentEcnDataCheckDataContext.EcnNumber);
 
                 if (CurrentWindchillObjectEcn != null && CurrentWindchillObjectEcn.ListEca != null && CurrentWindchillObjectEcn.ListEca.Count > 0)
@@ -1008,7 +1024,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                                                                         "EDC_CheckMsg10",
                                                                         new string[2]
                                                                         {
-                                                                            _webtermTools.GetTermFromEnglish(CurrentItem.EcnWtPart.Name,CurrentWebtermLanguage), 
+                                                                            _webtermTools.GetTermFromEnglish(CurrentItem.EcnWtPart.Name,CurrentWebtermLanguage),
                                                                             CurrentEcnDataCheckDataContext.SelectedLanguage.DataTableColonne
                                                                         }).Status;
                 }
@@ -3369,6 +3385,112 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 throw new EcnDataCheckException(this.GetType().Name, ex);
             }
         }
+        #endregion
+
+
+        #region [REGION] AI Methods
+        private async Task UpdateAiExplanationAsync(EcnDataCheckResultItem item)
+        {
+            if (item == null)
+                return;
+
+            if (item.AiExplanationLoaded)
+            {
+                CurrentEcnDataCheckDataContext.AiExplanation = item.AiExplanation;
+
+                return;
+            }
+
+            CurrentEcnDataCheckDataContext.AiExplanation = "Loading AI analysis...";
+
+            //  var result = await _aiExplanationService.GetExplanationAsync(item);
+
+            var query = $"{item.IssueDocumentation} {item.Comments}";
+
+            var retrievalResult = await _retrievalService.SearchAsync(query);
+
+            var explanation = BuildExplanation(item, retrievalResult);
+
+            CurrentEcnDataCheckDataContext.AiExplanation = explanation;
+        }
+
+        private string BuildExplanation(    EcnDataCheckResultItem item,    RetrievalResponse result)
+        {
+            if (result?.RetrievalHits == null ||
+                !result.RetrievalHits.Any())
+            {
+                return "No documentation found.";
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("Issue");
+            sb.AppendLine(item.Comments);
+            sb.AppendLine();
+
+            sb.AppendLine("Suggested Documentation");
+            sb.AppendLine();
+
+            foreach (var hit in result.RetrievalHits.Take(3))
+            {
+                sb.AppendLine($"• {Path.GetFileName(hit.WebUrl)}");
+
+                var extract =
+                    hit.Extracts.FirstOrDefault();
+
+                if (extract != null)
+                {
+                    var text = extract.Text;
+
+                    if (text.Length > 300)
+                    {
+                        text = text.Substring(0, 300) + "...";
+                    }
+
+                    sb.AppendLine(text);
+                    sb.AppendLine();
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private string BuildExplanation2(EcnDataCheckResultItem item, RetrievalResponse result)
+        {
+            if (result?.RetrievalHits == null ||
+                !result.RetrievalHits.Any())
+            {
+                return "No documentation found.";
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("Issue");
+            sb.AppendLine(item.Comments);
+
+            sb.AppendLine();
+            sb.AppendLine("Relevant Documentation");
+            sb.AppendLine();
+
+            foreach (var hit in result.RetrievalHits.Take(3))
+            {
+                sb.AppendLine("Source:");
+                sb.AppendLine(hit.WebUrl);
+                sb.AppendLine();
+
+                foreach (var extract in hit.Extracts.Take(1))
+                {
+                    sb.AppendLine(extract.Text);
+                    sb.AppendLine();
+                }
+
+                sb.AppendLine("--------------------------------");
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         #endregion
 
         #region [REGION] Misc

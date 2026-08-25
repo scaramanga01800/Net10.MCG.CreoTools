@@ -10,7 +10,7 @@ using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 
 namespace MCG.Tools.EcnDataCheck.ViewModel
 {
-    class EcnDataCheckDataContext : ObservableObject, IEcnDataCheckDataContext
+    public partial class EcnDataCheckDataContext : ObservableObject, IEcnDataCheckDataContext
     {
         #region [REGION] Properties from Interface
         private string _EcnNumber;
@@ -173,8 +173,8 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         }
         public ObservableCollection<string> ErpList { get; set; } = new ObservableCollection<string>();
 
-        private IEcnDataCheckItem _SelectedDataCheckItem;
-        public IEcnDataCheckItem SelectedDataCheckItem
+        private EcnDataCheckItem _SelectedDataCheckItem;
+        public EcnDataCheckItem SelectedDataCheckItem
         {
             get { return this._SelectedDataCheckItem; }
             set
@@ -186,22 +186,28 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 }
             }
         }
-        public ObservableCollection<IEcnDataCheckItem> DataCheckItemList { get; set; } = new ObservableCollection<IEcnDataCheckItem>();
+        public ObservableCollection<EcnDataCheckItem> DataCheckItemList { get; set; } = new ObservableCollection<EcnDataCheckItem>();
 
-        private IEcnDataCheckResultItem _SelectedDataCheckResultItem;
-        public IEcnDataCheckResultItem SelectedDataCheckResultItem
+        [ObservableProperty]
+        private EcnDataCheckResultItem _SelectedDataCheckResultItem;
+        //public IEcnDataCheckResultItem SelectedDataCheckResultItem
+        //{
+        //    get { return this._SelectedDataCheckResultItem; }
+        //    set
+        //    {
+        //        if (this._SelectedDataCheckResultItem != value)
+        //        {
+        //            this._SelectedDataCheckResultItem = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
+        partial void OnSelectedDataCheckResultItemChanged(EcnDataCheckResultItem value)
         {
-            get { return this._SelectedDataCheckResultItem; }
-            set
-            {
-                if (this._SelectedDataCheckResultItem != value)
-                {
-                    this._SelectedDataCheckResultItem = value;
-                    OnPropertyChanged();
-                }
-            }
+            SelectedDataCheckResultItemChanged?.Invoke(value);
         }
-        public ObservableCollection<IEcnDataCheckResultItem> DataCheckResultItemList { get; set; } = new ObservableCollection<IEcnDataCheckResultItem>();
+        public Action<EcnDataCheckResultItem>? SelectedDataCheckResultItemChanged;
+        public ObservableCollection<EcnDataCheckResultItem> DataCheckResultItemList { get; set; } = new ObservableCollection<EcnDataCheckResultItem>();
 
         // Properties for the Move Tab
         private string _SelectedLocation;
@@ -258,9 +264,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 }
             }
         }
-        public ObservableCollection<IEcnDataCheckItem> MoveItemList { get; set; } = new ObservableCollection<IEcnDataCheckItem>();
-        private IEcnDataCheckItem _SelectedMoveItem;
-        public IEcnDataCheckItem SelectedMoveItem
+        public ObservableCollection<EcnDataCheckItem> MoveItemList { get; set; } = new ObservableCollection<EcnDataCheckItem>();
+        private EcnDataCheckItem _SelectedMoveItem;
+        public EcnDataCheckItem SelectedMoveItem
         {
             get { return this._SelectedMoveItem; }
             set
@@ -291,9 +297,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
 
         // Properties for the Rename tab
         public ObservableCollection<string> WebTermList { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<IEcnDataCheckItem> RenameItemList { get; set; } = new ObservableCollection<IEcnDataCheckItem>();
-        private IEcnDataCheckItem _SelectedRenameItem;
-        public IEcnDataCheckItem SelectedRenameItem
+        public ObservableCollection<EcnDataCheckItem> RenameItemList { get; set; } = new ObservableCollection<EcnDataCheckItem>();
+        private EcnDataCheckItem _SelectedRenameItem;
+        public EcnDataCheckItem SelectedRenameItem
         {
             get { return this._SelectedRenameItem; }
             set
@@ -383,6 +389,9 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
         }
 
         public ObservableCollection<SapGenericObject> SapCraneList { get; set; } = new ObservableCollection<SapGenericObject>();
+
+        [ObservableProperty]
+        private string _aiExplanation;
         #endregion
 
         #region [REGION] Events

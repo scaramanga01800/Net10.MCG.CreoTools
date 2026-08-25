@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using MCG.Tools.EcnDataCheck.ViewModel;
+using System.Windows.Input;
 
 namespace MCG.Tools.EcnDataCheck.View
 {
@@ -8,7 +9,7 @@ namespace MCG.Tools.EcnDataCheck.View
     /// </summary>
     interface IEcnDataCheckViewModel
     {
-        IEcnDataCheckDataContext CurrentEcnDataCheckDataContext { get; set; }
+        EcnDataCheckDataContext CurrentEcnDataCheckDataContext { get; set; }
 
         // ICommand for help button
         ICommand CommandBtHelpMouseLeftButtonUpEvent { get; }

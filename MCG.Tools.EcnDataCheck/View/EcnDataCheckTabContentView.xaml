@@ -790,148 +790,174 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource EDC_TabHeaderResult}">
-                <DataGrid x:Name="DataGridResult" 
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <!--<ColumnDefinition Width="350" />-->
+                    </Grid.ColumnDefinitions>
+
+                    <DataGrid x:Name="DataGridResult" 
                        GridLinesVisibility="All" 
                        IsReadOnly="True" 
                        IsSynchronizedWithCurrentItem="False" 
                        ItemsSource="{Binding CurrentEcnDataCheckDataContext.DataCheckResultItemList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                        AutoGenerateColumns="False"  
                        SelectedItem="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <DataGrid.ContextMenu>
-                        <Fluent:ContextMenu x:Name="CmResultPart" Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem, Converter={StaticResource SelectItemToVisibilityConv}}">
-                            <Fluent:MenuItem x:Name="MiRestartCheckResult" 
+                        <DataGrid.ContextMenu>
+                            <Fluent:ContextMenu x:Name="CmResultPart" Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem, Converter={StaticResource SelectItemToVisibilityConv}}">
+                                <Fluent:MenuItem x:Name="MiRestartCheckResult" 
                                           Header="{DynamicResource EDC_MiRestartCheck}" 
                                           Command="{Binding CommandRestartCheck}" 
                                           CommandParameter="ResultItem"  
                                           IsEnabled="{Binding CurrentEcnDataCheckDataContext.ShowActionButton}" 
                                           Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.ParentEcnDataCheckItem.PartMissingCheck, Converter={StaticResource DataCheckStatusToVisibilityConverter}}" 
                                           Icon="{StaticResource RESTART}">
-                                <Fluent:MenuItem.ToolTip>
-                                    <Fluent:ScreenTip  Title="{DynamicResource EDC_MiRestartCheck}"
+                                    <Fluent:MenuItem.ToolTip>
+                                        <Fluent:ScreenTip  Title="{DynamicResource EDC_MiRestartCheck}"
                                                     Image="{StaticResource RESTART}"
                                                     Text="{DynamicResource EDC_MiToolTipRestartCheckText}"
                                                     DisableReason="{DynamicResource  EDC_DisableReason}" >
-                                    </Fluent:ScreenTip>
-                                </Fluent:MenuItem.ToolTip>
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiOpenEcnResult" 
+                                        </Fluent:ScreenTip>
+                                    </Fluent:MenuItem.ToolTip>
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiOpenEcnResult" 
                                           Header="{DynamicResource EDC_MiOpenEcn}" 
                                           Command="{Binding CommandOpenEcn}" 
                                           CommandParameter="ResultItem"
                                           Icon="{StaticResource ECN}">
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiOpenPartResult" 
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiOpenPartResult" 
                                           Header="{DynamicResource EDC_MiOpenPart}" 
                                           Command="{Binding CommandOpenPart}" 
                                           CommandParameter="ResultItem" Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.ParentEcnDataCheckItem.PartMissingCheck, Converter={StaticResource DataCheckStatusToVisibilityConverter}}"
                                           Icon="{StaticResource PART}">
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiOpenBomPdmCompResult" 
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiOpenBomPdmCompResult" 
                                           Header="{DynamicResource EDC_MiOpenBomPdmComp}" 
                                           Command="{Binding CommandOpenBomPdmComp}" 
                                           CommandParameter="ResultItem"  
                                           Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.ParentEcnDataCheckItem.IsPdmBomComparison, Converter={StaticResource BoolToVisibilityConv}}"
                                           Icon="{StaticResource BOM_COMP_PDM}">
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiOpenBomSapCompResult" 
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiOpenBomSapCompResult" 
                                           Header="{DynamicResource EDC_MiOpenBomSapComp}" 
                                           Command="{Binding CommandOpenBomSapComp}" 
                                           CommandParameter="ResultItem"  
                                           Visibility="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.ParentEcnDataCheckItem.IsErpBomComparison, Converter={StaticResource BoolToVisibilityConv}}"
                                           Icon="{StaticResource BOM_COMP_ERP}">
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiCopyPartNumber2" 
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiCopyPartNumber2" 
                                           Command="{Binding CommandCopyPartNumber}" 
                                           CommandParameter="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.ParentEcnDataCheckItem.EcnWtPart.Number}" 
                                           Header="{DynamicResource EDC_MiCopyPartNumber}"
                                           Icon="{StaticResource Copy}">
-                            </Fluent:MenuItem>
-                            <Fluent:MenuItem x:Name="MiCopyDocNumber" 
+                                </Fluent:MenuItem>
+                                <Fluent:MenuItem x:Name="MiCopyDocNumber" 
                                           Command="{Binding CommandCopyPartNumber}" 
                                           CommandParameter="{Binding CurrentEcnDataCheckDataContext.SelectedDataCheckResultItem.LinkedObjNumber}" 
                                           Header="{DynamicResource EDC_MiCopyDocNumber}"
                                           Icon="{StaticResource Copy}">
-                            </Fluent:MenuItem>
-                        </Fluent:ContextMenu>
-                    </DataGrid.ContextMenu>
+                                </Fluent:MenuItem>
+                            </Fluent:ContextMenu>
+                        </DataGrid.ContextMenu>
 
-                    <DataGrid.Columns>
+                        <DataGrid.Columns>
 
-                        <DataGridTemplateColumn CanUserResize="False">
-                            <DataGridTemplateColumn.Header>
-                                <TextBlock ToolTip="MetaData Check Status" Text="{DynamicResource EDC_ColHeader16}"></TextBlock>
-                            </DataGridTemplateColumn.Header>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Image Height="20" >
-                                        <Image.Style>
-                                            <Style TargetType="{x:Type Image}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.OK}">
-                                                        <Setter Property="Source" Value="{StaticResource GREEN}" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.WARNING}">
-                                                        <Setter Property="Source" Value="{StaticResource YELLOW}" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.ISSUE}">
-                                                        <Setter Property="Source" Value="{StaticResource RED}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Image.Style>
-                                    </Image>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                            <DataGridTemplateColumn CanUserResize="False">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock ToolTip="MetaData Check Status" Text="{DynamicResource EDC_ColHeader16}"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Height="20" >
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.OK}">
+                                                            <Setter Property="Source" Value="{StaticResource GREEN}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.WARNING}">
+                                                            <Setter Property="Source" Value="{StaticResource YELLOW}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static EcnDataCheckModels:DataCheckStatus.ISSUE}">
+                                                            <Setter Property="Source" Value="{StaticResource RED}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Binding="{Binding ParentEcnDataCheckItem.EcnWtPart.Number}">
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader01}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding ParentEcnDataCheckItem.EcnWtPart.Revision}">
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader02}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding LinkedObjNumber}">
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader17}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding LinkedObjRevision}">
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader18}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding CurrentLink}">
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader20}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Comments}" Width="350" >
-                            <DataGridTextColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader19}"></TextBlock>
-                            </DataGridTextColumn.Header>
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextWrapping" Value="Wrap"></Setter>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridHyperlinkColumn Binding="{Binding IssueDocumentation}">
-                            <DataGridHyperlinkColumn.Header>
-                                <TextBlock Text="{DynamicResource EDC_ColHeader30}"></TextBlock>
-                            </DataGridHyperlinkColumn.Header>
-                            <DataGridHyperlinkColumn.ElementStyle>
-                                <Style>
-                                    <EventSetter Event="Hyperlink.Click" Handler="DataGridHyperlinkColumn_Click"/>
-                                </Style>
-                            </DataGridHyperlinkColumn.ElementStyle>
-                        </DataGridHyperlinkColumn>
-                    </DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding ParentEcnDataCheckItem.EcnWtPart.Number}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader01}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding ParentEcnDataCheckItem.EcnWtPart.Revision}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader02}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding LinkedObjNumber}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader17}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding LinkedObjRevision}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader18}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding CurrentLink}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader20}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Comments}" Width="350" >
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader19}"></TextBlock>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridHyperlinkColumn Binding="{Binding IssueDocumentation}">
+                                <DataGridHyperlinkColumn.Header>
+                                    <TextBlock Text="{DynamicResource EDC_ColHeader30}"></TextBlock>
+                                </DataGridHyperlinkColumn.Header>
+                                <DataGridHyperlinkColumn.ElementStyle>
+                                    <Style>
+                                        <EventSetter Event="Hyperlink.Click" Handler="DataGridHyperlinkColumn_Click"/>
+                                    </Style>
+                                </DataGridHyperlinkColumn.ElementStyle>
+                            </DataGridHyperlinkColumn>
+                        </DataGrid.Columns>
 
-                </DataGrid>
+
+                    </DataGrid>
+
+                    <!--<Border Grid.Column="1"
+                            Margin="5"
+                            BorderBrush="LightGray"
+                            BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="AI Explanation"
+                                       FontWeight="Bold"
+                                       Margin="10"/>
+                            <ScrollViewer>
+                                <TextBlock Margin="10"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding CurrentEcnDataCheckDataContext.AiExplanation}" />
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>-->
+                </Grid>
+
             </TabItem>
 
             <TabItem Visibility="{Binding CurrentEcnDataCheckDataContext.ShowRenameTab, Converter={StaticResource BoolToVisibilityConvTab}}" Header="{DynamicResource EDC_TabHeaderRename}" >

@@ -14,5 +14,8 @@ namespace MCG.Tools.EcnDataCheck.Models
 
         DataCheckStatus Status { get; set; }
         string Comments { get; set; }
+
+        string AiExplanation { get; set; }
+        bool AiExplanationLoaded { get; set; }
     }
 }

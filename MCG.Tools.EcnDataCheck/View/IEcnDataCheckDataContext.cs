@@ -21,11 +21,9 @@ namespace MCG.Tools.EcnDataCheck.View
         int TotalStep { get; set; }
         int CurrentStep { get; set; }
 
-
         bool ShowActionButton { get; set; }
         bool ShowRenameTab { get; set; }
         bool ShowMoveTab { get; set; }
-
 
         MCGLanguage SelectedLanguage { get; set; }
         ObservableCollection<MCGLanguage> ListLanguage { get; set; }
@@ -33,11 +31,11 @@ namespace MCG.Tools.EcnDataCheck.View
         string ErpSystem { get; set; }
         ObservableCollection<string> ErpList { get; set; }
 
-        IEcnDataCheckItem SelectedDataCheckItem { get; set; }
-        ObservableCollection<IEcnDataCheckItem> DataCheckItemList { get; set; }
+        EcnDataCheckItem SelectedDataCheckItem { get; set; }
+        ObservableCollection<EcnDataCheckItem> DataCheckItemList { get; set; }
 
-        IEcnDataCheckResultItem SelectedDataCheckResultItem { get; set; }
-        ObservableCollection<IEcnDataCheckResultItem> DataCheckResultItemList { get; set; }
+        EcnDataCheckResultItem SelectedDataCheckResultItem { get; set; }
+        ObservableCollection<EcnDataCheckResultItem> DataCheckResultItemList { get; set; }
 
         // Properties for the Move Tab
         string SelectedLocation { get; set; }
@@ -45,15 +43,15 @@ namespace MCG.Tools.EcnDataCheck.View
         bool IsCheckBoxProductSelected { get; set; }
         bool IsCheckBoxLibraySelected { get; set; }
         string ContextFilter { get; set; }
-        ObservableCollection<IEcnDataCheckItem> MoveItemList { get; set; }
-        IEcnDataCheckItem SelectedMoveItem { get; set; }
+        ObservableCollection<EcnDataCheckItem> MoveItemList { get; set; }
+        EcnDataCheckItem SelectedMoveItem { get; set; }
         ObservableCollection<WindchillContext> WindchillContextList { get; set; }
         WindchillContext SelectedContext { get; set; }
 
         // Properties for the Rename tab
         ObservableCollection<string> WebTermList { get; set; }
-        ObservableCollection<IEcnDataCheckItem> RenameItemList { get; set; }
-        IEcnDataCheckItem SelectedRenameItem { get; set; }
+        ObservableCollection<EcnDataCheckItem> RenameItemList { get; set; }
+        EcnDataCheckItem SelectedRenameItem { get; set; }
 
         // Property for the Status Bar
         string ExtraStatusBarMsg { get; set; }
@@ -69,5 +67,7 @@ namespace MCG.Tools.EcnDataCheck.View
         string StatusBarMsg2 { get; set; }
 
         ObservableCollection<SapGenericObject> SapCraneList { get; set; }
+
+        string AiExplanation { get; set; }
     }
 }
