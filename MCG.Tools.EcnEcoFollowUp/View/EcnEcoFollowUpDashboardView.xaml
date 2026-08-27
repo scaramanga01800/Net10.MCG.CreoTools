@@ -504,6 +504,19 @@
                     </DataGridTextColumn.Header>
                 </MCGWpfLib:DataGridTextColumnMcg>
 
+                <MCGWpfLib:DataGridTextColumnMcg  Binding="{Binding EcnEcoToShowEndUser.EcnEcoFollowUp.Eco_Effectivity_Date,StringFormat='dd/MM/yyyy'}" 
+                                                  IsReadOnly="True"
+                                                  ColumnId="EFU_LabelEcoEffectivityDate">
+                    <DataGridTextColumn.Header>
+                        <StackPanel Background="{DynamicResource SapColor}">
+                            <Fluent:TwoLineLabel Text="{DynamicResource EFU_LabelEcoEffectivityDate}" 
+                                                 HasTwoLines="True"
+                                                 Margin="10,0"
+                                                 Foreground="{DynamicResource IdealForegroundColor}"/>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </MCGWpfLib:DataGridTextColumnMcg>
+
                 <MCGWpfLib:DataGridTextColumnMcg  Binding="{Binding Comment}" 
                                                   IsReadOnly="{Binding Data.DashboardItem.UpdateAllowed, Source={StaticResource proxy},Converter={StaticResource InverseBoolConverter}}" 
                                                   Visibility="{Binding Data.DashboardItem.IsPersonalInfoShown, Source={StaticResource proxy},Converter={StaticResource BoolToVisibilityConverter}}"
