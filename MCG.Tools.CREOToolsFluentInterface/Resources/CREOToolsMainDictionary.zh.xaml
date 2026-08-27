@@ -74,7 +74,7 @@
     <system:String x:Key="CT_AboutTextVisu">MCG Visualization Tool {0}Version {1} {0}© {2} Manitowoc Crane Group. {0}All rights reserved.</system:String>
     <system:String x:Key="CT_LinkHelpCreoTools">APP019EN.PDF</system:String>
     <system:String x:Key="CT_LinkHelpCreoToolsVisu">APP019EN.PDF</system:String>
-    <system:String x:Key="CT_LinkReleaseNotesCreoTools">Release_Notes_CREO_Tools_EN.PDF</system:String>
+    <system:String x:Key="CT_LinkReleaseNotesCreoTools">Release_Notes_Engineering_Hub_EN.PDF</system:String>
     <system:String x:Key="CT_MenuReleaseNotes">Release Notes</system:String>
     <system:String x:Key="CT_LinkReleaseNotesVisuTools">Release_Notes_Visualization_Tools_EN.PDF</system:String>
     <system:String x:Key="CT_LinkUtilitiesOverviews">APP034EN.PDF</system:String>
