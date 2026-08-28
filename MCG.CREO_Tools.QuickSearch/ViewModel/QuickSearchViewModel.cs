@@ -39,7 +39,10 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         private QuickSearchConfiguration CurrentQuickSearchConfiguration { get; set; }
         private MCGLanguage CurrentMcgLanguage { get; set; }
         private WindchillCredentialItem WindchillNetworkCredential { get; set; }
-        private Thread ThreadSearchSapInfo { get; set; }
+        //private Thread ThreadSearchSapInfo { get; set; }
+        private readonly object _sapSearchLock = new object();
+        private bool _isSapSearchRunning;
+        private bool _isSapSearchPending;
         #endregion
 
         #region [REGION] Events Action
@@ -965,62 +968,166 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             }
         }
 
+        //private void ReadPartSubClass(object sender = null, EventArgs e = null)
+        //{
+        //    try
+        //    {
+        //        UpdateSubClassInformation();
+        //        if (CurrentQuickSearchDataContext.ListStandardShown != null && CurrentQuickSearchDataContext.ListStandardShown.Count > 0 && CurrentQuickSearchDataContext.SelectedSubClassItem != null)
+        //        {
+
+        //            var ListTempPartSubClass = _quickSearchService.GetPartsBySubClass(CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Idsubclass);
+        //            ListTempPartSubClass = ListTempPartSubClass.OrderBy((elem) => elem.Pars001).OrderBy((elem) => elem.Parr001).ToList();
+
+        //            CurrentQuickSearchDataContext.ListPartItemCurrentSubClass = new List<QuickSearchPart>();
+        //            string pictureFileName;
+        //            foreach (Part elem in ListTempPartSubClass)
+        //            {
+        //                pictureFileName = $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{elem.Partpicture}";
+        //                if (!File.Exists(pictureFileName))
+        //                    pictureFileName = $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.PictureNotFound}";
+
+        //                QuickSearchPart CurrentQuickSearchPart = new QuickSearchPart()
+        //                {
+        //                    CurrentPart = elem,
+        //                    CurrentEpmDocument = new EPMDocument(elem.Epmdoc, elem.Epmdoc, elem.Epmdoc),
+        //                    PartPicturePath = pictureFileName,
+        //                    UpdatedPart = McgReflectionTools.CopyInstanceFromObject<Part>(elem),
+        //                    SubClassItem = CurrentQuickSearchDataContext.SelectedSubClassItem,
+        //                    OrigPartNumber = elem.Recpart
+        //                };
+        //                CurrentQuickSearchPart.UpdatedImage = CurrentQuickSearchPart.UpdatedPart.Partpicturebin;
+
+        //                // Init part if SAP info is shown
+        //                if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
+        //                {
+        //                    CurrentQuickSearchPart.PlantVolume = 0;
+        //                    CurrentQuickSearchPart.PlantMaxVolume = "None";
+        //                }
+
+        //                CurrentQuickSearchDataContext.ListPartItemCurrentSubClass.Add(CurrentQuickSearchPart);
+        //                if (CurrentQuickSearchDataContext.IsExtraComponentPossible)
+        //                    SearchExtraComponent(CurrentQuickSearchPart);
+        //            }
+
+        //            if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
+        //            {
+        //                if (ThreadSearchSapInfo != null && ThreadSearchSapInfo.IsAlive)
+        //                {
+        //                    ThreadSearchSapInfo.Abort();
+        //                    ThreadSearchSapInfo = null;
+        //                }
+        //            }
+        //            AppliAllColumnFilter();
+
+        //            // Searche SAP Cost/Volume info
+        //            if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
+        //            {
+        //                if (ThreadSearchSapInfo == null || (ThreadSearchSapInfo != null && !ThreadSearchSapInfo.IsAlive))
+        //                {
+        //                    ThreadSearchSapInfo = new Thread(() => UpdateSapCostVolumeInformation());
+        //                    ThreadSearchSapInfo.Start();
+        //                }
+        //            }
+
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new QuickSearchException(this.GetType().Name, ex);
+        //    }
+        //}
+
         private void ReadPartSubClass(object sender = null, EventArgs e = null)
         {
             try
             {
                 UpdateSubClassInformation();
-                if (CurrentQuickSearchDataContext.ListStandardShown != null && CurrentQuickSearchDataContext.ListStandardShown.Count > 0 && CurrentQuickSearchDataContext.SelectedSubClassItem != null)
+
+                if (CurrentQuickSearchDataContext.ListStandardShown != null &&
+                    CurrentQuickSearchDataContext.ListStandardShown.Count > 0 &&
+                    CurrentQuickSearchDataContext.SelectedSubClassItem != null)
                 {
+                    var listTempPartSubClass =
+                        _quickSearchService.GetPartsBySubClass(
+                            CurrentQuickSearchDataContext
+                                .SelectedSubClassItem
+                                .CurrentPartSubClass
+                                .Idsubclass);
 
-                    var ListTempPartSubClass = _quickSearchService.GetPartsBySubClass(CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Idsubclass);
-                    ListTempPartSubClass = ListTempPartSubClass.OrderBy((elem) => elem.Pars001).OrderBy((elem) => elem.Parr001).ToList();
+                    listTempPartSubClass = listTempPartSubClass
+                        .OrderBy(elem => elem.Pars001)
+                        .ThenBy(elem => elem.Parr001)
+                        .ToList();
 
-                    CurrentQuickSearchDataContext.ListPartItemCurrentSubClass = new List<QuickSearchPart>();
-                    string pictureFileName;
-                    foreach (Part elem in ListTempPartSubClass)
+                    CurrentQuickSearchDataContext.ListPartItemCurrentSubClass =
+                        new List<QuickSearchPart>();
+
+                    foreach (Part elem in listTempPartSubClass)
                     {
-                        pictureFileName = $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{elem.Partpicture}";
+                        string pictureFileName =
+                            $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{elem.Partpicture}";
+
                         if (!File.Exists(pictureFileName))
-                            pictureFileName = $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.PictureNotFound}";
-
-                        QuickSearchPart CurrentQuickSearchPart = new QuickSearchPart()
                         {
-                            CurrentPart = elem,
-                            CurrentEpmDocument = new EPMDocument(elem.Epmdoc, elem.Epmdoc, elem.Epmdoc),
-                            PartPicturePath = pictureFileName,
-                            UpdatedPart = McgReflectionTools.CopyInstanceFromObject<Part>(elem),
-                            SubClassItem = CurrentQuickSearchDataContext.SelectedSubClassItem,
-                            OrigPartNumber = elem.Recpart
-                        };
-                        CurrentQuickSearchPart.UpdatedImage = CurrentQuickSearchPart.UpdatedPart.Partpicturebin;
-
-                        // Init part if SAP info is shown
-                        if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
-                        {
-                            CurrentQuickSearchPart.PlantVolume = 0;
-                            CurrentQuickSearchPart.PlantMaxVolume = "None";
+                            pictureFileName =
+                                $"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{QuickSearchConstants.PictureNotFound}";
                         }
 
-                        CurrentQuickSearchDataContext.ListPartItemCurrentSubClass.Add(CurrentQuickSearchPart);
+                        var currentQuickSearchPart = new QuickSearchPart
+                        {
+                            CurrentPart = elem,
+
+                            CurrentEpmDocument = new EPMDocument(
+                                elem.Epmdoc,
+                                elem.Epmdoc,
+                                elem.Epmdoc),
+
+                            PartPicturePath = pictureFileName,
+
+                            UpdatedPart =
+                                McgReflectionTools.CopyInstanceFromObject<Part>(elem),
+
+                            SubClassItem =
+                                CurrentQuickSearchDataContext.SelectedSubClassItem,
+
+                            OrigPartNumber = elem.Recpart
+                        };
+
+                        currentQuickSearchPart.UpdatedImage =
+                            currentQuickSearchPart.UpdatedPart.Partpicturebin;
+
+                        if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
+                        {
+                            currentQuickSearchPart.PlantVolume = 0;
+                            currentQuickSearchPart.PlantMaxVolume = "None";
+                        }
+
+                        CurrentQuickSearchDataContext
+                            .ListPartItemCurrentSubClass
+                            .Add(currentQuickSearchPart);
+
                         if (CurrentQuickSearchDataContext.IsExtraComponentPossible)
-                            SearchExtraComponent(CurrentQuickSearchPart);
+                        {
+                            SearchExtraComponent(currentQuickSearchPart);
+                        }
                     }
+
+                    AppliAllColumnFilter();
 
                     if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
                     {
-                        if (ThreadSearchSapInfo != null && ThreadSearchSapInfo.IsAlive)
-                        {
-                            ThreadSearchSapInfo.Abort();
-                            ThreadSearchSapInfo = null;
-                        }
+                        RequestSapCostVolumeInformationUpdate();
                     }
-                    AppliAllColumnFilter();
                 }
             }
             catch (Exception ex)
             {
-                throw new QuickSearchException(this.GetType().Name, ex);
+                throw new QuickSearchException(
+                    GetType().Name,
+                    ex);
             }
         }
 
@@ -1088,15 +1195,15 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                 foreach (var part in TempPartList)
                     CurrentQuickSearchDataContext.ListPartItemShown.Add(part);
 
-                // Searche SAP Cost/Volume info
-                if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
-                {
-                    if (ThreadSearchSapInfo == null || (ThreadSearchSapInfo != null && !ThreadSearchSapInfo.IsAlive))
-                    {
-                        ThreadSearchSapInfo = new Thread(() => UpdateSapCostVolumeInformation());
-                        ThreadSearchSapInfo.Start();
-                    }
-                }
+                //// Searche SAP Cost/Volume info
+                //if (CurrentQuickSearchDataContext.ShowSapCostVolumeInfo)
+                //{
+                //    if (ThreadSearchSapInfo == null || (ThreadSearchSapInfo != null && !ThreadSearchSapInfo.IsAlive))
+                //    {
+                //        ThreadSearchSapInfo = new Thread(() => UpdateSapCostVolumeInformation());
+                //        ThreadSearchSapInfo.Start();
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -1106,95 +1213,369 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         #endregion
 
         #region [REGION] Methods search Sap Information
-        private void UpdateSapCostVolumeInformation()
+        private void RequestSapCostVolumeInformationUpdate()
+        {
+            lock (_sapSearchLock)
+            {
+                // Une recherche est demandée pour la sélection actuelle.
+                _isSapSearchPending = true;
+
+                // Si un worker SAP fonctionne déjà, il traitera la nouvelle
+                // demande lorsqu'il aura terminé son traitement actuel.
+                if (_isSapSearchRunning)
+                    return;
+
+                _isSapSearchRunning = true;
+            }
+
+            _ = Task.Run(ProcessSapCostVolumeInformationQueue);
+        }
+
+        private void ProcessSapCostVolumeInformationQueue()
         {
             try
             {
                 CurrentQuickSearchDataContext.IsMsgSearchSap = true;
-                if (!CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone || CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume == null)
+
+                while (true)
                 {
-                    List<string> AllMaterial;
-                    AllMaterial = CurrentQuickSearchDataContext.ListPartItemShown.Select((item) => GetPartNumber(item.CurrentPart.Recpart)).Distinct().ToList();
-
-                    var tmpSapCostVolumeInfos = _sapHupService.GetListMaterialMasterCostVolumeInfo(AllMaterial);
-                    CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume = new List<SapCostVolumeInfo>();
-                    if (tmpSapCostVolumeInfos != null)
-                        CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume.AddRange(tmpSapCostVolumeInfos.Select(x => new SapCostVolumeInfo(x)).ToList());
-                }
-
-
-                if (CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
-                {
-                    List<SapCostVolumeInfo> CurrentListMaterialCostVolume;
-                    SapCostVolumeInfo CurrentMaterialCostVolume;
-                    Regex EuropeRegex = new Regex(CommonLibConstants.SapEuropePlant);
-                    Regex FranceRegex = new Regex(CommonLibConstants.SapFrenchPlant);
-                    foreach (var part in CurrentQuickSearchDataContext.ListPartItemShown)
+                    lock (_sapSearchLock)
                     {
-                        // Selected plant
-                        part.PlantVolume = 0;
-                        var SelectedPlant = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.FirstOrDefault((item) => item.PlantNumber.Number == CurrentQuickSearchDataContext.SelectedSapPlant.Number && item.MaterialMasterNumber == GetPartNumber(part.CurrentPart.Recpart));
-                        if (SelectedPlant != null)
+                        if (!_isSapSearchPending)
                         {
-                            part.PlantStdCost = Math.Round(McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(SelectedPlant.StdCost, GetPlantCurrency(SelectedPlant.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency), 2);
-                            part.PlantVolume = Math.Round(SelectedPlant.Volume, 2);
-                            part.PlantStdCostPerKg = Math.Round(McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(SelectedPlant.StdCostPerKg, GetPlantCurrency(SelectedPlant.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency), 2);
-                            if (SelectedPlant.ProcurementType != null && (SelectedPlant.ProcurementType == "Purchased" || SelectedPlant.ProcurementType == "Manufactured"))
-                                part.ProcurementType = McgWpfTools.GetStringResource($"QS_{SelectedPlant.ProcurementType}");
-                            else
-                                part.ProcurementType = "";
+                            _isSapSearchRunning = false;
+                            return;
                         }
-                        // World Average all plant
-                        CurrentListMaterialCostVolume = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Where((item) => item.MaterialMasterNumber == GetPartNumber(part.CurrentPart.Recpart)).ToList();
 
-                        if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
-                        {
-                            // Plant Max Volume
-                            CurrentMaterialCostVolume = CurrentListMaterialCostVolume.FirstOrDefault((item) => item.Volume == CurrentListMaterialCostVolume.Max((max) => max.Volume));
-                            if (CurrentMaterialCostVolume != null && CurrentMaterialCostVolume.Volume > 0)
-                                part.PlantMaxVolume = CurrentMaterialCostVolume.PlantNumber.Number;
-                            else
-                                part.PlantMaxVolume = "None";
-
-                            part.WorldAverageCost = Math.Round(CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0).Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
-                            part.WorldAverageVolume = Math.Round(CurrentListMaterialCostVolume.Sum((item) => item.Volume), 2);
-
-                            // Europe Average all plant
-                            CurrentListMaterialCostVolume = CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0 && EuropeRegex.IsMatch(item.PlantNumber.Number)).ToList();
-                            if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
-                            {
-                                part.EuropeAverageCost = Math.Round(CurrentListMaterialCostVolume.Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
-
-                                // France Average all plant
-                                CurrentListMaterialCostVolume = CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0 && FranceRegex.IsMatch(item.PlantNumber.Number)).ToList();
-                                if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
-                                    part.FrenchAverageCost = Math.Round(CurrentListMaterialCostVolume.Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
-                            }
-                        }
+                        // La demande courante va être traitée.
+                        _isSapSearchPending = false;
                     }
+
+                    UpdateSapCostVolumeInformation();
                 }
-                if (!CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
-                    CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone = true;
-            }
-            catch (ThreadAbortException)
-            {
-                // Can happen when switching or applying filter
-                // Seems not raise other issue so just catch to avoid error messages
-            }
-            catch (InvalidOperationException)
-            {
-                // Can happen when switching or applying filter
-                // Seems not raise other issue so just catch to avoid error messages
             }
             catch (Exception ex)
             {
-                QuickSearchException.SendMessageBox(this.GetType().Name, ex);
+                QuickSearchException.SendMessageBox(
+                    GetType().Name,
+                    ex);
             }
             finally
             {
+                lock (_sapSearchLock)
+                {
+                    _isSapSearchRunning = false;
+                }
+
                 CurrentQuickSearchDataContext.IsMsgSearchSap = false;
             }
         }
+
+
+        private void UpdateSapCostVolumeInformation()
+        {
+            try
+            {
+                /*
+                 * Snapshot du contexte au démarrage.
+                 *
+                 * Il ne faut plus utiliser directement SelectedSubClassItem,
+                 * ListPartItemShown ou SelectedSapPlant dans le reste de la méthode,
+                 * car la sélection peut changer pendant l'appel SAP.
+                 */
+
+                var selectedSubClassItem =
+                    CurrentQuickSearchDataContext.SelectedSubClassItem;
+
+                var selectedSapPlant =
+                    CurrentQuickSearchDataContext.SelectedSapPlant;
+
+                var partItems =
+                    CurrentQuickSearchDataContext.ListPartItemShown?.ToList();
+
+                if (selectedSubClassItem == null ||
+                    selectedSapPlant == null ||
+                    partItems == null ||
+                    partItems.Count == 0)
+                {
+                    return;
+                }
+
+                if (!selectedSubClassItem.IsSapSearchDone ||
+                    selectedSubClassItem.CurrentAllCostVolume == null)
+                {
+                    List<string> allMaterials = partItems
+                        .Select(item => GetPartNumber(item.CurrentPart.Recpart))
+                        .Distinct()
+                        .ToList();
+
+                    var tmpSapCostVolumeInfos =
+                        _sapHupService.GetListMaterialMasterCostVolumeInfo(
+                            allMaterials);
+
+                    selectedSubClassItem.CurrentAllCostVolume =
+                        new List<SapCostVolumeInfo>();
+
+                    if (tmpSapCostVolumeInfos != null)
+                    {
+                        selectedSubClassItem.CurrentAllCostVolume.AddRange(
+                            tmpSapCostVolumeInfos
+                                .Select(x => new SapCostVolumeInfo(x))
+                                .ToList());
+                    }
+                }
+
+                var allCostVolume =
+                    selectedSubClassItem.CurrentAllCostVolume;
+
+                if (allCostVolume == null ||
+                    allCostVolume.Count == 0)
+                {
+                    return;
+                }
+
+                var europeRegex =
+                    new Regex(CommonLibConstants.SapEuropePlant);
+
+                var franceRegex =
+                    new Regex(CommonLibConstants.SapFrenchPlant);
+
+                foreach (var part in partItems)
+                {
+                    string partNumber =
+                        GetPartNumber(part.CurrentPart.Recpart);
+
+                    part.PlantVolume = 0;
+
+                    var selectedPlantCostVolume = allCostVolume.FirstOrDefault(
+                        item =>
+                            item.PlantNumber.Number == selectedSapPlant.Number &&
+                            item.MaterialMasterNumber == partNumber);
+
+                    if (selectedPlantCostVolume != null)
+                    {
+                        part.PlantStdCost = Math.Round(
+                            McgBusinessTools.GetCurrencyFromUsd(
+                                McgBusinessTools.GetCurrencyToUsd(
+                                    selectedPlantCostVolume.StdCost,
+                                    GetPlantCurrency(
+                                        selectedPlantCostVolume.PlantNumber)),
+                                selectedSapPlant.Currency),
+                            2);
+
+                        part.PlantVolume =
+                            Math.Round(selectedPlantCostVolume.Volume, 2);
+
+                        part.PlantStdCostPerKg = Math.Round(
+                            McgBusinessTools.GetCurrencyFromUsd(
+                                McgBusinessTools.GetCurrencyToUsd(
+                                    selectedPlantCostVolume.StdCostPerKg,
+                                    GetPlantCurrency(
+                                        selectedPlantCostVolume.PlantNumber)),
+                                selectedSapPlant.Currency),
+                            2);
+
+                        if (selectedPlantCostVolume.ProcurementType != null &&
+                            (selectedPlantCostVolume.ProcurementType == "Purchased" ||
+                             selectedPlantCostVolume.ProcurementType == "Manufactured"))
+                        {
+                            part.ProcurementType =
+                                McgWpfTools.GetStringResource(
+                                    $"QS_{selectedPlantCostVolume.ProcurementType}");
+                        }
+                        else
+                        {
+                            part.ProcurementType = string.Empty;
+                        }
+                    }
+
+                    var materialCostVolumes = allCostVolume
+                        .Where(item =>
+                            item.MaterialMasterNumber == partNumber)
+                        .ToList();
+
+                    if (materialCostVolumes.Count == 0)
+                        continue;
+
+                    var materialMaxVolume = materialCostVolumes
+                        .OrderByDescending(item => item.Volume)
+                        .FirstOrDefault();
+
+                    if (materialMaxVolume != null &&
+                        materialMaxVolume.Volume > 0)
+                    {
+                        part.PlantMaxVolume =
+                            materialMaxVolume.PlantNumber.Number;
+                    }
+                    else
+                    {
+                        part.PlantMaxVolume = "None";
+                    }
+
+                    var worldCostVolumes = materialCostVolumes
+                        .Where(item => item.StdCost > 0)
+                        .ToList();
+
+                    if (worldCostVolumes.Count > 0)
+                    {
+                        part.WorldAverageCost = Math.Round(
+                            worldCostVolumes.Average(
+                                item =>
+                                    McgBusinessTools.GetCurrencyFromUsd(
+                                        McgBusinessTools.GetCurrencyToUsd(
+                                            item.StdCost,
+                                            GetPlantCurrency(item.PlantNumber)),
+                                        selectedSapPlant.Currency)),
+                            2);
+                    }
+
+                    part.WorldAverageVolume = Math.Round(
+                        materialCostVolumes.Sum(item => item.Volume),
+                        2);
+
+                    var europeCostVolumes = materialCostVolumes
+                        .Where(item =>
+                            item.StdCost > 0 &&
+                            europeRegex.IsMatch(item.PlantNumber.Number))
+                        .ToList();
+
+                    if (europeCostVolumes.Count > 0)
+                    {
+                        part.EuropeAverageCost = Math.Round(
+                            europeCostVolumes.Average(
+                                item =>
+                                    McgBusinessTools.GetCurrencyFromUsd(
+                                        McgBusinessTools.GetCurrencyToUsd(
+                                            item.StdCost,
+                                            GetPlantCurrency(item.PlantNumber)),
+                                        selectedSapPlant.Currency)),
+                            2);
+                    }
+
+                    var franceCostVolumes = materialCostVolumes
+                        .Where(item =>
+                            item.StdCost > 0 &&
+                            franceRegex.IsMatch(item.PlantNumber.Number))
+                        .ToList();
+
+                    if (franceCostVolumes.Count > 0)
+                    {
+                        part.FrenchAverageCost = Math.Round(
+                            franceCostVolumes.Average(
+                                item =>
+                                    McgBusinessTools.GetCurrencyFromUsd(
+                                        McgBusinessTools.GetCurrencyToUsd(
+                                            item.StdCost,
+                                            GetPlantCurrency(item.PlantNumber)),
+                                        selectedSapPlant.Currency)),
+                            2);
+                    }
+                }
+
+                if (!selectedSubClassItem.IsSapSearchDone &&
+                    selectedSubClassItem.CurrentAllCostVolume != null &&
+                    selectedSubClassItem.CurrentAllCostVolume.Count > 0)
+                {
+                    selectedSubClassItem.IsSapSearchDone = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                QuickSearchException.SendMessageBox(
+                    GetType().Name,
+                    ex);
+            }
+        }
+
+        //private void UpdateSapCostVolumeInformation()
+        //{
+        //    try
+        //    {
+        //        CurrentQuickSearchDataContext.IsMsgSearchSap = true;
+        //        if (!CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone || CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume == null)
+        //        {
+        //            List<string> AllMaterial;
+        //            AllMaterial = CurrentQuickSearchDataContext.ListPartItemShown.Select((item) => GetPartNumber(item.CurrentPart.Recpart)).Distinct().ToList();
+
+        //            var tmpSapCostVolumeInfos = _sapHupService.GetListMaterialMasterCostVolumeInfo(AllMaterial);
+        //            CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume = new List<SapCostVolumeInfo>();
+        //            if (tmpSapCostVolumeInfos != null)
+        //                CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume.AddRange(tmpSapCostVolumeInfos.Select(x => new SapCostVolumeInfo(x)).ToList());
+        //        }
+
+
+        //        if (CurrentQuickSearchDataContext.SelectedSubClassItem?.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
+        //        {
+        //            List<SapCostVolumeInfo> CurrentListMaterialCostVolume;
+        //            SapCostVolumeInfo CurrentMaterialCostVolume;
+        //            Regex EuropeRegex = new Regex(CommonLibConstants.SapEuropePlant);
+        //            Regex FranceRegex = new Regex(CommonLibConstants.SapFrenchPlant);
+        //            foreach (var part in CurrentQuickSearchDataContext.ListPartItemShown)
+        //            {
+        //                // Selected plant
+        //                part.PlantVolume = 0;
+        //                var SelectedPlant = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.FirstOrDefault((item) => item.PlantNumber.Number == CurrentQuickSearchDataContext.SelectedSapPlant.Number && item.MaterialMasterNumber == GetPartNumber(part.CurrentPart.Recpart));
+        //                if (SelectedPlant != null)
+        //                {
+        //                    part.PlantStdCost = Math.Round(McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(SelectedPlant.StdCost, GetPlantCurrency(SelectedPlant.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency), 2);
+        //                    part.PlantVolume = Math.Round(SelectedPlant.Volume, 2);
+        //                    part.PlantStdCostPerKg = Math.Round(McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(SelectedPlant.StdCostPerKg, GetPlantCurrency(SelectedPlant.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency), 2);
+        //                    if (SelectedPlant.ProcurementType != null && (SelectedPlant.ProcurementType == "Purchased" || SelectedPlant.ProcurementType == "Manufactured"))
+        //                        part.ProcurementType = McgWpfTools.GetStringResource($"QS_{SelectedPlant.ProcurementType}");
+        //                    else
+        //                        part.ProcurementType = "";
+        //                }
+        //                // World Average all plant
+        //                CurrentListMaterialCostVolume = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Where((item) => item.MaterialMasterNumber == GetPartNumber(part.CurrentPart.Recpart)).ToList();
+
+        //                if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
+        //                {
+        //                    // Plant Max Volume
+        //                    CurrentMaterialCostVolume = CurrentListMaterialCostVolume.FirstOrDefault((item) => item.Volume == CurrentListMaterialCostVolume.Max((max) => max.Volume));
+        //                    if (CurrentMaterialCostVolume != null && CurrentMaterialCostVolume.Volume > 0)
+        //                        part.PlantMaxVolume = CurrentMaterialCostVolume.PlantNumber.Number;
+        //                    else
+        //                        part.PlantMaxVolume = "None";
+
+        //                    part.WorldAverageCost = Math.Round(CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0).Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
+        //                    part.WorldAverageVolume = Math.Round(CurrentListMaterialCostVolume.Sum((item) => item.Volume), 2);
+
+        //                    // Europe Average all plant
+        //                    CurrentListMaterialCostVolume = CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0 && EuropeRegex.IsMatch(item.PlantNumber.Number)).ToList();
+        //                    if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
+        //                    {
+        //                        part.EuropeAverageCost = Math.Round(CurrentListMaterialCostVolume.Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
+
+        //                        // France Average all plant
+        //                        CurrentListMaterialCostVolume = CurrentListMaterialCostVolume.Where((item) => item.StdCost > 0 && FranceRegex.IsMatch(item.PlantNumber.Number)).ToList();
+        //                        if (CurrentListMaterialCostVolume != null && CurrentListMaterialCostVolume.Count > 0)
+        //                            part.FrenchAverageCost = Math.Round(CurrentListMaterialCostVolume.Average((item) => McgBusinessTools.GetCurrencyFromUsd(McgBusinessTools.GetCurrencyToUsd(item.StdCost, GetPlantCurrency(item.PlantNumber)), CurrentQuickSearchDataContext.SelectedSapPlant.Currency)), 2);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if (!CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentAllCostVolume.Count > 0)
+        //            CurrentQuickSearchDataContext.SelectedSubClassItem.IsSapSearchDone = true;
+        //    }
+        //    catch (ThreadAbortException)
+        //    {
+        //        // Can happen when switching or applying filter
+        //        // Seems not raise other issue so just catch to avoid error messages
+        //    }
+        //    catch (InvalidOperationException)
+        //    {
+        //        // Can happen when switching or applying filter
+        //        // Seems not raise other issue so just catch to avoid error messages
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        QuickSearchException.SendMessageBox(this.GetType().Name, ex);
+        //    }
+        //    finally
+        //    {
+        //        CurrentQuickSearchDataContext.IsMsgSearchSap = false;
+        //    }
+        //}
 
         private string GetPartNumber(string CompletePartNumber)
         {
