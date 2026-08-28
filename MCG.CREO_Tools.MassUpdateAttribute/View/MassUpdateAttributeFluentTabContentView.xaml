@@ -106,6 +106,7 @@
         </Fluent:StatusBar>
 
         <DataGrid x:Name="DataGridAttributes" 
+                  BeginningEdit="DataGridAttributes_BeginningEdit"
                   FrozenColumnCount="2"  
                   ItemsSource="{Binding CurrentMassUpdAttribDataContext.ShownCadModels}" 
                   SelectedItem="{Binding CurrentMassUpdAttribDataContext.SelectedItem,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" 

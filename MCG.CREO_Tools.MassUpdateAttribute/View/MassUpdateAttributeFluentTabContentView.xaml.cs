@@ -81,6 +81,24 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
                             cellTemplate.VisualTree = comboBoxFactory;
                             CurrentDataGridTemplateColumn.CellTemplate = cellTemplate;
 
+
+                            var style = new Style(typeof(ComboBox));
+
+                            var trigger = new DataTrigger
+                            {
+                                Binding = new Binding("IsReadOnly"),
+                                Value = true
+                            };
+
+                            trigger.Setters.Add(
+                                new Setter(UIElement.IsEnabledProperty, false));
+
+                            style.Triggers.Add(trigger);
+
+                            comboBoxFactory.SetValue(
+                                FrameworkElement.StyleProperty,
+                                style);
+
                             DataGridAttributes.Columns.Add(CurrentDataGridTemplateColumn);
                         }
                     }
@@ -181,5 +199,14 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.View
             }
         }
         #endregion
+
+        private void DataGridAttributes_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            if (e.Row.Item is MassUpdateAttributeItem row &&
+                row.IsReadOnly)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
