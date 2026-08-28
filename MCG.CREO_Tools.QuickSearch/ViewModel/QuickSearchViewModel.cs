@@ -1074,10 +1074,10 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
 
                 foreach (var column in CurrentQuickSearchDataContext.SelectedSubClassItem.ShownPartSubClassParam)
                 {
-                    if (column.FilterValue != null && column.FilterValue != "")
+                    if (!string.IsNullOrEmpty(column.FilterValue))
                     {
                         keyWordRegex = new Regex(column.FilterValue, RegexOptions.IgnoreCase);
-                        CurrentProperty = typeof(Part).GetProperty(column.IdParam);
+                        CurrentProperty = typeof(Part).GetProperty(McgBusinessTools.Capitalize(column.IdParam));
                         if (CurrentProperty != null)
                         {
                             TempPartList = TempPartList.Where((part) => keyWordRegex.IsMatch(CurrentProperty.GetValue(part.CurrentPart).ToString())).ToList();
