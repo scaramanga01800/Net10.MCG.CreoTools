@@ -1,7 +1,7 @@
 ﻿using MCG.Tools.PurchaseOrderFollowUp.View;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
-using System;
+using MCG.CommonLib.Services.Statics;
 using System.IO;
 using System.Linq;
 using MCG.Tools.PurchaseOrderFollowUp.Exceptions;
@@ -147,7 +147,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             {
                 string TempFolder = System.Environment.GetEnvironmentVariable("TEMP");
                 if (TempFileName == null)
-                    TempFileName = $"{TempFolder}\\{FileName}";
+                    TempFileName = McgFileAndSystemTools.BuildSafeFilePath(TempFolder, FileName);
                 TempCompleteFileName = TempFileName;
 
                 using (FileStream fs = new FileStream(TempFileName, FileMode.Create, FileAccess.Write))
@@ -169,7 +169,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 string TempFolder = System.IO.Path.Combine(userProfilePath, "Downloads");
 
                 if (TempFileName == null)
-                    TempFileName = $"{TempFolder}\\{FileName}";
+                    TempFileName = McgFileAndSystemTools.BuildSafeFilePath(TempFolder, FileName);
                 TempCompleteFileName = TempFileName;
 
                 using (FileStream fs = new FileStream(TempFileName, FileMode.Create, FileAccess.Write))

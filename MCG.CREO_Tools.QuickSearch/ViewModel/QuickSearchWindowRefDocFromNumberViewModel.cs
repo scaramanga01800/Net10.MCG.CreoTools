@@ -152,7 +152,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                                                 doc.References.PrimaryContent.Content != null).FirstOrDefault();
                         if (CurrentDoc != null)
                         {
-                            CompleteReferenceFileName = $"{System.Environment.GetEnvironmentVariable("TEMP")}\\{CurrentDoc.References.PrimaryContent.Content.Label}";
+                            CompleteReferenceFileName = McgFileAndSystemTools.BuildSafeFilePath(System.Environment.GetEnvironmentVariable("TEMP"), CurrentDoc.References.PrimaryContent.Content.Label);
                             UrlReferenceFileName = CurrentDoc.References.PrimaryContent.Content.URL;
                             RefDocNumber = CurrentDoc.References.Number;
                             IsRefDocFound = true;
