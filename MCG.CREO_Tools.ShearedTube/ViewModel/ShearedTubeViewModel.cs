@@ -329,7 +329,7 @@ namespace MCG.CREO_Tools.ShearedTube.ViewModel
                     paramName = "QUALINSPGRP";
                     _creoParameterService.SetParameter(currentIpfcModel, paramName, paramValue, true);
 
-                    paramValue = McgMiscTools.GetWindowsSessionUserShortName(); ;
+                    paramValue = McgActiveDirectoryTools.GetWindowsSessionUserShortName(); ;
                     paramName = "MODIFIED_BY";
                     _creoParameterService.SetParameter(currentIpfcModel, paramName, paramValue);
 

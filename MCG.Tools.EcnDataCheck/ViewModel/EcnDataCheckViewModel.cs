@@ -1907,7 +1907,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                     LinkedObj = LinkedObj,
                     KeyString = KeyString,
                     CurrentDataCheckItem = CurrentItem,
-                    IssueDocumentationPath = McgMiscTools.GetSharePointDocument(McgWpfTools.GetStringResource(CurrentDataCheckRule.Document)),
+                    IssueDocumentationPath = McgFileAndSystemTools.GetSharePointDocument(McgWpfTools.GetStringResource(CurrentDataCheckRule.Document)),
                     IssueDocumentation = McgWpfTools.GetStringResource(CurrentDataCheckRule.Document)
                 };
                 if (ParamString == null || ParamString.Count() == 0)

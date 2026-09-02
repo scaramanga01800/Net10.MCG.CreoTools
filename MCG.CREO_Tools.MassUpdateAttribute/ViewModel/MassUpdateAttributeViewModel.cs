@@ -1134,7 +1134,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                         { }
                         else if (newAttrib.AttributeType == AttributeTypeEnum.TEXT)
                         {
-                            PropertyInfo PropExportItem = McgMiscTools.GetPropertyFromAttributeValue<MassUpdateAttributeExportItem>("ColumnAttribute", newAttrib.AttributeID);
+                            PropertyInfo PropExportItem = McgReflectionTools.GetPropertyFromAttributeValue<MassUpdateAttributeExportItem>("ColumnAttribute", newAttrib.AttributeID);
                             if (PropExportItem != null)
                             {
                                 object valueObj = PropExportItem.GetValue(CurrentExportItem);

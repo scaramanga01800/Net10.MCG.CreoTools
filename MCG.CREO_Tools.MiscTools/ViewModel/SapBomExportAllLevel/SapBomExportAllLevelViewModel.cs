@@ -127,7 +127,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SapBomExportAllLevel
         {
             try
             {
-                McgMiscTools.OpenSharePointDocument(McgWpfTools.GetStringResource("SEA_UserGuide"));
+                McgFileAndSystemTools.OpenSharePointDocument(McgWpfTools.GetStringResource("SEA_UserGuide"));
             }
             catch (Exception ex)
             {

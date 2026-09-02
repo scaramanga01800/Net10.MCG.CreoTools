@@ -570,7 +570,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
             {
                 if (CurrentQuickSearchDataContext.SelectedPartItem != null)
                 {
-                    McgMiscTools.CopyTextClipboard(CurrentQuickSearchDataContext.SelectedPartItem.CurrentPart.Recpart);
+                    McgWpfTools.CopyTextClipboard(CurrentQuickSearchDataContext.SelectedPartItem.CurrentPart.Recpart);
                 }
             }
             catch (Exception ex)

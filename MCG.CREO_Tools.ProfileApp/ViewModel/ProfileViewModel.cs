@@ -6,7 +6,6 @@ using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.CommonLib.Models.Main;
-using MCG.CommonLib.Services;
 using MCG.CommonLib.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.CommonLib.WebtermLib.Models;
@@ -475,11 +474,11 @@ namespace MCG.CREO_Tools.ProfileApp.ViewModel
             {
                 if (CurrentDataContext.CurrentProfileType != null && CurrentDataContext.CurrentProfileType.OrigProfileType != null)
                 {
-                    string FasternerImageFile = $@"{MainAppFolder}\{McgMiscTools.GetAppSetting(this, "PictureFolder")}\{CurrentDataContext.CurrentProfileType.OrigProfileType.Picture}";
+                    string FasternerImageFile = $@"{MainAppFolder}\{McgBusinessTools.GetAppSetting(this, "PictureFolder")}\{CurrentDataContext.CurrentProfileType.OrigProfileType.Picture}";
                     if (System.IO.File.Exists(FasternerImageFile))
                         CurrentDataContext.ProfileTypeImage = McgWpfTools.GetBitmapImage(FasternerImageFile);
                     else
-                        CurrentDataContext.ProfileTypeImage = McgWpfTools.GetBitmapImage($@"{MainAppFolder}\{McgMiscTools.GetAppSetting(this, "PictureFolder")}\{McgMiscTools.GetAppSetting(this, "PictureNotFound")}");
+                        CurrentDataContext.ProfileTypeImage = McgWpfTools.GetBitmapImage($@"{MainAppFolder}\{McgBusinessTools.GetAppSetting(this, "PictureFolder")}\{McgBusinessTools.GetAppSetting(this, "PictureNotFound")}");
                 }
             }
             catch (Exception ex)

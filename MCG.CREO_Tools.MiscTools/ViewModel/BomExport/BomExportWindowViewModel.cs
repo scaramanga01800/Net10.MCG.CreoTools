@@ -171,7 +171,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
 
                 MainDispatcher = Dispatcher.CurrentDispatcher;
 
-                McgMiscTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.MainDictionary}", UriKind.Absolute);
+                McgWpfTools.MergeLacalizedDictionary($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.MainDictionary}", UriKind.Absolute);
 
                 CurrentBomExportConfiguration = _xmlSerializeTools.GetDeserializedXml<BomExportConfiguration>($"{MainAppFolder}\\{CommonLibConstants.ResourcesFolder}\\{MiscToolsConstants.BomExportConfigurationFile}");
                 BomExportUserPreferences CurrentBomExportUserPreferences = GetUserConfigFromXmlFile();
