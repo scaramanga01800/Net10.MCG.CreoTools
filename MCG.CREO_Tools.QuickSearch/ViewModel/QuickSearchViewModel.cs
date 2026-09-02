@@ -857,7 +857,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                                                  doc.References.PrimaryContent.Content != null).FirstOrDefault();
                     if (CurrentDoc != null)
                     {
-                        string CompleteFileName = McgFileAndSystemTools.BuildSafeFilePath(System.Environment.GetEnvironmentVariable("TEMP"), CurrentDoc.References.PrimaryContent.Content.Label);
+                        string CompleteFileName = $"{System.Environment.GetEnvironmentVariable("TEMP")}\\{CurrentDoc.References.PrimaryContent.Content.Label}";
                         _htmlTools.DownloadFileFromUrl(CurrentDoc.References.PrimaryContent.Content.URL, WindchillNetworkCredential.WindchillCredential, CompleteFileName);
                         McgFileAndSystemTools.OpenFile(CompleteFileName);
                     }
@@ -884,7 +884,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                     CurrentRefDoc.PrimaryContent.Content != null &&
                     CurrentRefDoc.PrimaryContent.Content.URL != null)
                 {
-                    string CompleteFileName = McgFileAndSystemTools.BuildSafeFilePath(System.Environment.GetEnvironmentVariable("TEMP"), CurrentRefDoc.PrimaryContent.Content.Label);
+                    string CompleteFileName = $"{System.Environment.GetEnvironmentVariable("TEMP")}\\{CurrentRefDoc.PrimaryContent.Content.Label}";
                     _htmlTools.DownloadFileFromUrl(CurrentRefDoc.PrimaryContent.Content.URL, WindchillNetworkCredential.WindchillCredential, CompleteFileName);
                     McgFileAndSystemTools.OpenFile(CompleteFileName);
                 }
