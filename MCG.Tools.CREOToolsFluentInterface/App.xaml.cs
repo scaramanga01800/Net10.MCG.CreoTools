@@ -48,7 +48,11 @@ namespace MCG.Tools.CREOToolsFluentInterface
 
             TraceLog.StartTimer("Host.CreateDefaultBuilder ONLY");
 
-            var hostBuilder = Host.CreateDefaultBuilder().UseEnvironment("Production");
+            var hostBuilder = Host.CreateDefaultBuilder()
+                .UseEnvironment("Production")
+                // Force la recherche d'appsettings.json à côté de l'exécutable, quel que soit le
+                // répertoire de travail courant utilisé au lancement (raccourci, Robocopy, etc.).
+                .UseContentRoot(AppContext.BaseDirectory);
 
             hostBuilder.UseDefaultServiceProvider(options =>
             {
@@ -70,7 +74,7 @@ namespace MCG.Tools.CREOToolsFluentInterface
                 services.AddMCGCommonLibServices();
                 services.AddCreoIntegrationServices();
                 services.AddQuickLaunchServices();
-                services.AddMcgDataBaseAccessServices();
+                services.AddMcgDataBaseAccessServices(context.Configuration);
                 services.AddMCGCommonLibSapToolsServices();
                 services.AddMCGCommonLibWebtermServices();
                 services.AddMCGCommonLibWpfComponentServices();
