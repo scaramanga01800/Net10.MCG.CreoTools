@@ -1436,6 +1436,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         {
             try
             {
+                //var test = _creoParameterService.GetAllParameters(CurrentModel);
+
                 MassUpdateAttributeItem CurrentMassUpdateAttributeItem = new MassUpdateAttributeItem();
                 MassUpdateAttributeValue CurrentMassUpdateAttributeValue = null;
                 CREOModelStatus CurrentCREOModelStatus;
