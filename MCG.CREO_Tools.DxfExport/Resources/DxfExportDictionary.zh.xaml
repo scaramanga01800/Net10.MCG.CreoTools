@@ -39,6 +39,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="DXF_Status23">CAD document not found</system:String>
     <system:String x:Key="DXF_ErrorMsgDxfFileOpen">Cannot open file {0}. Please select another one</system:String>
     <system:String x:Key="DXF_MiOpenInCreo">Open part in CREO</system:String>
+    <system:String x:Key="DXF_MiPasteCodes">Paste</system:String>
     <system:String x:Key="DXF_TtHelpDxfExport">DXF Contour Export Help</system:String>
     <system:String x:Key="DXF_LinkHelpDxfExport">APP014EN.PDF</system:String>
     <system:String x:Key="DXF_ColHeader01">Number</system:String>

@@ -9,6 +9,7 @@ using MCG.CREO_Tools.DxfExport.Exceptions;
 using MCG.CREO_Tools.DxfExport.View;
 using pfcls;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -61,6 +62,8 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         public ICommand CommandOpenFile { get => new RelayCommand(() => ExecuteOpenFile()); }
         public ICommand CommandExportDxf { get => new RelayCommand(() => ExecuteExportDxf()); }
         public ICommand CommandOpenModelInCreo { get => new RelayCommand(() => ExecuteOpenModelInCreo()); }
+        public ICommand CommandPaste { get => new RelayCommand<System.Windows.Input.KeyEventArgs>((e) => ExecuteCommandPaste(e)); }
+        public ICommand CommandMenuItemPasteCodes { get => new RelayCommand(() => ExecuteMenuItemPasteCodes()); }
         #endregion
 
         #region [REGION] Init
@@ -177,6 +180,33 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             {
                 if (CurrentDxfExportDataContext.SelectedItem != null && CurrentDxfExportDataContext.SelectedItem.CurrentEpmDocument != null)
                     CurrentDxfExportDataContext.SelectedItem.CurrentEpmDocument.OpenInCreo(_creoSessionProvider, _creoModelService);
+            }
+            catch (Exception ex)
+            {
+                DxfExportException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void ExecuteCommandPaste(System.Windows.Input.KeyEventArgs e = null)
+        {
+            try
+            {
+                if (e == null || (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.V))
+                {
+                    ExecuteMenuItemPasteCodes();
+                }
+            }
+            catch (Exception ex)
+            {
+                DxfExportException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void ExecuteMenuItemPasteCodes()
+        {
+            try
+            {
+                AddItemsFromClipboard();
             }
             catch (Exception ex)
             {
@@ -627,18 +657,64 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                         {
                             NewLine = CurrentStream.ReadLine();
 
-                            CurrentDxfExportDataContext.ListItems.Add(new DxfExportItem()
-                            {
-                                Number = NewLine,
-                                Status = McgWpfTools.GetStringResource("DXF_Status09"),
-                                Comment = "",
-                                DxfCreated = false,
-                                CurrentEpmDocument = new EPMDocument(NewLine, NewLine, NewLine)
-                            });
+                            AddItemFromNumber(NewLine, false);
                         }
                     }
                 }
                 UpdateStatusBar();
+            }
+            catch (Exception ex)
+            {
+                throw new DxfExportException(this.GetType().Name, ex);
+            }
+        }
+
+        private void AddItemFromNumber(string number, bool skipDuplicates)
+        {
+            try
+            {
+                string TrimmedNumber = number?.Trim();
+                if (string.IsNullOrEmpty(TrimmedNumber))
+                    return;
+
+                if (skipDuplicates && CurrentDxfExportDataContext.ListItems.Any((item) => string.Equals(item.Number, TrimmedNumber, StringComparison.OrdinalIgnoreCase)))
+                    return;
+
+                CurrentDxfExportDataContext.ListItems.Add(new DxfExportItem()
+                {
+                    Number = TrimmedNumber,
+                    Status = McgWpfTools.GetStringResource("DXF_Status09"),
+                    Comment = "",
+                    DxfCreated = false,
+                    CurrentEpmDocument = new EPMDocument(TrimmedNumber, TrimmedNumber, TrimmedNumber)
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new DxfExportException(this.GetType().Name, ex);
+            }
+        }
+
+        private void AddItemsFromClipboard()
+        {
+            try
+            {
+                string CompleteString = null;
+                if (System.Windows.Clipboard.GetData(System.Windows.DataFormats.Text) != null)
+                    CompleteString = System.Windows.Clipboard.GetData(System.Windows.DataFormats.Text).ToString();
+
+                if (CompleteString != null)
+                {
+                    var AllLines = CompleteString.Split('\n');
+                    foreach (var line in AllLines)
+                    {
+                        string linePurged = line.Split('\r').FirstOrDefault();
+                        string TempNumber = linePurged?.Split('\t').FirstOrDefault();
+                        AddItemFromNumber(TempNumber, true);
+                    }
+
+                    UpdateStatusBar();
+                }
             }
             catch (Exception ex)
             {

@@ -12,5 +12,7 @@ namespace MCG.CREO_Tools.DxfExport.View
         ICommand CommandOpenFile { get; }
         ICommand CommandExportDxf { get; }
         ICommand CommandOpenModelInCreo { get; }
+        ICommand CommandPaste { get; }
+        ICommand CommandMenuItemPasteCodes { get; }
     }
 }

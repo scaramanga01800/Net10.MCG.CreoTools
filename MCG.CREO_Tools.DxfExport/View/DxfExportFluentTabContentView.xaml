@@ -16,6 +16,7 @@
             <BitmapImage x:Key="PART" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exec.ico" />
             <BitmapImage x:Key="FOLDER" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/folder_class.ico" />
             <BitmapImage x:Key="FILE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/configuration_settings.ico" />
+            <BitmapImage x:Key="PASTE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/paste.gif" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -48,11 +49,17 @@
                SelectedItem="{Binding CurrentDxfExportDataContext.SelectedItem}" 
                AutoGenerateColumns="False">
             <DataGrid.ContextMenu>
-                <Fluent:ContextMenu x:Name="OpenInCreoMenu" 
-                          Visibility="{Binding CurrentDxfExportDataContext.SelectedItem, Converter={StaticResource SelectItemToVisibilityConv}}">
+                <Fluent:ContextMenu x:Name="OpenInCreoMenu">
+                    <Fluent:MenuItem Header="{DynamicResource DXF_MiPasteCodes}" 
+                                  Command="{Binding CommandMenuItemPasteCodes}">
+                        <Fluent:MenuItem.Icon>
+                            <Image Source="{StaticResource ResourceKey=PASTE}" Width="16" />
+                        </Fluent:MenuItem.Icon>
+                    </Fluent:MenuItem>
                     <Fluent:MenuItem Header="{DynamicResource DXF_MiOpenInCreo}" 
                                   Command="{Binding CommandOpenModelInCreo}" 
-                                  IsEnabled="{Binding CurrentDxfExportDataContext.IsCreoEnable}">
+                                  IsEnabled="{Binding CurrentDxfExportDataContext.IsCreoEnable}"
+                                  Visibility="{Binding CurrentDxfExportDataContext.SelectedItem, Converter={StaticResource SelectItemToVisibilityConv}}">
                         <Fluent:MenuItem.Icon>
                             <Image Source="{StaticResource ResourceKey=PART}" Width="16" />
                         </Fluent:MenuItem.Icon>

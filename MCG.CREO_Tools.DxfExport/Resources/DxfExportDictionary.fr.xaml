@@ -39,6 +39,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="DXF_Status23">Document CAO inexistant</system:String>
     <system:String x:Key="DXF_ErrorMsgDxfFileOpen">Le fichier {0} ne peut pas être ouvert. Veuillez en sélectionner un autre.</system:String>
     <system:String x:Key="DXF_MiOpenInCreo">Ouvrir la pièce dans CREO</system:String>
+    <system:String x:Key="DXF_MiPasteCodes">Coller</system:String>
     <system:String x:Key="DXF_TtHelpDxfExport">Aide Export DXF Contour</system:String>
     <system:String x:Key="DXF_LinkHelpDxfExport">APP014FR.PDF</system:String>
     <system:String x:Key="DXF_ColHeader01">Numéro</system:String>
