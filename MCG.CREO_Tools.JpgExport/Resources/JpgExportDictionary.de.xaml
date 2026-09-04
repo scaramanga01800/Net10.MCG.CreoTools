@@ -12,6 +12,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="JPG_LabelResolution">Resolution</system:String>
     <system:String x:Key="JPG_BtStarExport">Start Export</system:String>
     <system:String x:Key="JPG_MiOpenInCreo">Open part in CREO</system:String>
+    <system:String x:Key="JPG_MiPasteCodes">Paste</system:String>
     <system:String x:Key="JPG_ValView1">Standard Orientation</system:String>
     <system:String x:Key="JPG_ValView2">Default Orientation</system:String>
     <system:String x:Key="JPG_ValDisplayStyle1">Shading with edges</system:String>

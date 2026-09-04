@@ -6,9 +6,16 @@
                       xmlns:local="clr-namespace:MCG.CREO_Tools.JpgExport.View"
                       xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
                       xmlns:Fluent="urn:fluent-ribbon"
+                      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                       mc:Ignorable="d" 
                       d:DesignHeight="450" d:DesignWidth="800"
                       Header="{DynamicResource JPG_AppName}">
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="KeyDown">
+            <behaviors:InvokeCommandAction Command="{Binding CommandPaste}" PassEventArgsToCommand="True"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
 
     <Fluent:RibbonTabItem.Resources>
         <ResourceDictionary>

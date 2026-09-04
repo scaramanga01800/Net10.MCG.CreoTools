@@ -12,5 +12,7 @@ namespace MCG.CREO_Tools.JpgExport.View
         ICommand CommandOpenFile { get; }
         ICommand CommandExportJpg { get; }
         ICommand CommandOpenModelInCreo { get; }
+        ICommand CommandPaste { get; }
+        ICommand CommandMenuItemPasteCodes { get; }
     }
 }
