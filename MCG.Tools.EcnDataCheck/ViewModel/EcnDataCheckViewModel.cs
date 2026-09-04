@@ -2607,7 +2607,10 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 if (TempLocalTerm == CurrentObj.Name && TempLocalTerm == CurrentObj.DescriptionLocal1)
                     CurrentObj.LocalLanguage = CurrentEcnDataCheckDataContext.SelectedLanguage;
                 else
-                    CurrentObj.LocalLanguage = _webtermTools.GetMcgLanguage(CurrentObj.DescriptionLocal1, CurrentObj.TemplateWebterm);
+                    // Pass the currently selected local language as priority so that when the same translation exists
+                    // in several languages (e.g. "PROFIL" in French and German), the selected language wins instead of
+                    // an arbitrary one (previously always German due to a case-sensitivity bug and a hard-coded default).
+                    CurrentObj.LocalLanguage = _webtermTools.GetMcgLanguage(CurrentObj.DescriptionLocal1, CurrentObj.TemplateWebterm, _webtermTools.GetWebtermLanguage(CurrentEcnDataCheckDataContext.SelectedLanguage));
             }
             catch (Exception ex)
             {
