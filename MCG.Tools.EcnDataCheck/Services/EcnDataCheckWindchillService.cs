@@ -15,15 +15,17 @@ namespace MCG.Tools.EcnDataCheck.Services
             _serviceProvider = serviceProvider;
         }
 
-        public void ShowEcnDataCheckEcaSelection()
+        public void ShowEcnDataCheckEcaSelection(IEcnDataCheckDataContext dataContext)
         {
             _EcnDataCheckEcaSelection = _serviceProvider.GetRequiredService<EcnDataCheckEcaSelection>();
+            _EcnDataCheckEcaSelection.DataContext = dataContext;
             _EcnDataCheckEcaSelection.Show();
         }
 
-        public MessageBoxResult ShowDialogEcnDataCheckEcaSelection()
+        public MessageBoxResult ShowDialogEcnDataCheckEcaSelection(IEcnDataCheckDataContext dataContext)
         {
             _EcnDataCheckEcaSelection = _serviceProvider.GetRequiredService<EcnDataCheckEcaSelection>();
+            _EcnDataCheckEcaSelection.DataContext = dataContext;
             var DialogResult = _EcnDataCheckEcaSelection.ShowDialog();
             if (DialogResult.HasValue)
             {

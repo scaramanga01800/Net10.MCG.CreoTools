@@ -330,7 +330,7 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                     MessageBoxResult EcaMessageBoxResult = MessageBoxResult.OK;
                     if (CurrentWindchillObjectEcn.ListEca.Count > 1)
                     {
-                        EcaMessageBoxResult = _ecnDataCheckWindchillService.ShowDialogEcnDataCheckEcaSelection();
+                        EcaMessageBoxResult = _ecnDataCheckWindchillService.ShowDialogEcnDataCheckEcaSelection(CurrentEcnDataCheckDataContext);
                     }
 
                     if (EcaMessageBoxResult == MessageBoxResult.OK)
