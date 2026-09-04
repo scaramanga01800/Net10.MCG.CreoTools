@@ -279,7 +279,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
             try
             {
                 TraceLog.AddTraceLog($"Enter ExecutePartNumberCreator App");
-                _numberingToolWindowService.ShowNumberingToolFluentMainView(true);
+                _numberingToolWindowService.ShowNumberingToolFluentMainView(false);
             }
             catch (Exception ex)
             {
