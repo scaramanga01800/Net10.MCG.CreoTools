@@ -66,6 +66,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
         private readonly ICreoModelService _creoModelService;
         private readonly IWebtermTools _webtermTools;
         private readonly INumberingToolWindowService _numberingToolWindowService;
+        private readonly ICreoSimpRepService _creoSimpRepService;
 
         public CreateNewCadDocumentViewModel(IXmlSerializeTools xmlSerializeTools, 
                                              ICreoParameterService creoParameterService,
@@ -73,7 +74,8 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                                              ICreoSessionProvider creoSessionProvider,
                                              ICreoModelService creoModelService,
                                              IWebtermTools webtermTools,
-                                             INumberingToolWindowService numberingToolWindowService)
+                                             INumberingToolWindowService numberingToolWindowService,
+                                             ICreoSimpRepService creoSimpRepService)
         {
             try
             {
@@ -84,6 +86,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 _creoModelService = creoModelService;
                 _webtermTools = webtermTools;
                 _numberingToolWindowService = numberingToolWindowService;
+                _creoSimpRepService = creoSimpRepService;
 
                 CurrentCreateNewCadDocumentDataContext = new CreateNewCadDocumentDataContext();
 
