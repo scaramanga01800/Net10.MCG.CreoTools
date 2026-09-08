@@ -380,10 +380,35 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             LoadComponentStates();
         }
 
+        /// <summary>
+        /// Supprime la representation selectionnee apres confirmation, puis reactive
+        /// la representation maitre et vide la selection.
+        /// </summary>
         private void ExecuteDeleteSimpRep()
         {
             try
             {
+                var simpRepName = CurrentDataContext.SelectedSimpRepName;
+
+                if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
+                {
+                    ShowWarning("SRP_MsgNoSimpRepSelected");
+                    return;
+                }
+
+                var confirmation = System.Windows.MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("SRP_MsgConfirmDelete"), simpRepName),
+                    McgWpfTools.GetStringResource("SRP_WindowTitle"),
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (confirmation != System.Windows.MessageBoxResult.Yes) return;
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread deleteThread = new Thread(() => DeleteSimpRepAsynch(simpRepName));
+                deleteThread.IsBackground = true;
+                deleteThread.Start();
             }
             catch (Exception ex)
             {
@@ -391,10 +416,71 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        /// <summary>
+        /// Suppression Creo executee en tache de fond, suivie du retour a la representation maitre.
+        /// </summary>
+        private void DeleteSimpRepAsynch(string simpRepName)
+        {
+            try
+            {
+                if (_activeModel == null) return;
+
+                if (!_creoSimpRepService.DeleteSimpRep(_activeModel, simpRepName))
+                {
+                    ShowWarning("SRP_MsgDeleteFailed");
+                    return;
+                }
+
+                // Le modele doit repasser sur la representation maitre : la representation
+                // supprimee ne peut plus etre affichee dans Creo.
+                _creoSimpRepService.ActivateMasterRep(_activeModel);
+
+                var names = _creoSimpRepService.ListSimpRepNames(_activeModel);
+
+                MainDispatcher.Invoke(() =>
+                {
+                    CurrentDataContext.ListSimpRepName.Clear();
+
+                    foreach (var name in names)
+                        CurrentDataContext.ListSimpRepName.Add(name);
+
+                    // Vide la selection : declenche la remise a l'etat neutre de la grille.
+                    CurrentDataContext.SelectedSimpRepName = string.Empty;
+                });
+
+                TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' supprimee, " +
+                                     $"retour a la representation maitre.");
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
+            }
+        }
+
+        /// <summary>
+        /// Active dans Creo la representation selectionnee, puis recharge l'etat des composants.
+        /// </summary>
         private void ExecuteActivateSimpRep()
         {
             try
             {
+                var simpRepName = CurrentDataContext.SelectedSimpRepName;
+
+                if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
+                {
+                    ShowWarning("SRP_MsgNoSimpRepSelected");
+                    return;
+                }
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread activateThread = new Thread(() => ActivateSimpRepAsynch(simpRepName));
+                activateThread.IsBackground = true;
+                activateThread.Start();
             }
             catch (Exception ex)
             {
@@ -402,14 +488,90 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
-        private void ExecuteSaveModel()
+        /// <summary>
+        /// Activation Creo executee en tache de fond : la regeneration du modele peut etre longue.
+        /// </summary>
+        private void ActivateSimpRepAsynch(string simpRepName)
         {
             try
             {
+                if (_activeModel == null) return;
+
+                if (!_creoSimpRepService.ActivateSimpRep(_activeModel, simpRepName))
+                {
+                    ShowWarning("SRP_MsgActivateFailed");
+                    return;
+                }
+
+                TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' activee.");
             }
             catch (Exception ex)
             {
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
+            }
+
+            // Relecture de l'etat reel : l'activation peut modifier l'affichage des composants.
+            LoadComponentStates();
+        }
+
+        /// <summary>
+        /// Sauvegarde l'assemblage actif : les representations simplifiees sont stockees dans le .asm.
+        /// </summary>
+        private void ExecuteSaveModel()
+        {
+            try
+            {
+                if (_activeModel == null)
+                {
+                    ShowWarning("SRP_MsgNoActiveModel");
+                    return;
+                }
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread saveThread = new Thread(new ThreadStart(SaveModelAsynch));
+                saveThread.IsBackground = true;
+                saveThread.Start();
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Sauvegarde Creo executee en tache de fond : l'ecriture du modele peut etre longue.
+        /// </summary>
+        private void SaveModelAsynch()
+        {
+            try
+            {
+                if (_activeModel == null) return;
+
+                if (!_creoSimpRepService.SaveOwnerModel(_activeModel))
+                {
+                    ShowWarning("SRP_MsgSaveFailed");
+                    return;
+                }
+
+                TraceLog.AddTraceLog($"SimplifiedRep : modele '{CurrentDataContext.ActiveModelName}' sauvegarde.");
+
+                System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("SRP_MsgSaveSuccess"),
+                                               McgWpfTools.GetStringResource("SRP_WindowTitle"),
+                                               System.Windows.MessageBoxButton.OK,
+                                               System.Windows.MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
             }
         }
 

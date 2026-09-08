@@ -478,4 +478,9 @@
     <system:String x:Key="SRP_MsgNameAlreadyExists">Eine vereinfachte Darstellung mit diesem Namen existiert bereits.</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">Bitte wählen Sie die zu kopierende vereinfachte Darstellung aus.</system:String>
     <system:String x:Key="SRP_MsgNoSimpRepSelected">Bitte wählen Sie die zu aktualisierende vereinfachte Darstellung aus.</system:String>
+    <system:String x:Key="SRP_MsgConfirmDelete">Möchten Sie die vereinfachte Darstellung „{0}“ wirklich löschen?</system:String>
+    <system:String x:Key="SRP_MsgDeleteFailed">Die vereinfachte Darstellung konnte nicht gelöscht werden.</system:String>
+    <system:String x:Key="SRP_MsgActivateFailed">Die vereinfachte Darstellung konnte nicht aktiviert werden.</system:String>
+    <system:String x:Key="SRP_MsgSaveFailed">Das Modell konnte nicht gespeichert werden.</system:String>
+    <system:String x:Key="SRP_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
 </ResourceDictionary>

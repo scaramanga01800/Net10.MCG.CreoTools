@@ -478,4 +478,9 @@
     <system:String x:Key="SRP_MsgNameAlreadyExists">Já existe uma representação simplificada com este nome.</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">Selecione a representação simplificada a copiar.</system:String>
     <system:String x:Key="SRP_MsgNoSimpRepSelected">Selecione a representação simplificada a atualizar.</system:String>
+    <system:String x:Key="SRP_MsgConfirmDelete">Pretende mesmo eliminar a representação simplificada «{0}»?</system:String>
+    <system:String x:Key="SRP_MsgDeleteFailed">Não foi possível eliminar a representação simplificada.</system:String>
+    <system:String x:Key="SRP_MsgActivateFailed">Não foi possível ativar a representação simplificada.</system:String>
+    <system:String x:Key="SRP_MsgSaveFailed">Não foi possível guardar o modelo.</system:String>
+    <system:String x:Key="SRP_MsgSaveSuccess">O modelo foi guardado com êxito.</system:String>
 </ResourceDictionary>

@@ -478,4 +478,9 @@
     <system:String x:Key="SRP_MsgNameAlreadyExists">已存在同名的简化表示。</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">请选择要复制的简化表示。</system:String>
     <system:String x:Key="SRP_MsgNoSimpRepSelected">请选择要更新的简化表示。</system:String>
+    <system:String x:Key="SRP_MsgConfirmDelete">确实要删除简化表示“{0}”吗？</system:String>
+    <system:String x:Key="SRP_MsgDeleteFailed">无法删除简化表示。</system:String>
+    <system:String x:Key="SRP_MsgActivateFailed">无法激活简化表示。</system:String>
+    <system:String x:Key="SRP_MsgSaveFailed">无法保存模型。</system:String>
+    <system:String x:Key="SRP_MsgSaveSuccess">模型已成功保存。</system:String>
 </ResourceDictionary>

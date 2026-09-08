@@ -478,4 +478,9 @@
     <system:String x:Key="SRP_MsgNameAlreadyExists">A simplified representation with this name already exists.</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">Please select the simplified representation to copy.</system:String>
     <system:String x:Key="SRP_MsgNoSimpRepSelected">Please select the simplified representation to update.</system:String>
+    <system:String x:Key="SRP_MsgConfirmDelete">Do you really want to delete the simplified representation '{0}'?</system:String>
+    <system:String x:Key="SRP_MsgDeleteFailed">The simplified representation could not be deleted.</system:String>
+    <system:String x:Key="SRP_MsgActivateFailed">The simplified representation could not be activated.</system:String>
+    <system:String x:Key="SRP_MsgSaveFailed">The model could not be saved.</system:String>
+    <system:String x:Key="SRP_MsgSaveSuccess">The model has been saved successfully.</system:String>
 </ResourceDictionary>
