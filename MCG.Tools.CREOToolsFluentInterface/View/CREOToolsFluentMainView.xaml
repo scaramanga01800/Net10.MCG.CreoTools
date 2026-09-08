@@ -780,6 +780,10 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlWebtermRequest, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlWebtermRequest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSimplifiedRep}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlSimplifiedRep, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlSimplifiedRep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppKillCreoPrecesses}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlKillCreoPrecesses, Converter={StaticResource BoolConv}}"

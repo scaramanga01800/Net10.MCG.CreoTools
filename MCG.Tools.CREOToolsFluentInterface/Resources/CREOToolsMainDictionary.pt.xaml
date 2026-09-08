@@ -81,4 +81,5 @@
 
     <system:String x:Key="CT_MenuFont">Font:</system:String>
     <system:String x:Key="CT_MenuColor">Color:</system:String>
+    <system:String x:Key="CT_MenuAppSimplifiedRep">Representações simplificadas</system:String>
 </ResourceDictionary>
