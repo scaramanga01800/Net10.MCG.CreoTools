@@ -11,6 +11,7 @@ using MCG.CREO_Tools.MiscTools.View.QuickChange;
 using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.View.SapFertBom;
+using MCG.CREO_Tools.MiscTools.View.SimplifiedRep;
 using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomExport;
 using MCG.WindchillRequestTool.Model.BomComparison;
@@ -33,6 +34,7 @@ namespace MCG.CREO_Tools.MiscTools.Services
         private Window _SapBomExportAllLevelMainView;
         private Window _SapFertMissingPart;
         private Window _SapFertBomMainView;
+        private Window _SimplifiedRepMainView;
         private Window _WebtermRequestMainView;
         private Window _BomComparisonView;
         private Window _BomExportCumulativeView;
@@ -460,6 +462,32 @@ namespace MCG.CREO_Tools.MiscTools.Services
             {
                 _SapFertBomMainView.Close();
                 _SapFertBomMainView = null;
+            }
+        }
+        public void ShowSimplifiedRepMainView(bool isAlreadyCreated = false)
+        {
+            if (isAlreadyCreated)
+            {
+                if (_SimplifiedRepMainView != null && _SimplifiedRepMainView.IsVisible)
+                {
+                    _SimplifiedRepMainView.Activate();
+                    return;
+                }
+            }
+            _SimplifiedRepMainView = _serviceProvider.GetRequiredService<SimplifiedRepMainView>();
+            _SimplifiedRepMainView.Show();
+        }
+        public void ShowDialogSimplifiedRepMainView()
+        {
+            _SimplifiedRepMainView = _serviceProvider.GetRequiredService<SimplifiedRepMainView>();
+            _SimplifiedRepMainView.ShowDialog();
+        }
+        public void CloseSimplifiedRepMainView()
+        {
+            if (_SimplifiedRepMainView != null)
+            {
+                _SimplifiedRepMainView.Close();
+                _SimplifiedRepMainView = null;
             }
         }
         public void CloseWebtermRequestMainView()

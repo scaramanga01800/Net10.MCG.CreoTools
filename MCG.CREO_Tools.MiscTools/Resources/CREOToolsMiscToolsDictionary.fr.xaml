@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Coût/Masse (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Sortir</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">Représentations simplifiées</system:String>
+    <system:String x:Key="SRP_RibGrpModel">Modèle</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">Représentation simplifiée</system:String>
+    <system:String x:Key="SRP_RibGrpActions">Actions</system:String>
+    <system:String x:Key="SRP_BtStart">Lire l'assemblage</system:String>
+    <system:String x:Key="SRP_BtSave">Sauvegarder</system:String>
+    <system:String x:Key="SRP_BtCreate">Créer</system:String>
+    <system:String x:Key="SRP_BtCopy">Copier</system:String>
+    <system:String x:Key="SRP_BtUpdate">Mettre à jour</system:String>
+    <system:String x:Key="SRP_BtActivate">Activer</system:String>
+    <system:String x:Key="SRP_BtDelete">Supprimer</system:String>
+    <system:String x:Key="SRP_SimpRepList">Représentations existantes</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">Nouveau nom</system:String>
+    <system:String x:Key="SRP_DefaultRule">Règle par défaut</system:String>
+    <system:String x:Key="SRP_ToolTipStart">Lire l'assemblage actif et lister ses composants et représentations simplifiées.</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">Sélectionner une représentation simplifiée existante de l'assemblage actif.</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">Règle par défaut appliquée à tous les composants non listés explicitement.</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">Composant</system:String>
+    <system:String x:Key="SRP_Column_Included">Inclus</system:String>
+    <system:String x:Key="SRP_Column_Action">Action</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">Représentation définie par l'utilisateur</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>

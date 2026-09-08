@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Price/Mass (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Exit</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">Simplified Representations</system:String>
+    <system:String x:Key="SRP_RibGrpModel">Model</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">Simplified Representation</system:String>
+    <system:String x:Key="SRP_RibGrpActions">Actions</system:String>
+    <system:String x:Key="SRP_BtStart">Read Assembly</system:String>
+    <system:String x:Key="SRP_BtSave">Save</system:String>
+    <system:String x:Key="SRP_BtCreate">Create</system:String>
+    <system:String x:Key="SRP_BtCopy">Copy</system:String>
+    <system:String x:Key="SRP_BtUpdate">Update</system:String>
+    <system:String x:Key="SRP_BtActivate">Activate</system:String>
+    <system:String x:Key="SRP_BtDelete">Delete</system:String>
+    <system:String x:Key="SRP_SimpRepList">Existing representations</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">New name</system:String>
+    <system:String x:Key="SRP_DefaultRule">Default rule</system:String>
+    <system:String x:Key="SRP_ToolTipStart">Read the active assembly and list its components and simplified representations.</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">Select an existing simplified representation of the active assembly.</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">Default rule applied to every component not explicitly listed.</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">Component</system:String>
+    <system:String x:Key="SRP_Column_Included">Included</system:String>
+    <system:String x:Key="SRP_Column_Action">Action</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">User defined representation</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>

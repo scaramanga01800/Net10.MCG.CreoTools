@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Price/Mass (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Exit</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">Vereinfachte Darstellungen</system:String>
+    <system:String x:Key="SRP_RibGrpModel">Modell</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">Vereinfachte Darstellung</system:String>
+    <system:String x:Key="SRP_RibGrpActions">Aktionen</system:String>
+    <system:String x:Key="SRP_BtStart">Baugruppe lesen</system:String>
+    <system:String x:Key="SRP_BtSave">Speichern</system:String>
+    <system:String x:Key="SRP_BtCreate">Erstellen</system:String>
+    <system:String x:Key="SRP_BtCopy">Kopieren</system:String>
+    <system:String x:Key="SRP_BtUpdate">Aktualisieren</system:String>
+    <system:String x:Key="SRP_BtActivate">Aktivieren</system:String>
+    <system:String x:Key="SRP_BtDelete">Löschen</system:String>
+    <system:String x:Key="SRP_SimpRepList">Vorhandene Darstellungen</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">Neuer Name</system:String>
+    <system:String x:Key="SRP_DefaultRule">Standardregel</system:String>
+    <system:String x:Key="SRP_ToolTipStart">Aktive Baugruppe lesen und Komponenten sowie vereinfachte Darstellungen auflisten.</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">Eine vorhandene vereinfachte Darstellung der aktiven Baugruppe auswählen.</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">Standardregel für alle nicht explizit aufgeführten Komponenten.</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">Komponente</system:String>
+    <system:String x:Key="SRP_Column_Included">Enthalten</system:String>
+    <system:String x:Key="SRP_Column_Action">Aktion</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">Benutzerdefinierte Darstellung</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>

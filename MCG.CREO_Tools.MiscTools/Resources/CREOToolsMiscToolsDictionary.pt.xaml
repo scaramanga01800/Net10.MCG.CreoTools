@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Price/Mass (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Exit</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">Representações simplificadas</system:String>
+    <system:String x:Key="SRP_RibGrpModel">Modelo</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">Representação simplificada</system:String>
+    <system:String x:Key="SRP_RibGrpActions">Ações</system:String>
+    <system:String x:Key="SRP_BtStart">Ler montagem</system:String>
+    <system:String x:Key="SRP_BtSave">Guardar</system:String>
+    <system:String x:Key="SRP_BtCreate">Criar</system:String>
+    <system:String x:Key="SRP_BtCopy">Copiar</system:String>
+    <system:String x:Key="SRP_BtUpdate">Atualizar</system:String>
+    <system:String x:Key="SRP_BtActivate">Ativar</system:String>
+    <system:String x:Key="SRP_BtDelete">Eliminar</system:String>
+    <system:String x:Key="SRP_SimpRepList">Representações existentes</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">Novo nome</system:String>
+    <system:String x:Key="SRP_DefaultRule">Regra predefinida</system:String>
+    <system:String x:Key="SRP_ToolTipStart">Ler a montagem ativa e listar os seus componentes e representações simplificadas.</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">Selecionar uma representação simplificada existente da montagem ativa.</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">Regra predefinida aplicada a todos os componentes não listados explicitamente.</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">Componente</system:String>
+    <system:String x:Key="SRP_Column_Included">Incluído</system:String>
+    <system:String x:Key="SRP_Column_Action">Ação</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">Representação definida pelo utilizador</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>

@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Price/Mass (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Exit</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">简化表示</system:String>
+    <system:String x:Key="SRP_RibGrpModel">模型</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">简化表示</system:String>
+    <system:String x:Key="SRP_RibGrpActions">操作</system:String>
+    <system:String x:Key="SRP_BtStart">读取装配</system:String>
+    <system:String x:Key="SRP_BtSave">保存</system:String>
+    <system:String x:Key="SRP_BtCreate">创建</system:String>
+    <system:String x:Key="SRP_BtCopy">复制</system:String>
+    <system:String x:Key="SRP_BtUpdate">更新</system:String>
+    <system:String x:Key="SRP_BtActivate">激活</system:String>
+    <system:String x:Key="SRP_BtDelete">删除</system:String>
+    <system:String x:Key="SRP_SimpRepList">现有表示</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">新名称</system:String>
+    <system:String x:Key="SRP_DefaultRule">默认规则</system:String>
+    <system:String x:Key="SRP_ToolTipStart">读取活动装配并列出其组件和简化表示。</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">选择活动装配的现有简化表示。</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">应用于所有未显式列出组件的默认规则。</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">组件</system:String>
+    <system:String x:Key="SRP_Column_Included">包含</system:String>
+    <system:String x:Key="SRP_Column_Action">操作</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">用户定义表示</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>

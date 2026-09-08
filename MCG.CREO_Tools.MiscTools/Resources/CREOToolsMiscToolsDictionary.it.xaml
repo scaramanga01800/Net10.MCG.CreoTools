@@ -442,4 +442,29 @@
     <system:String x:Key="BCE_ColHeader15">Price/Mass (SAP)</system:String>
     <system:String x:Key="BCE_MenuAppExit">Exit</system:String>
 
+    <!-- ===== SimplifiedRep ===== -->
+    <system:String x:Key="SRP_WindowTitle">Rappresentazioni semplificate</system:String>
+    <system:String x:Key="SRP_RibGrpModel">Modello</system:String>
+    <system:String x:Key="SRP_RibGrpSimpRep">Rappresentazione semplificata</system:String>
+    <system:String x:Key="SRP_RibGrpActions">Azioni</system:String>
+    <system:String x:Key="SRP_BtStart">Leggi assieme</system:String>
+    <system:String x:Key="SRP_BtSave">Salva</system:String>
+    <system:String x:Key="SRP_BtCreate">Crea</system:String>
+    <system:String x:Key="SRP_BtCopy">Copia</system:String>
+    <system:String x:Key="SRP_BtUpdate">Aggiorna</system:String>
+    <system:String x:Key="SRP_BtActivate">Attiva</system:String>
+    <system:String x:Key="SRP_BtDelete">Elimina</system:String>
+    <system:String x:Key="SRP_SimpRepList">Rappresentazioni esistenti</system:String>
+    <system:String x:Key="SRP_NewSimpRepName">Nuovo nome</system:String>
+    <system:String x:Key="SRP_DefaultRule">Regola predefinita</system:String>
+    <system:String x:Key="SRP_ToolTipStart">Leggi l'assieme attivo ed elenca componenti e rappresentazioni semplificate.</system:String>
+    <system:String x:Key="SRP_ToolTipSimpRepList">Seleziona una rappresentazione semplificata esistente dell'assieme attivo.</system:String>
+    <system:String x:Key="SRP_ToolTipDefaultRule">Regola predefinita applicata a tutti i componenti non elencati esplicitamente.</system:String>
+    <system:String x:Key="SRP_Column_Index">#</system:String>
+    <system:String x:Key="SRP_Column_Name">Componente</system:String>
+    <system:String x:Key="SRP_Column_Included">Incluso</system:String>
+    <system:String x:Key="SRP_Column_Action">Azione</system:String>
+    <system:String x:Key="SRP_Column_UserDefined">Rappresentazione definita dall'utente</system:String>
+    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+
 </ResourceDictionary>
