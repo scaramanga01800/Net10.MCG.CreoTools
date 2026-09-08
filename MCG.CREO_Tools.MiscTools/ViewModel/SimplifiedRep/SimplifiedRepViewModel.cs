@@ -43,6 +43,14 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         /// <summary>Evite la reentrance lors de l'application de la case "tout cocher".</summary>
         private bool _isApplyingAllIncluded;
 
+        /// <summary>
+        /// Cache des representations simplifiees disponibles par modele composant.
+        /// Evite de reinterroger Creo a chaque rechargement de la grille.
+        /// Vide a chaque nouvelle lecture de l'assemblage.
+        /// </summary>
+        private readonly Dictionary<string, List<string>> _componentSimpRepCache =
+            new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+
         public SimplifiedRepViewModel(ICreoSessionProvider creoSessionProvider,
                                       ICreoModelService creoModelService,
                                       ICreoSimpRepService creoSimpRepService,
@@ -102,6 +110,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                // Nouvelle lecture de l'assemblage : le cache des representations
+                // des composants n'est plus fiable.
+                _componentSimpRepCache.Clear();
+
                 _activeModel = _creoModelService.GetActiveModel();
                 if (_activeModel == null)
                 {
@@ -790,35 +802,50 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 var states = _creoSimpRepService.GetComponentStates(_activeModel, simpRep);
 
-                // Lecture Creo des representations propres a chaque composant : couteux,
-                // effectue hors du thread UI pour que le gif d'attente reste anime.
+                // Lecture Creo des representations propres a chaque composant : tres couteux.
+                // Ces listes ne dependent que du modele composant, pas de la representation de
+                // l'assemblage : elles sont donc mises en cache et mutualisees entre les
+                // occurrences repetees d'un meme modele.
                 var componentSimpReps = new Dictionary<int, List<string>>();
 
                 foreach (var item in CurrentDataContext.ListItem)
                 {
-                    var names = new List<string>();
+                    var cacheKey = item.Name ?? string.Empty;
 
-                    if (item.ComponentInfo?.ComponentFeature != null)
+                    if (!_componentSimpRepCache.TryGetValue(cacheKey, out var names))
                     {
-                        try
+                        names = new List<string>();
+
+                        if (item.ComponentInfo?.ComponentFeature != null)
                         {
-                            names = _creoSimpRepService.ListComponentSimpRepNames(item.ComponentInfo.ComponentFeature);
+                            try
+                            {
+                                names = _creoSimpRepService.ListComponentSimpRepNames(item.ComponentInfo.ComponentFeature);
+                            }
+                            catch
+                            {
+                                // composant sans representation simplifiee exploitable : liste laissee vide
+                            }
                         }
-                        catch
-                        {
-                            // composant sans representation simplifiee exploitable : liste laissee vide
-                        }
+
+                        _componentSimpRepCache[cacheKey] = names;
                     }
 
                     componentSimpReps[item.ComponentId] = names;
                 }
+
+                // Indexation des etats : evite une recherche lineaire par ligne (cout N x N).
+                var statesById = new Dictionary<int, CreoSimpRepComponentState>();
+
+                foreach (var state in states)
+                    statesById[state.Component.Id] = state;
 
                 // Seules les mises a jour des collections liees passent par le thread UI.
                 MainDispatcher.Invoke(() =>
                 {
                     foreach (var item in CurrentDataContext.ListItem)
                     {
-                        var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
+                        statesById.TryGetValue(item.ComponentId, out var state);
 
                         // Action reellement appliquee : item explicite, sinon regle par defaut.
                         var effectiveAction = state != null
@@ -831,21 +858,27 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         // CurrentAction est calculee : elle reflete ce qui sera applique a la mise a jour.
                         item.IsIncluded = IsIncludedAction(effectiveAction, defaultAction);
 
-                        // La liste doit exister avant d'affecter la valeur selectionnee du combo.
-                        item.ListComponentSimpRep.Clear();
-
-                        if (componentSimpReps.TryGetValue(item.ComponentId, out var names))
-                        {
-                            foreach (var name in names)
-                                item.ListComponentSimpRep.Add(name);
-                        }
+                        componentSimpReps.TryGetValue(item.ComponentId, out var names);
+                        names ??= new List<string>();
 
                         var substituted = state?.SubstitutedSimpRepName ?? string.Empty;
 
+                        var wantedNames = new List<string>(names);
+
                         if (!string.IsNullOrEmpty(substituted)
-                            && !item.ListComponentSimpRep.Contains(substituted))
+                            && !wantedNames.Contains(substituted, StringComparer.OrdinalIgnoreCase))
                         {
-                            item.ListComponentSimpRep.Add(substituted);
+                            wantedNames.Add(substituted);
+                        }
+
+                        // La collection n'est reconstruite que si son contenu change reellement :
+                        // chaque Clear/Add declenche un rafraichissement complet du ComboBox lie.
+                        if (!item.ListComponentSimpRep.SequenceEqual(wantedNames, StringComparer.OrdinalIgnoreCase))
+                        {
+                            item.ListComponentSimpRep.Clear();
+
+                            foreach (var name in wantedNames)
+                                item.ListComponentSimpRep.Add(name);
                         }
 
                         item.SelectedComponentSimpRep = substituted;
