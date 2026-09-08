@@ -467,4 +467,8 @@
     <system:String x:Key="SRP_Column_UserDefined">用户定义表示</system:String>
     <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
 
+    <system:String x:Key="SRP_MsgNoActiveModel">CREO 会话中没有活动模型。请打开一个装配体。</system:String>
+    <system:String x:Key="SRP_MsgNotAnAssembly">活动模型不是装配体。简化表示需要装配体。</system:String>
+    <system:String x:Key="SRP_Column_Rep">REP</system:String>
+    <system:String x:Key="SRP_Column_Description">描述</system:String>
 </ResourceDictionary>

@@ -467,4 +467,8 @@
     <system:String x:Key="SRP_Column_UserDefined">Rappresentazione definita dall'utente</system:String>
     <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
 
+    <system:String x:Key="SRP_MsgNoActiveModel">Nessun modello attivo nella sessione CREO. Aprire un assieme.</system:String>
+    <system:String x:Key="SRP_MsgNotAnAssembly">Il modello attivo non è un assieme. Le rappresentazioni semplificate richiedono un assieme.</system:String>
+    <system:String x:Key="SRP_Column_Rep">REP</system:String>
+    <system:String x:Key="SRP_Column_Description">Descrizione</system:String>
 </ResourceDictionary>

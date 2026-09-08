@@ -50,6 +50,36 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        private string _Rep = string.Empty;
+        /// <summary>Parametre REP : relation entre l'assemblage et le composant.</summary>
+        public string Rep
+        {
+            get { return _Rep; }
+            set
+            {
+                if (this._Rep != value)
+                {
+                    this._Rep = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _Description = string.Empty;
+        /// <summary>Concatenation de PTC_COMMON_NAME et DESCRIPTION_2 separes par "|".</summary>
+        public string Description
+        {
+            get { return _Description; }
+            set
+            {
+                if (this._Description != value)
+                {
+                    this._Description = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _IsIncluded = true;
         public bool IsIncluded
         {

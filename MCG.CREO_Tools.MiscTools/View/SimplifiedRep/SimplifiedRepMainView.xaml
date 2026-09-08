@@ -162,6 +162,14 @@
                                         Binding="{Binding Name}"
                                         Width="*"
                                         IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource SRP_Column_Rep}"
+                                        Binding="{Binding Rep}"
+                                        Width="80"
+                                        IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource SRP_Column_Description}"
+                                        Binding="{Binding Description}"
+                                        Width="2*"
+                                        IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="{DynamicResource SRP_Column_Included}"
                                             Binding="{Binding IsIncluded, UpdateSourceTrigger=PropertyChanged}"/>
                     <DataGridTextColumn Header="{DynamicResource SRP_Column_Action}"
