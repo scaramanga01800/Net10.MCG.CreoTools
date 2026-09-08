@@ -483,4 +483,6 @@
     <system:String x:Key="SRP_MsgActivateFailed">无法激活简化表示。</system:String>
     <system:String x:Key="SRP_MsgSaveFailed">无法保存模型。</system:String>
     <system:String x:Key="SRP_MsgSaveSuccess">模型已成功保存。</system:String>
+    <system:String x:Key="SRP_ToolTipSelectAll">选中或取消选中所有组件。</system:String>
+    <system:String x:Key="SRP_MsgNoChangeToApply">没有需要应用到简化表示的更改。</system:String>
 </ResourceDictionary>

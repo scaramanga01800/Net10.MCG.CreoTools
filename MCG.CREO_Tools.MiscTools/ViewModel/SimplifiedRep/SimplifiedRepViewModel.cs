@@ -40,6 +40,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
         private IpfcModel? _activeModel;
 
+        /// <summary>Evite la reentrance lors de l'application de la case "tout cocher".</summary>
+        private bool _isApplyingAllIncluded;
+
         public SimplifiedRepViewModel(ICreoSessionProvider creoSessionProvider,
                                       ICreoModelService creoModelService,
                                       ICreoSimpRepService creoSimpRepService,
@@ -281,7 +284,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 }
 
                 // Photo de l'etat de la grille prise sur le thread UI avant de basculer en tache de fond.
+                // Seules les lignes reellement modifiees sont envoyees a Creo : chaque appel COM
+                // est couteux, il est inutile de reappliquer un etat deja en place.
                 var pendingChanges = CurrentDataContext.ListItem
+                    .Where(item => item.HasPendingChange)
                     .Select(item => new SimplifiedRepPendingChange
                     {
                         ComponentPath = item.ComponentInfo?.ComponentPath is { Count: > 0 } path
@@ -292,6 +298,13 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         SubstitutedSimpRepName = item.SelectedComponentSimpRep ?? string.Empty
                     })
                     .ToList();
+
+                // Rien n'a change : inutile de solliciter Creo ni de recharger la grille.
+                if (pendingChanges.Count == 0)
+                {
+                    ShowInformation("SRP_MsgNoChangeToApply");
+                    return;
+                }
 
                 CurrentDataContext.IsPleaseWaitShown = true;
 
@@ -697,11 +710,40 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                                            System.Windows.MessageBoxImage.Warning);
         }
 
+        /// <summary>Affiche un message d'information localise.</summary>
+        private static void ShowInformation(string resourceKey)
+        {
+            System.Windows.MessageBox.Show(McgWpfTools.GetStringResource(resourceKey),
+                                           McgWpfTools.GetStringResource("SRP_WindowTitle"),
+                                           System.Windows.MessageBoxButton.OK,
+                                           System.Windows.MessageBoxImage.Information);
+        }
+
         /// <summary>
         /// Recharge l'etat des composants lorsque l'utilisateur change de representation simplifiee.
         /// </summary>
         private void OnDataContextPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            // Case d'en-tete : applique la meme valeur a toutes les lignes de la grille.
+            if (e.PropertyName == nameof(SimplifiedRepDataContext.IsAllIncluded))
+            {
+                if (_isApplyingAllIncluded) return;
+
+                try
+                {
+                    _isApplyingAllIncluded = true;
+
+                    foreach (var item in CurrentDataContext.ListItem)
+                        item.IsIncluded = CurrentDataContext.IsAllIncluded;
+                }
+                finally
+                {
+                    _isApplyingAllIncluded = false;
+                }
+
+                return;
+            }
+
             if (e.PropertyName != nameof(SimplifiedRepDataContext.SelectedSimpRepName)) return;
             if (!CurrentDataContext.IsAssemblyLoaded) return;
 
@@ -785,7 +827,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                             : defaultAction;
 
                         item.IsExplicit = state?.IsExplicit ?? false;
-                        item.CurrentAction = FormatAction(effectiveAction);
+
+                        // CurrentAction est calculee : elle reflete ce qui sera applique a la mise a jour.
                         item.IsIncluded = IsIncludedAction(effectiveAction, defaultAction);
 
                         // La liste doit exister avant d'affecter la valeur selectionnee du combo.
@@ -806,6 +849,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         }
 
                         item.SelectedComponentSimpRep = substituted;
+
+                        // L'etat lu dans Creo devient la reference : seules les modifications
+                        // ulterieures de l'utilisateur seront renvoyees a Creo.
+                        item.CaptureBaseline();
                     }
                 });
 
@@ -834,8 +881,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             {
                 item.IsIncluded = true;
                 item.IsExplicit = false;
-                item.CurrentAction = string.Empty;
                 item.SelectedComponentSimpRep = string.Empty;
+                item.CaptureBaseline();
             }
         }
 
@@ -925,7 +972,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     Description = BuildDescription(componentModel),
                     IsIncluded = true,
                     IsExplicit = false,
-                    CurrentAction = string.Empty,
                     ComponentInfo = component
                 };
 

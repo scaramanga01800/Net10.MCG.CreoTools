@@ -158,18 +158,12 @@
         </Fluent:Ribbon>
 
         <Grid>
-            <DataGrid CanUserAddRows="False"
+            <DataGrid x:Name="DgComponents"
+                      CanUserAddRows="False"
                       AutoGenerateColumns="False"
                       SelectionMode="Extended"
                       SelectionUnit="FullRow"
                       ItemsSource="{Binding CurrentDataContext.ListItem}">
-                <DataGrid.RowStyle>
-                    <!-- Les composants inclus dans la representation sont selectionnes visuellement.
-                         Liaison OneWay : la selection ne doit jamais reecrire IsIncluded. -->
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="IsSelected" Value="{Binding IsIncluded, Mode=OneWay}" />
-                    </Style>
-                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{DynamicResource SRP_Column_Index}"
                                         Binding="{Binding TreeIndex}"
@@ -186,25 +180,42 @@
                                         Binding="{Binding Description}"
                                         Width="2*"
                                         IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="{DynamicResource SRP_Column_Included}"
-                                            Binding="{Binding IsIncluded, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!-- Colonne "Inclus" en template : la case reagit des le premier clic,
+                         sans passer par le mode edition du DataGrid. -->
+                    <DataGridTemplateColumn Width="70">
+                        <DataGridTemplateColumn.Header>
+                            <CheckBox Content="{DynamicResource SRP_Column_Included}"
+                                      IsChecked="{Binding DataContext.CurrentDataContext.IsAllIncluded,
+                                                          RelativeSource={RelativeSource AncestorType=Window},
+                                                          Mode=TwoWay,
+                                                          UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{DynamicResource SRP_ToolTipSelectAll}" />
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsIncluded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="{DynamicResource SRP_Column_Action}"
                                         Binding="{Binding CurrentAction}"
                                         IsReadOnly="True"/>
-                    <DataGridComboBoxColumn Header="{DynamicResource SRP_Column_UserDefined}"
-                                            Width="200"
-                                            SelectedItemBinding="{Binding SelectedComponentSimpRep, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridComboBoxColumn.ElementStyle>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding ListComponentSimpRep}" />
-                            </Style>
-                        </DataGridComboBoxColumn.ElementStyle>
-                        <DataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding ListComponentSimpRep}" />
-                            </Style>
-                        </DataGridComboBoxColumn.EditingElementStyle>
-                    </DataGridComboBoxColumn>
+                    <!-- Colonne en template : la liste est utilisable des le premier clic et
+                         met immediatement a jour la colonne "Action". -->
+                    <DataGridTemplateColumn Header="{DynamicResource SRP_Column_UserDefined}"
+                                            Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding ListComponentSimpRep}"
+                                          SelectedItem="{Binding SelectedComponentSimpRep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEditable="False"
+                                          BorderThickness="0"
+                                          Background="Transparent" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 

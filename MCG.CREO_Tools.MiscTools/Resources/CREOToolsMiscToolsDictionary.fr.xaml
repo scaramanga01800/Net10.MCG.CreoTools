@@ -483,4 +483,6 @@
     <system:String x:Key="SRP_MsgActivateFailed">La représentation simplifiée n'a pas pu être activée.</system:String>
     <system:String x:Key="SRP_MsgSaveFailed">Le modèle n'a pas pu être sauvegardé.</system:String>
     <system:String x:Key="SRP_MsgSaveSuccess">Le modèle a été sauvegardé avec succès.</system:String>
+    <system:String x:Key="SRP_ToolTipSelectAll">Cocher ou décocher tous les composants.</system:String>
+    <system:String x:Key="SRP_MsgNoChangeToApply">Aucune modification à appliquer à la représentation simplifiée.</system:String>
 </ResourceDictionary>

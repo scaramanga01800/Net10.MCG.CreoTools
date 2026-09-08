@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using MCG.CommonLib.CreoInteractionTools.Models;
+using MCG.CommonLib.Services.Statics;
 using MCG.CREO_Tools.MiscTools.View.SimplifiedRep;
 using System.Collections.ObjectModel;
 
@@ -89,7 +90,18 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 if (this._IsIncluded != value)
                 {
                     this._IsIncluded = value;
+
+                    // Cocher ou decocher la case annule la substitution :
+                    // l'action redevient "Inclure" ou "Exclure".
+                    if (!string.IsNullOrWhiteSpace(_SelectedComponentSimpRep))
+                    {
+                        this._SelectedComponentSimpRep = string.Empty;
+                        OnPropertyChanged(nameof(SelectedComponentSimpRep));
+                    }
+
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(CurrentAction));
+                    RaiseIsIncludedEvent();
                 }
             }
         }
@@ -108,17 +120,21 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
-        private string _CurrentAction = string.Empty;
+        /// <summary>
+        /// Action qui sera reellement appliquee lors de la mise a jour de la representation :
+        /// - une representation simplifiee choisie pour le composant est prioritaire => "Remplacer"
+        /// - sinon la case "Inclus" determine "Inclure" ou "Exclure".
+        /// </summary>
         public string CurrentAction
         {
-            get { return _CurrentAction; }
-            set
+            get
             {
-                if (this._CurrentAction != value)
-                {
-                    this._CurrentAction = value;
-                    OnPropertyChanged();
-                }
+                if (!string.IsNullOrWhiteSpace(_SelectedComponentSimpRep))
+                    return McgWpfTools.GetStringResource("SRP_Action_Substitute");
+
+                return _IsIncluded
+                    ? McgWpfTools.GetStringResource("SRP_Action_Include")
+                    : McgWpfTools.GetStringResource("SRP_Action_Exclude");
             }
         }
 
@@ -132,6 +148,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     this._SelectedComponentSimpRep = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(CurrentAction));
                 }
             }
         }
@@ -141,6 +158,66 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
         #region [REGION] Internal variables
         public CreoSimpRepComponentInfo ComponentInfo { get; set; }
+
+        /// <summary>Etat d'inclusion tel que lu dans Creo lors du dernier chargement.</summary>
+        private bool _BaselineIsIncluded = true;
+
+        /// <summary>Substitution telle que lue dans Creo lors du dernier chargement.</summary>
+        private string _BaselineSubstitutedSimpRepName = string.Empty;
+
+        /// <summary>
+        /// Memorise l'etat courant comme etat de reference.
+        /// A appeler apres chaque lecture reelle depuis Creo.
+        /// </summary>
+        public void CaptureBaseline()
+        {
+            _BaselineIsIncluded = _IsIncluded;
+            _BaselineSubstitutedSimpRepName = _SelectedComponentSimpRep ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Indique si la ligne a ete modifiee par l'utilisateur depuis la derniere lecture Creo.
+        /// Permet de n'envoyer a Creo que les composants reellement impactes.
+        /// </summary>
+        public bool HasPendingChange
+        {
+            get
+            {
+                var currentSubstitution = _SelectedComponentSimpRep ?? string.Empty;
+
+                if (!string.Equals(currentSubstitution,
+                                   _BaselineSubstitutedSimpRepName,
+                                   StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+
+                // Tant qu'une substitution est active, la case "Inclus" n'a pas d'effet.
+                if (!string.IsNullOrWhiteSpace(currentSubstitution)) return false;
+
+                return _IsIncluded != _BaselineIsIncluded;
+            }
+        }
+        #endregion
+
+        #region [REGION] Events
+        /// <summary>
+        /// Declenche a chaque changement de la case "Inclus".
+        /// Permet a la vue de gerer la multiselection avec la touche MAJ.
+        /// </summary>
+        public event EventHandler? IsIncludedEvent;
+
+        /// <summary>Notifie la vue qu'une case a ete cochee ou decochee.</summary>
+        public void RaiseIsIncludedEvent()
+        {
+            try
+            {
+                IsIncludedEvent?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+            }
+        }
         #endregion
     }
 }

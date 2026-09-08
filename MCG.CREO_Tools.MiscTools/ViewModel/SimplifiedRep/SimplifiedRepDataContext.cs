@@ -162,6 +162,23 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        private bool _IsAllIncluded = true;
+        /// <summary>
+        /// Case d'en-tete permettant de cocher ou decocher tous les composants d'un coup.
+        /// </summary>
+        public bool IsAllIncluded
+        {
+            get { return _IsAllIncluded; }
+            set
+            {
+                if (this._IsAllIncluded != value)
+                {
+                    this._IsAllIncluded = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private int _NbModels;
         public int NbModels
         {

@@ -483,4 +483,6 @@
     <system:String x:Key="SRP_MsgActivateFailed">Impossibile attivare la rappresentazione semplificata.</system:String>
     <system:String x:Key="SRP_MsgSaveFailed">Impossibile salvare il modello.</system:String>
     <system:String x:Key="SRP_MsgSaveSuccess">Il modello è stato salvato correttamente.</system:String>
+    <system:String x:Key="SRP_ToolTipSelectAll">Seleziona o deseleziona tutti i componenti.</system:String>
+    <system:String x:Key="SRP_MsgNoChangeToApply">Nessuna modifica da applicare alla rappresentazione semplificata.</system:String>
 </ResourceDictionary>

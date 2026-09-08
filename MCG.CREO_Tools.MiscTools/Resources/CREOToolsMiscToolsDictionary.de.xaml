@@ -483,4 +483,6 @@
     <system:String x:Key="SRP_MsgActivateFailed">Die vereinfachte Darstellung konnte nicht aktiviert werden.</system:String>
     <system:String x:Key="SRP_MsgSaveFailed">Das Modell konnte nicht gespeichert werden.</system:String>
     <system:String x:Key="SRP_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
+    <system:String x:Key="SRP_ToolTipSelectAll">Alle Komponenten aus- oder abwählen.</system:String>
+    <system:String x:Key="SRP_MsgNoChangeToApply">Keine Änderung für die vereinfachte Darstellung anzuwenden.</system:String>
 </ResourceDictionary>

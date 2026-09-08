@@ -483,4 +483,6 @@
     <system:String x:Key="SRP_MsgActivateFailed">The simplified representation could not be activated.</system:String>
     <system:String x:Key="SRP_MsgSaveFailed">The model could not be saved.</system:String>
     <system:String x:Key="SRP_MsgSaveSuccess">The model has been saved successfully.</system:String>
+    <system:String x:Key="SRP_ToolTipSelectAll">Select or clear all components.</system:String>
+    <system:String x:Key="SRP_MsgNoChangeToApply">No change to apply to the simplified representation.</system:String>
 </ResourceDictionary>
