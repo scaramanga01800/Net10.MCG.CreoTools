@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">O modelo ativo não é uma montagem. As representações simplificadas requerem uma montagem.</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">Descrição</system:String>
+    <system:String x:Key="SRP_Action_Include">Incluído</system:String>
+    <system:String x:Key="SRP_Action_Exclude">Excluído</system:String>
+    <system:String x:Key="SRP_Action_Substitute">Substituído</system:String>
 </ResourceDictionary>

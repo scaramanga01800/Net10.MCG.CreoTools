@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">Il modello attivo non è un assieme. Le rappresentazioni semplificate richiedono un assieme.</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">Descrizione</system:String>
+    <system:String x:Key="SRP_Action_Include">Incluso</system:String>
+    <system:String x:Key="SRP_Action_Exclude">Escluso</system:String>
+    <system:String x:Key="SRP_Action_Substitute">Sostituito</system:String>
 </ResourceDictionary>

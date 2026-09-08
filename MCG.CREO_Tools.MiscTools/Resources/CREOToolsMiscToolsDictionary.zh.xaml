@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">活动模型不是装配体。简化表示需要装配体。</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">描述</system:String>
+    <system:String x:Key="SRP_Action_Include">已包含</system:String>
+    <system:String x:Key="SRP_Action_Exclude">已排除</system:String>
+    <system:String x:Key="SRP_Action_Substitute">已替换</system:String>
 </ResourceDictionary>

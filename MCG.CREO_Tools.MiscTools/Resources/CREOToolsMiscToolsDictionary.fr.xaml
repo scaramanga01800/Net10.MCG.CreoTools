@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">Le modèle actif n'est pas un assemblage. Les représentations simplifiées nécessitent un assemblage.</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">Désignation</system:String>
+    <system:String x:Key="SRP_Action_Include">Inclus</system:String>
+    <system:String x:Key="SRP_Action_Exclude">Exclu</system:String>
+    <system:String x:Key="SRP_Action_Substitute">Remplacé</system:String>
 </ResourceDictionary>

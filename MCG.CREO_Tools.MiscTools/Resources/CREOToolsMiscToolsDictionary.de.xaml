@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">Das aktive Modell ist keine Baugruppe. Vereinfachte Darstellungen erfordern eine Baugruppe.</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">Benennung</system:String>
+    <system:String x:Key="SRP_Action_Include">Enthalten</system:String>
+    <system:String x:Key="SRP_Action_Exclude">Ausgeschlossen</system:String>
+    <system:String x:Key="SRP_Action_Substitute">Ersetzt</system:String>
 </ResourceDictionary>

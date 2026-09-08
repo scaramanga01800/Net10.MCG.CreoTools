@@ -58,6 +58,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 var creoConnectionStatus = _creoSessionProvider.Connect(false);
                 CurrentDataContext.IsCreoConnected = creoConnectionStatus == CreoConnectionStatus.OK;
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentDataContext.IsCreoConnected = e;
+
+                CurrentDataContext.PropertyChanged += OnDataContextPropertyChanged;
             }
             catch (Exception ex)
             {
@@ -199,6 +201,164 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         #endregion
 
         #region [REGION] Private Methods
+        /// <summary>
+        /// Recharge l'etat des composants lorsque l'utilisateur change de representation simplifiee.
+        /// </summary>
+        private void OnDataContextPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(SimplifiedRepDataContext.SelectedSimpRepName)) return;
+            if (!CurrentDataContext.IsAssemblyLoaded) return;
+
+            LoadComponentStates();
+        }
+
+        /// <summary>
+        /// Applique sur la grille l'etat consolide des composants pour la representation selectionnee.
+        /// Si aucune representation n'est selectionnee, la grille repasse en etat neutre (tout inclus).
+        /// </summary>
+        private void LoadComponentStates()
+        {
+            try
+            {
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                var simpRepName = CurrentDataContext.SelectedSimpRepName;
+
+                if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
+                {
+                    ResetComponentStates();
+                    return;
+                }
+
+                var simpRep = _creoSimpRepService.GetSimpRep(_activeModel, simpRepName);
+                if (simpRep == null)
+                {
+                    ResetComponentStates();
+                    return;
+                }
+
+                // La regle par defaut peut revenir "nil" selon la representation : dans ce cas
+                // Creo considere les composants non listes comme inclus.
+                var defaultAction = _creoSimpRepService.GetDefaultAction(simpRep);
+                if (defaultAction == EpfcSimpRepActionType.EpfcSimpRepActionType_nil)
+                    defaultAction = EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE;
+
+                CurrentDataContext.SelectedDefaultRule = FormatAction(defaultAction);
+
+                var states = _creoSimpRepService.GetComponentStates(_activeModel, simpRep);
+
+                foreach (var item in CurrentDataContext.ListItem)
+                {
+                    var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
+
+                    // Action reellement appliquee : item explicite, sinon regle par defaut.
+                    var effectiveAction = state != null
+                                          && state.EffectiveAction != EpfcSimpRepActionType.EpfcSimpRepActionType_nil
+                        ? state.EffectiveAction
+                        : defaultAction;
+
+                    item.IsExplicit = state?.IsExplicit ?? false;
+                    item.CurrentAction = FormatAction(effectiveAction);
+                    item.IsIncluded = IsIncludedAction(effectiveAction, defaultAction);
+                }
+
+                // Les listes doivent exister avant d'affecter la valeur selectionnee du combo.
+                LoadComponentSimpRepLists();
+
+                foreach (var item in CurrentDataContext.ListItem)
+                {
+                    var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
+                    var substituted = state?.SubstitutedSimpRepName ?? string.Empty;
+
+                    if (!string.IsNullOrEmpty(substituted)
+                        && !item.ListComponentSimpRep.Contains(substituted))
+                    {
+                        item.ListComponentSimpRep.Add(substituted);
+                    }
+
+                    item.SelectedComponentSimpRep = substituted;
+                }
+
+                TraceLog.AddTraceLog($"SimplifiedRep : etats charges pour la representation '{simpRepName}'.");
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
+            }
+        }
+
+        /// <summary>Repasse toutes les lignes en etat neutre (aucune representation selectionnee).</summary>
+        private void ResetComponentStates()
+        {
+            CurrentDataContext.SelectedDefaultRule = string.Empty;
+
+            foreach (var item in CurrentDataContext.ListItem)
+            {
+                item.IsIncluded = true;
+                item.IsExplicit = false;
+                item.CurrentAction = string.Empty;
+                item.SelectedComponentSimpRep = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Alimente, pour chaque ligne, la liste des representations simplifiees propres au composant
+        /// (utilisee par la colonne "Defini par l'utilisateur").
+        /// </summary>
+        private void LoadComponentSimpRepLists()
+        {
+            foreach (var item in CurrentDataContext.ListItem)
+            {
+                item.ListComponentSimpRep.Clear();
+
+                if (item.ComponentInfo?.ComponentFeature == null) continue;
+
+                try
+                {
+                    foreach (var name in _creoSimpRepService.ListComponentSimpRepNames(item.ComponentInfo.ComponentFeature))
+                        item.ListComponentSimpRep.Add(name);
+                }
+                catch
+                {
+                    // composant sans representation simplifiee exploitable : liste laissee vide
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determine si l'action effective laisse le composant present dans la representation.
+        /// Aligne sur la logique interne du service Creo.
+        /// </summary>
+        private static bool IsIncludedAction(EpfcSimpRepActionType action, EpfcSimpRepActionType defaultAction)
+        {
+            return action switch
+            {
+                EpfcSimpRepActionType.EpfcSIMPREP_EXCLUDE => false,
+                EpfcSimpRepActionType.EpfcSIMPREP_NONE => false,
+                EpfcSimpRepActionType.EpfcSIMPREP_REVERSE =>
+                    defaultAction != EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE,
+                EpfcSimpRepActionType.EpfcSimpRepActionType_nil => false,
+                _ => true
+            };
+        }
+
+        /// <summary>Traduit une action Creo en libelle affichable dans la grille.</summary>
+        private static string FormatAction(EpfcSimpRepActionType action)
+        {
+            return action switch
+            {
+                EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE => McgWpfTools.GetStringResource("SRP_Action_Include"),
+                EpfcSimpRepActionType.EpfcSIMPREP_EXCLUDE => McgWpfTools.GetStringResource("SRP_Action_Exclude"),
+                EpfcSimpRepActionType.EpfcSIMPREP_SUBSTITUTE => McgWpfTools.GetStringResource("SRP_Action_Substitute"),
+                EpfcSimpRepActionType.EpfcSimpRepActionType_nil => string.Empty,
+                _ => action.ToString()
+            };
+        }
+
         /// <summary>Vide le contexte et repasse la fenetre a l'etat initial.</summary>
         private void ResetContext()
         {

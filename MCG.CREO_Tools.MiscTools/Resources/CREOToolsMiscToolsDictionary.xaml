@@ -471,4 +471,7 @@
     <system:String x:Key="SRP_MsgNotAnAssembly">The active model is not an assembly. Simplified representations require an assembly.</system:String>
     <system:String x:Key="SRP_Column_Rep">REP</system:String>
     <system:String x:Key="SRP_Column_Description">Description</system:String>
+    <system:String x:Key="SRP_Action_Include">Included</system:String>
+    <system:String x:Key="SRP_Action_Exclude">Excluded</system:String>
+    <system:String x:Key="SRP_Action_Substitute">Substituted</system:String>
 </ResourceDictionary>
