@@ -264,15 +264,120 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        /// <summary>
+        /// Applique sur la representation selectionnee l'etat courant de la grille :
+        /// substitutions "definies par l'utilisateur" en priorite, sinon inclusion / exclusion.
+        /// </summary>
         private void ExecuteUpdateSimpRep()
         {
             try
             {
+                var simpRepName = CurrentDataContext.SelectedSimpRepName;
+
+                if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
+                {
+                    ShowWarning("SRP_MsgNoSimpRepSelected");
+                    return;
+                }
+
+                // Photo de l'etat de la grille prise sur le thread UI avant de basculer en tache de fond.
+                var pendingChanges = CurrentDataContext.ListItem
+                    .Select(item => new SimplifiedRepPendingChange
+                    {
+                        ComponentPath = item.ComponentInfo?.ComponentPath is { Count: > 0 } path
+                            ? new List<int>(path)
+                            : new List<int> { item.ComponentId },
+                        ComponentInfo = item.ComponentInfo,
+                        IsIncluded = item.IsIncluded,
+                        SubstitutedSimpRepName = item.SelectedComponentSimpRep ?? string.Empty
+                    })
+                    .ToList();
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread updateThread = new Thread(() => UpdateSimpRepAsynch(simpRepName, pendingChanges));
+                updateThread.IsBackground = true;
+                updateThread.Start();
             }
             catch (Exception ex)
             {
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
             }
+        }
+
+        /// <summary>
+        /// Mise a jour Creo executee en tache de fond, puis reactivation de la representation
+        /// et rechargement de la grille.
+        /// </summary>
+        private void UpdateSimpRepAsynch(string simpRepName, List<SimplifiedRepPendingChange> pendingChanges)
+        {
+            try
+            {
+                if (_activeModel == null) return;
+
+                var simpRep = _creoSimpRepService.GetSimpRep(_activeModel, simpRepName);
+                if (simpRep == null)
+                {
+                    ShowWarning("SRP_MsgNoSimpRepSelected");
+                    return;
+                }
+
+                var defaultAction = _creoSimpRepService.GetDefaultAction(simpRep);
+                if (defaultAction == EpfcSimpRepActionType.EpfcSimpRepActionType_nil)
+                    defaultAction = EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE;
+
+                var nbSubstituted = 0;
+                var nbActions = 0;
+                var nbRemoved = 0;
+
+                foreach (var change in pendingChanges)
+                {
+                    // La substitution "definie par l'utilisateur" prime sur la case Inclus.
+                    if (!string.IsNullOrWhiteSpace(change.SubstitutedSimpRepName)
+                        && change.ComponentInfo != null)
+                    {
+                        _creoSimpRepService.SubstituteComponentBySimpRep(simpRep,
+                                                                         change.ComponentInfo,
+                                                                         change.SubstitutedSimpRepName);
+                        nbSubstituted++;
+                        continue;
+                    }
+
+                    var wantedAction = change.IsIncluded
+                        ? EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE
+                        : EpfcSimpRepActionType.EpfcSIMPREP_EXCLUDE;
+
+                    // Composant conforme a la regle par defaut : l'item explicite eventuellement
+                    // present doit etre retire, sinon l'ancienne action resterait appliquee.
+                    if (wantedAction == defaultAction)
+                    {
+                        if (_creoSimpRepService.RemoveComponentItem(simpRep, change.ComponentPath))
+                            nbRemoved++;
+
+                        continue;
+                    }
+
+                    _creoSimpRepService.SetComponentAction(simpRep, change.ComponentPath, wantedAction);
+                    nbActions++;
+                }
+
+                _creoSimpRepService.ActivateSimpRep(_activeModel, simpRep);
+
+                TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' mise a jour " +
+                                     $"({nbActions} actions, {nbRemoved} retours a la regle par defaut, " +
+                                     $"{nbSubstituted} substitutions).");
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
+            }
+
+            // Relecture de l'etat reel depuis Creo pour refleter le resultat de la mise a jour.
+            LoadComponentStates();
         }
 
         private void ExecuteDeleteSimpRep()

@@ -477,4 +477,5 @@
     <system:String x:Key="SRP_MsgNewNameRequired">Immettere un nome per la nuova rappresentazione semplificata.</system:String>
     <system:String x:Key="SRP_MsgNameAlreadyExists">Esiste già una rappresentazione semplificata con questo nome.</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">Selezionare la rappresentazione semplificata da copiare.</system:String>
+    <system:String x:Key="SRP_MsgNoSimpRepSelected">Selezionare la rappresentazione semplificata da aggiornare.</system:String>
 </ResourceDictionary>

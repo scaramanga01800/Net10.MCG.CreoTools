@@ -477,4 +477,5 @@
     <system:String x:Key="SRP_MsgNewNameRequired">Please enter a name for the new simplified representation.</system:String>
     <system:String x:Key="SRP_MsgNameAlreadyExists">A simplified representation with this name already exists.</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">Please select the simplified representation to copy.</system:String>
+    <system:String x:Key="SRP_MsgNoSimpRepSelected">Please select the simplified representation to update.</system:String>
 </ResourceDictionary>

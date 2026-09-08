@@ -477,4 +477,5 @@
     <system:String x:Key="SRP_MsgNewNameRequired">请输入新简化表示的名称。</system:String>
     <system:String x:Key="SRP_MsgNameAlreadyExists">已存在同名的简化表示。</system:String>
     <system:String x:Key="SRP_MsgNoSourceSimpRep">请选择要复制的简化表示。</system:String>
+    <system:String x:Key="SRP_MsgNoSimpRepSelected">请选择要更新的简化表示。</system:String>
 </ResourceDictionary>
