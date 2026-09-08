@@ -77,6 +77,24 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 CurrentDataContext.IsPleaseWaitShown = true;
 
+                Thread readAsmThread = new Thread(new ThreadStart(ReadAsmAsynch));
+                readAsmThread.IsBackground = true;
+                readAsmThread.Start();
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Lecture de l'assemblage actif en tache de fond : les interactions Creo sont longues,
+        /// l'interface reste ainsi reactive et le gif d'attente est visible.
+        /// </summary>
+        private void ReadAsmAsynch()
+        {
+            try
+            {
                 _activeModel = _creoModelService.GetActiveModel();
                 if (_activeModel == null)
                 {
@@ -101,6 +119,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 CurrentDataContext.ActiveModelName = activeFileName;
 
+                // Traitements Creo executes hors du thread UI : chaque methode marshalle
+                // elle-meme ses ajouts dans les collections liees a la grille.
                 LoadSimpRepNames();
                 LoadTopLevelComponents();
 
@@ -112,7 +132,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
             catch (Exception ex)
             {
-                ResetContext();
+                MainDispatcher.Invoke(ResetContext);
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
             }
             finally
@@ -209,12 +229,17 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             if (e.PropertyName != nameof(SimplifiedRepDataContext.SelectedSimpRepName)) return;
             if (!CurrentDataContext.IsAssemblyLoaded) return;
 
-            LoadComponentStates();
+            CurrentDataContext.IsPleaseWaitShown = true;
+
+            Thread loadStatesThread = new Thread(new ThreadStart(LoadComponentStates));
+            loadStatesThread.IsBackground = true;
+            loadStatesThread.Start();
         }
 
         /// <summary>
         /// Applique sur la grille l'etat consolide des composants pour la representation selectionnee.
         /// Si aucune representation n'est selectionnee, la grille repasse en etat neutre (tout inclus).
+        /// Execute en tache de fond : les appels Creo sont couteux.
         /// </summary>
         private void LoadComponentStates()
         {
@@ -226,14 +251,14 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
                 {
-                    ResetComponentStates();
+                    MainDispatcher.Invoke(ResetComponentStates);
                     return;
                 }
 
                 var simpRep = _creoSimpRepService.GetSimpRep(_activeModel, simpRepName);
                 if (simpRep == null)
                 {
-                    ResetComponentStates();
+                    MainDispatcher.Invoke(ResetComponentStates);
                     return;
                 }
 
@@ -247,37 +272,66 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 var states = _creoSimpRepService.GetComponentStates(_activeModel, simpRep);
 
-                foreach (var item in CurrentDataContext.ListItem)
-                {
-                    var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
-
-                    // Action reellement appliquee : item explicite, sinon regle par defaut.
-                    var effectiveAction = state != null
-                                          && state.EffectiveAction != EpfcSimpRepActionType.EpfcSimpRepActionType_nil
-                        ? state.EffectiveAction
-                        : defaultAction;
-
-                    item.IsExplicit = state?.IsExplicit ?? false;
-                    item.CurrentAction = FormatAction(effectiveAction);
-                    item.IsIncluded = IsIncludedAction(effectiveAction, defaultAction);
-                }
-
-                // Les listes doivent exister avant d'affecter la valeur selectionnee du combo.
-                LoadComponentSimpRepLists();
+                // Lecture Creo des representations propres a chaque composant : couteux,
+                // effectue hors du thread UI pour que le gif d'attente reste anime.
+                var componentSimpReps = new Dictionary<int, List<string>>();
 
                 foreach (var item in CurrentDataContext.ListItem)
                 {
-                    var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
-                    var substituted = state?.SubstitutedSimpRepName ?? string.Empty;
+                    var names = new List<string>();
 
-                    if (!string.IsNullOrEmpty(substituted)
-                        && !item.ListComponentSimpRep.Contains(substituted))
+                    if (item.ComponentInfo?.ComponentFeature != null)
                     {
-                        item.ListComponentSimpRep.Add(substituted);
+                        try
+                        {
+                            names = _creoSimpRepService.ListComponentSimpRepNames(item.ComponentInfo.ComponentFeature);
+                        }
+                        catch
+                        {
+                            // composant sans representation simplifiee exploitable : liste laissee vide
+                        }
                     }
 
-                    item.SelectedComponentSimpRep = substituted;
+                    componentSimpReps[item.ComponentId] = names;
                 }
+
+                // Seules les mises a jour des collections liees passent par le thread UI.
+                MainDispatcher.Invoke(() =>
+                {
+                    foreach (var item in CurrentDataContext.ListItem)
+                    {
+                        var state = states.FirstOrDefault(s => s.Component.Id == item.ComponentId);
+
+                        // Action reellement appliquee : item explicite, sinon regle par defaut.
+                        var effectiveAction = state != null
+                                              && state.EffectiveAction != EpfcSimpRepActionType.EpfcSimpRepActionType_nil
+                            ? state.EffectiveAction
+                            : defaultAction;
+
+                        item.IsExplicit = state?.IsExplicit ?? false;
+                        item.CurrentAction = FormatAction(effectiveAction);
+                        item.IsIncluded = IsIncludedAction(effectiveAction, defaultAction);
+
+                        // La liste doit exister avant d'affecter la valeur selectionnee du combo.
+                        item.ListComponentSimpRep.Clear();
+
+                        if (componentSimpReps.TryGetValue(item.ComponentId, out var names))
+                        {
+                            foreach (var name in names)
+                                item.ListComponentSimpRep.Add(name);
+                        }
+
+                        var substituted = state?.SubstitutedSimpRepName ?? string.Empty;
+
+                        if (!string.IsNullOrEmpty(substituted)
+                            && !item.ListComponentSimpRep.Contains(substituted))
+                        {
+                            item.ListComponentSimpRep.Add(substituted);
+                        }
+
+                        item.SelectedComponentSimpRep = substituted;
+                    }
+                });
 
                 TraceLog.AddTraceLog($"SimplifiedRep : etats charges pour la representation '{simpRepName}'.");
             }
@@ -302,30 +356,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 item.IsExplicit = false;
                 item.CurrentAction = string.Empty;
                 item.SelectedComponentSimpRep = string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Alimente, pour chaque ligne, la liste des representations simplifiees propres au composant
-        /// (utilisee par la colonne "Defini par l'utilisateur").
-        /// </summary>
-        private void LoadComponentSimpRepLists()
-        {
-            foreach (var item in CurrentDataContext.ListItem)
-            {
-                item.ListComponentSimpRep.Clear();
-
-                if (item.ComponentInfo?.ComponentFeature == null) continue;
-
-                try
-                {
-                    foreach (var name in _creoSimpRepService.ListComponentSimpRepNames(item.ComponentInfo.ComponentFeature))
-                        item.ListComponentSimpRep.Add(name);
-                }
-                catch
-                {
-                    // composant sans representation simplifiee exploitable : liste laissee vide
-                }
             }
         }
 
@@ -376,18 +406,21 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         /// <summary>Charge la liste des representations simplifiees existantes du modele actif.</summary>
         private void LoadSimpRepNames()
         {
-            CurrentDataContext.ListSimpRepName.Clear();
+            MainDispatcher.Invoke(() => CurrentDataContext.ListSimpRepName.Clear());
 
             if (_activeModel == null) return;
 
-            foreach (var simpRepName in _creoSimpRepService.ListSimpRepNames(_activeModel))
-                CurrentDataContext.ListSimpRepName.Add(simpRepName);
+            // Appel Creo effectue hors du thread UI, seul l'ajout est marshalle.
+            var names = _creoSimpRepService.ListSimpRepNames(_activeModel);
+
+            foreach (var simpRepName in names)
+                MainDispatcher.Invoke(() => CurrentDataContext.ListSimpRepName.Add(simpRepName));
         }
 
         /// <summary>Charge les composants de premier niveau de l'assemblage actif.</summary>
         private void LoadTopLevelComponents()
         {
-            CurrentDataContext.ListItem.Clear();
+            MainDispatcher.Invoke(() => CurrentDataContext.ListItem.Clear());
 
             if (_activeModel == null) return;
 
@@ -398,11 +431,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
             foreach (var component in components)
             {
+                // Lecture des parametres du composant : couteux, reste hors du thread UI.
                 var componentModel = component.ComponentFeature != null
                     ? _creoSimpRepService.GetComponentModel(component.ComponentFeature)
                     : null;
 
-                CurrentDataContext.ListItem.Add(new SimplifiedRepComponentItem
+                var item = new SimplifiedRepComponentItem
                 {
                     TreeIndex = component.TreeIndex,
                     ComponentId = component.Id,
@@ -413,7 +447,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     IsExplicit = false,
                     CurrentAction = string.Empty,
                     ComponentInfo = component
-                });
+                };
+
+                MainDispatcher.Invoke(() => CurrentDataContext.ListItem.Add(item));
 
                 CurrentDataContext.NbModelsInProgress++;
             }
