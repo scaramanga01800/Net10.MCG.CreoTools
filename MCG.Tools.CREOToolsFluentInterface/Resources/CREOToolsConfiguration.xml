@@ -39,7 +39,8 @@
     <QlSapFertBom>true</QlSapFertBom>
 	<QlWebtermRequest>true</QlWebtermRequest>
 	<QlCraneSearch>true</QlCraneSearch>
-	<QlKillCreoPrecesses>true</QlKillCreoPrecesses>
+	  <QlKillCreoPrecesses>true</QlKillCreoPrecesses>
+	  <QlSimplifiedRep>true</QlSimplifiedRep>
   </AppAvailable>
   
   <!--Define if Applications are shown by default in CREO Tool-->
@@ -80,6 +81,7 @@
 	<QlWebtermRequest>true</QlWebtermRequest>
 	<QlCraneSearch>true</QlCraneSearch>
 	<QlKillCreoPrecesses>true</QlKillCreoPrecesses>
+	<QlSimplifiedRep>true</QlSimplifiedRep>
   </AppVisible>  
     
   <IsScrollingTextVisible>false</IsScrollingTextVisible>

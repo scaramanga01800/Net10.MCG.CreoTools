@@ -25,6 +25,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolTipMechanismAnalysis">Open Mechanism Analysis to format results from CREO</system:String>
     <system:String x:Key="QL_ToolCreateUpdateWtDocPart">Create/Update WT Document/Part</system:String>
     <system:String x:Key="QL_ToolTipCreateUpdateWtDocPart">Create or update WTDocument and WTPart</system:String>
+    <system:String x:Key="QL_ToolSimplifiedRep">Simplified Representations</system:String>
+    <system:String x:Key="QL_ToolTipSimplifiedRep">Create and edit simplified representations of an assembly</system:String>
     <system:String x:Key="QL_RibGrpLink">Links</system:String>
     <system:String x:Key="QL_RibGrpApp">Applications</system:String>
     <system:String x:Key="QL_CreoCnxMsgTitle">CREO Connection Issue</system:String>

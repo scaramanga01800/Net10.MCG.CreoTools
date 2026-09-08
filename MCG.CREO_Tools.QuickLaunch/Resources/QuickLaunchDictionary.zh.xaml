@@ -63,4 +63,6 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolTipUpdateRelationsParameters">Using templates, update Creo relations and parameters at the top-level assembly, the first-level components, or across all assembly levels.</system:String>
     <system:String x:Key="QL_ToolBomEnvirConfig">BOM Environment Configuration</system:String>
     <system:String x:Key="QL_ToolTipBomEnvirConfig">Create or update the ASM_NAME parameter in the assembly to ensure the BOM table is generated correctly.</system:String>
-</ResourceDictionary> 
+    <system:String x:Key="QL_ToolSimplifiedRep">简化表示</system:String>
+    <system:String x:Key="QL_ToolTipSimplifiedRep">创建和编辑装配体的简化表示</system:String>
+</ResourceDictionary>

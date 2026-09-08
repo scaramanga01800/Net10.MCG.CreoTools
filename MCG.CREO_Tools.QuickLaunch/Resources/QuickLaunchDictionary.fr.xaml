@@ -63,4 +63,6 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolTipUpdateRelationsParameters">À l’aide de gabarits de modèle, mettez à jour les relations et les paramètres Creo au niveau de l’assemblage supérieur, des composants de premier niveau ou de l’ensemble des niveaux d’assemblage.</system:String>
     <system:String x:Key="QL_ToolBomEnvirConfig">BOM Environment Configuration</system:String>
     <system:String x:Key="QL_ToolTipBomEnvirConfig">Créer ou mettre à jour le paramètre ASM_NAME dans l’assemblage afin de garantir la génération correcte de la table de nomenclature (BOM).</system:String>
-</ResourceDictionary> 
+    <system:String x:Key="QL_ToolSimplifiedRep">Représentations simplifiées</system:String>
+    <system:String x:Key="QL_ToolTipSimplifiedRep">Créer et modifier les représentations simplifiées d'un assemblage</system:String>
+</ResourceDictionary>
