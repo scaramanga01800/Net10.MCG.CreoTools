@@ -474,4 +474,7 @@
     <system:String x:Key="SRP_Action_Include">Incluído</system:String>
     <system:String x:Key="SRP_Action_Exclude">Excluído</system:String>
     <system:String x:Key="SRP_Action_Substitute">Substituído</system:String>
+    <system:String x:Key="SRP_MsgNewNameRequired">Introduza um nome para a nova representação simplificada.</system:String>
+    <system:String x:Key="SRP_MsgNameAlreadyExists">Já existe uma representação simplificada com este nome.</system:String>
+    <system:String x:Key="SRP_MsgNoSourceSimpRep">Selecione a representação simplificada a copiar.</system:String>
 </ResourceDictionary>

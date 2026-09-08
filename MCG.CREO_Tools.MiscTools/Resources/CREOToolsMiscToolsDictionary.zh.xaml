@@ -474,4 +474,7 @@
     <system:String x:Key="SRP_Action_Include">已包含</system:String>
     <system:String x:Key="SRP_Action_Exclude">已排除</system:String>
     <system:String x:Key="SRP_Action_Substitute">已替换</system:String>
+    <system:String x:Key="SRP_MsgNewNameRequired">请输入新简化表示的名称。</system:String>
+    <system:String x:Key="SRP_MsgNameAlreadyExists">已存在同名的简化表示。</system:String>
+    <system:String x:Key="SRP_MsgNoSourceSimpRep">请选择要复制的简化表示。</system:String>
 </ResourceDictionary>

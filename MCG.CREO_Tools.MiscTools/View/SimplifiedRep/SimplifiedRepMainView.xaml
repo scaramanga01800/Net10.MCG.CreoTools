@@ -85,7 +85,8 @@
                 <Fluent:RibbonGroupBox Header="{DynamicResource SRP_RibGrpSimpRep}"
                                        IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
                     <Fluent:ComboBox Header="{DynamicResource SRP_SimpRepList}"
-                                     Width="180"
+                                     Width="320"
+                                     MinWidth="320"
                                      IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
                                      SelectedItem="{Binding CurrentDataContext.SelectedSimpRepName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                      ItemsSource="{Binding CurrentDataContext.ListSimpRepName}">
@@ -96,14 +97,15 @@
                     </Fluent:ComboBox>
 
                     <Fluent:TextBox Header="{DynamicResource SRP_NewSimpRepName}"
-                                    Width="180"
-                                    MaxWidth="180"
+                                    Width="320"
+                                    MinWidth="320"
                                     IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
                                     Text="{Binding CurrentDataContext.NewSimpRepName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     </Fluent:TextBox>
 
                     <Fluent:ComboBox Header="{DynamicResource SRP_DefaultRule}"
-                                     Width="180"
+                                     Width="320"
+                                     MinWidth="320"
                                      IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
                                      SelectedItem="{Binding CurrentDataContext.SelectedDefaultRule, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                      ItemsSource="{Binding CurrentDataContext.ListDefaultRule}">

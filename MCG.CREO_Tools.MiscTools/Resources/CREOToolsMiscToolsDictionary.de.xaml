@@ -474,4 +474,7 @@
     <system:String x:Key="SRP_Action_Include">Enthalten</system:String>
     <system:String x:Key="SRP_Action_Exclude">Ausgeschlossen</system:String>
     <system:String x:Key="SRP_Action_Substitute">Ersetzt</system:String>
+    <system:String x:Key="SRP_MsgNewNameRequired">Bitte geben Sie einen Namen für die neue vereinfachte Darstellung ein.</system:String>
+    <system:String x:Key="SRP_MsgNameAlreadyExists">Eine vereinfachte Darstellung mit diesem Namen existiert bereits.</system:String>
+    <system:String x:Key="SRP_MsgNoSourceSimpRep">Bitte wählen Sie die zu kopierende vereinfachte Darstellung aus.</system:String>
 </ResourceDictionary>

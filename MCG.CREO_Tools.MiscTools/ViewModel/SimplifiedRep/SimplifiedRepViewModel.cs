@@ -75,6 +75,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             {
                 ResetContext();
 
+                // Les dictionnaires de ressources ne sont pas encore fusionnes a la construction du
+                // view model : la liste des regles par defaut est donc alimentee au premier usage.
+                EnsureDefaultRuleList();
+
                 CurrentDataContext.IsPleaseWaitShown = true;
 
                 Thread readAsmThread = new Thread(new ThreadStart(ReadAsmAsynch));
@@ -141,10 +145,24 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        /// <summary>
+        /// Cree une nouvelle representation simplifiee avec la regle par defaut choisie dans le ruban
+        /// ("Inclus" ou "Exclu"). Seuls les composants dont l'etat de la grille contredit cette regle
+        /// sont listes explicitement, puis la nouvelle representation est activee.
+        /// </summary>
         private void ExecuteCreateSimpRep()
         {
             try
             {
+                if (!ValidateNewSimpRepName(out var newName)) return;
+
+                var defaultAction = GetSelectedDefaultAction();
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread createThread = new Thread(() => CreateSimpRepAsynch(newName, defaultAction));
+                createThread.IsBackground = true;
+                createThread.Start();
             }
             catch (Exception ex)
             {
@@ -152,14 +170,97 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
-        private void ExecuteCopySimpRep()
+        /// <summary>
+        /// Creation Creo executee en tache de fond : l'interface reste reactive et le gif d'attente est anime.
+        /// La regle par defaut est appliquee telle quelle a l'ensemble des composants ; aucun item
+        /// explicite n'est cree tant que l'utilisateur n'a pas differencie l'etat d'un composant
+        /// via la mise a jour.
+        /// </summary>
+        private void CreateSimpRepAsynch(string newSimpRepName, EpfcSimpRepActionType defaultAction)
         {
             try
             {
+                if (_activeModel == null) return;
+
+                var simpRep = _creoSimpRepService.CreateSimpRep(_activeModel,
+                                                                newSimpRepName,
+                                                                defaultAction,
+                                                                null,
+                                                                false);
+
+                _creoSimpRepService.ActivateSimpRep(_activeModel, simpRep);
+
+                FinalizeSimpRepCreation(newSimpRepName);
+
+                TraceLog.AddTraceLog($"SimplifiedRep : representation '{newSimpRepName}' creee et activee " +
+                                     $"(regle par defaut {defaultAction}).");
             }
             catch (Exception ex)
             {
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
+            }
+        }
+
+        /// <summary>
+        /// Cree une nouvelle representation simplifiee par copie de la representation selectionnee.
+        /// </summary>
+        private void ExecuteCopySimpRep()
+        {
+            try
+            {
+                var sourceName = CurrentDataContext.SelectedSimpRepName;
+
+                EnsureDefaultRuleList();
+
+                if (string.IsNullOrWhiteSpace(sourceName))
+                {
+                    ShowWarning("SRP_MsgNoSourceSimpRep");
+                    return;
+                }
+
+                if (!ValidateNewSimpRepName(out var newName)) return;
+
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                Thread copyThread = new Thread(() => CopySimpRepAsynch(sourceName, newName));
+                copyThread.IsBackground = true;
+                copyThread.Start();
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Copie Creo executee en tache de fond.
+        /// </summary>
+        private void CopySimpRepAsynch(string sourceSimpRepName, string newSimpRepName)
+        {
+            try
+            {
+                if (_activeModel == null) return;
+
+                var simpRep = _creoSimpRepService.CopySimpRep(_activeModel, sourceSimpRepName, newSimpRepName);
+
+                _creoSimpRepService.ActivateSimpRep(_activeModel, simpRep);
+
+                FinalizeSimpRepCreation(newSimpRepName);
+
+                TraceLog.AddTraceLog($"SimplifiedRep : representation '{newSimpRepName}' creee " +
+                                     $"par copie de '{sourceSimpRepName}'.");
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+            finally
+            {
+                CurrentDataContext.IsPleaseWaitShown = false;
             }
         }
 
@@ -221,6 +322,114 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         #endregion
 
         #region [REGION] Private Methods
+        /// <summary>
+        /// Alimente la liste des regles par defaut et selectionne la premiere de la pile.
+        /// Appelee tardivement car les dictionnaires de ressources ne sont pas disponibles
+        /// au moment de la construction du view model.
+        /// </summary>
+        private void EnsureDefaultRuleList()
+        {
+            if (CurrentDataContext.ListDefaultRule.Count > 0) return;
+
+            CurrentDataContext.ListDefaultRule.Add(McgWpfTools.GetStringResource("SRP_Action_Include"));
+            CurrentDataContext.ListDefaultRule.Add(McgWpfTools.GetStringResource("SRP_Action_Exclude"));
+
+            CurrentDataContext.SelectedDefaultRule = CurrentDataContext.ListDefaultRule[0];
+        }
+
+        /// <summary>
+        /// Normalise le nom saisi selon la convention Creo : premiere lettre en majuscule,
+        /// les suivantes en minuscules. Creo stocke ensuite le nom en majuscules,
+        /// ce qui explique l'affichage en capitales dans la liste des representations.
+        /// </summary>
+        private static string NormalizeSimpRepName(string simpRepName)
+        {
+            if (string.IsNullOrWhiteSpace(simpRepName)) return string.Empty;
+
+            var trimmedName = simpRepName.Trim();
+
+            return char.ToUpperInvariant(trimmedName[0]) + trimmedName.Substring(1).ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// Convertit la regle par defaut choisie dans le ruban en action Creo.
+        /// La comparaison porte sur la position dans la liste : l'index 1 correspond a "Exclu".
+        /// </summary>
+        private EpfcSimpRepActionType GetSelectedDefaultAction()
+        {
+            var ruleIndex = CurrentDataContext.ListDefaultRule.IndexOf(CurrentDataContext.SelectedDefaultRule);
+
+            return ruleIndex == 1
+                ? EpfcSimpRepActionType.EpfcSIMPREP_EXCLUDE
+                : EpfcSimpRepActionType.EpfcSIMPREP_INCLUDE;
+        }
+
+        /// <summary>
+        /// Controle la saisie du nouveau nom de representation : non vide et non deja utilise.
+        /// </summary>
+        private bool ValidateNewSimpRepName(out string newSimpRepName)
+        {
+            var candidateName = NormalizeSimpRepName(CurrentDataContext.NewSimpRepName ?? string.Empty);
+            newSimpRepName = candidateName;
+
+            if (!CurrentDataContext.IsAssemblyLoaded || _activeModel == null)
+            {
+                ShowWarning("SRP_MsgNoActiveModel");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(candidateName))
+            {
+                ShowWarning("SRP_MsgNewNameRequired");
+                return false;
+            }
+
+            if (CurrentDataContext.ListSimpRepName.Any(n => string.Equals(n, candidateName, StringComparison.OrdinalIgnoreCase)))
+            {
+                ShowWarning("SRP_MsgNameAlreadyExists");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Rafraichit la liste des representations puis selectionne la nouvelle,
+        /// ce qui declenche le rechargement des etats de composants.
+        /// </summary>
+        private void FinalizeSimpRepCreation(string newSimpRepName)
+        {
+            var names = _activeModel != null
+                ? _creoSimpRepService.ListSimpRepNames(_activeModel)
+                : new List<string>();
+
+            MainDispatcher.Invoke(() =>
+            {
+                CurrentDataContext.ListSimpRepName.Clear();
+
+                foreach (var name in names)
+                    CurrentDataContext.ListSimpRepName.Add(name);
+
+                CurrentDataContext.NewSimpRepName = string.Empty;
+
+                // Creo renvoie le nom dans sa propre casse : la selection doit porter sur
+                // l'instance reellement presente dans la liste, sinon le combo reste vide.
+                var matchingName = CurrentDataContext.ListSimpRepName
+                    .FirstOrDefault(n => string.Equals(n, newSimpRepName, StringComparison.OrdinalIgnoreCase));
+
+                CurrentDataContext.SelectedSimpRepName = matchingName ?? newSimpRepName;
+            });
+        }
+
+        /// <summary>Affiche un message d'avertissement localise.</summary>
+        private static void ShowWarning(string resourceKey)
+        {
+            System.Windows.MessageBox.Show(McgWpfTools.GetStringResource(resourceKey),
+                                           McgWpfTools.GetStringResource("SRP_WindowTitle"),
+                                           System.Windows.MessageBoxButton.OK,
+                                           System.Windows.MessageBoxImage.Warning);
+        }
+
         /// <summary>
         /// Recharge l'etat des composants lorsque l'utilisateur change de representation simplifiee.
         /// </summary>
@@ -348,7 +557,11 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         /// <summary>Repasse toutes les lignes en etat neutre (aucune representation selectionnee).</summary>
         private void ResetComponentStates()
         {
-            CurrentDataContext.SelectedDefaultRule = string.Empty;
+            // Retour a la premiere regle de la pile pour une future creation.
+            EnsureDefaultRuleList();
+
+            if (CurrentDataContext.ListDefaultRule.Count > 0)
+                CurrentDataContext.SelectedDefaultRule = CurrentDataContext.ListDefaultRule[0];
 
             foreach (var item in CurrentDataContext.ListItem)
             {
