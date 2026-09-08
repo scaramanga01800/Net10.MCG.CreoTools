@@ -388,6 +388,18 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 _creoSimpRepService.ActivateSimpRep(_activeModel, simpRep);
 
+                // Creo a applique exactement ce qui vient d'etre demande : inutile de relire
+                // l'ensemble des composants (operation tres couteuse). On recale simplement
+                // l'etat de reference des lignes qui viennent d'etre envoyees.
+                MainDispatcher.Invoke(() =>
+                {
+                    foreach (var item in CurrentDataContext.ListItem)
+                    {
+                        if (item.HasPendingChange)
+                            item.CaptureBaseline();
+                    }
+                });
+
                 TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' mise a jour " +
                                      $"({nbActions} actions, {nbRemoved} retours a la regle par defaut, " +
                                      $"{nbSubstituted} substitutions).");
@@ -400,9 +412,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             {
                 CurrentDataContext.IsPleaseWaitShown = false;
             }
-
-            // Relecture de l'etat reel depuis Creo pour refleter le resultat de la mise a jour.
-            LoadComponentStates();
         }
 
         /// <summary>
