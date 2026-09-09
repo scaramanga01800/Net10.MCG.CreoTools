@@ -1418,6 +1418,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     Name = component.Name,
                     Rep = GetRepParameter(component),
                     Description = BuildDescription(componentModel),
+                    // Parametres TYPE et SUB_TYPE portes par le modele du composant.
+                    Type = componentModel != null ? GetModelParameter(componentModel, "TYPE") : string.Empty,
+                    SubType = componentModel != null ? GetModelParameter(componentModel, "SUB_TYPE") : string.Empty,
                     IsIncluded = true,
                     IsExplicit = false,
                     ComponentInfo = component

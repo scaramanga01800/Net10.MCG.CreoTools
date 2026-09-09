@@ -501,4 +501,6 @@
     <system:String x:Key="SRP_BtApplyAllInstances">应用于所有实例</system:String>
     <system:String x:Key="SRP_ToolTipApplyAllInstances">将所选行的操作应用于同一 Creo 模型的所有引用。</system:String>
     <system:String x:Key="SRP_MsgNoOtherInstance">在装配中未找到该模型的其他引用。</system:String>
+    <system:String x:Key="SRP_Column_Type">类型</system:String>
+    <system:String x:Key="SRP_Column_SubType">子类型</system:String>
 </ResourceDictionary>

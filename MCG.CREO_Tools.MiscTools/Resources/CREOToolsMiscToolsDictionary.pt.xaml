@@ -501,4 +501,6 @@
     <system:String x:Key="SRP_BtApplyAllInstances">Aplicar a todas as instâncias</system:String>
     <system:String x:Key="SRP_ToolTipApplyAllInstances">Aplicar a ação da linha selecionada a todas as ocorrências do mesmo modelo Creo.</system:String>
     <system:String x:Key="SRP_MsgNoOtherInstance">Nenhuma outra ocorrência deste modelo foi encontrada na montagem.</system:String>
+    <system:String x:Key="SRP_Column_Type">Tipo</system:String>
+    <system:String x:Key="SRP_Column_SubType">Subtipo</system:String>
 </ResourceDictionary>

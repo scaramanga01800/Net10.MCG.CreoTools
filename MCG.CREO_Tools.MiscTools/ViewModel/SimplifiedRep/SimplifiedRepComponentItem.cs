@@ -81,6 +81,36 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        private string _Type = string.Empty;
+        /// <summary>Parametre TYPE lu sur le modele du composant.</summary>
+        public string Type
+        {
+            get { return _Type; }
+            set
+            {
+                if (this._Type != value)
+                {
+                    this._Type = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _SubType = string.Empty;
+        /// <summary>Parametre SUB_TYPE lu sur le modele du composant.</summary>
+        public string SubType
+        {
+            get { return _SubType; }
+            set
+            {
+                if (this._SubType != value)
+                {
+                    this._SubType = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _IsIncluded = true;
         public bool IsIncluded
         {

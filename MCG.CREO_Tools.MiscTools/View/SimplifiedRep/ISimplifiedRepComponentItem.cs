@@ -9,6 +9,8 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         string Name { get; set; }
         string Rep { get; set; }
         string Description { get; set; }
+        string Type { get; set; }
+        string SubType { get; set; }
         bool IsIncluded { get; set; }
         bool IsExplicit { get; set; }
         string CurrentAction { get; }

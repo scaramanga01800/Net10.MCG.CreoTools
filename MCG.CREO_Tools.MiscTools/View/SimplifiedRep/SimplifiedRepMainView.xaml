@@ -9,8 +9,8 @@
                      xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
                      mc:Ignorable="d"
                      Title="{DynamicResource SRP_WindowTitle}"
-                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Structure.ico"
-                     Height="600" Width="1000">
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CreoSimpRep.png"
+                     Height="600" Width="1350">
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
@@ -19,7 +19,7 @@
             <BitmapImage x:Key="COPY" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/duplicate2.ico"/>
             <BitmapImage x:Key="UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png"/>
             <BitmapImage x:Key="DELETE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Delete.ico"/>
-            <BitmapImage x:Key="ACTIVATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exec.ico"/>
+            <BitmapImage x:Key="ACTIVATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_part.ico"/>
             <BitmapImage x:Key="SAVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Save_32x32.png"/>
             <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
             <BitmapImage x:Key="INCLUDE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_green_32x32.png"/>
@@ -296,6 +296,15 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <!-- Parametres TYPE et SUB_TYPE du modele du composant, en lecture seule. -->
+                    <DataGridTextColumn Header="{DynamicResource SRP_Column_Type}"
+                                        Binding="{Binding Type}"
+                                        Width="120"
+                                        IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource SRP_Column_SubType}"
+                                        Binding="{Binding SubType}"
+                                        Width="120"
+                                        IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 
