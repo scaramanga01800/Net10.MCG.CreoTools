@@ -498,4 +498,7 @@
     <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">将所选表示应用于所有选中的组件。</system:String>
     <system:String x:Key="SRP_MsgNoSelection">请在列表中至少选择一个组件。</system:String>
     <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">请选择要应用的表示。</system:String>
+    <system:String x:Key="SRP_BtApplyAllInstances">应用于所有实例</system:String>
+    <system:String x:Key="SRP_ToolTipApplyAllInstances">将所选行的操作应用于同一 Creo 模型的所有引用。</system:String>
+    <system:String x:Key="SRP_MsgNoOtherInstance">在装配中未找到该模型的其他引用。</system:String>
 </ResourceDictionary>

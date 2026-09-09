@@ -68,6 +68,28 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         private bool IsMultiSelectionInProgress { get; set; } = false;
 
         /// <summary>
+        /// Selectionne la ligne visee par le clic droit lorsqu'elle n'appartient pas deja
+        /// a la selection courante. Le menu contextuel "Appliquer a toutes les instances"
+        /// agit ainsi toujours sur la ligne pointee par l'utilisateur.
+        /// </summary>
+        private void DgComponents_RowPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender is not System.Windows.Controls.DataGridRow row) return;
+
+                if (row.IsSelected) return;
+
+                DgComponents.SelectedItems.Clear();
+                row.IsSelected = true;
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
         /// Abonne chaque ligne de la grille au suivi des changements de la case "Inclus".
         /// </summary>
         private void SubscribeToIsIncludedEvent()

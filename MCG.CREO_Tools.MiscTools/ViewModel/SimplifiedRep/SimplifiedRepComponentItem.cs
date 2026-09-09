@@ -190,6 +190,27 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         #region [REGION] Internal variables
         public CreoSimpRepComponentInfo ComponentInfo { get; set; }
 
+        /// <summary>
+        /// Identite du modele Creo (.PRT / .ASM) reference par la ligne.
+        /// Elle provient du descripteur de modele Creo (GetFullName + extension) et ne
+        /// depend ni du chemin d'assemblage, ni du numero d'occurrence, ni de la position
+        /// dans l'arbre. Deux lignes partageant cette valeur pointent sur le meme modele.
+        ///
+        /// Si le descripteur n'a pas pu etre exploite, le nom du composant sert de repli
+        /// afin que la comparaison entre occurrences reste toujours possible.
+        /// </summary>
+        public string ModelKey
+        {
+            get
+            {
+                var key = ComponentInfo?.ModelKey ?? string.Empty;
+
+                return string.IsNullOrWhiteSpace(key)
+                    ? (Name ?? string.Empty).Trim().ToUpperInvariant()
+                    : key;
+            }
+        }
+
         /// <summary>Etat d'inclusion tel que lu dans Creo lors du dernier chargement.</summary>
         private bool _BaselineIsIncluded = true;
 

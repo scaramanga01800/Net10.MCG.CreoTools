@@ -32,6 +32,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         public ICommand CommandIncludeSelection { get => new RelayCommand(() => ExecuteApplySelectionInclusion(true)); }
         public ICommand CommandExcludeSelection { get => new RelayCommand(() => ExecuteApplySelectionInclusion(false)); }
         public ICommand CommandApplyCommonSimpRep { get => new RelayCommand(() => ExecuteApplyCommonSimpRep()); }
+        public ICommand CommandApplyAllInstances { get => new RelayCommand(() => ExecuteApplyToAllInstances()); }
         public ICommand CommandOpenHelp { get => new RelayCommand(() => ExecuteOpenHelp()); }
         #endregion
 
@@ -951,6 +952,96 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     _isApplyingSelectionAction = false;
                 }
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Propage l'action de la ligne courante a toutes les lignes qui referencent
+        /// le MEME modele Creo (.PRT / .ASM).
+        ///
+        /// La correspondance repose exclusivement sur l'identite du modele Creo
+        /// (SimplifiedRepComponentItem.ModelKey, construite a partir du descripteur de
+        /// modele Creo) et jamais sur le chemin d'assemblage, le numero d'occurrence,
+        /// la position dans l'arbre ou l'assemblage parent.
+        ///
+        /// Les trois actions supportees sont propagees :
+        /// - Inclure   : IsIncluded = true, sans substitution
+        /// - Exclure   : IsIncluded = false, sans substitution
+        /// - Remplacer : IsIncluded de la source + nom de la representation substituee
+        ///
+        /// Aucun appel Creo n'est effectue : comme pour les actions de masse existantes,
+        /// seule la grille est modifiee, la mise a jour reelle restant declenchee par
+        /// le bouton "Mettre a jour".
+        /// </summary>
+        private void ExecuteApplyToAllInstances()
+        {
+            try
+            {
+                if (_selectedItems.Count == 0)
+                {
+                    ShowWarning("SRP_MsgNoSelection");
+                    return;
+                }
+
+                // Le clic droit selectionne la ligne : la premiere ligne selectionnee
+                // sert de reference pour l'action a propager.
+                var source = _selectedItems[0];
+                var modelKey = source.ModelKey;
+
+                if (string.IsNullOrWhiteSpace(modelKey))
+                {
+                    ShowInformation("SRP_MsgNoOtherInstance");
+                    return;
+                }
+
+                // Etat a propager, capture AVANT toute modification des autres lignes.
+                var isIncluded = source.IsIncluded;
+                var substitution = source.EffectiveSubstitution;
+
+                var targets = CurrentDataContext.ListItem
+                    .Where(i => !ReferenceEquals(i, source))
+                    .Where(i => string.Equals(i.ModelKey, modelKey, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (targets.Count == 0)
+                {
+                    ShowInformation("SRP_MsgNoOtherInstance");
+                    return;
+                }
+
+                // Modifier les lignes fait reagir la grille, qui renvoie un SelectionChanged
+                // et reconstruirait _selectedItems en cours d'iteration.
+                _isApplyingSelectionAction = true;
+
+                try
+                {
+                    foreach (var item in targets)
+                    {
+                        // IsIncluded est applique en premier : cocher / decocher la case
+                        // remet la ligne sur la representation maitresse.
+                        item.IsIncluded = isIncluded;
+
+                        if (string.IsNullOrWhiteSpace(substitution)) continue;
+
+                        // Remplacement par une representation simplifiee : la representation
+                        // existe par construction sur toutes les occurrences du meme modele,
+                        // le test evite simplement une valeur hors liste.
+                        if (item.ListComponentSimpRep.Contains(substitution, StringComparer.OrdinalIgnoreCase))
+                            item.SelectedComponentSimpRep = substitution;
+                    }
+                }
+                finally
+                {
+                    _isApplyingSelectionAction = false;
+                }
+
+                // Les setters ont deja notifie chaque ligne (action, surlignage) ;
+                // on reconsolide l'etat global des modifications en attente.
+                RefreshPendingChangesState();
             }
             catch (Exception ex)
             {

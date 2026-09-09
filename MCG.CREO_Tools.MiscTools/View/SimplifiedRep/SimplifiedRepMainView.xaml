@@ -214,10 +214,29 @@
                       SelectionUnit="FullRow"
                       SelectionChanged="DgComponents_SelectionChanged"
                       ItemsSource="{Binding CurrentDataContext.ListItem}">
+                <!-- Menu contextuel de propagation : l'action de la ligne courante est
+                     appliquee a toutes les occurrences du meme modele Creo.
+                     Comme le groupe "Selection", il suit l'etat du groupe "Actions" :
+                     il reste inactif tant qu'aucune representation simplifiee n'est
+                     selectionnee apres la lecture de l'assemblage. -->
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource SRP_BtApplyAllInstances}"
+                                  ToolTip="{DynamicResource SRP_ToolTipApplyAllInstances}"
+                                  IsEnabled="{Binding PlacementTarget.DataContext.CurrentDataContext.IsSelectionActionEnabled,
+                                                      RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                  Command="{Binding PlacementTarget.DataContext.CommandApplyAllInstances,
+                                                    RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <!-- Les lignes modifiees et non sauvegardees sont surlignees en jaune pale.
                      Le declencheur suit IsModified, recalculee a chaque changement d'action. -->
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
+                        <!-- Le clic droit selectionne la ligne visee : le menu contextuel
+                             s'applique ainsi toujours a la ligne pointee. -->
+                        <EventSetter Event="PreviewMouseRightButtonDown"
+                                     Handler="DgComponents_RowPreviewMouseRightButtonDown" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsModified}" Value="True">
                                 <Setter Property="Background" Value="#FFFFF6CC" />

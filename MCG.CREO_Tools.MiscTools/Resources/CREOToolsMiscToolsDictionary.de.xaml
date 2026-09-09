@@ -498,4 +498,7 @@
     <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Die gewählte Darstellung auf alle ausgewählten Komponenten anwenden.</system:String>
     <system:String x:Key="SRP_MsgNoSelection">Bitte wählen Sie mindestens eine Komponente in der Liste aus.</system:String>
     <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Bitte wählen Sie eine anzuwendende Darstellung aus.</system:String>
+    <system:String x:Key="SRP_BtApplyAllInstances">Auf alle Instanzen anwenden</system:String>
+    <system:String x:Key="SRP_ToolTipApplyAllInstances">Die Aktion der ausgewählten Zeile auf alle Vorkommen desselben Creo-Modells anwenden.</system:String>
+    <system:String x:Key="SRP_MsgNoOtherInstance">Es wurde kein weiteres Vorkommen dieses Modells in der Baugruppe gefunden.</system:String>
 </ResourceDictionary>

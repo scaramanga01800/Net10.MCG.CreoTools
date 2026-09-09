@@ -498,4 +498,7 @@
     <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Applica la rappresentazione scelta a tutti i componenti selezionati.</system:String>
     <system:String x:Key="SRP_MsgNoSelection">Selezionare almeno un componente nell'elenco.</system:String>
     <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Selezionare una rappresentazione da applicare.</system:String>
+    <system:String x:Key="SRP_BtApplyAllInstances">Applica a tutte le istanze</system:String>
+    <system:String x:Key="SRP_ToolTipApplyAllInstances">Applica l'azione della riga selezionata a tutte le occorrenze dello stesso modello Creo.</system:String>
+    <system:String x:Key="SRP_MsgNoOtherInstance">Nessun'altra occorrenza di questo modello è stata trovata nell'assieme.</system:String>
 </ResourceDictionary>
