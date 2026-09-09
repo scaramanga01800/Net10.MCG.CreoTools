@@ -485,4 +485,5 @@
     <system:String x:Key="SRP_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Alle Komponenten aus- oder abwählen.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Keine Änderung für die vereinfachte Darstellung anzuwenden.</system:String>
+    <system:String x:Key="SRP_MasterRep">Hauptdarstellung</system:String>
 </ResourceDictionary>

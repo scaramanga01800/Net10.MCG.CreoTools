@@ -485,4 +485,5 @@
     <system:String x:Key="SRP_MsgSaveSuccess">Le modèle a été sauvegardé avec succès.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Cocher ou décocher tous les composants.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Aucune modification à appliquer à la représentation simplifiée.</system:String>
+    <system:String x:Key="SRP_MasterRep">Rep. Maîtresse</system:String>
 </ResourceDictionary>

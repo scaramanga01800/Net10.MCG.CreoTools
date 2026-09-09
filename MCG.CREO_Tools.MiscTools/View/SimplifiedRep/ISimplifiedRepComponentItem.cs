@@ -13,6 +13,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         bool IsExplicit { get; set; }
         string CurrentAction { get; }
         string SelectedComponentSimpRep { get; set; }
+        string EffectiveSubstitution { get; }
         ObservableCollection<string> ListComponentSimpRep { get; set; }
     }
 }

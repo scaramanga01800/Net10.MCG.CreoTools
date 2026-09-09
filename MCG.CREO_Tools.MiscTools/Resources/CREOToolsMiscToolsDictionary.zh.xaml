@@ -485,4 +485,5 @@
     <system:String x:Key="SRP_MsgSaveSuccess">模型已成功保存。</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">选中或取消选中所有组件。</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">没有需要应用到简化表示的更改。</system:String>
+    <system:String x:Key="SRP_MasterRep">主表示</system:String>
 </ResourceDictionary>

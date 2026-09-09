@@ -91,11 +91,13 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     this._IsIncluded = value;
 
-                    // Cocher ou decocher la case annule la substitution :
-                    // l'action redevient "Inclure" ou "Exclure".
-                    if (!string.IsNullOrWhiteSpace(_SelectedComponentSimpRep))
+                    // Cocher ou decocher la case annule la substitution : la combo revient
+                    // sur la representation maitresse et l'action redevient "Inclure"/"Exclure".
+                    var masterLabel = ListComponentSimpRep.Count > 0 ? MasterRepLabel : string.Empty;
+
+                    if (!string.Equals(_SelectedComponentSimpRep, masterLabel, StringComparison.OrdinalIgnoreCase))
                     {
-                        this._SelectedComponentSimpRep = string.Empty;
+                        this._SelectedComponentSimpRep = masterLabel;
                         OnPropertyChanged(nameof(SelectedComponentSimpRep));
                     }
 
@@ -129,7 +131,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(_SelectedComponentSimpRep))
+                if (!string.IsNullOrWhiteSpace(EffectiveSubstitution))
                     return McgWpfTools.GetStringResource("SRP_Action_Substitute");
 
                 return _IsIncluded
@@ -156,6 +158,33 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         public ObservableCollection<string> ListComponentSimpRep { get; set; } = new ObservableCollection<string>();
         #endregion
 
+        #region [REGION] Master representation
+        /// <summary>
+        /// Libelle localise de la representation maitresse, presente en tete de chaque liste.
+        /// La selectionner signifie "aucune substitution" : le composant reste utilise
+        /// dans sa representation complete.
+        /// </summary>
+        public static string MasterRepLabel => McgWpfTools.GetStringResource("SRP_MasterRep");
+
+        /// <summary>
+        /// Nom de la representation reellement substituee, ou chaine vide si la ligne
+        /// est sur la representation maitresse.
+        /// </summary>
+        public string EffectiveSubstitution
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_SelectedComponentSimpRep)) return string.Empty;
+
+                return string.Equals(_SelectedComponentSimpRep,
+                                     MasterRepLabel,
+                                     StringComparison.OrdinalIgnoreCase)
+                    ? string.Empty
+                    : _SelectedComponentSimpRep;
+            }
+        }
+        #endregion
+
         #region [REGION] Internal variables
         public CreoSimpRepComponentInfo ComponentInfo { get; set; }
 
@@ -172,7 +201,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         public void CaptureBaseline()
         {
             _BaselineIsIncluded = _IsIncluded;
-            _BaselineSubstitutedSimpRepName = _SelectedComponentSimpRep ?? string.Empty;
+            _BaselineSubstitutedSimpRepName = EffectiveSubstitution;
         }
 
         /// <summary>
@@ -183,7 +212,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             get
             {
-                var currentSubstitution = _SelectedComponentSimpRep ?? string.Empty;
+                var currentSubstitution = EffectiveSubstitution;
 
                 if (!string.Equals(currentSubstitution,
                                    _BaselineSubstitutedSimpRepName,

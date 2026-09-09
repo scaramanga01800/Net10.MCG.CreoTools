@@ -307,7 +307,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                             : new List<int> { item.ComponentId },
                         ComponentInfo = item.ComponentInfo,
                         IsIncluded = item.IsIncluded,
-                        SubstitutedSimpRepName = item.SelectedComponentSimpRep ?? string.Empty
+                        SubstitutedSimpRepName = item.EffectiveSubstitution
                     })
                     .ToList();
 
@@ -872,7 +872,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                         var substituted = state?.SubstitutedSimpRepName ?? string.Empty;
 
-                        var wantedNames = new List<string>(names);
+                        // La representation maitresse est toujours proposee en tete : elle
+                        // permet de revenir explicitement a "pas de substitution".
+                        var wantedNames = new List<string> { SimplifiedRepComponentItem.MasterRepLabel };
+                        wantedNames.AddRange(names);
 
                         if (!string.IsNullOrEmpty(substituted)
                             && !wantedNames.Contains(substituted, StringComparer.OrdinalIgnoreCase))
@@ -890,7 +893,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                                 item.ListComponentSimpRep.Add(name);
                         }
 
-                        item.SelectedComponentSimpRep = substituted;
+                        // Sans substitution, la ligne se positionne sur la representation maitresse.
+                        item.SelectedComponentSimpRep = string.IsNullOrEmpty(substituted)
+                            ? SimplifiedRepComponentItem.MasterRepLabel
+                            : substituted;
 
                         // L'etat lu dans Creo devient la reference : seules les modifications
                         // ulterieures de l'utilisateur seront renvoyees a Creo.
