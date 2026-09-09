@@ -9,6 +9,9 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         bool IsPleaseWaitShown { get; set; }
         bool IsAssemblyLoaded { get; set; }
         bool IsSimpRepSelected { get; set; }
+        bool IsMultiSelectionActive { get; set; }
+        string SelectedCommonSimpRep { get; set; }
+        ObservableCollection<string> ListCommonSimpRep { get; set; }
 
         string ActiveModelName { get; set; }
         string NewSimpRepName { get; set; }

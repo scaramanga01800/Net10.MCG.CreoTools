@@ -486,4 +486,15 @@
     <system:String x:Key="SRP_ToolTipSelectAll">Cocher ou décocher tous les composants.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Aucune modification à appliquer à la représentation simplifiée.</system:String>
     <system:String x:Key="SRP_MasterRep">Rep. Maîtresse</system:String>
+    <system:String x:Key="SRP_RibGrpSelection">Sélection</system:String>
+    <system:String x:Key="SRP_BtIncludeSelection">Inclure</system:String>
+    <system:String x:Key="SRP_BtExcludeSelection">Exclure</system:String>
+    <system:String x:Key="SRP_BtApplyCommonSimpRep">Appliquer</system:String>
+    <system:String x:Key="SRP_CommonSimpRep">Représentation commune</system:String>
+    <system:String x:Key="SRP_ToolTipIncludeSelection">Inclure tous les composants sélectionnés.</system:String>
+    <system:String x:Key="SRP_ToolTipExcludeSelection">Exclure tous les composants sélectionnés.</system:String>
+    <system:String x:Key="SRP_ToolTipCommonSimpRep">Représentations simplifiées présentes sur tous les composants sélectionnés.</system:String>
+    <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Appliquer la représentation choisie à tous les composants sélectionnés.</system:String>
+    <system:String x:Key="SRP_MsgNoSelection">Veuillez sélectionner au moins un composant dans la liste.</system:String>
+    <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Veuillez sélectionner une représentation à appliquer.</system:String>
 </ResourceDictionary>

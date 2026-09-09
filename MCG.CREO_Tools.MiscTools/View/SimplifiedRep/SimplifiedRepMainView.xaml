@@ -22,6 +22,8 @@
             <BitmapImage x:Key="ACTIVATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/exec.ico"/>
             <BitmapImage x:Key="SAVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Save_32x32.png"/>
             <BitmapImage x:Key="HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
+            <BitmapImage x:Key="INCLUDE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/check_green_32x32.png"/>
+            <BitmapImage x:Key="EXCLUDE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/remove_32x32.png"/>
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
             <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
         </ResourceDictionary>
@@ -149,6 +151,53 @@
                                    Margin="5,0,5,0"/>
                 </Fluent:RibbonGroupBox>
 
+                <!-- Actions appliquees d'un coup a toutes les lignes selectionnees.
+                     Elles ne modifient que la grille : la mise a jour Creo reste
+                     declenchee par le bouton "Mettre a jour". -->
+                <Fluent:RibbonGroupBox Header="{DynamicResource SRP_RibGrpSelection}"
+                                       IsEnabled="{Binding CurrentDataContext.IsMultiSelectionActive}">
+                    <Fluent:Button Command="{Binding CommandIncludeSelection}"
+                                   Header="{DynamicResource SRP_BtIncludeSelection}"
+                                   LargeIcon="{StaticResource INCLUDE}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SRP_BtIncludeSelection}"
+                                              Text="{DynamicResource SRP_ToolTipIncludeSelection}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <Fluent:Button Command="{Binding CommandExcludeSelection}"
+                                   Header="{DynamicResource SRP_BtExcludeSelection}"
+                                   LargeIcon="{StaticResource EXCLUDE}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SRP_BtExcludeSelection}"
+                                              Text="{DynamicResource SRP_ToolTipExcludeSelection}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <Fluent:ComboBox Header="{DynamicResource SRP_CommonSimpRep}"
+                                     Width="260"
+                                     MinWidth="260"
+                                     SelectedItem="{Binding CurrentDataContext.SelectedCommonSimpRep, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     ItemsSource="{Binding CurrentDataContext.ListCommonSimpRep}">
+                        <Fluent:ComboBox.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SRP_CommonSimpRep}"
+                                              Text="{DynamicResource SRP_ToolTipCommonSimpRep}"/>
+                        </Fluent:ComboBox.ToolTip>
+                    </Fluent:ComboBox>
+
+                    <Fluent:Button Command="{Binding CommandApplyCommonSimpRep}"
+                                   Header="{DynamicResource SRP_BtApplyCommonSimpRep}"
+                                   Icon="{StaticResource UPDATE}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource SRP_BtApplyCommonSimpRep}"
+                                              Text="{DynamicResource SRP_ToolTipApplyCommonSimpRep}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button LargeIcon="{StaticResource HELP}"
                                    Command="{Binding CommandOpenHelp}"
@@ -163,6 +212,7 @@
                       AutoGenerateColumns="False"
                       SelectionMode="Extended"
                       SelectionUnit="FullRow"
+                      SelectionChanged="DgComponents_SelectionChanged"
                       ItemsSource="{Binding CurrentDataContext.ListItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{DynamicResource SRP_Column_Index}"

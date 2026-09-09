@@ -486,4 +486,15 @@
     <system:String x:Key="SRP_ToolTipSelectAll">Alle Komponenten aus- oder abwählen.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Keine Änderung für die vereinfachte Darstellung anzuwenden.</system:String>
     <system:String x:Key="SRP_MasterRep">Hauptdarstellung</system:String>
+    <system:String x:Key="SRP_RibGrpSelection">Auswahl</system:String>
+    <system:String x:Key="SRP_BtIncludeSelection">Einschließen</system:String>
+    <system:String x:Key="SRP_BtExcludeSelection">Ausschließen</system:String>
+    <system:String x:Key="SRP_BtApplyCommonSimpRep">Anwenden</system:String>
+    <system:String x:Key="SRP_CommonSimpRep">Gemeinsame Darstellung</system:String>
+    <system:String x:Key="SRP_ToolTipIncludeSelection">Alle ausgewählten Komponenten einschließen.</system:String>
+    <system:String x:Key="SRP_ToolTipExcludeSelection">Alle ausgewählten Komponenten ausschließen.</system:String>
+    <system:String x:Key="SRP_ToolTipCommonSimpRep">Vereinfachte Darstellungen, die auf allen ausgewählten Komponenten vorhanden sind.</system:String>
+    <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Die gewählte Darstellung auf alle ausgewählten Komponenten anwenden.</system:String>
+    <system:String x:Key="SRP_MsgNoSelection">Bitte wählen Sie mindestens eine Komponente in der Liste aus.</system:String>
+    <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Bitte wählen Sie eine anzuwendende Darstellung aus.</system:String>
 </ResourceDictionary>

@@ -162,6 +162,47 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        private bool _IsMultiSelectionActive;
+        /// <summary>
+        /// Vrai des qu'au moins une ligne est selectionnee dans la grille :
+        /// active le groupe d'actions de masse du ruban.
+        /// </summary>
+        public bool IsMultiSelectionActive
+        {
+            get { return _IsMultiSelectionActive; }
+            set
+            {
+                if (this._IsMultiSelectionActive != value)
+                {
+                    this._IsMultiSelectionActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _SelectedCommonSimpRep = string.Empty;
+        /// <summary>
+        /// Representation choisie dans le ruban pour etre appliquee a toutes les lignes selectionnees.
+        /// </summary>
+        public string SelectedCommonSimpRep
+        {
+            get { return _SelectedCommonSimpRep; }
+            set
+            {
+                if (this._SelectedCommonSimpRep != value)
+                {
+                    this._SelectedCommonSimpRep = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Representations simplifiees communes a TOUS les composants selectionnes.
+        /// Contient au minimum la representation maitresse.
+        /// </summary>
+        public ObservableCollection<string> ListCommonSimpRep { get; set; } = new ObservableCollection<string>();
+
         private bool _IsAllIncluded = true;
         /// <summary>
         /// Case d'en-tete permettant de cocher ou decocher tous les composants d'un coup.

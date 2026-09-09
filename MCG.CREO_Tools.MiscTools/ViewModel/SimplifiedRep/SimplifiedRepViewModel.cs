@@ -29,6 +29,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         public ICommand CommandDeleteSimpRep { get => new RelayCommand(() => ExecuteDeleteSimpRep()); }
         public ICommand CommandActivateSimpRep { get => new RelayCommand(() => ExecuteActivateSimpRep()); }
         public ICommand CommandSaveModel { get => new RelayCommand(() => ExecuteSaveModel()); }
+        public ICommand CommandIncludeSelection { get => new RelayCommand(() => ExecuteApplySelectionInclusion(true)); }
+        public ICommand CommandExcludeSelection { get => new RelayCommand(() => ExecuteApplySelectionInclusion(false)); }
+        public ICommand CommandApplyCommonSimpRep { get => new RelayCommand(() => ExecuteApplyCommonSimpRep()); }
         public ICommand CommandOpenHelp { get => new RelayCommand(() => ExecuteOpenHelp()); }
         #endregion
 
@@ -730,6 +733,178 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                                            System.Windows.MessageBoxButton.OK,
                                            System.Windows.MessageBoxImage.Warning);
         }
+
+        #region [REGION] Multi selection actions
+        /// <summary>
+        /// Lignes actuellement selectionnees dans la grille.
+        /// Alimentee par la vue a chaque changement de selection.
+        /// </summary>
+        private readonly List<SimplifiedRepComponentItem> _selectedItems = new List<SimplifiedRepComponentItem>();
+
+        /// <summary>
+        /// Vrai pendant l'application d'une action de masse : les evenements de selection
+        /// emis par la grille en reaction aux modifications sont alors ignores.
+        /// </summary>
+        private bool _isApplyingSelectionAction;
+
+        /// <summary>
+        /// Prend en compte la nouvelle selection de la grille et recalcule la liste des
+        /// representations simplifiees communes a tous les composants selectionnes.
+        /// </summary>
+        public void UpdateSelection(IEnumerable<SimplifiedRepComponentItem> selectedItems)
+        {
+            try
+            {
+                if (_isApplyingSelectionAction) return;
+
+                _selectedItems.Clear();
+
+                if (selectedItems != null)
+                    _selectedItems.AddRange(selectedItems);
+
+                CurrentDataContext.IsMultiSelectionActive = _selectedItems.Count > 0;
+
+                RefreshCommonSimpRepList();
+            }
+            catch (Exception ex)
+            {
+                throw new MiscToolsException(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Ne conserve que les representations presentes sur TOUS les composants selectionnes.
+        /// La representation maitresse est toujours disponible.
+        /// </summary>
+        private void RefreshCommonSimpRepList()
+        {
+            var masterLabel = SimplifiedRepComponentItem.MasterRepLabel;
+            var previousSelection = CurrentDataContext.SelectedCommonSimpRep;
+
+            // Intersection successive des listes de chaque ligne selectionnee.
+            List<string>? common = null;
+
+            foreach (var item in _selectedItems)
+            {
+                var names = item.ListComponentSimpRep
+                    .Where(n => !string.Equals(n, masterLabel, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (common == null)
+                {
+                    common = names;
+                    continue;
+                }
+
+                common = common
+                    .Where(n => names.Contains(n, StringComparer.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (common.Count == 0) break;
+            }
+
+            var wanted = new List<string> { masterLabel };
+
+            if (common != null)
+                wanted.AddRange(common.OrderBy(n => n, StringComparer.OrdinalIgnoreCase));
+
+            if (CurrentDataContext.ListCommonSimpRep.SequenceEqual(wanted, StringComparer.OrdinalIgnoreCase))
+                return;
+
+            CurrentDataContext.ListCommonSimpRep.Clear();
+
+            foreach (var name in wanted)
+                CurrentDataContext.ListCommonSimpRep.Add(name);
+
+            // La selection precedente est conservee si elle reste commune a la nouvelle selection.
+            CurrentDataContext.SelectedCommonSimpRep =
+                wanted.Contains(previousSelection, StringComparer.OrdinalIgnoreCase)
+                    ? previousSelection
+                    : masterLabel;
+        }
+
+        /// <summary>
+        /// Applique "Inclure" ou "Exclure" a toutes les lignes selectionnees.
+        /// Aucun appel Creo : seule la grille est mise a jour, la mise a jour reelle
+        /// reste declenchee par le bouton "Mettre a jour".
+        /// </summary>
+        private void ExecuteApplySelectionInclusion(bool isIncluded)
+        {
+            try
+            {
+                if (_selectedItems.Count == 0)
+                {
+                    ShowWarning("SRP_MsgNoSelection");
+                    return;
+                }
+
+                // Copie de travail : modifier les lignes fait reagir la grille, qui renvoie
+                // un SelectionChanged et reconstruit _selectedItems en cours d'iteration.
+                _isApplyingSelectionAction = true;
+
+                try
+                {
+                    foreach (var item in _selectedItems.ToList())
+                        item.IsIncluded = isIncluded;
+                }
+                finally
+                {
+                    _isApplyingSelectionAction = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Applique a toutes les lignes selectionnees la representation choisie dans le ruban.
+        /// Choisir la representation maitresse revient a supprimer la substitution.
+        /// </summary>
+        private void ExecuteApplyCommonSimpRep()
+        {
+            try
+            {
+                if (_selectedItems.Count == 0)
+                {
+                    ShowWarning("SRP_MsgNoSelection");
+                    return;
+                }
+
+                var wantedSimpRep = CurrentDataContext.SelectedCommonSimpRep;
+
+                if (string.IsNullOrWhiteSpace(wantedSimpRep))
+                {
+                    ShowWarning("SRP_MsgNoCommonSimpRepSelected");
+                    return;
+                }
+
+                // Copie de travail : modifier les lignes fait reagir la grille, qui renvoie
+                // un SelectionChanged et reconstruit _selectedItems en cours d'iteration.
+                _isApplyingSelectionAction = true;
+
+                try
+                {
+                    foreach (var item in _selectedItems.ToList())
+                    {
+                        if (!item.ListComponentSimpRep.Contains(wantedSimpRep, StringComparer.OrdinalIgnoreCase))
+                            continue;
+
+                        item.SelectedComponentSimpRep = wantedSimpRep;
+                    }
+                }
+                finally
+                {
+                    _isApplyingSelectionAction = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+        #endregion
 
         /// <summary>Affiche un message d'information localise.</summary>
         private static void ShowInformation(string resourceKey)

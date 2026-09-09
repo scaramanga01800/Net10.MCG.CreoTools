@@ -486,4 +486,15 @@
     <system:String x:Key="SRP_ToolTipSelectAll">Select or clear all components.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">No change to apply to the simplified representation.</system:String>
     <system:String x:Key="SRP_MasterRep">Master Rep.</system:String>
+    <system:String x:Key="SRP_RibGrpSelection">Selection</system:String>
+    <system:String x:Key="SRP_BtIncludeSelection">Include</system:String>
+    <system:String x:Key="SRP_BtExcludeSelection">Exclude</system:String>
+    <system:String x:Key="SRP_BtApplyCommonSimpRep">Apply</system:String>
+    <system:String x:Key="SRP_CommonSimpRep">Common representation</system:String>
+    <system:String x:Key="SRP_ToolTipIncludeSelection">Include every selected component.</system:String>
+    <system:String x:Key="SRP_ToolTipExcludeSelection">Exclude every selected component.</system:String>
+    <system:String x:Key="SRP_ToolTipCommonSimpRep">Simplified representations available on all selected components.</system:String>
+    <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Apply the selected representation to every selected component.</system:String>
+    <system:String x:Key="SRP_MsgNoSelection">Please select at least one component in the list.</system:String>
+    <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Please select a representation to apply.</system:String>
 </ResourceDictionary>

@@ -46,6 +46,23 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         }
 
         #region [REGION] Methods for Multiselection with Shift
+        /// <summary>
+        /// Transmet la selection courante au view model : le ruban s'appuie dessus pour
+        /// activer les actions de masse et calculer les representations communes.
+        /// </summary>
+        private void DgComponents_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                CurrentDataContext.UpdateSelection(DgComponents.SelectedItems
+                                                                .OfType<SimplifiedRepComponentItem>());
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
         private int PreviousSelectedIndex { get; set; } = -1;
         private int SelectedIndex { get; set; } = -1;
         private bool IsMultiSelectionInProgress { get; set; } = false;

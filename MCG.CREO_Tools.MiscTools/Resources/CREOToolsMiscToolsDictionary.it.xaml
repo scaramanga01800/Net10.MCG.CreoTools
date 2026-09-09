@@ -486,4 +486,15 @@
     <system:String x:Key="SRP_ToolTipSelectAll">Seleziona o deseleziona tutti i componenti.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Nessuna modifica da applicare alla rappresentazione semplificata.</system:String>
     <system:String x:Key="SRP_MasterRep">Rappr. principale</system:String>
+    <system:String x:Key="SRP_RibGrpSelection">Selezione</system:String>
+    <system:String x:Key="SRP_BtIncludeSelection">Includi</system:String>
+    <system:String x:Key="SRP_BtExcludeSelection">Escludi</system:String>
+    <system:String x:Key="SRP_BtApplyCommonSimpRep">Applica</system:String>
+    <system:String x:Key="SRP_CommonSimpRep">Rappresentazione comune</system:String>
+    <system:String x:Key="SRP_ToolTipIncludeSelection">Includi tutti i componenti selezionati.</system:String>
+    <system:String x:Key="SRP_ToolTipExcludeSelection">Escludi tutti i componenti selezionati.</system:String>
+    <system:String x:Key="SRP_ToolTipCommonSimpRep">Rappresentazioni semplificate presenti su tutti i componenti selezionati.</system:String>
+    <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">Applica la rappresentazione scelta a tutti i componenti selezionati.</system:String>
+    <system:String x:Key="SRP_MsgNoSelection">Selezionare almeno un componente nell'elenco.</system:String>
+    <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">Selezionare una rappresentazione da applicare.</system:String>
 </ResourceDictionary>

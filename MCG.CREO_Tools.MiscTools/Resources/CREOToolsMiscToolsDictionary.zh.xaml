@@ -486,4 +486,15 @@
     <system:String x:Key="SRP_ToolTipSelectAll">选中或取消选中所有组件。</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">没有需要应用到简化表示的更改。</system:String>
     <system:String x:Key="SRP_MasterRep">主表示</system:String>
+    <system:String x:Key="SRP_RibGrpSelection">选择</system:String>
+    <system:String x:Key="SRP_BtIncludeSelection">包含</system:String>
+    <system:String x:Key="SRP_BtExcludeSelection">排除</system:String>
+    <system:String x:Key="SRP_BtApplyCommonSimpRep">应用</system:String>
+    <system:String x:Key="SRP_CommonSimpRep">公共表示</system:String>
+    <system:String x:Key="SRP_ToolTipIncludeSelection">包含所有选中的组件。</system:String>
+    <system:String x:Key="SRP_ToolTipExcludeSelection">排除所有选中的组件。</system:String>
+    <system:String x:Key="SRP_ToolTipCommonSimpRep">所有选中组件上均存在的简化表示。</system:String>
+    <system:String x:Key="SRP_ToolTipApplyCommonSimpRep">将所选表示应用于所有选中的组件。</system:String>
+    <system:String x:Key="SRP_MsgNoSelection">请在列表中至少选择一个组件。</system:String>
+    <system:String x:Key="SRP_MsgNoCommonSimpRepSelected">请选择要应用的表示。</system:String>
 </ResourceDictionary>
