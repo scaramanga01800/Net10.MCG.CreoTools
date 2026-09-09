@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Alle Komponenten aus- oder abwählen.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Keine Änderung für die vereinfachte Darstellung anzuwenden.</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">Es liegen nicht gespeicherte Änderungen vor. Wenn Sie fortfahren, gehen diese Änderungen verloren.&#x0a;Möchten Sie fortfahren?</system:String>
     <system:String x:Key="SRP_MasterRep">Hauptdarstellung</system:String>
     <system:String x:Key="SRP_RibGrpSelection">Auswahl</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">Einschließen</system:String>

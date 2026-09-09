@@ -31,6 +31,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     this._IsPleaseWaitShown = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSelectionActionEnabled));
                 }
             }
         }
@@ -59,6 +60,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     this._IsSimpRepSelected = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSelectionActionEnabled));
                 }
             }
         }
@@ -176,9 +178,19 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 {
                     this._IsMultiSelectionActive = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSelectionActionEnabled));
                 }
             }
         }
+
+        /// <summary>
+        /// Etat d'activation du groupe "Selection" du ruban.
+        /// Les actions de masse ne modifient la grille que pour une representation simplifiee
+        /// donnee : elles restent donc inactives tant que les actions du groupe "Actions"
+        /// le sont, meme si des lignes sont selectionnees.
+        /// </summary>
+        public bool IsSelectionActionEnabled =>
+            IsSimpRepSelected && IsMultiSelectionActive && !IsPleaseWaitShown;
 
         private string _SelectedCommonSimpRep = string.Empty;
         /// <summary>
@@ -215,6 +227,25 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 if (this._IsAllIncluded != value)
                 {
                     this._IsAllIncluded = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _HasPendingChanges;
+        /// <summary>
+        /// Vrai des qu'au moins une ligne de la grille porte une modification non sauvegardee.
+        /// Sert a declencher la demande de confirmation avant toute action qui recharge
+        /// ou remplace les donnees affichees.
+        /// </summary>
+        public bool HasPendingChanges
+        {
+            get { return _HasPendingChanges; }
+            set
+            {
+                if (this._HasPendingChanges != value)
+                {
+                    this._HasPendingChanges = value;
                     OnPropertyChanged();
                 }
             }

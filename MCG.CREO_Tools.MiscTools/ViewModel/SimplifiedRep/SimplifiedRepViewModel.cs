@@ -47,6 +47,19 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         private bool _isApplyingAllIncluded;
 
         /// <summary>
+        /// Derniere representation reellement chargee dans la grille.
+        /// Permet de restaurer la selection du combo si l'utilisateur refuse de perdre
+        /// ses modifications en cours.
+        /// </summary>
+        private string _lastLoadedSimpRepName = string.Empty;
+
+        /// <summary>
+        /// Vrai lorsque le changement de representation est pilote par le code
+        /// (creation, copie, suppression, restauration) : aucune confirmation n'est demandee.
+        /// </summary>
+        private bool _isSelectionChangeInternal;
+
+        /// <summary>
         /// Cache des representations simplifiees disponibles par modele composant.
         /// Evite de reinterroger Creo a chaque rechargement de la grille.
         /// Vide a chaque nouvelle lecture de l'assemblage.
@@ -87,6 +100,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                // La lecture repart de zero : les modifications en cours seraient perdues.
+                if (!ConfirmPendingChangesLoss()) return;
+
                 ResetContext();
 
                 // Les dictionnaires de ressources ne sont pas encore fusionnes a la construction du
@@ -174,6 +190,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             {
                 if (!ValidateNewSimpRepName(out var newName)) return;
 
+                // La creation active la nouvelle representation et recharge la grille.
+                if (!ConfirmPendingChangesLoss()) return;
+
                 var defaultAction = GetSelectedDefaultAction();
 
                 CurrentDataContext.IsPleaseWaitShown = true;
@@ -241,6 +260,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 }
 
                 if (!ValidateNewSimpRepName(out var newName)) return;
+
+                // La copie active la nouvelle representation et recharge la grille.
+                if (!ConfirmPendingChangesLoss()) return;
 
                 CurrentDataContext.IsPleaseWaitShown = true;
 
@@ -401,6 +423,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         if (item.HasPendingChange)
                             item.CaptureBaseline();
                     }
+
+                    RefreshPendingChangesState();
                 });
 
                 TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' mise a jour " +
@@ -440,6 +464,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     System.Windows.MessageBoxImage.Question);
 
                 if (confirmation != System.Windows.MessageBoxResult.Yes) return;
+
+                // La suppression repasse la grille en etat neutre.
+                if (!ConfirmPendingChangesLoss()) return;
 
                 CurrentDataContext.IsPleaseWaitShown = true;
 
@@ -482,7 +509,16 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         CurrentDataContext.ListSimpRepName.Add(name);
 
                     // Vide la selection : declenche la remise a l'etat neutre de la grille.
-                    CurrentDataContext.SelectedSimpRepName = string.Empty;
+                    // Changement pilote par le code : pas de nouvelle confirmation.
+                    try
+                    {
+                        _isSelectionChangeInternal = true;
+                        CurrentDataContext.SelectedSimpRepName = string.Empty;
+                    }
+                    finally
+                    {
+                        _isSelectionChangeInternal = false;
+                    }
                 });
 
                 TraceLog.AddTraceLog($"SimplifiedRep : representation '{simpRepName}' supprimee, " +
@@ -512,6 +548,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     ShowWarning("SRP_MsgNoSimpRepSelected");
                     return;
                 }
+
+                // L'activation relit l'etat reel des composants depuis Creo.
+                if (!ConfirmPendingChangesLoss()) return;
 
                 CurrentDataContext.IsPleaseWaitShown = true;
 
@@ -596,6 +635,11 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 }
 
                 TraceLog.AddTraceLog($"SimplifiedRep : modele '{CurrentDataContext.ActiveModelName}' sauvegarde.");
+
+                // La sauvegarde ecrit dans le .asm ce qui a deja ete applique par "Mettre a jour".
+                // Les modifications encore en attente dans la grille n'ont pas ete envoyees a Creo :
+                // elles doivent rester actives et surlignees, sinon "Mettre a jour" n'aurait plus
+                // rien a appliquer. Aucun recalage de reference n'est donc effectue ici.
 
                 System.Windows.MessageBox.Show(McgWpfTools.GetStringResource("SRP_MsgSaveSuccess"),
                                                McgWpfTools.GetStringResource("SRP_WindowTitle"),
@@ -721,7 +765,16 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 var matchingName = CurrentDataContext.ListSimpRepName
                     .FirstOrDefault(n => string.Equals(n, newSimpRepName, StringComparison.OrdinalIgnoreCase));
 
-                CurrentDataContext.SelectedSimpRepName = matchingName ?? newSimpRepName;
+                // Changement pilote par le code : la perte des modifications a deja ete confirmee.
+                try
+                {
+                    _isSelectionChangeInternal = true;
+                    CurrentDataContext.SelectedSimpRepName = matchingName ?? newSimpRepName;
+                }
+                finally
+                {
+                    _isSelectionChangeInternal = false;
+                }
             });
         }
 
@@ -943,11 +996,86 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             if (e.PropertyName != nameof(SimplifiedRepDataContext.SelectedSimpRepName)) return;
             if (!CurrentDataContext.IsAssemblyLoaded) return;
 
+            // Changement pilote par le code (creation, copie, suppression, restauration) :
+            // la confirmation a deja ete traitee en amont.
+            if (!_isSelectionChangeInternal)
+            {
+                if (!ConfirmPendingChangesLoss())
+                {
+                    // L'utilisateur refuse de perdre ses modifications : la selection
+                    // precedente est restauree sans declencher de nouveau chargement.
+                    RestoreSelectedSimpRepName();
+                    return;
+                }
+            }
+
+            _lastLoadedSimpRepName = CurrentDataContext.SelectedSimpRepName;
+
             CurrentDataContext.IsPleaseWaitShown = true;
 
             Thread loadStatesThread = new Thread(new ThreadStart(LoadComponentStates));
             loadStatesThread.IsBackground = true;
             loadStatesThread.Start();
+        }
+
+        /// <summary>
+        /// Remet le combo des representations sur la derniere valeur reellement chargee.
+        /// </summary>
+        private void RestoreSelectedSimpRepName()
+        {
+            try
+            {
+                _isSelectionChangeInternal = true;
+                CurrentDataContext.SelectedSimpRepName = _lastLoadedSimpRepName;
+            }
+            finally
+            {
+                _isSelectionChangeInternal = false;
+            }
+        }
+
+        /// <summary>
+        /// Recalcule l'indicateur global de modifications en attente a partir des lignes de la grille.
+        /// </summary>
+        private void RefreshPendingChangesState()
+        {
+            CurrentDataContext.HasPendingChanges =
+                CurrentDataContext.ListItem.Any(item => item.HasPendingChange);
+        }
+
+        /// <summary>
+        /// Demande confirmation lorsqu'une action va recharger ou remplacer les donnees
+        /// affichees alors que des modifications ne sont pas sauvegardees.
+        /// Retourne vrai si l'operation demandee peut se poursuivre.
+        /// </summary>
+        private bool ConfirmPendingChangesLoss()
+        {
+            RefreshPendingChangesState();
+
+            if (!CurrentDataContext.HasPendingChanges) return true;
+
+            var answer = System.Windows.MessageBox.Show(
+                McgWpfTools.GetStringResource("SRP_MsgConfirmLosePendingChanges"),
+                McgWpfTools.GetStringResource("SRP_WindowTitle"),
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Warning);
+
+            return answer == System.Windows.MessageBoxResult.Yes;
+        }
+
+        /// <summary>
+        /// Abonne la ligne au suivi des modifications afin de maintenir a jour
+        /// l'indicateur global <see cref="SimplifiedRepDataContext.HasPendingChanges"/>.
+        /// </summary>
+        private void SubscribeToPendingChange(SimplifiedRepComponentItem item)
+        {
+            item.PendingChangeEvent -= OnItemPendingChanged;
+            item.PendingChangeEvent += OnItemPendingChanged;
+        }
+
+        private void OnItemPendingChanged(object? sender, EventArgs e)
+        {
+            RefreshPendingChangesState();
         }
 
         /// <summary>
@@ -1077,6 +1205,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                         // ulterieures de l'utilisateur seront renvoyees a Creo.
                         item.CaptureBaseline();
                     }
+
+                    RefreshPendingChangesState();
                 });
 
                 TraceLog.AddTraceLog($"SimplifiedRep : etats charges pour la representation '{simpRepName}'.");
@@ -1107,6 +1237,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 item.SelectedComponentSimpRep = string.Empty;
                 item.CaptureBaseline();
             }
+
+            RefreshPendingChangesState();
         }
 
         /// <summary>
@@ -1151,6 +1283,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             CurrentDataContext.IsAssemblyLoaded = false;
             CurrentDataContext.NbModels = 0;
             CurrentDataContext.NbModelsInProgress = 0;
+            CurrentDataContext.HasPendingChanges = false;
+            _lastLoadedSimpRepName = string.Empty;
         }
 
         /// <summary>Charge la liste des representations simplifiees existantes du modele actif.</summary>
@@ -1198,7 +1332,11 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     ComponentInfo = component
                 };
 
-                MainDispatcher.Invoke(() => CurrentDataContext.ListItem.Add(item));
+                MainDispatcher.Invoke(() =>
+                {
+                    SubscribeToPendingChange(item);
+                    CurrentDataContext.ListItem.Add(item);
+                });
 
                 CurrentDataContext.NbModelsInProgress++;
             }

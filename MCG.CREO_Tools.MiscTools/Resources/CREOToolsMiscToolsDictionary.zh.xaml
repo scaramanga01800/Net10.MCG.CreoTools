@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">模型已成功保存。</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">选中或取消选中所有组件。</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">没有需要应用到简化表示的更改。</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">存在未保存的更改。如果继续，这些更改将会丢失。&#x0a;是否继续？</system:String>
     <system:String x:Key="SRP_MasterRep">主表示</system:String>
     <system:String x:Key="SRP_RibGrpSelection">选择</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">包含</system:String>

@@ -10,6 +10,8 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         bool IsAssemblyLoaded { get; set; }
         bool IsSimpRepSelected { get; set; }
         bool IsMultiSelectionActive { get; set; }
+        bool IsSelectionActionEnabled { get; }
+        bool HasPendingChanges { get; set; }
         string SelectedCommonSimpRep { get; set; }
         ObservableCollection<string> ListCommonSimpRep { get; set; }
 

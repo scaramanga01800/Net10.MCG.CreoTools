@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">O modelo foi guardado com êxito.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Selecionar ou desmarcar todos os componentes.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Nenhuma alteração a aplicar à representação simplificada.</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">Existem alterações não guardadas. Se continuar, essas alterações serão perdidas.&#x0a;Pretende continuar?</system:String>
     <system:String x:Key="SRP_MasterRep">Repr. Principal</system:String>
     <system:String x:Key="SRP_RibGrpSelection">Seleção</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">Incluir</system:String>

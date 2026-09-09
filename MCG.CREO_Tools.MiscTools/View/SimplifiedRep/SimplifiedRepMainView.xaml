@@ -155,7 +155,7 @@
                      Elles ne modifient que la grille : la mise a jour Creo reste
                      declenchee par le bouton "Mettre a jour". -->
                 <Fluent:RibbonGroupBox Header="{DynamicResource SRP_RibGrpSelection}"
-                                       IsEnabled="{Binding CurrentDataContext.IsMultiSelectionActive}">
+                                       IsEnabled="{Binding CurrentDataContext.IsSelectionActionEnabled}">
                     <Fluent:Button Command="{Binding CommandIncludeSelection}"
                                    Header="{DynamicResource SRP_BtIncludeSelection}"
                                    LargeIcon="{StaticResource INCLUDE}"
@@ -214,6 +214,17 @@
                       SelectionUnit="FullRow"
                       SelectionChanged="DgComponents_SelectionChanged"
                       ItemsSource="{Binding CurrentDataContext.ListItem}">
+                <!-- Les lignes modifiees et non sauvegardees sont surlignees en jaune pale.
+                     Le declencheur suit IsModified, recalculee a chaque changement d'action. -->
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsModified}" Value="True">
+                                <Setter Property="Background" Value="#FFFFF6CC" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{DynamicResource SRP_Column_Index}"
                                         Binding="{Binding TreeIndex}"

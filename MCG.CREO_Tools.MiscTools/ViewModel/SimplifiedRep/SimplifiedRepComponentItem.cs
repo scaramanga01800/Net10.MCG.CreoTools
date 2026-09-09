@@ -103,6 +103,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(CurrentAction));
+                    NotifyPendingChange();
                     RaiseIsIncludedEvent();
                 }
             }
@@ -151,6 +152,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                     this._SelectedComponentSimpRep = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(CurrentAction));
+                    NotifyPendingChange();
                 }
             }
         }
@@ -202,6 +204,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             _BaselineIsIncluded = _IsIncluded;
             _BaselineSubstitutedSimpRepName = EffectiveSubstitution;
+
+            // L'etat de reference vient d'etre recale : la ligne n'est plus consideree
+            // comme modifiee et le surlignage doit disparaitre.
+            NotifyPendingChange();
         }
 
         /// <summary>
@@ -227,6 +233,29 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
                 return _IsIncluded != _BaselineIsIncluded;
             }
         }
+
+        /// <summary>
+        /// Expose <see cref="HasPendingChange"/> a la vue : la ligne est surlignee
+        /// tant que la modification n'est pas sauvegardee ou abandonnee.
+        /// </summary>
+        public bool IsModified => HasPendingChange;
+
+        /// <summary>
+        /// Signale a la vue et au view model que l'etat "modifie" de la ligne a pu changer.
+        /// </summary>
+        private void NotifyPendingChange()
+        {
+            OnPropertyChanged(nameof(IsModified));
+            OnPropertyChanged(nameof(HasPendingChange));
+
+            try
+            {
+                PendingChangeEvent?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+            }
+        }
         #endregion
 
         #region [REGION] Events
@@ -235,6 +264,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         /// Permet a la vue de gerer la multiselection avec la touche MAJ.
         /// </summary>
         public event EventHandler? IsIncludedEvent;
+
+        /// <summary>
+        /// Declenche des que l'etat "modifie" de la ligne est susceptible d'avoir change.
+        /// Permet au view model de recalculer l'indicateur global de modifications en attente.
+        /// </summary>
+        public event EventHandler? PendingChangeEvent;
 
         /// <summary>Notifie la vue qu'une case a ete cochee ou decochee.</summary>
         public void RaiseIsIncludedEvent()

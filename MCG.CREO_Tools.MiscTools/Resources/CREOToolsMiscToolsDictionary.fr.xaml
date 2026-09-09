@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">Le modèle a été sauvegardé avec succès.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Cocher ou décocher tous les composants.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Aucune modification à appliquer à la représentation simplifiée.</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">Des modifications non sauvegardées sont en cours. Si vous continuez, ces modifications seront perdues.&#x0a;Voulez-vous continuer ?</system:String>
     <system:String x:Key="SRP_MasterRep">Rep. Maîtresse</system:String>
     <system:String x:Key="SRP_RibGrpSelection">Sélection</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">Inclure</system:String>

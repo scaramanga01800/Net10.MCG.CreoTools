@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">Il modello è stato salvato correttamente.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Seleziona o deseleziona tutti i componenti.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">Nessuna modifica da applicare alla rappresentazione semplificata.</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">Sono presenti modifiche non salvate. Se si continua, tali modifiche andranno perse.&#x0a;Continuare?</system:String>
     <system:String x:Key="SRP_MasterRep">Rappr. principale</system:String>
     <system:String x:Key="SRP_RibGrpSelection">Selezione</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">Includi</system:String>

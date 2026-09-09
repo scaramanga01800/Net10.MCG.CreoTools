@@ -485,6 +485,7 @@
     <system:String x:Key="SRP_MsgSaveSuccess">The model has been saved successfully.</system:String>
     <system:String x:Key="SRP_ToolTipSelectAll">Select or clear all components.</system:String>
     <system:String x:Key="SRP_MsgNoChangeToApply">No change to apply to the simplified representation.</system:String>
+        <system:String x:Key="SRP_MsgConfirmLosePendingChanges">There are unsaved changes. If you continue, these changes will be lost.&#x0a;Do you want to continue?</system:String>
     <system:String x:Key="SRP_MasterRep">Master Rep.</system:String>
     <system:String x:Key="SRP_RibGrpSelection">Selection</system:String>
     <system:String x:Key="SRP_BtIncludeSelection">Include</system:String>
