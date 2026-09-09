@@ -44,6 +44,18 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
         private IpfcModel? _activeModel;
 
+        /// <summary>
+        /// Statut Creo/Windchill de l'assemblage actif, evalue a chaque lecture.
+        /// </summary>
+        private CREOModelStatus _activeModelStatus = CREOModelStatus.UNKNOWNERROR;
+
+        /// <summary>
+        /// Vrai lorsque l'assemblage actif peut reellement etre modifie en session
+        /// (extrait, nouveau en session ou modifie localement). Sinon toute ecriture
+        /// est refusee par Creo (pfcExceptions::XToolkitCantModify).
+        /// </summary>
+        private bool _isActiveModelModifiable;
+
         /// <summary>Evite la reentrance lors de l'application de la case "tout cocher".</summary>
         private bool _isApplyingAllIncluded;
 
@@ -158,6 +170,18 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
 
                 CurrentDataContext.ActiveModelName = activeFileName;
 
+                // L'assemblage doit etre modifiable en session : sans cela, Creo rejette
+                // toute creation / modification de representation simplifiee avec
+                // l'exception pfcExceptions::XToolkitCantModify.
+                // Le controle est fait AVANT le parcours de la structure : sur un gros
+                // assemblage la lecture est longue et serait inutile.
+                if (!CheckActiveModelIsModifiable(showMessage: true))
+                {
+                    _activeModel = null;
+                    MainDispatcher.Invoke(ResetContext);
+                    return;
+                }
+
                 // Traitements Creo executes hors du thread UI : chaque methode marshalle
                 // elle-meme ses ajouts dans les collections liees a la grille.
                 LoadSimpRepNames();
@@ -189,6 +213,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                if (!EnsureActiveModelIsModifiable()) return;
+
                 if (!ValidateNewSimpRepName(out var newName)) return;
 
                 // La creation active la nouvelle representation et recharge la grille.
@@ -250,6 +276,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                if (!EnsureActiveModelIsModifiable()) return;
+
                 var sourceName = CurrentDataContext.SelectedSimpRepName;
 
                 EnsureDefaultRuleList();
@@ -313,6 +341,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                if (!EnsureActiveModelIsModifiable()) return;
+
                 var simpRepName = CurrentDataContext.SelectedSimpRepName;
 
                 if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
@@ -450,6 +480,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                if (!EnsureActiveModelIsModifiable()) return;
+
                 var simpRepName = CurrentDataContext.SelectedSimpRepName;
 
                 if (_activeModel == null || string.IsNullOrWhiteSpace(simpRepName))
@@ -602,6 +634,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         {
             try
             {
+                if (!EnsureActiveModelIsModifiable()) return;
+
                 if (_activeModel == null)
                 {
                     ShowWarning("SRP_MsgNoActiveModel");
@@ -1050,6 +1084,66 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         }
         #endregion
 
+        /// <summary>
+        /// Verifie, juste avant une operation d'ecriture, que l'assemblage actif est
+        /// toujours modifiable. Le statut est reevalue afin de tenir compte d'une
+        /// extraction realisee dans Creo depuis la lecture de l'assemblage.
+        /// </summary>
+        private bool EnsureActiveModelIsModifiable()
+        {
+            return CheckActiveModelIsModifiable(showMessage: true);
+        }
+
+        /// <summary>
+        /// Evalue si l'assemblage actif est reellement modifiable en session.
+        ///
+        /// Un modele extrait (CHECKEDOUT), nouveau en session (NEWINSESSION) ou modifie
+        /// localement (LOCALLYMODIFIED) peut etre modifie. Tout autre statut correspond a
+        /// un modele en lecture seule : Creo refuserait alors la creation ou la mise a jour
+        /// d'une representation simplifiee avec pfcExceptions::XToolkitCantModify.
+        /// </summary>
+        /// <param name="showMessage">Affiche un avertissement si le modele n'est pas modifiable.</param>
+        private bool CheckActiveModelIsModifiable(bool showMessage)
+        {
+            try
+            {
+                if (_activeModel == null)
+                {
+                    _activeModelStatus = CREOModelStatus.UNKNOWNERROR;
+                    _isActiveModelModifiable = false;
+                }
+                else
+                {
+                    _activeModelStatus = _creoModelService.GetModelStatus(_activeModel);
+
+                    _isActiveModelModifiable =
+                        _activeModelStatus == CREOModelStatus.CHECKEDOUT
+                        || _activeModelStatus == CREOModelStatus.NEWINSESSION
+                        || _activeModelStatus == CREOModelStatus.LOCALLYMODIFIED;
+                }
+            }
+            catch
+            {
+                // Statut indeterminable : le modele est considere comme non modifiable
+                // afin de ne jamais tenter une ecriture qui echouerait cote Creo.
+                _activeModelStatus = CREOModelStatus.UNKNOWNERROR;
+                _isActiveModelModifiable = false;
+            }
+
+            CurrentDataContext.IsActiveModelModifiable = _isActiveModelModifiable;
+
+            if (!_isActiveModelModifiable)
+            {
+                TraceLog.AddTraceLog($"SimplifiedRep : assemblage non modifiable " +
+                                     $"(statut {_activeModelStatus}).");
+
+                if (showMessage)
+                    MainDispatcher.Invoke(() => ShowWarning("SRP_MsgModelNotModifiable"));
+            }
+
+            return _isActiveModelModifiable;
+        }
+
         /// <summary>Affiche un message d'information localise.</summary>
         private static void ShowInformation(string resourceKey)
         {
@@ -1375,6 +1469,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             CurrentDataContext.NbModels = 0;
             CurrentDataContext.NbModelsInProgress = 0;
             CurrentDataContext.HasPendingChanges = false;
+            // Aucun assemblage exploitable : plus aucune ecriture n'est autorisee.
+            CurrentDataContext.IsActiveModelModifiable = false;
+            _isActiveModelModifiable = false;
+            _activeModelStatus = CREOModelStatus.UNKNOWNERROR;
             _lastLoadedSimpRepName = string.Empty;
         }
 

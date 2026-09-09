@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">Nenhuma outra ocorrência deste modelo foi encontrada na montagem.</system:String>
     <system:String x:Key="SRP_Column_Type">Tipo</system:String>
     <system:String x:Key="SRP_Column_SubType">Subtipo</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">A montagem ativa não é modificável na sessão.&#x0a;Faça o check-out no Windchill antes de criar ou atualizar uma representação simplificada.</system:String>
 </ResourceDictionary>

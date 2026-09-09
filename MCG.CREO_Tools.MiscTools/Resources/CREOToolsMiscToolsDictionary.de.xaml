@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">Es wurde kein weiteres Vorkommen dieses Modells in der Baugruppe gefunden.</system:String>
     <system:String x:Key="SRP_Column_Type">Typ</system:String>
     <system:String x:Key="SRP_Column_SubType">Untertyp</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">Die aktive Baugruppe ist in der Sitzung nicht änderbar.&#x0a;Checken Sie sie in Windchill aus, bevor Sie eine vereinfachte Darstellung erstellen oder ändern.</system:String>
 </ResourceDictionary>

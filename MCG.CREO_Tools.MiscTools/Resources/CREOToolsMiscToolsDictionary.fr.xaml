@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">Aucune autre occurrence de ce modèle n'a été trouvée dans l'assemblage.</system:String>
     <system:String x:Key="SRP_Column_Type">Type</system:String>
     <system:String x:Key="SRP_Column_SubType">Sous-type</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">L'assemblage actif n'est pas modifiable en session.&#x0a;Récupérez-le (check-out) dans Windchill avant de créer ou de modifier une représentation simplifiée.</system:String>
 </ResourceDictionary>

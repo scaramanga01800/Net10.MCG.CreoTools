@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">Nessun'altra occorrenza di questo modello è stata trovata nell'assieme.</system:String>
     <system:String x:Key="SRP_Column_Type">Tipo</system:String>
     <system:String x:Key="SRP_Column_SubType">Sottotipo</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">L'assieme attivo non è modificabile nella sessione.&#x0a;Eseguire il check-out in Creo prima di creare o modificare una rappresentazione semplificata.</system:String>
 </ResourceDictionary>

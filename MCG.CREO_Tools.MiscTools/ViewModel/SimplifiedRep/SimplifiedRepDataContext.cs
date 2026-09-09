@@ -50,6 +50,26 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
             }
         }
 
+        private bool _IsActiveModelModifiable;
+        /// <summary>
+        /// Vrai lorsque l'assemblage actif est modifiable en session (extrait, nouveau
+        /// en session ou modifie localement). Sinon Creo refuse toute ecriture sur les
+        /// representations simplifiees et les actions du ruban sont desactivees.
+        /// </summary>
+        public bool IsActiveModelModifiable
+        {
+            get { return _IsActiveModelModifiable; }
+            set
+            {
+                if (this._IsActiveModelModifiable != value)
+                {
+                    this._IsActiveModelModifiable = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSelectionActionEnabled));
+                }
+            }
+        }
+
         private bool _IsSimpRepSelected;
         public bool IsSimpRepSelected
         {
@@ -188,9 +208,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep
         /// Les actions de masse ne modifient la grille que pour une representation simplifiee
         /// donnee : elles restent donc inactives tant que les actions du groupe "Actions"
         /// le sont, meme si des lignes sont selectionnees.
+        /// Un assemblage non modifiable en session desactive egalement ces actions.
         /// </summary>
         public bool IsSelectionActionEnabled =>
-            IsSimpRepSelected && IsMultiSelectionActive && !IsPleaseWaitShown;
+            IsSimpRepSelected && IsMultiSelectionActive && !IsPleaseWaitShown && IsActiveModelModifiable;
 
         private string _SelectedCommonSimpRep = string.Empty;
         /// <summary>

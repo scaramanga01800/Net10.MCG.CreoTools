@@ -8,6 +8,7 @@ namespace MCG.CREO_Tools.MiscTools.View.SimplifiedRep
         bool IsCreoConnected { get; set; }
         bool IsPleaseWaitShown { get; set; }
         bool IsAssemblyLoaded { get; set; }
+        bool IsActiveModelModifiable { get; set; }
         bool IsSimpRepSelected { get; set; }
         bool IsMultiSelectionActive { get; set; }
         bool IsSelectionActionEnabled { get; }

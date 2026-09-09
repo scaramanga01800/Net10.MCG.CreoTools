@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">在装配中未找到该模型的其他引用。</system:String>
     <system:String x:Key="SRP_Column_Type">类型</system:String>
     <system:String x:Key="SRP_Column_SubType">子类型</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">当前装配在会话中不可修改。&#x0a;请先在 Windchill 中检出，然后再创建或修改简化表示。</system:String>
 </ResourceDictionary>

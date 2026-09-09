@@ -503,4 +503,5 @@
     <system:String x:Key="SRP_MsgNoOtherInstance">No other occurrence of this model was found in the assembly.</system:String>
     <system:String x:Key="SRP_Column_Type">Type</system:String>
     <system:String x:Key="SRP_Column_SubType">Sub-type</system:String>
+    <system:String x:Key="SRP_MsgModelNotModifiable">The active assembly is not modifiable in session.&#x0a;Check it out in Windchill before creating or updating a simplified representation.</system:String>
 </ResourceDictionary>
