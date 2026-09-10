@@ -372,9 +372,11 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 }
 
                 // Version config
+                // Une configuration sans version est une configuration ancienne : elle
+                // recoit une version plancher afin d'etre migree integralement.
                 if (string.IsNullOrWhiteSpace(_userConfiguration.ConfigVersion))
                 {
-                    _userConfiguration.ConfigVersion = "12.10";
+                    _userConfiguration.ConfigVersion = CREOToolsConstants.UserConfigLegacyVersion;
                 }
 
                 // Couleur
@@ -388,12 +390,80 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                 {
                     _userConfiguration.AppVisible = _appConfiguration.AppAvailable;
                 }
+
+                // Migration silencieuse des configurations utilisateur anterieures :
+                // active les applications ajoutees depuis la version locale.
+                MigrateUserConfiguration();
             }
             catch (Exception ex)
             {
                 TraceLog.AddTraceLog($"LoadConfigurations failed: {ex.Message}");
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Migre silencieusement le fichier de configuration utilisateur local.
+        ///
+        /// Les proprietes de AppVisible sont des bool non nullables : une application
+        /// absente du fichier XML est desserialisee a false, ce qui la rendrait invisible
+        /// pour les utilisateurs disposant deja d'un CreoToolsUserConfig.xml.
+        /// Il est impossible de distinguer "noeud absent" de "decoche volontairement",
+        /// la migration s'appuie donc sur la version du fichier.
+        ///
+        /// Pour chaque palier de version, seules les applications nouvellement ajoutees
+        /// sont activees : les choix de l'utilisateur sur les applications existantes
+        /// sont integralement preserves.
+        ///
+        /// La migration est silencieuse : aucun message n'est affiche.
+        /// </summary>
+        private void MigrateUserConfiguration()
+        {
+            try
+            {
+                var currentVersion = ParseConfigVersion(_userConfiguration.ConfigVersion);
+                var targetVersion = ParseConfigVersion(CREOToolsConstants.UserConfigVersion);
+
+                if (currentVersion >= targetVersion) return;
+
+                var appVisible = _userConfiguration.AppVisible;
+                if (appVisible == null) return;
+
+                // Palier 12.12 : ajout de l'application "Representations simplifiees".
+                // Le palier est en 12.12 et non en 12.11 : des utilisateurs de test ont
+                // deja execute une version 12.11 et possedent donc une configuration
+                // locale portant cette version, sans le noeud QlSimplifiedRep.
+                if (currentVersion < ParseConfigVersion("12.12"))
+                {
+                    appVisible.QlSimplifiedRep = true;
+                }
+
+                TraceLog.AddTraceLog($"Configuration utilisateur migree de " +
+                                     $"'{_userConfiguration.ConfigVersion}' vers " +
+                                     $"'{CREOToolsConstants.UserConfigVersion}'.");
+
+                _userConfiguration.ConfigVersion = CREOToolsConstants.UserConfigVersion;
+
+                // La nouvelle version doit etre persistee, sinon la migration serait
+                // rejouee a chaque demarrage.
+                _xmlSerializeTools.SerializedXmlInAppData<CREOToolsUserConfiguration>(_userConfiguration, UserConfigPath);
+            }
+            catch (Exception ex)
+            {
+                // Une migration en echec ne doit jamais empecher le demarrage de l'application.
+                TraceLog.AddTraceLog($"MigrateUserConfiguration failed: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Convertit une version de configuration ("12.11") en valeur comparable.
+        /// Retourne la version plancher si la chaine est absente ou invalide.
+        /// </summary>
+        private static Version ParseConfigVersion(string configVersion)
+        {
+            if (Version.TryParse(configVersion, out var version)) return version;
+
+            return new Version(0, 0);
         }
 
         private CREOToolsLanguageSelection GetDefaultLanguage(CREOToolsConfiguration _appConfiguration)
