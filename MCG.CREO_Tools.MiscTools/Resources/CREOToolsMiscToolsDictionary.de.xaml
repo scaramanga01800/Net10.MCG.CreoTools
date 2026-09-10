@@ -465,7 +465,7 @@
     <system:String x:Key="SRP_Column_Included">Enthalten</system:String>
     <system:String x:Key="SRP_Column_Action">Aktion</system:String>
     <system:String x:Key="SRP_Column_UserDefined">Benutzerdefinierte Darstellung</system:String>
-    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+    <system:String x:Key="SRP_UserGuide">APP037EN.PDF</system:String>
 
     <system:String x:Key="SRP_MsgNoActiveModel">Kein aktives Modell in der CREO-Sitzung. Bitte öffnen Sie eine Baugruppe.</system:String>
     <system:String x:Key="SRP_MsgNotAnAssembly">Das aktive Modell ist keine Baugruppe. Vereinfachte Darstellungen erfordern eine Baugruppe.</system:String>

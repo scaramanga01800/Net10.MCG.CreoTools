@@ -465,7 +465,7 @@
     <system:String x:Key="SRP_Column_Included">Inclus</system:String>
     <system:String x:Key="SRP_Column_Action">Action</system:String>
     <system:String x:Key="SRP_Column_UserDefined">Représentation définie par l'utilisateur</system:String>
-    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+    <system:String x:Key="SRP_UserGuide">APP037FR.PDF</system:String>
 
     <system:String x:Key="SRP_MsgNoActiveModel">Aucun modèle actif dans la session CREO. Veuillez ouvrir un assemblage.</system:String>
     <system:String x:Key="SRP_MsgNotAnAssembly">Le modèle actif n'est pas un assemblage. Les représentations simplifiées nécessitent un assemblage.</system:String>

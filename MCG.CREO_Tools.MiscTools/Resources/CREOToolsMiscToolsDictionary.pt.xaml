@@ -465,7 +465,7 @@
     <system:String x:Key="SRP_Column_Included">Incluído</system:String>
     <system:String x:Key="SRP_Column_Action">Ação</system:String>
     <system:String x:Key="SRP_Column_UserDefined">Representação definida pelo utilizador</system:String>
-    <system:String x:Key="SRP_UserGuide">NOUSERGUIDE.PDF</system:String>
+    <system:String x:Key="SRP_UserGuide">APP037EN.PDF</system:String>
 
     <system:String x:Key="SRP_MsgNoActiveModel">Nenhum modelo ativo na sessão CREO. Abra uma montagem.</system:String>
     <system:String x:Key="SRP_MsgNotAnAssembly">O modelo ativo não é uma montagem. As representações simplificadas requerem uma montagem.</system:String>
