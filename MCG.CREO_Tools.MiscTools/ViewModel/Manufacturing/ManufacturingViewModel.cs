@@ -7,6 +7,8 @@ using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.View.Manufacturing;
 using pfcls;
+using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -150,7 +152,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 CheckActiveModelIsModifiable(showMessage: false);
 
                 _treeIndexCounter = 0;
-                ReadComponentsRecursive(_activeModel, level: 0, parentNumber: string.Empty);
+                ReadAllLevels(_activeModel);
 
                 CurrentDataContext.IsAssemblyLoaded = true;
 
@@ -169,39 +171,51 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         }
 
         /// <summary>
-        /// Parcourt recursivement les composants de premier niveau de <paramref name="assemblyModel"/>
-        /// et, pour chaque sous-assemblage, reapplique le meme parcours sur son propre modele.
-        /// Compose exclusivement des methodes deja verifiees de <see cref="ICreoSimpRepService"/>
-        /// (ListTopLevelComponents, GetComponentModel) : aucune API de parcours recursif n'est
-        /// invoquee, la recursion est geree cote ViewModel.
+        /// Noeud opaque du parcours de nomenclature : associe un composant Creo verifie
+        /// (<see cref="CreoSimpRepComponentInfo"/>) au modele qu'il reference, deja resolu via
+        /// <see cref="ICreoSimpRepService.GetComponentModel(IpfcComponentFeat)"/>. Permet au
+        /// service de parcours generique (<see cref="ManufacturingBomTraversalService"/>) de
+        /// rester totalement independant de Creo.
         /// </summary>
-        private void ReadComponentsRecursive(IpfcModel assemblyModel, int level, string parentNumber)
+        private sealed class ManufacturingBomNode
         {
-            // Garde-fou contre une boucle de reference anormale dans la structure Creo.
-            if (level >= MiscToolsConstants.MaxBomLevel) return;
+            public required CreoSimpRepComponentInfo Component { get; init; }
+            public required IpfcModel? ComponentModel { get; init; }
+        }
 
-            var components = _creoSimpRepService.ListTopLevelComponents(assemblyModel);
+        /// <summary>
+        /// Lit l'integralite des niveaux de la nomenclature de <paramref name="assemblyModel"/> en
+        /// s'appuyant sur <see cref="ManufacturingBomTraversalService"/> pour la numerotation, la
+        /// detection de cycle et la detection de doublon. Compose exclusivement des methodes deja
+        /// verifiees de <see cref="ICreoSimpRepService"/> (ListTopLevelComponents, GetComponentModel) :
+        /// aucune API de parcours recursif n'est invoquee, la recursion reste geree par le service
+        /// de parcours pur, independant de Creo.
+        /// </summary>
+        private void ReadAllLevels(IpfcModel assemblyModel)
+        {
+            var rootChildren = GetChildNodes(assemblyModel);
 
-            int localIndex = 0;
+            var visitResults = ManufacturingBomTraversalService.Traverse(
+                rootChildren,
+                getChildren: node => node.ComponentModel != null
+                    ? GetChildNodes(node.ComponentModel)
+                    : Array.Empty<ManufacturingBomNode>(),
+                getModelKey: node => node.Component.ModelKey,
+                isExpandable: node => node.ComponentModel != null && IsAssemblyModelKey(node.Component.ModelKey),
+                maxLevel: MiscToolsConstants.MaxBomLevel);
 
-            foreach (var component in components)
+            foreach (var visit in visitResults)
             {
-                localIndex++;
                 _treeIndexCounter++;
 
-                var hierarchicalNumber = string.IsNullOrEmpty(parentNumber)
-                    ? localIndex.ToString()
-                    : $"{parentNumber}.{localIndex}";
-
-                var componentModel = component.ComponentFeature != null
-                    ? _creoSimpRepService.GetComponentModel(component.ComponentFeature)
-                    : null;
+                var component = visit.Node.Component;
+                var componentModel = visit.Node.ComponentModel;
 
                 var item = new ManufacturingComponentItem
                 {
                     TreeIndex = _treeIndexCounter,
-                    Level = level,
-                    HierarchicalNumber = hierarchicalNumber,
+                    Level = visit.Level,
+                    HierarchicalNumber = visit.HierarchicalNumber,
                     ComponentId = component.Id,
                     Name = component.Name,
                     Reference = componentModel != null ? GetModelParameter(componentModel, "REFERENCE") : string.Empty,
@@ -210,6 +224,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                     Description2_1 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_1") : string.Empty,
                     Description2_2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_2") : string.Empty,
                     DescriptionMth = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_MTH") : string.Empty,
+                    IsDuplicateModel = visit.IsDuplicateModel,
+                    IsCycleDetected = visit.IsCycleDetected,
                 };
 
                 // L'etat lu dans Creo devient la reference : tant qu'aucune saisie manuelle ne
@@ -223,15 +239,46 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                     CurrentDataContext.NbModels++;
                     CurrentDataContext.NbModelsInProgress++;
                 });
-
-                // Un sous-assemblage est identifie par l'extension .ASM portee par l'identite du
-                // modele Creo reference (CreoSimpRepComponentInfo.ModelKey), au meme titre que le
-                // controle deja effectue sur le nom du modele actif lors de la lecture initiale.
-                if (componentModel != null && IsAssemblyModelKey(component.ModelKey))
-                {
-                    ReadComponentsRecursive(componentModel, level + 1, hierarchicalNumber);
-                }
             }
+        }
+
+        /// <summary>
+        /// Liste les composants de premier niveau de <paramref name="assemblyModel"/> et resout,
+        /// pour chacun, le modele reference (couteux mais deja fait ainsi avant cette evolution).
+        /// Un composant dont le modele ne peut pas etre resolu est neanmoins liste (traite comme
+        /// une feuille), conformement a la regle : un composant illisible n'interrompt pas le
+        /// parcours du reste de la nomenclature.
+        /// </summary>
+        private List<ManufacturingBomNode> GetChildNodes(IpfcModel assemblyModel)
+        {
+            var components = _creoSimpRepService.ListTopLevelComponents(assemblyModel);
+
+            var nodes = new List<ManufacturingBomNode>(components.Count);
+
+            foreach (var component in components)
+            {
+                IpfcModel? componentModel = null;
+
+                try
+                {
+                    componentModel = component.ComponentFeature != null
+                        ? _creoSimpRepService.GetComponentModel(component.ComponentFeature)
+                        : null;
+                }
+                catch
+                {
+                    // Modele non resolvable (reference cassee, composant inaccessible, ...) :
+                    // le composant reste liste, sans descendance ni parametres.
+                }
+
+                nodes.Add(new ManufacturingBomNode
+                {
+                    Component = component,
+                    ComponentModel = componentModel
+                });
+            }
+
+            return nodes;
         }
 
         private static bool IsAssemblyModelKey(string modelKey)

@@ -410,6 +410,38 @@
             </Fluent:Button.ToolTip>
         </Fluent:Button>
 
+        <Fluent:Button Command="{Binding CommandNumberCumulation}"
+                       LargeIcon="{StaticResource NumberCumulation}"
+                       Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlNumberCumulation" />
+                    <Binding Path="AppAvailable.QlNumberCumulation" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolNumberCumulation}" 
+                                  Image="{StaticResource NumberCumulation}"
+                                  Text="{DynamicResource QL_ToolTipNumberCumulation}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandWebtermRequest}" 
+                LargeIcon="{StaticResource WebtermRequest}"
+                Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlWebtermRequest" />
+                    <Binding Path="AppAvailable.QlWebtermRequest" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolWebtermRequest}" 
+                           Image="{StaticResource WebtermRequest}"
+                           Text="{DynamicResource QL_ToolTipWebtermRequest}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
         <Fluent:Button Command="{Binding CommandManufacturingWorkInstruction}"
                LargeIcon="{StaticResource ManufacturingWorkInstruction}"
                Margin="2,0,2,0">
@@ -509,6 +541,7 @@
                   Text="{DynamicResource QL_ToolTitelEngTime}"/>
             </Fluent:Button.ToolTip>
         </Fluent:Button>
+        
         <Fluent:Button Command="{Binding CommandOpenCall}" 
                        LargeIcon="{StaticResource SERVICENOW}"
                        Header="{DynamicResource QL_ToolOpenCall}"

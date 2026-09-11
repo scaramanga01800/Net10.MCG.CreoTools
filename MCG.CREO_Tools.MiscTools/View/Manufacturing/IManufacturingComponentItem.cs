@@ -20,5 +20,17 @@ namespace MCG.CREO_Tools.MiscTools.View.Manufacturing
         string DescriptionMth { get; set; }
 
         bool IsModified { get; }
+
+        /// <summary>
+        /// Vrai si le modele reference par ce composant a deja ete rencontre ailleurs dans la
+        /// nomenclature (a un autre endroit de l'arbre, hors ascendance directe).
+        /// </summary>
+        bool IsDuplicateModel { get; set; }
+
+        /// <summary>
+        /// Vrai si ce composant a ete ecarte de l'expansion car son modele figure deja parmi ses
+        /// propres ancetres (cycle reel dans la structure de l'assemblage).
+        /// </summary>
+        bool IsCycleDetected { get; set; }
     }
 }

@@ -179,6 +179,43 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 }
             }
         }
+
+        private bool _IsDuplicateModel;
+        /// <summary>
+        /// Vrai si le modele reference par ce composant a deja ete rencontre ailleurs dans la
+        /// nomenclature (a un autre endroit de l'arbre, hors ascendance directe). Purement
+        /// informatif : n'empeche pas l'expansion du composant.
+        /// </summary>
+        public bool IsDuplicateModel
+        {
+            get { return _IsDuplicateModel; }
+            set
+            {
+                if (this._IsDuplicateModel != value)
+                {
+                    this._IsDuplicateModel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _IsCycleDetected;
+        /// <summary>
+        /// Vrai si ce composant a ete ecarte de l'expansion car son modele figure deja parmi ses
+        /// propres ancetres (cycle reel dans la structure de l'assemblage).
+        /// </summary>
+        public bool IsCycleDetected
+        {
+            get { return _IsCycleDetected; }
+            set
+            {
+                if (this._IsCycleDetected != value)
+                {
+                    this._IsCycleDetected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         #endregion
 
         #region [REGION] Baseline / Modification tracking
