@@ -41,6 +41,7 @@
 	<QlCraneSearch>true</QlCraneSearch>
 	  <QlKillCreoPrecesses>true</QlKillCreoPrecesses>
 	  <QlSimplifiedRep>true</QlSimplifiedRep>
+	  <QlManufacturingWorkInstruction>true</QlManufacturingWorkInstruction>
   </AppAvailable>
   
   <!--Define if Applications are shown by default in CREO Tool-->
@@ -82,6 +83,7 @@
 	<QlCraneSearch>true</QlCraneSearch>
 	<QlKillCreoPrecesses>true</QlKillCreoPrecesses>
 	<QlSimplifiedRep>true</QlSimplifiedRep>
+	<QlManufacturingWorkInstruction>true</QlManufacturingWorkInstruction>
   </AppVisible>  
     
   <IsScrollingTextVisible>false</IsScrollingTextVisible>

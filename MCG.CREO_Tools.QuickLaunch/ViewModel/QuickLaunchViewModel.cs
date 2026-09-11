@@ -137,6 +137,7 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
         public ICommand CommandBomEnvirConfig { get => new RelayCommand(() => ExecuteBomEnvirConfig()); }
         public ICommand CommandUpdateRelationsParameters { get => new RelayCommand(() => ExecuteUpdateRelationsParameters()); }
         public ICommand CommandSimplifiedRep { get => new RelayCommand(() => ExecuteSimplifiedRep()); }
+        public ICommand CommandManufacturingWorkInstruction { get => new RelayCommand(() => ExecuteManufacturingWorkInstruction()); }
         public ICommand CommandOpenCall { get => new RelayCommand<bool>((param) => ExecuteOpenCall(param)); }
         #endregion
 
@@ -411,6 +412,19 @@ namespace MCG.CREO_Tools.QuickLaunch.ViewModel
             {
                 TraceLog.AddTraceLog($"Enter ExecuteSimplifiedRep App");
                 _miscToolsWindchillService.ShowSimplifiedRepMainView(true);
+            }
+            catch (Exception ex)
+            {
+                QuickLaunchException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void ExecuteManufacturingWorkInstruction()
+        {
+            try
+            {
+                TraceLog.AddTraceLog($"Enter ExecuteManufacturingWorkInstruction App");
+                _miscToolsWindchillService.ShowManufacturingMainView(true);
             }
             catch (Exception ex)
             {

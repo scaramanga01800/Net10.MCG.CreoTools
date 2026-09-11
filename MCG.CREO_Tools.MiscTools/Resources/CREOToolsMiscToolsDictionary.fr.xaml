@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">Type</system:String>
     <system:String x:Key="SRP_Column_SubType">Sous-type</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">L'assemblage actif n'est pas modifiable en session.&#x0a;Récupérez-le (check-out) dans Windchill avant de créer ou de modifier une représentation simplifiée.</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">Instruction de fabrication</system:String>
+    <system:String x:Key="MFG_RibGrpModel">Modèle</system:String>
+    <system:String x:Key="MFG_BtReadAsm">Lire assemblage</system:String>
+    <system:String x:Key="MFG_BtUpdate">Mise à jour</system:String>
+    <system:String x:Key="MFG_BtSave">Sauvegarde</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">Création du PVZ</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">Lire l'assemblage actif et lister ses composants de façon hiérarchique.</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">Mettre à jour les paramètres de fabrication des composants modifiés.</system:String>
+    <system:String x:Key="MFG_ToolTipSave">Sauvegarder l'assemblage actif.</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">Créer le fichier PVZ pour l'assemblage actif.</system:String>
+    <system:String x:Key="MFG_Column_Number">Numéro</system:String>
+    <system:String x:Key="MFG_Column_Name">Composant</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">Aucun modèle actif dans la session CREO. Veuillez ouvrir un assemblage.</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">Le modèle actif n'est pas un assemblage.</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">Le modèle n'a pas pu être sauvegardé.</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">Le modèle a été sauvegardé avec succès.</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">L'assemblage actif n'est pas modifiable en session.&#x0a;Récupérez-le (check-out) dans Windchill avant de mettre à jour les paramètres de fabrication.</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'action "Mise à jour" n'est pas encore implémentée.</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'action "Création du PVZ" n'est pas encore implémentée.</system:String>
 </ResourceDictionary>

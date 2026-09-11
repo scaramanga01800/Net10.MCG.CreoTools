@@ -27,6 +27,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolTipCreateUpdateWtDocPart">Create or update WTDocument and WTPart</system:String>
     <system:String x:Key="QL_ToolSimplifiedRep">Simplified Representations</system:String>
     <system:String x:Key="QL_ToolTipSimplifiedRep">Create and edit simplified representations of an assembly</system:String>
+    <system:String x:Key="QL_ToolManufacturingWorkInstruction">Manufacturing Work Instruction</system:String>
+    <system:String x:Key="QL_ToolTipManufacturingWorkInstruction">Create and edit the manufacturing work instruction of an assembly</system:String>
     <system:String x:Key="QL_RibGrpLink">Links</system:String>
     <system:String x:Key="QL_RibGrpApp">Applications</system:String>
     <system:String x:Key="QL_CreoCnxMsgTitle">CREO Connection Issue</system:String>

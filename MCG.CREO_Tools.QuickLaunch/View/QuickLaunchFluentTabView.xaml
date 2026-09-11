@@ -42,6 +42,7 @@
             <BitmapImage x:Key="CadUpdateRelationsParameters" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update_Params.png"  />
             <BitmapImage x:Key="CRANE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/crane.ico" />
             <BitmapImage x:Key="SimplifiedRep" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CreoSimpRep.png" />
+            <BitmapImage x:Key="ManufacturingWorkInstruction" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part.ico" />
             <BitmapImage x:Key="SERVICENOW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/servicenow.ico" />
             <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
             <conv:BoolToVisibilityMultiAndConverter x:Key="MultiAndBoolConv"/>
@@ -406,6 +407,22 @@
                 <Fluent:ScreenTip Title="{DynamicResource QL_ToolSimplifiedRep}" 
                           Image="{StaticResource SimplifiedRep}"
                           Text="{DynamicResource QL_ToolTipSimplifiedRep}"/>
+            </Fluent:Button.ToolTip>
+        </Fluent:Button>
+
+        <Fluent:Button Command="{Binding CommandManufacturingWorkInstruction}"
+               LargeIcon="{StaticResource ManufacturingWorkInstruction}"
+               Margin="2,0,2,0">
+            <Fluent:Button.Visibility>
+                <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
+                    <Binding Path="AppVisible.QlManufacturingWorkInstruction" />
+                    <Binding Path="AppAvailable.QlManufacturingWorkInstruction" />
+                </MultiBinding>
+            </Fluent:Button.Visibility>
+            <Fluent:Button.ToolTip>
+                <Fluent:ScreenTip Title="{DynamicResource QL_ToolManufacturingWorkInstruction}" 
+                          Image="{StaticResource ManufacturingWorkInstruction}"
+                          Text="{DynamicResource QL_ToolTipManufacturingWorkInstruction}"/>
             </Fluent:Button.ToolTip>
         </Fluent:Button>
 

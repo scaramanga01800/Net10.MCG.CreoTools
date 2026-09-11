@@ -19,6 +19,7 @@ namespace MCG.CREO_Tools.QuickLaunch.View
         ICommand CommandEngTime { get; }
         ICommand CommandExportBom { get; }
         ICommand CommandKillCreoProcesses { get; }
+        ICommand CommandManufacturingWorkInstruction { get; }
         ICommand CommandMcgHelpOnline { get; }
         ICommand CommandMechanismAnalysis { get; }
         ICommand CommandNewCadDocument { get; }

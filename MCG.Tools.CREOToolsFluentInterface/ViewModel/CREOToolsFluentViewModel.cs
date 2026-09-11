@@ -438,6 +438,14 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
                     appVisible.QlSimplifiedRep = true;
                 }
 
+                // Palier 12.13 : ajout de l'application "Instruction de fabrication"
+                // (Manufacturing Work Instruction). Meme raisonnement que pour le palier
+                // 12.12 : toute configuration anterieure ne possede pas ce noeud.
+                if (currentVersion < ParseConfigVersion("12.13"))
+                {
+                    appVisible.QlManufacturingWorkInstruction = true;
+                }
+
                 TraceLog.AddTraceLog($"Configuration utilisateur migree de " +
                                      $"'{_userConfiguration.ConfigVersion}' vers " +
                                      $"'{CREOToolsConstants.UserConfigVersion}'.");

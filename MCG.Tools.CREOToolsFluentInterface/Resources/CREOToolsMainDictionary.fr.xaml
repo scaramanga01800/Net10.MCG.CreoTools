@@ -82,4 +82,5 @@
     <system:String x:Key="CT_MenuFont">Police:</system:String>
     <system:String x:Key="CT_MenuColor">Couleur:</system:String>
     <system:String x:Key="CT_MenuAppSimplifiedRep">Représentations simplifiées</system:String>
+    <system:String x:Key="CT_MenuAppManufacturingWorkInstruction">Instruction de fabrication</system:String>
 </ResourceDictionary>

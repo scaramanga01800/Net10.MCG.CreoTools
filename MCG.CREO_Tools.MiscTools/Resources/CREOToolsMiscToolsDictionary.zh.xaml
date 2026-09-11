@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">类型</system:String>
     <system:String x:Key="SRP_Column_SubType">子类型</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">当前装配在会话中不可修改。&#x0a;请先在 Windchill 中检出，然后再创建或修改简化表示。</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">制造作业指导书</system:String>
+    <system:String x:Key="MFG_RibGrpModel">模型</system:String>
+    <system:String x:Key="MFG_BtReadAsm">读取装配</system:String>
+    <system:String x:Key="MFG_BtUpdate">更新</system:String>
+    <system:String x:Key="MFG_BtSave">保存</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">创建 PVZ</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">读取当前装配并按层级列出其组件。</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">更新已修改组件的制造参数。</system:String>
+    <system:String x:Key="MFG_ToolTipSave">保存当前装配。</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">为当前装配创建 PVZ 文件。</system:String>
+    <system:String x:Key="MFG_Column_Number">编号</system:String>
+    <system:String x:Key="MFG_Column_Name">组件</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">CREO 会话中没有活动模型。请打开一个装配。</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">当前模型不是装配。</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">模型保存失败。</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">模型已成功保存。</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">当前装配在会话中不可修改。&#x0a;请先在 Windchill 中检出，然后再更新制造参数。</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">“更新”操作尚未实现。</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">“创建 PVZ”操作尚未实现。</system:String>
 </ResourceDictionary>

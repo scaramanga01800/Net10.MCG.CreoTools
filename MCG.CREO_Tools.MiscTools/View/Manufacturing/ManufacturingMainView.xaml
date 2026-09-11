@@ -1,0 +1,184 @@
+<Fluent:RibbonWindow x:Class="MCG.CREO_Tools.MiscTools.View.Manufacturing.ManufacturingMainView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:MCG.CREO_Tools.MiscTools.View.Manufacturing"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
+                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                     mc:Ignorable="d"
+                     Title="{DynamicResource MFG_WindowTitle}"
+                     Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CreoSimpRep.png"
+                     Height="600" Width="1350">
+
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="MFG_START" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Start.png"/>
+            <BitmapImage x:Key="MFG_UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png"/>
+            <BitmapImage x:Key="MFG_SAVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Save_32x32.png"/>
+            <BitmapImage x:Key="MFG_PVZ" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part.ico"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
+            <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
+            <conv:LevelConverter x:Key="LevelConv" />
+            <sys:Double x:Key="MFG_LevelIndent">16.0</sys:Double>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="ActiveModel"
+                                  HorizontalAlignment="Left"
+                                  Margin="5,0,0,0">
+                <TextBlock Text="{Binding CurrentDataContext.ActiveModelName}" />
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem Title="ProgressBar"
+                                  HorizontalAlignment="Right"
+                                  Margin="0,0,5,0">
+                <ProgressBar Height="18"
+                             Width="250"
+                             Maximum="{Binding CurrentDataContext.NbModels}"
+                             Value="{Binding CurrentDataContext.NbModelsInProgress}"
+                             Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}}">
+                    <ProgressBar.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding CurrentDataContext.NbModelsInProgress}"></TextBlock>
+                            <TextBlock Text="/"></TextBlock>
+                            <TextBlock Text="{Binding CurrentDataContext.NbModels}"></TextBlock>
+                        </StackPanel>
+                    </ProgressBar.ToolTip>
+                </ProgressBar>
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <Fluent:Ribbon DockPanel.Dock="Top"
+                       AreTabHeadersVisible="False">
+            <Fluent:RibbonTabItem>
+                <Fluent:RibbonGroupBox Header="{DynamicResource MFG_RibGrpModel}"
+                                       IsEnabled="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToInverseBoolConverter}}">
+                    <Fluent:Button Command="{Binding CommandReadAsm}"
+                                   Header="{DynamicResource MFG_BtReadAsm}"
+                                   LargeIcon="{StaticResource MFG_START}"
+                                   IsEnabled="{Binding CurrentDataContext.IsCreoConnected}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MFG_BtReadAsm}"
+                                              Text="{DynamicResource MFG_ToolTipReadAsm}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <!-- Commande "Mise a jour" : commande, activation et raccordement au ruban en
+                         place. L'ecriture effective des parametres Creo sera realisee dans une
+                         etape dediee. -->
+                    <Fluent:Button Command="{Binding CommandUpdateParameters}"
+                                   Header="{DynamicResource MFG_BtUpdate}"
+                                   LargeIcon="{StaticResource MFG_UPDATE}"
+                                   IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MFG_BtUpdate}"
+                                              Text="{DynamicResource MFG_ToolTipUpdate}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <Fluent:Button Command="{Binding CommandSaveModel}"
+                                   Header="{DynamicResource MFG_BtSave}"
+                                   LargeIcon="{StaticResource MFG_SAVE}"
+                                   IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MFG_BtSave}"
+                                              Text="{DynamicResource MFG_ToolTipSave}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <!-- Commande "Creation du PVZ" : commande, activation et raccordement au
+                         ruban en place. L'export sera realise dans une etape dediee. -->
+                    <Fluent:Button Command="{Binding CommandCreatePvz}"
+                                   Header="{DynamicResource MFG_BtCreatePvz}"
+                                   LargeIcon="{StaticResource MFG_PVZ}"
+                                   IsEnabled="{Binding CurrentDataContext.IsAssemblyLoaded}"
+                                   Margin="5,0,5,0">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="{DynamicResource MFG_BtCreatePvz}"
+                                              Text="{DynamicResource MFG_ToolTipCreatePvz}"/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+            <DataGrid x:Name="DgComponents"
+                      CanUserAddRows="False"
+                      AutoGenerateColumns="False"
+                      SelectionMode="Extended"
+                      SelectionUnit="FullRow"
+                      ItemsSource="{Binding CurrentDataContext.ListItem}">
+                <!-- Les lignes modifiees et non sauvegardees sont surlignees en jaune pale.
+                     La comparaison se fait contre la baseline capturee a la derniere lecture
+                     Creo (ManufacturingComponentItem.CaptureBaseline), pas uniquement contre
+                     l'etat courant du controle. -->
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsModified}" Value="True">
+                                <Setter Property="Background" Value="#FFFFF6CC" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_Number}"
+                                        Binding="{Binding HierarchicalNumber}"
+                                        Width="90"
+                                        IsReadOnly="True"/>
+                    <!-- Representation visuelle des niveaux de nomenclature : indentation du nom
+                         proportionnelle au niveau, combinee au numero hierarchique ci-dessus. -->
+                    <DataGridTemplateColumn Header="{DynamicResource MFG_Column_Name}"
+                                            Width="2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Margin>
+                                        <MultiBinding Converter="{StaticResource LevelConv}">
+                                            <Binding Path="Level" />
+                                            <Binding Source="{StaticResource MFG_LevelIndent}" />
+                                        </MultiBinding>
+                                    </StackPanel.Margin>
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- REFERENCE : modifiable manuellement. -->
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_Reference}"
+                                        Binding="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="140"
+                                        IsReadOnly="False"/>
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_PtcCommonName}"
+                                        Binding="{Binding PtcCommonName}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_Description2}"
+                                        Binding="{Binding Description2}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_Description2_1}"
+                                        Binding="{Binding Description2_1}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_Description2_2}"
+                                        Binding="{Binding Description2_2}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                    <!-- DESCRIPTION_MTH : modifiable manuellement. -->
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_DescriptionMth}"
+                                        Binding="{Binding DescriptionMth, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="160"
+                                        IsReadOnly="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

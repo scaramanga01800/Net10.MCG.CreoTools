@@ -65,4 +65,6 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="QL_ToolTipBomEnvirConfig">Create or update the ASM_NAME parameter in the assembly to ensure the BOM table is generated correctly.</system:String>
     <system:String x:Key="QL_ToolSimplifiedRep">Rappresentazioni semplificate</system:String>
     <system:String x:Key="QL_ToolTipSimplifiedRep">Creare e modificare le rappresentazioni semplificate di un assieme</system:String>
+    <system:String x:Key="QL_ToolManufacturingWorkInstruction">Istruzione di produzione</system:String>
+    <system:String x:Key="QL_ToolTipManufacturingWorkInstruction">Creare e modificare l'istruzione di produzione di un assieme</system:String>
 </ResourceDictionary>

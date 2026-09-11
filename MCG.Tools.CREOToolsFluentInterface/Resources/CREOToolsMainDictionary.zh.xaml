@@ -82,4 +82,5 @@
     <system:String x:Key="CT_MenuFont">Font:</system:String>
     <system:String x:Key="CT_MenuColor">Color:</system:String>
     <system:String x:Key="CT_MenuAppSimplifiedRep">简化表示</system:String>
+    <system:String x:Key="CT_MenuAppManufacturingWorkInstruction">制造作业指导书</system:String>
 </ResourceDictionary>

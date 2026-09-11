@@ -5,7 +5,7 @@
         public const string MainDictionary = "CREOToolsMainDictionary.xaml";
         public const string ConfigurationFile = "CREOToolsConfiguration.xml";
         public const string CreoToolsUserConfigXmlFile = "CreoToolsUserConfig.xml";
-        public const string Version = "12.12";
+        public const string Version = "12.13";
         public const string Year = "2026";
 
         /// <summary>
@@ -14,7 +14,7 @@
         /// silencieusement au demarrage (voir MigrateUserConfiguration).
         /// A incrementer a chaque ajout d'application dans AppVisible.
         /// </summary>
-        public const string UserConfigVersion = "12.12";
+        public const string UserConfigVersion = "12.13";
 
         /// <summary>
         /// Version attribuee a une configuration utilisateur ne portant aucune version.

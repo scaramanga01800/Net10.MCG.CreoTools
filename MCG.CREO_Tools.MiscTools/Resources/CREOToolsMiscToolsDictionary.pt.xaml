@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">Tipo</system:String>
     <system:String x:Key="SRP_Column_SubType">Subtipo</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">A montagem ativa não é modificável na sessão.&#x0a;Faça o check-out no Windchill antes de criar ou atualizar uma representação simplificada.</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">Instrução de fabricação</system:String>
+    <system:String x:Key="MFG_RibGrpModel">Modelo</system:String>
+    <system:String x:Key="MFG_BtReadAsm">Ler montagem</system:String>
+    <system:String x:Key="MFG_BtUpdate">Atualizar</system:String>
+    <system:String x:Key="MFG_BtSave">Salvar</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">Criar PVZ</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">Ler a montagem ativa e listar seus componentes hierarquicamente.</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">Atualizar os parâmetros de fabricação dos componentes modificados.</system:String>
+    <system:String x:Key="MFG_ToolTipSave">Salvar a montagem ativa.</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">Criar o arquivo PVZ para a montagem ativa.</system:String>
+    <system:String x:Key="MFG_Column_Number">Número</system:String>
+    <system:String x:Key="MFG_Column_Name">Componente</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">Nenhum modelo ativo na sessão CREO. Abra uma montagem.</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">O modelo ativo não é uma montagem.</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">O modelo não pôde ser salvo.</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">O modelo foi salvo com sucesso.</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">A montagem ativa não é modificável na sessão.&#x0a;Faça o check-out no Windchill antes de atualizar os parâmetros de fabricação.</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">A ação "Atualizar" ainda não está implementada.</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">A ação "Criar PVZ" ainda não está implementada.</system:String>
 </ResourceDictionary>

@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">Type</system:String>
     <system:String x:Key="SRP_Column_SubType">Sub-type</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">The active assembly is not modifiable in session.&#x0a;Check it out in Windchill before creating or updating a simplified representation.</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">Manufacturing View</system:String>
+    <system:String x:Key="MFG_RibGrpModel">Model</system:String>
+    <system:String x:Key="MFG_BtReadAsm">Read Assembly</system:String>
+    <system:String x:Key="MFG_BtUpdate">Update</system:String>
+    <system:String x:Key="MFG_BtSave">Save</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">Create PVZ</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">Read the active assembly and list its components hierarchically.</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">Update the manufacturing parameters of the modified components.</system:String>
+    <system:String x:Key="MFG_ToolTipSave">Save the active assembly.</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">Create the PVZ file for the active assembly.</system:String>
+    <system:String x:Key="MFG_Column_Number">Number</system:String>
+    <system:String x:Key="MFG_Column_Name">Component</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">No active model in the CREO session. Please open an assembly.</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">The active model is not an assembly.</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">The model could not be saved.</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">The model has been saved successfully.</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">The active assembly is not modifiable in session.&#x0a;Check it out in Windchill before updating manufacturing parameters.</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">The "Update" action is not yet implemented.</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">The "Create PVZ" action is not yet implemented.</system:String>
 </ResourceDictionary>

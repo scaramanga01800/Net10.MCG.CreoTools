@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">Typ</system:String>
     <system:String x:Key="SRP_Column_SubType">Untertyp</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">Die aktive Baugruppe ist in der Sitzung nicht änderbar.&#x0a;Checken Sie sie in Windchill aus, bevor Sie eine vereinfachte Darstellung erstellen oder ändern.</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">Fertigungsanweisung</system:String>
+    <system:String x:Key="MFG_RibGrpModel">Modell</system:String>
+    <system:String x:Key="MFG_BtReadAsm">Baugruppe lesen</system:String>
+    <system:String x:Key="MFG_BtUpdate">Aktualisieren</system:String>
+    <system:String x:Key="MFG_BtSave">Speichern</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">PVZ erstellen</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">Die aktive Baugruppe lesen und ihre Komponenten hierarchisch auflisten.</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">Die Fertigungsparameter der geänderten Komponenten aktualisieren.</system:String>
+    <system:String x:Key="MFG_ToolTipSave">Die aktive Baugruppe speichern.</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">Die PVZ-Datei für die aktive Baugruppe erstellen.</system:String>
+    <system:String x:Key="MFG_Column_Number">Nummer</system:String>
+    <system:String x:Key="MFG_Column_Name">Komponente</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">Keine aktive Baugruppe in der CREO-Sitzung. Bitte öffnen Sie eine Baugruppe.</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">Das aktive Modell ist keine Baugruppe.</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">Das Modell konnte nicht gespeichert werden.</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">Die aktive Baugruppe ist in der Sitzung nicht änderbar.&#x0a;Checken Sie sie in Windchill aus, bevor Sie die Fertigungsparameter aktualisieren.</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">Die Aktion "Aktualisieren" ist noch nicht implementiert.</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">Die Aktion "PVZ erstellen" ist noch nicht implementiert.</system:String>
 </ResourceDictionary>

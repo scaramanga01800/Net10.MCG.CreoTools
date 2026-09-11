@@ -13,6 +13,7 @@ using MCG.CREO_Tools.MiscTools.View.SapBomExport;
 using MCG.CREO_Tools.MiscTools.View.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.View.SapFertBom;
 using MCG.CREO_Tools.MiscTools.View.SimplifiedRep;
+using MCG.CREO_Tools.MiscTools.View.Manufacturing;
 using MCG.CREO_Tools.MiscTools.View.WebtermRequest;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomComparison;
 using MCG.CREO_Tools.MiscTools.ViewModel.BomEnvirConfig;
@@ -27,6 +28,7 @@ using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExport;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapBomExportAllLevel;
 using MCG.CREO_Tools.MiscTools.ViewModel.SapFertBom;
 using MCG.CREO_Tools.MiscTools.ViewModel.SimplifiedRep;
+using MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing;
 using MCG.CREO_Tools.MiscTools.ViewModel.WebtermRequest;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -83,6 +85,9 @@ namespace MCG.CREO_Tools.MiscTools.Services
 
             services.AddTransient<SimplifiedRepMainView>();
             services.AddTransient<SimplifiedRepViewModel>();
+
+            services.AddTransient<ManufacturingMainView>();
+            services.AddTransient<ManufacturingViewModel>();
 
             services.AddTransient<WebtermRequestMainView>();
             services.AddTransient<WebtermRequestViewModel>();

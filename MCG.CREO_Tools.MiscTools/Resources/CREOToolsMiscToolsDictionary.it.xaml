@@ -504,4 +504,31 @@
     <system:String x:Key="SRP_Column_Type">Tipo</system:String>
     <system:String x:Key="SRP_Column_SubType">Sottotipo</system:String>
     <system:String x:Key="SRP_MsgModelNotModifiable">L'assieme attivo non è modificabile nella sessione.&#x0a;Eseguire il check-out in Creo prima di creare o modificare una rappresentazione semplificata.</system:String>
+
+    <!-- Manufacturing View -->
+    <system:String x:Key="MFG_WindowTitle">Istruzione di produzione</system:String>
+    <system:String x:Key="MFG_RibGrpModel">Modello</system:String>
+    <system:String x:Key="MFG_BtReadAsm">Leggi assieme</system:String>
+    <system:String x:Key="MFG_BtUpdate">Aggiorna</system:String>
+    <system:String x:Key="MFG_BtSave">Salva</system:String>
+    <system:String x:Key="MFG_BtCreatePvz">Crea PVZ</system:String>
+    <system:String x:Key="MFG_ToolTipReadAsm">Leggere l'assieme attivo ed elencare i suoi componenti in modo gerarchico.</system:String>
+    <system:String x:Key="MFG_ToolTipUpdate">Aggiornare i parametri di produzione dei componenti modificati.</system:String>
+    <system:String x:Key="MFG_ToolTipSave">Salvare l'assieme attivo.</system:String>
+    <system:String x:Key="MFG_ToolTipCreatePvz">Creare il file PVZ per l'assieme attivo.</system:String>
+    <system:String x:Key="MFG_Column_Number">Numero</system:String>
+    <system:String x:Key="MFG_Column_Name">Componente</system:String>
+    <system:String x:Key="MFG_Column_Reference">REFERENCE</system:String>
+    <system:String x:Key="MFG_Column_PtcCommonName">PTC_COMMON_NAME</system:String>
+    <system:String x:Key="MFG_Column_Description2">DESCRIPTION_2</system:String>
+    <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
+    <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_MsgNoActiveModel">Nessun modello attivo nella sessione CREO. Aprire un assieme.</system:String>
+    <system:String x:Key="MFG_MsgNotAnAssembly">Il modello attivo non è un assieme.</system:String>
+    <system:String x:Key="MFG_MsgSaveFailed">Il modello non è stato salvato.</system:String>
+    <system:String x:Key="MFG_MsgSaveSuccess">Il modello è stato salvato con successo.</system:String>
+    <system:String x:Key="MFG_MsgModelNotModifiable">L'assieme attivo non è modificabile nella sessione.&#x0a;Eseguire il check-out in Creo prima di aggiornare i parametri di produzione.</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'azione "Aggiorna" non è ancora implementata.</system:String>
+    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'azione "Crea PVZ" non è ancora implementata.</system:String>
 </ResourceDictionary>

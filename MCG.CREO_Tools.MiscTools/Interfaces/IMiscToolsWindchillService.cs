@@ -20,6 +20,7 @@ namespace MCG.CREO_Tools.MiscTools.Interfaces
         void CloseSapFertMissingPart();
         void CloseSapFertBomMainView();
         void CloseSimplifiedRepMainView();
+        void CloseManufacturingMainView();
         void CloseWebtermRequestMainView();
 
         void ShowBomComparisonView(bool isAlreadyCreated = false);
@@ -67,6 +68,9 @@ namespace MCG.CREO_Tools.MiscTools.Interfaces
 
         void ShowSimplifiedRepMainView(bool isAlreadyCreated = false);
         void ShowDialogSimplifiedRepMainView();
+
+        void ShowManufacturingMainView(bool isAlreadyCreated = false);
+        void ShowDialogManufacturingMainView();
 
         void ShowWebtermRequestMainView(bool isAlreadyCreated = false);
         void ShowDialogWebtermRequestMainView();
