@@ -524,6 +524,7 @@
     <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
     <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
     <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">Statut</system:String>
     <system:String x:Key="MFG_MsgNoActiveModel">Aucun modèle actif dans la session CREO. Veuillez ouvrir un assemblage.</system:String>
     <system:String x:Key="MFG_MsgNotAnAssembly">Le modèle actif n'est pas un assemblage.</system:String>
     <system:String x:Key="MFG_MsgSaveFailed">Le modèle n'a pas pu être sauvegardé.</system:String>
@@ -531,4 +532,11 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">L'assemblage actif n'est pas modifiable en session.&#x0a;Récupérez-le (check-out) dans Windchill avant de mettre à jour les paramètres de fabrication.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'action "Mise à jour" n'est pas encore implémentée.</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'action "Création du PVZ" n'est pas encore implémentée.</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Composant "{0}" : la valeur DESCRIPTION_MTH saisie manuellement ("{1}") diffère de la valeur recalculée ("{2}").&#x0a;Voulez-vous la remplacer par la valeur recalculée ?</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">Inchangé</system:String>
+    <system:String x:Key="MFG_Status_Calculated">Calculé</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">Modifié manuellement</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">Mise à jour requise</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">Calcul impossible</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Erreur Webterm</system:String>
 </ResourceDictionary>

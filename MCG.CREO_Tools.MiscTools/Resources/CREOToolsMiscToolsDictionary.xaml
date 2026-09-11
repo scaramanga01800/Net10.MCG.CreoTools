@@ -524,6 +524,7 @@
     <system:String x:Key="MFG_Column_Description2_1">DESCRIPTION2_1</system:String>
     <system:String x:Key="MFG_Column_Description2_2">DESCRIPTION2_2</system:String>
     <system:String x:Key="MFG_Column_DescriptionMth">DESCRIPTION_MTH</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">Status</system:String>
     <system:String x:Key="MFG_MsgNoActiveModel">No active model in the CREO session. Please open an assembly.</system:String>
     <system:String x:Key="MFG_MsgNotAnAssembly">The active model is not an assembly.</system:String>
     <system:String x:Key="MFG_MsgSaveFailed">The model could not be saved.</system:String>
@@ -531,4 +532,11 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">The active assembly is not modifiable in session.&#x0a;Check it out in Windchill before updating manufacturing parameters.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">The "Update" action is not yet implemented.</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">The "Create PVZ" action is not yet implemented.</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Component "{0}" : the manually entered DESCRIPTION_MTH value ("{1}") differs from the newly computed value ("{2}").&#x0a;Do you want to replace it with the computed value?</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">Unchanged</system:String>
+    <system:String x:Key="MFG_Status_Calculated">Calculated</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">Manually modified</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">Update required</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">Calculation impossible</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Webterm error</system:String>
 </ResourceDictionary>

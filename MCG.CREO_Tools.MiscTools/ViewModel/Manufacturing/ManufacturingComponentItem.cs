@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using MCG.CREO_Tools.MiscTools.View.Manufacturing;
+using System;
 
 namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 {
@@ -12,6 +13,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
     /// La comparaison de modification se fait contre l'etat lu lors de la derniere lecture Creo
     /// (baseline), pas uniquement contre l'etat courant du controle : un retour manuel a la valeur
     /// d'origine supprime donc la surbrillance si aucune autre donnee de la ligne n'a change.
+    ///
+    /// DESCRIPTION_MTH beneficie en plus d'un suivi dedie : valeur initiale trouvee dans Creo,
+    /// derniere valeur calculee par <see cref="DescriptionMthCalculationService"/>, indicateur de
+    /// modification manuelle et statut explicite (voir <see cref="DescriptionMthStatus"/>). Une
+    /// modification manuelle reste prioritaire : elle n'est jamais ecrasee silencieusement par un
+    /// recalcul (voir <see cref="ApplyCalculatedDescriptionMth"/>).
     /// </summary>
     public class ManufacturingComponentItem : ObservableObject, IManufacturingComponentItem
     {
@@ -83,6 +90,26 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 if (this._Name != value)
                 {
                     this._Name = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _ModelKey = string.Empty;
+        /// <summary>
+        /// Identite du modele Creo reference par ce composant (voir
+        /// <c>CreoSimpRepComponentInfo.ModelKey</c>). Sert a identifier les composants identiques
+        /// afin de propager une modification manuelle de DESCRIPTION_MTH quel que soit le niveau
+        /// de nomenclature.
+        /// </summary>
+        public string ModelKey
+        {
+            get { return _ModelKey; }
+            set
+            {
+                if (this._ModelKey != value)
+                {
+                    this._ModelKey = value;
                     OnPropertyChanged();
                 }
             }
@@ -165,7 +192,20 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         }
 
         private string _DescriptionMth = string.Empty;
-        /// <summary>Parametre DESCRIPTION_MTH : modifiable manuellement dans la grille.</summary>
+        private bool _SuppressManualFlagOnNextDescriptionMthSet;
+
+        /// <summary>
+        /// Parametre DESCRIPTION_MTH affiche dans la grille : modifiable manuellement. Toute
+        /// saisie utilisateur (differente de la valeur actuellement affichee) marque la ligne
+        /// comme modifiee manuellement (<see cref="IsManualDescriptionMth"/> = true), sauf lors du
+        /// chargement initial depuis Creo (voir <see cref="LoadDescriptionMthFromCreo"/>) ou de
+        /// l'application d'un calcul automatique (voir
+        /// <see cref="ApplyCalculatedDescriptionMth"/>), qui n'affectent pas cet indicateur.
+        ///
+        /// Une saisie manuelle reelle de l'utilisateur declenche en outre
+        /// <see cref="ManualDescriptionMthChangedEvent"/>, afin que le ViewModel puisse propager
+        /// la meme valeur a tous les composants partageant le meme <see cref="ModelKey"/>.
+        /// </summary>
         public string DescriptionMth
         {
             get { return _DescriptionMth; }
@@ -175,9 +215,230 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 {
                     this._DescriptionMth = value;
                     OnPropertyChanged();
+
+                    if (_SuppressManualFlagOnNextDescriptionMthSet)
+                    {
+                        _SuppressManualFlagOnNextDescriptionMthSet = false;
+                    }
+                    else
+                    {
+                        IsManualDescriptionMth = true;
+                        Status = DescriptionMthStatus.ManuallyModified;
+
+                        if (!_SuppressManualPropagationOnNextDescriptionMthSet)
+                        {
+                            try
+                            {
+                                ManualDescriptionMthChangedEvent?.Invoke(this, value);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                    }
+
                     NotifyPendingChange();
                 }
             }
+        }
+
+        private bool _SuppressManualPropagationOnNextDescriptionMthSet;
+
+        /// <summary>
+        /// Declenche lorsque l'utilisateur modifie manuellement DESCRIPTION_MTH sur cette ligne
+        /// (saisie reelle, hors chargement initial et hors propagation programmatique).
+        /// </summary>
+        public event EventHandler<string>? ManualDescriptionMthChangedEvent;
+
+        /// <summary>
+        /// Applique une valeur DESCRIPTION_MTH provenant de la propagation d'une modification
+        /// manuelle faite sur un autre composant identique (meme <see cref="ModelKey"/>). Marque
+        /// la ligne comme modifiee manuellement, comme une saisie directe, mais sans redeclencher
+        /// <see cref="ManualDescriptionMthChangedEvent"/> (evite toute boucle de propagation).
+        /// </summary>
+        public void ApplyPropagatedManualDescriptionMth(string value)
+        {
+            _SuppressManualPropagationOnNextDescriptionMthSet = true;
+            DescriptionMth = value;
+            _SuppressManualPropagationOnNextDescriptionMthSet = false;
+        }
+
+        /// <summary>
+        /// Affecte DESCRIPTION_MTH telle que lue dans Creo, sans marquer la ligne comme modifiee
+        /// manuellement. A utiliser uniquement lors de la construction de la ligne, avant tout
+        /// calcul automatique.
+        /// </summary>
+        public void LoadDescriptionMthFromCreo(string value)
+        {
+            _SuppressManualFlagOnNextDescriptionMthSet = true;
+            DescriptionMth = value;
+            _SuppressManualFlagOnNextDescriptionMthSet = false;
+            InitialDescriptionMth = value;
+        }
+
+        private string _InitialDescriptionMth = string.Empty;
+        /// <summary>
+        /// Valeur de DESCRIPTION_MTH telle que trouvee dans Creo lors de la derniere lecture reelle
+        /// (avant tout calcul ou toute saisie manuelle). Reference immuable jusqu'a la prochaine
+        /// lecture (<see cref="CaptureBaseline"/>).
+        /// </summary>
+        public string InitialDescriptionMth
+        {
+            get { return _InitialDescriptionMth; }
+            set
+            {
+                if (this._InitialDescriptionMth != value)
+                {
+                    this._InitialDescriptionMth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string? _CalculatedDescriptionMth;
+        /// <summary>
+        /// Derniere valeur produite par <see cref="DescriptionMthCalculationService"/> pour cette
+        /// ligne, independamment de ce qui est effectivement affiche (null si aucune regle n'a pu
+        /// produire de valeur exploitable).
+        /// </summary>
+        public string? CalculatedDescriptionMth
+        {
+            get { return _CalculatedDescriptionMth; }
+            set
+            {
+                if (this._CalculatedDescriptionMth != value)
+                {
+                    this._CalculatedDescriptionMth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private DescriptionMthRule _CalculatedDescriptionMthRule = DescriptionMthRule.None;
+        /// <summary>Regle ayant produit <see cref="CalculatedDescriptionMth"/>.</summary>
+        public DescriptionMthRule CalculatedDescriptionMthRule
+        {
+            get { return _CalculatedDescriptionMthRule; }
+            set
+            {
+                if (this._CalculatedDescriptionMthRule != value)
+                {
+                    this._CalculatedDescriptionMthRule = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _IsManualDescriptionMth;
+        /// <summary>
+        /// Vrai si la valeur actuellement affichee dans <see cref="DescriptionMth"/> provient d'une
+        /// saisie manuelle de l'utilisateur (et non du dernier calcul automatique). Une valeur
+        /// manuelle est prioritaire : elle ne doit jamais etre ecrasee silencieusement par un
+        /// recalcul (voir <see cref="ApplyCalculatedDescriptionMth"/>).
+        /// </summary>
+        public bool IsManualDescriptionMth
+        {
+            get { return _IsManualDescriptionMth; }
+            set
+            {
+                if (this._IsManualDescriptionMth != value)
+                {
+                    this._IsManualDescriptionMth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private DescriptionMthStatus _Status = DescriptionMthStatus.Unchanged;
+        /// <summary>Statut explicite de la ligne vis-a-vis du calcul/de la saisie de DESCRIPTION_MTH.</summary>
+        public DescriptionMthStatus Status
+        {
+            get { return _Status; }
+            set
+            {
+                if (this._Status != value)
+                {
+                    this._Status = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applique un resultat de calcul automatique a la ligne, en respectant la priorite des
+        /// modifications manuelles : si une valeur manuelle est deja presente et differente du
+        /// nouveau calcul, la valeur affichee n'est PAS ecrasee ; la ligne est seulement marquee en
+        /// <see cref="DescriptionMthStatus.UpdateRequired"/> pour que l'appelant puisse demander
+        /// confirmation avant, eventuellement, un remplacement explicite via
+        /// <see cref="AcceptCalculatedDescriptionMth"/>.
+        /// </summary>
+        public void ApplyCalculatedDescriptionMth(DescriptionMthCalculationResult result)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+
+            CalculatedDescriptionMthRule = result.Rule;
+            CalculatedDescriptionMth = result.Value;
+
+            if (result.IsWebtermError)
+            {
+                Status = DescriptionMthStatus.WebtermError;
+                return;
+            }
+
+            if (IsManualDescriptionMth
+                && !string.IsNullOrEmpty(_DescriptionMth)
+                && result.Value != null
+                && !string.Equals(_DescriptionMth, result.Value, StringComparison.Ordinal))
+            {
+                // Une valeur manuelle existe et differe du recalcul : elle reste affichee tant
+                // qu'aucune confirmation explicite n'a ete donnee par l'utilisateur.
+                Status = DescriptionMthStatus.UpdateRequired;
+                return;
+            }
+
+            if (result.Value == null)
+            {
+                // Regle de secours : aucune regle n'a produit de resultat. La valeur existante
+                // (manuelle ou deja calculee) n'est jamais remplacee automatiquement par du vide.
+                if (!IsManualDescriptionMth && string.IsNullOrEmpty(_DescriptionMth))
+                    Status = DescriptionMthStatus.CalculationImpossible;
+
+                return;
+            }
+
+            if (!IsManualDescriptionMth)
+            {
+                SetDescriptionMthFromCalculation(result.Value);
+            }
+        }
+
+        /// <summary>
+        /// Remplace explicitement la valeur affichee par le dernier resultat calcule, apres
+        /// confirmation de l'utilisateur suite a un changement de donnee source
+        /// (<see cref="DescriptionMthStatus.UpdateRequired"/>).
+        /// </summary>
+        public void AcceptCalculatedDescriptionMth()
+        {
+            if (CalculatedDescriptionMth == null) return;
+
+            SetDescriptionMthFromCalculation(CalculatedDescriptionMth);
+        }
+
+        /// <summary>
+        /// Affecte la valeur affichee de DESCRIPTION_MTH suite a un calcul automatique (accepte ou
+        /// initial), sans marquer la ligne comme modifiee manuellement.
+        /// </summary>
+        private void SetDescriptionMthFromCalculation(string value)
+        {
+            if (!string.Equals(_DescriptionMth, value, StringComparison.Ordinal))
+            {
+                _DescriptionMth = value;
+                OnPropertyChanged(nameof(DescriptionMth));
+                NotifyPendingChange();
+            }
+
+            IsManualDescriptionMth = false;
+            Status = DescriptionMthStatus.Calculated;
         }
 
         private bool _IsDuplicateModel;
@@ -224,7 +485,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
         /// <summary>
         /// Memorise l'etat courant de REFERENCE et DESCRIPTION_MTH comme etat de reference.
-        /// A appeler juste apres chaque lecture reelle depuis Creo.
+        /// A appeler juste apres chaque lecture reelle depuis Creo (et apres application du
+        /// calcul automatique). Ne modifie jamais <see cref="Status"/> : le statut refletant le
+        /// resultat du calcul (ou la saisie manuelle) reste inchange par cette capture.
         /// </summary>
         public void CaptureBaseline()
         {

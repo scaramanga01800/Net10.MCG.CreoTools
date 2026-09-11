@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MCG.CommonLib.CreoInteractionTools.Models;
 using MCG.CommonLib.CreoInteractionTools.Services.Interfaces;
 using MCG.CommonLib.Services.Statics;
+using MCG.CommonLib.WebtermLib.Services.Interfaces;
 using MCG.CREO_Tools.MiscTools.Configuration;
 using MCG.CREO_Tools.MiscTools.Exceptions;
 using MCG.CREO_Tools.MiscTools.View.Manufacturing;
@@ -57,6 +58,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         private readonly ICreoSimpRepService _creoSimpRepService;
         private readonly ICreoParameterService _creoParameterService;
 
+        /// <summary>
+        /// Service pur de calcul de DESCRIPTION_MTH (regles 1/2/3/secours), instancie une fois par
+        /// lecture d'assemblage pour beneficier du cache Webterm interne le temps de la lecture.
+        /// </summary>
+        private readonly IWebtermTools _webtermTools;
+
         private IpfcModel? _activeModel;
 
         /// <summary>Statut Creo/Windchill de l'assemblage actif, evalue a chaque lecture.</summary>
@@ -75,7 +82,8 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         public ManufacturingViewModel(ICreoSessionProvider creoSessionProvider,
                                        ICreoModelService creoModelService,
                                        ICreoSimpRepService creoSimpRepService,
-                                       ICreoParameterService creoParameterService)
+                                       ICreoParameterService creoParameterService,
+                                       IWebtermTools webtermTools)
         {
             try
             {
@@ -83,6 +91,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 _creoModelService = creoModelService;
                 _creoSimpRepService = creoSimpRepService;
                 _creoParameterService = creoParameterService;
+                _webtermTools = webtermTools;
 
                 CurrentDataContext = new ManufacturingDataContext();
                 MainDispatcher = Dispatcher.CurrentDispatcher;
@@ -156,6 +165,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
                 CurrentDataContext.IsAssemblyLoaded = true;
 
+                // Certaines lignes peuvent porter une valeur manuelle qui differe du nouveau
+                // calcul (donnee source modifiee depuis la derniere lecture) : une confirmation
+                // est demandee avant tout remplacement, conformement a la regle de priorite des
+                // modifications manuelles.
+                MainDispatcher.Invoke(PromptUpdateRequiredConfirmations);
+
                 TraceLog.AddTraceLog($"Manufacturing View : assemblage '{activeFileName}' lu " +
                                      $"({CurrentDataContext.ListItem.Count} composants).");
             }
@@ -204,12 +219,24 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 isExpandable: node => node.ComponentModel != null && IsAssemblyModelKey(node.Component.ModelKey),
                 maxLevel: MiscToolsConstants.MaxBomLevel);
 
+            // Instancie le service de calcul une fois par lecture d'assemblage : le cache Webterm
+            // interne evite ainsi plusieurs appels identiques pour un meme PTC_COMMON_NAME au fil
+            // du parcours de toute la nomenclature.
+            var descriptionMthCalculationService = new DescriptionMthCalculationService(_webtermTools);
+
             foreach (var visit in visitResults)
             {
                 _treeIndexCounter++;
 
                 var component = visit.Node.Component;
                 var componentModel = visit.Node.ComponentModel;
+
+                var reference = componentModel != null ? GetModelParameter(componentModel, "REFERENCE") : string.Empty;
+                var ptcCommonName = componentModel != null ? GetModelParameter(componentModel, "PTC_COMMON_NAME") : string.Empty;
+                var description2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_2") : string.Empty;
+                var description2_1 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_1") : string.Empty;
+                var description2_2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_2") : string.Empty;
+                var descriptionMthFromCreo = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_MTH") : string.Empty;
 
                 var item = new ManufacturingComponentItem
                 {
@@ -218,18 +245,36 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                     HierarchicalNumber = visit.HierarchicalNumber,
                     ComponentId = component.Id,
                     Name = component.Name,
-                    Reference = componentModel != null ? GetModelParameter(componentModel, "REFERENCE") : string.Empty,
-                    PtcCommonName = componentModel != null ? GetModelParameter(componentModel, "PTC_COMMON_NAME") : string.Empty,
-                    Description2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_2") : string.Empty,
-                    Description2_1 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_1") : string.Empty,
-                    Description2_2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION2_2") : string.Empty,
-                    DescriptionMth = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_MTH") : string.Empty,
+                    ModelKey = component.ModelKey,
+                    Reference = reference,
+                    PtcCommonName = ptcCommonName,
+                    Description2 = description2,
+                    Description2_1 = description2_1,
+                    Description2_2 = description2_2,
                     IsDuplicateModel = visit.IsDuplicateModel,
                     IsCycleDetected = visit.IsCycleDetected,
                 };
 
-                // L'etat lu dans Creo devient la reference : tant qu'aucune saisie manuelle ne
-                // s'en ecarte, la ligne n'est pas consideree comme modifiee.
+                // La valeur DESCRIPTION_MTH existante dans Creo est chargee d'abord (sans marquer
+                // la ligne comme modifiee manuellement), puis le calcul automatique est applique :
+                // s'il n'y a pas de valeur manuelle preexistante, la proposition calculee devient
+                // la valeur affichee ; sinon la valeur lue est conservee et le statut refletera le
+                // resultat du calcul (Calcule, CalculImpossible ou ErreurWebterm).
+                item.LoadDescriptionMthFromCreo(descriptionMthFromCreo);
+
+                var calculationInput = new DescriptionMthCalculationInput
+                {
+                    PtcCommonName = ptcCommonName,
+                    Description2 = description2,
+                    Description2_1 = description2_1,
+                    Description2_2 = description2_2,
+                };
+
+                var calculationResult = descriptionMthCalculationService.Calculate(calculationInput);
+                item.ApplyCalculatedDescriptionMth(calculationResult);
+
+                // L'etat lu/calcule devient la reference : tant qu'aucune saisie manuelle ne s'en
+                // ecarte, la ligne n'est pas consideree comme modifiee.
                 item.CaptureBaseline();
 
                 MainDispatcher.Invoke(() =>
@@ -428,6 +473,39 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
             return _isActiveModelModifiable;
         }
 
+        /// <summary>
+        /// Parcourt les lignes fraichement lues et propose, pour chacune de celles marquees
+        /// <see cref="DescriptionMthStatus.UpdateRequired"/> (valeur manuelle existante qui differe
+        /// du nouveau calcul), une confirmation explicite avant tout remplacement. Reutilise le
+        /// mecanisme de dialogue deja en place dans MiscTools (MessageBox.Show / YesNo), comme dans
+        /// <c>SimplifiedRepViewModel.ConfirmPendingChangesLoss</c>.
+        /// </summary>
+        private void PromptUpdateRequiredConfirmations()
+        {
+            foreach (var item in CurrentDataContext.ListItem)
+            {
+                if (item.Status != DescriptionMthStatus.UpdateRequired || item.CalculatedDescriptionMth == null)
+                    continue;
+
+                var message = string.Format(
+                    McgWpfTools.GetStringResource("MFG_MsgConfirmDescriptionMthUpdate"),
+                    item.Name,
+                    item.DescriptionMth,
+                    item.CalculatedDescriptionMth);
+
+                var confirmation = System.Windows.MessageBox.Show(
+                    message,
+                    McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (confirmation == System.Windows.MessageBoxResult.Yes)
+                    item.AcceptCalculatedDescriptionMth();
+            }
+
+            RefreshPendingChangesState();
+        }
+
         private static void ShowWarning(string resourceKey)
         {
             System.Windows.MessageBox.Show(McgWpfTools.GetStringResource(resourceKey),
@@ -448,11 +526,35 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         {
             item.PendingChangeEvent -= OnItemPendingChanged;
             item.PendingChangeEvent += OnItemPendingChanged;
+
+            item.ManualDescriptionMthChangedEvent -= OnItemManualDescriptionMthChanged;
+            item.ManualDescriptionMthChangedEvent += OnItemManualDescriptionMthChanged;
         }
 
         private void OnItemPendingChanged(object? sender, EventArgs e)
         {
             RefreshPendingChangesState();
+        }
+
+        /// <summary>
+        /// Propage une modification manuelle de DESCRIPTION_MTH a tous les autres composants
+        /// partageant le meme modele Creo (<see cref="ManufacturingComponentItem.ModelKey"/>),
+        /// quel que soit leur niveau dans la nomenclature. Les composants sans identite de
+        /// modele connue (ModelKey vide) ne sont jamais propages.
+        /// </summary>
+        private void OnItemManualDescriptionMthChanged(object? sender, string newValue)
+        {
+            if (sender is not ManufacturingComponentItem changedItem) return;
+            if (string.IsNullOrEmpty(changedItem.ModelKey)) return;
+
+            foreach (var otherItem in CurrentDataContext.ListItem)
+            {
+                if (ReferenceEquals(otherItem, changedItem)) continue;
+                if (!string.Equals(otherItem.ModelKey, changedItem.ModelKey, StringComparison.Ordinal)) continue;
+                if (string.Equals(otherItem.DescriptionMth, newValue, StringComparison.Ordinal)) continue;
+
+                otherItem.ApplyPropagatedManualDescriptionMth(newValue);
+            }
         }
 
         private void RefreshPendingChangesState()

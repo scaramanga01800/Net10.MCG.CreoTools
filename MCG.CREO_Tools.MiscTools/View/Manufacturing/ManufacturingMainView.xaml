@@ -21,6 +21,7 @@
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
             <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
             <conv:LevelConverter x:Key="LevelConv" />
+            <local:DescriptionMthStatusToStringConverter x:Key="DescriptionMthStatusConv" />
             <sys:Double x:Key="MFG_LevelIndent">16.0</sys:Double>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
@@ -172,11 +173,21 @@
                                         Binding="{Binding Description2_2}"
                                         Width="*"
                                         IsReadOnly="True"/>
-                    <!-- DESCRIPTION_MTH : modifiable manuellement. -->
+                    <!-- DESCRIPTION_MTH : modifiable manuellement. Colonne large pour afficher
+                         la plus grande description concatenee generee par les regles de calcul
+                         (ex. DESCRIPTION2_1 + "|" + DESCRIPTION2_2, ou PTC_COMMON_NAME/traduction
+                         Webterm + "|" + DESCRIPTION_2). -->
                     <DataGridTextColumn Header="{DynamicResource MFG_Column_DescriptionMth}"
                                         Binding="{Binding DescriptionMth, UpdateSourceTrigger=PropertyChanged}"
-                                        Width="160"
+                                        Width="4*"
+                                        MinWidth="320"
                                         IsReadOnly="False"/>
+                    <!-- Statut de la ligne (inchange, calcule, modifie manuellement, mise a jour
+                         requise, calcul impossible, erreur Webterm). Lecture seule. -->
+                    <DataGridTextColumn Header="{DynamicResource MFG_Column_DescriptionMthStatus}"
+                                        Binding="{Binding Status, Converter={StaticResource DescriptionMthStatusConv}}"
+                                        Width="140"
+                                        IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
