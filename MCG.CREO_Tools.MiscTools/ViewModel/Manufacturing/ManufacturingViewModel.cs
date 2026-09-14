@@ -10,6 +10,7 @@ using MCG.CREO_Tools.MiscTools.View.Manufacturing;
 using pfcls;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -78,6 +79,15 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
         /// <summary>Compteur global d'index d'arbre, incremente a chaque composant lu.</summary>
         private int _treeIndexCounter;
+
+        /// <summary>
+        /// Correspondance ModelKey -> modele Creo reel, capturee pendant le parcours de la
+        /// nomenclature (voir <see cref="ReadAllLevels"/>). Un meme ModelKey n'est jamais
+        /// reaffecte : la premiere occurrence rencontree fait foi, ce qui suffit puisque tous les
+        /// composants partageant un ModelKey referencent le meme modele Creo par definition.
+        /// Reinitialisee a chaque lecture d'assemblage (voir <see cref="ResetContext"/>).
+        /// </summary>
+        private readonly Dictionary<string, IpfcModel> _modelsByKey = new(StringComparer.OrdinalIgnoreCase);
 
         public ManufacturingViewModel(ICreoSessionProvider creoSessionProvider,
                                        ICreoModelService creoModelService,
@@ -231,6 +241,14 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 var component = visit.Node.Component;
                 var componentModel = visit.Node.ComponentModel;
 
+                if (componentModel != null && !string.IsNullOrWhiteSpace(component.ModelKey))
+                {
+                    // La premiere occurrence rencontree pour un ModelKey donne fait foi : tous
+                    // les composants partageant ce ModelKey referencent le meme modele Creo.
+                    if (!_modelsByKey.ContainsKey(component.ModelKey))
+                        _modelsByKey[component.ModelKey] = componentModel;
+                }
+
                 var reference = componentModel != null ? GetModelParameter(componentModel, "REFERENCE") : string.Empty;
                 var ptcCommonName = componentModel != null ? GetModelParameter(componentModel, "PTC_COMMON_NAME") : string.Empty;
                 var description2 = componentModel != null ? GetModelParameter(componentModel, "DESCRIPTION_2") : string.Empty;
@@ -332,6 +350,51 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 && modelKey.EndsWith(".ASM", StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Reparcourt integralement <paramref name="assemblyModel"/> (nouvellement reouvert depuis
+        /// le dossier de travail local) et remplace, pour CHAQUE ModelKey rencontre, le handle
+        /// Creo dans <see cref="_modelsByKey"/> par le handle valide de la session courante.
+        ///
+        /// A la difference de la mise a jour ponctuelle faite dans <see cref="UpdateSingleModel"/>
+        /// (qui ne rafraichit que les modeles effectivement modifies), cette methode couvre TOUS
+        /// les composants de la nomenclature : apres <see cref="CloseAssemblyAndClearSession"/>,
+        /// l'integralite des handles non affiches est invalidee par Creo, qu'ils fassent partie du
+        /// plan de mise a jour du cycle courant ou non.
+        /// </summary>
+        private void RefreshModelsByKey(IpfcModel reopenedAssemblyModel)
+        {
+            try
+            {
+                var rootChildren = GetChildNodes(reopenedAssemblyModel);
+
+                var visitResults = ManufacturingBomTraversalService.Traverse(
+                    rootChildren,
+                    getChildren: node => node.ComponentModel != null
+                        ? GetChildNodes(node.ComponentModel)
+                        : Array.Empty<ManufacturingBomNode>(),
+                    getModelKey: node => node.Component.ModelKey,
+                    isExpandable: node => node.ComponentModel != null && IsAssemblyModelKey(node.Component.ModelKey),
+                    maxLevel: MiscToolsConstants.MaxBomLevel);
+
+                foreach (var visit in visitResults)
+                {
+                    var component = visit.Node.Component;
+                    var componentModel = visit.Node.ComponentModel;
+
+                    if (componentModel != null && !string.IsNullOrWhiteSpace(component.ModelKey))
+                    {
+                        _modelsByKey[component.ModelKey] = componentModel;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Non bloquant : au pire, un modele non rafraichi ici echouera plus loin avec un
+                // message explicite (NotFound / Error) sans masquer le traitement des autres.
+                TraceLog.AddTraceLog($"Manufacturing View : echec du rafraichissement complet de _modelsByKey apres reouverture locale : {ex.Message}.");
+            }
+        }
+
         private void ExecuteSaveModel()
         {
             try
@@ -389,19 +452,549 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         /// <summary>
         /// Commande "Mise a jour" : la commande, son activation et son raccordement au ruban sont
         /// en place. L'ecriture effective des parametres Creo sera realisee dans une etape dediee.
+        ///
+        /// A la difference de "Creation du PVZ", cette action ne necessite pas que l'assemblage
+        /// actif soit deja modifiable (CHECKEDOUT) en session : la mise a jour ne modifie qu'une
+        /// copie de travail locale (backup/reload via <see cref="ICreoModelService"/>), jamais le
+        /// modele extrait/gere dans Windchill. Le controle habituel via
+        /// <see cref="EnsureActiveModelIsModifiable"/> est donc volontairement ignore ici.
         /// </summary>
         private void ExecuteUpdateParameters()
         {
             try
             {
-                if (!EnsureActiveModelIsModifiable()) return;
+                if (CurrentDataContext.IsUpdateRunning)
+                {
+                    ShowWarning("MFG_MsgUpdateAlreadyRunning");
+                    return;
+                }
 
-                ShowInformation("MFG_MsgUpdateNotYetImplemented");
+                if (!CurrentDataContext.IsAssemblyLoaded || _activeModel == null)
+                {
+                    ShowWarning("MFG_MsgNoActiveModel");
+                    return;
+                }
+
+                // ------------------------------------------------------------
+                // 1) Construction des candidats purs (sans Creo) et planification
+                // ------------------------------------------------------------
+                var candidates = CurrentDataContext.ListItem.Select(item => new ManufacturingUpdateCandidate
+                {
+                    ModelKey = item.ModelKey,
+                    ComponentName = item.Name,
+                    HasReferenceChanged = item.HasReferenceChanged,
+                    ReferenceValue = item.Reference,
+                    HasDescriptionMthChanged = item.HasDescriptionMthChanged,
+                    DescriptionMthValue = item.DescriptionMth
+                }).ToList();
+
+                var plan = ManufacturingUpdatePlanningService.BuildPlan(candidates);
+
+                if (plan.IsEmpty)
+                {
+                    ShowInformation("MFG_MsgNoPendingChanges");
+                    return;
+                }
+
+                if (plan.Unresolved.Count > 0)
+                {
+                    var unresolvedNames = string.Join(", ", plan.Unresolved.Select(u => u.ComponentName));
+                    TraceLog.AddTraceLog($"Manufacturing View : {plan.Unresolved.Count} ligne(s) exclue(s) (modele non identifie) : {unresolvedNames}.");
+
+                    System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateUnresolvedDetected"), plan.Unresolved.Count),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                }
+
+                if (plan.HasConflicts)
+                {
+                    var conflictDetail = string.Join(Environment.NewLine, plan.Conflicts.Select(c =>
+                        $"- {string.Join(", ", c.ComponentNames)} : REFERENCE=[{string.Join(" / ", c.ConflictingReferenceValues)}] " +
+                        $"DESCRIPTION_MTH=[{string.Join(" / ", c.ConflictingDescriptionMthValues)}]"));
+
+                    TraceLog.AddTraceLog($"Manufacturing View : mise a jour bloquee, {plan.Conflicts.Count} conflit(s) detecte(s).");
+
+                    System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateConflictsDetected"), plan.Conflicts.Count, conflictDetail),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+
+                    return;
+                }
+
+                if (plan.Entries.Count == 0)
+                {
+                    ShowInformation("MFG_MsgNoPendingChanges");
+                    return;
+                }
+
+                // ------------------------------------------------------------
+                // 2) Confirmation globale avant toute action destructive
+                // ------------------------------------------------------------
+                var confirmation = System.Windows.MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateConfirmGlobal"), plan.Entries.Count),
+                    McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (confirmation != System.Windows.MessageBoxResult.Yes)
+                    return;
+
+                // ------------------------------------------------------------
+                // 3) Lancement en tache de fond : desactive les commandes concurrentes
+                // ------------------------------------------------------------
+                CurrentDataContext.IsUpdateRunning = true;
+
+                Thread updateThread = new Thread(() => UpdateParametersAsynch(plan));
+                updateThread.IsBackground = true;
+                updateThread.Start();
+            }
+            catch (Exception ex)
+            {
+                CurrentDataContext.IsUpdateRunning = false;
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Execute le plan de mise a jour (option B) en tache de fond :
+        /// 1) prepare et verifie un dossier de travail local dedie ;
+        /// 2) sauvegarde localement l'assemblage actif et chaque modele concerne (Backup Creo),
+        ///    sans jamais toucher a la session active tant que la copie n'est pas verifiee ;
+        /// 3) ferme la fenetre source et vide les modeles non affiches (meme mecanisme deja
+        ///    utilise par <see cref="ICreoModelService.OpenBackupReloadAndPurgeTempDetailed"/>) ;
+        /// 4) rouvre l'assemblage principal puis chaque modele depuis le dossier local ;
+        /// 5) ecrit REFERENCE/DESCRIPTION_MTH et sauvegarde chaque modele modifie, une seule fois
+        ///    par <see cref="ManufacturingUpdatePlanEntry.ModelKey"/> ;
+        /// 6) sauvegarde l'assemblage principal (meme mecanisme que SimplifiedRep) ;
+        /// 7) affiche un bilan detaille par modele.
+        /// </summary>
+        private void UpdateParametersAsynch(ManufacturingUpdatePlan plan)
+        {
+            var outcomes = new List<ManufacturingUpdateOutcome>();
+            string? mainAssemblyFileName = CurrentDataContext.ActiveModelName;
+
+            try
+            {
+                // --------------------------------------------------------------
+                // Etape 1 : dossier de travail local dedie, verifie avant toute
+                // action destructive sur la session Creo active.
+                // --------------------------------------------------------------
+                var workFolder = ManufacturingUpdateWorkFolder.PrepareWorkFolder();
+                if (!workFolder.Success)
+                {
+                    MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateWorkFolderFailed"), workFolder.Detail),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error));
+
+                    TraceLog.AddTraceLog($"Manufacturing View : echec preparation dossier de travail ({workFolder.Detail}).");
+                    return;
+                }
+
+                TraceLog.AddTraceLog(string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateWorkFolderPath"), workFolder.FolderPath));
+
+                // --------------------------------------------------------------
+                // Etape 2 : copie locale (Backup) de l'assemblage principal ET de
+                // chaque modele du plan, AVANT tout effacement de la session.
+                // --------------------------------------------------------------
+                if (_activeModel == null || string.IsNullOrWhiteSpace(mainAssemblyFileName))
+                    return;
+
+                if (!TryBackupModel(_activeModel, workFolder.FolderPath, out var mainBackupFileName, out var backupError))
+                {
+                    ReportBackupFailure(mainAssemblyFileName, backupError);
+                    return;
+                }
+
+                var backedUpFileNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var entry in plan.Entries)
+                {
+                    if (!_modelsByKey.TryGetValue(entry.ModelKey, out var model) || model == null)
+                    {
+                        outcomes.Add(new ManufacturingUpdateOutcome
+                        {
+                            ModelKey = entry.ModelKey,
+                            ComponentNames = entry.ComponentNames,
+                            Status = ManufacturingUpdateOutcomeStatus.NotFound,
+                            Detail = "Modele introuvable dans la correspondance ModelKey capturee lors de la lecture."
+                        });
+                        continue;
+                    }
+
+                    // Le modele principal est deja sauvegarde ci-dessus ; ne pas le sauvegarder deux fois.
+                    if (string.Equals(model.FileName, _activeModel.FileName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        backedUpFileNames[entry.ModelKey] = mainBackupFileName;
+                        continue;
+                    }
+
+                    if (!TryBackupModel(model, workFolder.FolderPath, out var backupFileName, out var modelBackupError))
+                    {
+                        ReportBackupFailure(model.FileName, modelBackupError);
+                        return;
+                    }
+
+                    backedUpFileNames[entry.ModelKey] = backupFileName;
+                }
+
+                // --------------------------------------------------------------
+                // Etape 3 : la copie locale est verifiee (tous les Backup ont
+                // reussi) : on peut maintenant fermer la fenetre source et vider
+                // la session en toute securite.
+                // --------------------------------------------------------------
+                CloseAssemblyAndClearSession();
+
+                // --------------------------------------------------------------
+                // Etape 4 : reouverture de l'assemblage principal puis de chaque
+                // modele depuis le dossier de travail local. Utilise la surcharge
+                // (dossier, fichier) deja eprouvee ailleurs dans l'application
+                // (JpgExportViewModel, DxfExportViewModel, CadDocRenameViewModel) :
+                // elle combine le chemin complet et le passe via IpfcModelDescriptor.Path
+                // avec Instance = null, ce qui evite pfcExceptions::XToolkitNotFound
+                // rencontre avec la surcharge a 3 parametres (Instance = nom de fichier).
+                // --------------------------------------------------------------
+                var reopenedMainAssembly = _creoModelService.RetrieveModelFromLocalDir(workFolder.FolderPath, mainBackupFileName);
+
+                if (reopenedMainAssembly == null)
+                {
+                    MainDispatcher.Invoke(() => ShowWarning("MFG_MsgUpdateReopenFailed"));
+                    TraceLog.AddTraceLog("Manufacturing View : echec de reouverture de l'assemblage principal depuis le dossier de travail local.");
+                    return;
+                }
+
+                try
+                {
+                    reopenedMainAssembly.Display();
+                }
+                catch
+                {
+                    // Non bloquant : la sauvegarde ne necessite pas d'affichage.
+                }
+
+                // Important : CloseAssemblyAndClearSession() (EraseUndisplayedModels) invalide
+                // TOUS les handles Creo non affiches de la session, y compris ceux des composants
+                // qui ne font pas partie du plan traite ce cycle-ci. Sans ce rafraichissement
+                // complet, un composant modifie pour la premiere fois lors d'un cycle ulterieur
+                // utiliserait un handle perime capture lors de la lecture initiale (ou d'un cycle
+                // precedent) et echouerait avec pfcExceptions::XToolkitGeneralError.
+                RefreshModelsByKey(reopenedMainAssembly);
+
+                // --------------------------------------------------------------
+                // Etape 5 : ecriture des parametres et sauvegarde de chaque modele.
+                // --------------------------------------------------------------
+                foreach (var entry in plan.Entries)
+                {
+                    if (!backedUpFileNames.TryGetValue(entry.ModelKey, out var backupFileName))
+                        continue; // Deja consigne en NotFound ci-dessus.
+
+                    UpdateSingleModel(entry, workFolder.FolderPath, backupFileName, reopenedMainAssembly, outcomes);
+                }
+
+                // --------------------------------------------------------------
+                // Etape 6 : sauvegarde de l'assemblage principal (meme mecanisme
+                // que SimplifiedRep).
+                // --------------------------------------------------------------
+                bool mainAssemblySaved;
+                try
+                {
+                    mainAssemblySaved = _creoSimpRepService.SaveOwnerModel(reopenedMainAssembly);
+                }
+                catch (Exception ex)
+                {
+                    mainAssemblySaved = false;
+                    TraceLog.AddTraceLog($"Manufacturing View : exception a la sauvegarde de l'assemblage principal : {ex.Message}.");
+                }
+
+                if (!mainAssemblySaved)
+                {
+                    MainDispatcher.Invoke(() => ShowWarning("MFG_MsgUpdateAssemblySaveFailed"));
+                    TraceLog.AddTraceLog("Manufacturing View : echec de la sauvegarde de l'assemblage principal.");
+                }
+
+                _activeModel = reopenedMainAssembly;
+
+                // --------------------------------------------------------------
+                // Etape 7 : bilan detaille, uniquement apres confirmation reelle
+                // de chaque sauvegarde.
+                // --------------------------------------------------------------
+                MainDispatcher.Invoke(() =>
+                {
+                    ApplyOutcomesToGrid(outcomes);
+                    ShowUpdateSummary(outcomes, mainAssemblySaved);
+                });
             }
             catch (Exception ex)
             {
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
             }
+            finally
+            {
+                CurrentDataContext.IsUpdateRunning = false;
+            }
+        }
+
+        /// <summary>
+        /// Sauvegarde (Backup Creo) <paramref name="model"/> dans <paramref name="workFolder"/>.
+        /// Retourne le nom de fichier reellement utilise pour la copie (celui du modele).
+        /// N'ecrase jamais un fichier existant dans le dossier de travail : celui-ci vient
+        /// d'etre cree par <see cref="ManufacturingUpdateWorkFolder.PrepareWorkFolder"/> et est
+        /// donc garanti vide.
+        /// </summary>
+        private bool TryBackupModel(IpfcModel model, string workFolder, out string backupFileName, out string errorDetail)
+        {
+            backupFileName = model.FileName;
+            errorDetail = string.Empty;
+
+            try
+            {
+                var backupDescriptor = new CCpfcModelDescriptor().Create(model.Type, backupFileName, null);
+                backupDescriptor.Path = workFolder;
+
+                model.Backup(backupDescriptor);
+
+                TraceLog.AddTraceLog($"Manufacturing View : copie locale de '{backupFileName}' creee dans '{workFolder}'.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorDetail = ex.Message;
+                return false;
+            }
+        }
+
+        private void ReportBackupFailure(string modelFileName, string errorDetail)
+        {
+            MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                string.Format(McgWpfTools.GetStringResource("MFG_MsgUpdateBackupFailed"), modelFileName, errorDetail),
+                McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error));
+
+            TraceLog.AddTraceLog($"Manufacturing View : echec de la copie locale de '{modelFileName}' : {errorDetail}. Session non videe.");
+        }
+
+        /// <summary>
+        /// Ferme la fenetre de l'assemblage source (si affichee) puis vide les modeles non
+        /// affiches de la session, en deux passages de securite - meme mecanisme deja verifie
+        /// dans <c>CreoModelService.OpenBackupReloadAndPurgeTempDetailed</c>.
+        /// </summary>
+        private void CloseAssemblyAndClearSession()
+        {
+            try
+            {
+                var window = _creoModelService.GetCadDocWindow(_activeModel);
+                window?.Close();
+            }
+            catch
+            {
+                // Non bloquant : la fenetre peut deja etre fermee ou introuvable.
+            }
+
+            for (int pass = 0; pass < 2; pass++)
+            {
+                try
+                {
+                    _creoSessionProvider.Session.EraseUndisplayedModels();
+                }
+                catch
+                {
+                    // Non bloquant : conforme au mecanisme deja utilise ailleurs (best effort).
+                }
+            }
+        }
+
+        /// <summary>
+        /// Retrouve un modele deja mis a jour (option B) dans la nouvelle session locale,
+        /// ecrit REFERENCE/DESCRIPTION_MTH selon <paramref name="entry"/> et sauvegarde le
+        /// modele. Consigne un resultat detaille dans <paramref name="outcomes"/> dans tous les
+        /// cas (succes ou echec), sans jamais interrompre le traitement des autres modeles.
+        /// </summary>
+        private void UpdateSingleModel(
+            ManufacturingUpdatePlanEntry entry,
+            string workFolder,
+            string backupFileName,
+            IpfcModel reopenedMainAssembly,
+            List<ManufacturingUpdateOutcome> outcomes)
+        {
+            try
+            {
+                IpfcModel? model;
+
+                // Le modele principal a deja ete rouvert par la reouverture de l'assemblage.
+                if (string.Equals(backupFileName, reopenedMainAssembly.FileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    model = reopenedMainAssembly;
+                }
+                else
+                {
+                    // Surcharge (dossier, fichier) deja eprouvee ailleurs dans l'application :
+                    // combine le chemin complet et le passe via IpfcModelDescriptor.Path avec
+                    // Instance = null, evitant pfcExceptions::XToolkitNotFound.
+                    model = _creoModelService.RetrieveModelFromLocalDir(workFolder, backupFileName);
+                }
+
+                if (model == null)
+                {
+                    outcomes.Add(new ManufacturingUpdateOutcome
+                    {
+                        ModelKey = entry.ModelKey,
+                        ComponentNames = entry.ComponentNames,
+                        Status = ManufacturingUpdateOutcomeStatus.NotFound,
+                        Detail = $"Modele '{backupFileName}' introuvable apres reouverture locale."
+                    });
+                    return;
+                }
+
+                // Important : la session a ete videe (EraseUndisplayedModels) puis rouverte
+                // depuis le dossier local. Les handles COM captures dans _modelsByKey lors de la
+                // derniere lecture (ReadAllLevels) sont donc perimes pour ce ModelKey. Sans cette
+                // mise a jour, un second lancement de "Mise a jour" dans la meme session
+                // utiliserait un handle invalide et echouerait avec pfcExceptions::XToolkitGeneralError.
+                _modelsByKey[entry.ModelKey] = model;
+
+                if (entry.UpdateReference)
+                {
+                    var referenceStatus = _creoParameterService.SetParameter(model, "REFERENCE", entry.ReferenceValue, false);
+                    if (referenceStatus != CREOModelStatus.OK)
+                    {
+                        outcomes.Add(new ManufacturingUpdateOutcome
+                        {
+                            ModelKey = entry.ModelKey,
+                            ComponentNames = entry.ComponentNames,
+                            Status = ManufacturingUpdateOutcomeStatus.Error,
+                            Detail = $"Echec ecriture REFERENCE (statut {referenceStatus})."
+                        });
+                        return;
+                    }
+                }
+
+                if (entry.UpdateDescriptionMth)
+                {
+                    var descriptionStatus = _creoParameterService.SetParameter(model, "DESCRIPTION_MTH", entry.DescriptionMthValue, false);
+                    if (descriptionStatus != CREOModelStatus.OK)
+                    {
+                        outcomes.Add(new ManufacturingUpdateOutcome
+                        {
+                            ModelKey = entry.ModelKey,
+                            ComponentNames = entry.ComponentNames,
+                            Status = ManufacturingUpdateOutcomeStatus.Error,
+                            Detail = $"Echec ecriture DESCRIPTION_MTH (statut {descriptionStatus})."
+                        });
+                        return;
+                    }
+                }
+
+                // Le modele principal sera sauvegarde une seule fois, apres tous les composants
+                // (voir etape 6 de UpdateParametersAsynch) : ne pas le sauvegarder ici en double.
+                if (!ReferenceEquals(model, reopenedMainAssembly))
+                {
+                    bool saved;
+                    try
+                    {
+                        saved = _creoSimpRepService.SaveOwnerModel(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        outcomes.Add(new ManufacturingUpdateOutcome
+                        {
+                            ModelKey = entry.ModelKey,
+                            ComponentNames = entry.ComponentNames,
+                            Status = ManufacturingUpdateOutcomeStatus.Error,
+                            Detail = $"Exception a la sauvegarde : {ex.Message}."
+                        });
+                        return;
+                    }
+
+                    if (!saved)
+                    {
+                        outcomes.Add(new ManufacturingUpdateOutcome
+                        {
+                            ModelKey = entry.ModelKey,
+                            ComponentNames = entry.ComponentNames,
+                            Status = ManufacturingUpdateOutcomeStatus.Error,
+                            Detail = "La sauvegarde Creo a echoue (SaveOwnerModel a retourne false)."
+                        });
+                        return;
+                    }
+                }
+
+                outcomes.Add(new ManufacturingUpdateOutcome
+                {
+                    ModelKey = entry.ModelKey,
+                    ComponentNames = entry.ComponentNames,
+                    Status = ManufacturingUpdateOutcomeStatus.Updated,
+                    Detail = string.Empty
+                });
+            }
+            catch (Exception ex)
+            {
+                // Une erreur sur ce modele ne doit jamais masquer les resultats des autres.
+                outcomes.Add(new ManufacturingUpdateOutcome
+                {
+                    ModelKey = entry.ModelKey,
+                    ComponentNames = entry.ComponentNames,
+                    Status = ManufacturingUpdateOutcomeStatus.Error,
+                    Detail = ex.Message
+                });
+            }
+        }
+
+        /// <summary>
+        /// N'actualise la grille que pour les modeles reellement mis a jour avec succes : les
+        /// lignes correspondantes redeviennent la nouvelle baseline (plus de surbrillance).
+        /// </summary>
+        private void ApplyOutcomesToGrid(IEnumerable<ManufacturingUpdateOutcome> outcomes)
+        {
+            var updatedModelKeys = outcomes
+                .Where(o => o.Status == ManufacturingUpdateOutcomeStatus.Updated)
+                .Select(o => o.ModelKey)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            if (updatedModelKeys.Count == 0) return;
+
+            foreach (var item in CurrentDataContext.ListItem)
+            {
+                if (updatedModelKeys.Contains(item.ModelKey))
+                {
+                    // La nouvelle valeur vient d'etre ecrite avec succes dans Creo : elle devient
+                    // la valeur "telle que trouvee dans Creo" de reference. Sans cette
+                    // resynchronisation, CaptureBaseline() comparerait toujours a l'ancienne
+                    // valeur lue avant la mise a jour et la ligne resterait surlignee a tort.
+                    item.InitialDescriptionMth = item.DescriptionMth;
+                    item.CaptureBaseline();
+                }
+            }
+
+            RefreshPendingChangesState();
+        }
+
+        private static void ShowUpdateSummary(IReadOnlyList<ManufacturingUpdateOutcome> outcomes, bool mainAssemblySaved)
+        {
+            var lines = outcomes.Select(o => string.Format(
+                McgWpfTools.GetStringResource("MFG_UpdateOutcomeLine"),
+                string.Join(", ", o.ComponentNames),
+                McgWpfTools.GetStringResource($"MFG_UpdateOutcome_{o.Status}"),
+                o.Detail,
+                string.IsNullOrEmpty(o.Detail) ? string.Empty : Environment.NewLine));
+
+            var summary = string.Join(Environment.NewLine, lines);
+
+            TraceLog.AddTraceLog($"Manufacturing View : bilan de mise a jour - {outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Updated)} mis a jour, " +
+                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Error)} en erreur, " +
+                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.NotFound)} introuvable(s), " +
+                                  $"assemblage principal sauvegarde : {mainAssemblySaved}.");
+
+            System.Windows.MessageBox.Show(
+                summary,
+                McgWpfTools.GetStringResource("MFG_MsgUpdateSummaryTitle"),
+                System.Windows.MessageBoxButton.OK,
+                mainAssemblySaved ? System.Windows.MessageBoxImage.Information : System.Windows.MessageBoxImage.Warning);
         }
 
         /// <summary>
@@ -566,6 +1159,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         private void ResetContext()
         {
             _activeModel = null;
+            _modelsByKey.Clear();
             CurrentDataContext.ListItem.Clear();
             CurrentDataContext.ActiveModelName = string.Empty;
             CurrentDataContext.IsAssemblyLoaded = false;

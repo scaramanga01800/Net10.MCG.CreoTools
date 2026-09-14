@@ -531,4 +531,40 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">Die aktive Baugruppe ist in der Sitzung nicht änderbar.&#x0a;Checken Sie sie in Windchill aus, bevor Sie die Fertigungsparameter aktualisieren.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">Die Aktion "Aktualisieren" ist noch nicht implementiert.</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">Die Aktion "PVZ erstellen" ist noch nicht implementiert.</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">Status</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Komponente "{0}": Der manuell eingegebene DESCRIPTION_MTH-Wert ("{1}") weicht vom neu berechneten Wert ("{2}") ab.
+Möchten Sie ihn durch den berechneten Wert ersetzen?</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">Unverändert</system:String>
+    <system:String x:Key="MFG_Status_Calculated">Berechnet</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">Manuell geändert</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">Aktualisierung erforderlich</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">Berechnung nicht möglich</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Webterm-Fehler</system:String>
+
+    <!-- Workflow der Aktion "Aktualisieren" -->
+    <system:String x:Key="MFG_MsgNoPendingChanges">Es wurde keine geänderte Zeile erkannt. Es gibt nichts zu aktualisieren.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAlreadyRunning">Die Aktion "Aktualisieren" wird bereits ausgeführt.</system:String>
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} Creo-Modell(e) werden (REFERENCE und/oder DESCRIPTION_MTH) aus einer lokalen Arbeitskopie aktualisiert.
+Die aktive Creo-Sitzung wird geleert, sobald diese lokale Kopie überprüft wurde.
+Möchten Sie fortfahren?</system:String>
+    <system:String x:Key="MFG_MsgUpdateConflictsDetected">Aktualisierung blockiert für {0} Modell(e): Es wurden widersprüchliche Werte für mehrere Vorkommen desselben Creo-Modells eingegeben.
+Es wurde kein Wert automatisch ausgewählt. Bitte korrigieren Sie die Tabelle, bevor Sie es erneut versuchen.
+
+{1}</system:String>
+    <system:String x:Key="MFG_MsgUpdateUnresolvedDetected">{0} geänderte Zeile(n) verweisen auf ein Creo-Modell, das nicht identifiziert werden konnte, und wurden von der Aktualisierung ausgeschlossen.</system:String>
+    <system:String x:Key="MFG_MsgUpdateCopyFailed">Die lokale Arbeitskopie der Baugruppe konnte nicht erstellt oder überprüft werden. Die Aktualisierung wurde abgebrochen; die aktive Creo-Sitzung wurde nicht geleert.</system:String>
+    <system:String x:Key="MFG_MsgUpdateReopenFailed">Die Hauptbaugruppe konnte nicht aus dem lokalen Arbeitsordner erneut geöffnet werden. Die Aktualisierung wurde abgebrochen.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Die Hauptbaugruppe konnte nach der Aktualisierung der Komponenten nicht gespeichert werden.</system:String>
+    <system:String x:Key="MFG_MsgUpdateSummaryTitle">Zusammenfassung der Aktualisierung</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Updated">Aktualisiert</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Unchanged">Unverändert</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignoriert (Konflikt)</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_NotFound">Nicht gefunden</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Error">Fehler</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderFailed">Der lokale Arbeitsordner konnte nicht vorbereitet werden: {0}
+Die Aktualisierung wurde abgebrochen; die aktive Creo-Sitzung wurde nicht geleert.</system:String>
+    <system:String x:Key="MFG_MsgUpdateBackupFailed">Die lokale Kopie des Modells '{0}' ist fehlgeschlagen: {1}
+Die Aktualisierung wurde abgebrochen; die aktive Creo-Sitzung wurde nicht geleert.</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Verwendeter Arbeitsordner: {0}</system:String>
+    <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
 </ResourceDictionary>

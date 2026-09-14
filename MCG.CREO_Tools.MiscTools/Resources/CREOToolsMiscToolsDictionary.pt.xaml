@@ -531,4 +531,40 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">A montagem ativa não é modificável na sessão.&#x0a;Faça o check-out no Windchill antes de atualizar os parâmetros de fabricação.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">A ação "Atualizar" ainda não está implementada.</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">A ação "Criar PVZ" ainda não está implementada.</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">Estado</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Componente "{0}": o valor DESCRIPTION_MTH inserido manualmente ("{1}") difere do valor recém-calculado ("{2}").
+Deseja substituí-lo pelo valor calculado?</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">Inalterado</system:String>
+    <system:String x:Key="MFG_Status_Calculated">Calculado</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">Modificado manualmente</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">Atualização necessária</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">Cálculo impossível</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Erro do Webterm</system:String>
+
+    <!-- Fluxo de trabalho da ação "Atualizar" -->
+    <system:String x:Key="MFG_MsgNoPendingChanges">Nenhuma linha modificada foi detectada. Não há nada para atualizar.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAlreadyRunning">A ação "Atualizar" já está em execução.</system:String>
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} modelo(s) Creo serão atualizados (REFERENCE e/ou DESCRIPTION_MTH) a partir de uma cópia de trabalho local.
+A sessão Creo ativa será limpa assim que essa cópia local for verificada.
+Deseja continuar?</system:String>
+    <system:String x:Key="MFG_MsgUpdateConflictsDetected">Atualização bloqueada para {0} modelo(s): foram inseridos valores contraditórios para várias ocorrências do mesmo modelo Creo.
+Nenhum valor foi escolhido automaticamente. Corrija a tabela antes de tentar novamente.
+
+{1}</system:String>
+    <system:String x:Key="MFG_MsgUpdateUnresolvedDetected">{0} linha(s) modificada(s) referem-se a um modelo Creo que não pôde ser identificado e foram excluídas da atualização.</system:String>
+    <system:String x:Key="MFG_MsgUpdateCopyFailed">Não foi possível criar ou verificar a cópia de trabalho local do conjunto. A atualização foi cancelada; a sessão Creo ativa não foi limpa.</system:String>
+    <system:String x:Key="MFG_MsgUpdateReopenFailed">Não foi possível reabrir o conjunto principal a partir da pasta de trabalho local. A atualização foi cancelada.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Não foi possível salvar o conjunto principal após a atualização dos componentes.</system:String>
+    <system:String x:Key="MFG_MsgUpdateSummaryTitle">Resumo da atualização</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Updated">Atualizado</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Unchanged">Inalterado</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignorado (conflito)</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_NotFound">Não encontrado</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Error">Erro</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderFailed">Não foi possível preparar a pasta de trabalho local: {0}
+A atualização foi cancelada; a sessão Creo ativa não foi limpa.</system:String>
+    <system:String x:Key="MFG_MsgUpdateBackupFailed">A cópia local do modelo '{0}' falhou: {1}
+A atualização foi cancelada; a sessão Creo ativa não foi limpa.</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Pasta de trabalho utilizada: {0}</system:String>
+    <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
 </ResourceDictionary>

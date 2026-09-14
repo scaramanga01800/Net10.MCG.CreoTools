@@ -32,6 +32,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 {
                     this._IsPleaseWaitShown = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsBusy));
                 }
             }
         }
@@ -83,6 +84,34 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 }
             }
         }
+
+        private bool _IsUpdateRunning;
+        /// <summary>
+        /// Vrai pendant l'execution de l'action "Mise a jour" (copie locale, vidage de session,
+        /// reouverture, ecriture des parametres, sauvegardes). Empeche un double lancement de la
+        /// commande et desactive les commandes incompatibles (lecture, sauvegarde, PVZ) le temps
+        /// de l'operation.
+        /// </summary>
+        public bool IsUpdateRunning
+        {
+            get { return _IsUpdateRunning; }
+            set
+            {
+                if (this._IsUpdateRunning != value)
+                {
+                    this._IsUpdateRunning = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Vrai lorsque la fenetre est occupee par une operation en cours (lecture, sauvegarde ou
+        /// mise a jour) : combine <see cref="IsPleaseWaitShown"/> et <see cref="IsUpdateRunning"/>
+        /// afin de desactiver les commandes incompatibles pendant toute operation longue.
+        /// </summary>
+        public bool IsBusy => _IsPleaseWaitShown || _IsUpdateRunning;
 
         private string _ActiveModelName = string.Empty;
         public string ActiveModelName

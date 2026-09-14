@@ -531,4 +531,40 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">L'assieme attivo non è modificabile nella sessione.&#x0a;Eseguire il check-out in Creo prima di aggiornare i parametri di produzione.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'azione "Aggiorna" non è ancora implementata.</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'azione "Crea PVZ" non è ancora implementata.</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">Stato</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Componente "{0}": il valore DESCRIPTION_MTH inserito manualmente ("{1}") differisce dal valore appena calcolato ("{2}").
+Si desidera sostituirlo con il valore calcolato?</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">Invariato</system:String>
+    <system:String x:Key="MFG_Status_Calculated">Calcolato</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">Modificato manualmente</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">Aggiornamento richiesto</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">Calcolo impossibile</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Errore Webterm</system:String>
+
+    <!-- Flusso di lavoro dell'azione "Aggiorna" -->
+    <system:String x:Key="MFG_MsgNoPendingChanges">Non è stata rilevata alcuna riga modificata. Non c'è nulla da aggiornare.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAlreadyRunning">L'azione "Aggiorna" è già in corso.</system:String>
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} modello/i Creo verranno aggiornati (REFERENCE e/o DESCRIPTION_MTH) da una copia di lavoro locale.
+La sessione Creo attiva verrà svuotata non appena questa copia locale sarà stata verificata.
+Si desidera continuare?</system:String>
+    <system:String x:Key="MFG_MsgUpdateConflictsDetected">Aggiornamento bloccato per {0} modello/i: sono stati inseriti valori contraddittori per più occorrenze dello stesso modello Creo.
+Nessun valore è stato scelto automaticamente. Correggere la tabella prima di riprovare.
+
+{1}</system:String>
+    <system:String x:Key="MFG_MsgUpdateUnresolvedDetected">{0} riga/righe modificate fanno riferimento a un modello Creo che non è stato possibile identificare e sono state escluse dall'aggiornamento.</system:String>
+    <system:String x:Key="MFG_MsgUpdateCopyFailed">Impossibile creare o verificare la copia di lavoro locale dell'assieme. L'aggiornamento è stato annullato; la sessione Creo attiva non è stata svuotata.</system:String>
+    <system:String x:Key="MFG_MsgUpdateReopenFailed">Impossibile riaprire l'assieme principale dalla cartella di lavoro locale. L'aggiornamento è stato annullato.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Impossibile salvare l'assieme principale dopo l'aggiornamento dei componenti.</system:String>
+    <system:String x:Key="MFG_MsgUpdateSummaryTitle">Riepilogo dell'aggiornamento</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Updated">Aggiornato</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Unchanged">Invariato</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignorato (conflitto)</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_NotFound">Non trovato</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Error">Errore</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderFailed">Impossibile preparare la cartella di lavoro locale: {0}
+L'aggiornamento è stato annullato; la sessione Creo attiva non è stata svuotata.</system:String>
+    <system:String x:Key="MFG_MsgUpdateBackupFailed">La copia locale del modello '{0}' non è riuscita: {1}
+L'aggiornamento è stato annullato; la sessione Creo attiva non è stata svuotata.</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Cartella di lavoro utilizzata: {0}</system:String>
+    <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
 </ResourceDictionary>

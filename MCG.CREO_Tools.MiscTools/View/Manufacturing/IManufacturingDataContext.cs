@@ -13,6 +13,8 @@ namespace MCG.CREO_Tools.MiscTools.View.Manufacturing
         bool IsAssemblyLoaded { get; set; }
         bool IsActiveModelModifiable { get; set; }
         bool HasPendingChanges { get; set; }
+        bool IsUpdateRunning { get; set; }
+        bool IsBusy { get; }
 
         string ActiveModelName { get; set; }
 

@@ -539,4 +539,31 @@
     <system:String x:Key="MFG_Status_UpdateRequired">Update required</system:String>
     <system:String x:Key="MFG_Status_CalculationImpossible">Calculation impossible</system:String>
     <system:String x:Key="MFG_Status_WebtermError">Webterm error</system:String>
+
+    <!-- "Update" action workflow -->
+    <system:String x:Key="MFG_MsgNoPendingChanges">No modified line was detected. There is nothing to update.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAlreadyRunning">The "Update" action is already running.</system:String>
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} Creo model(s) will be updated (REFERENCE and/or DESCRIPTION_MTH) from a local working copy.
+The active Creo session will be cleared once this local copy has been verified.
+Do you want to continue?</system:String>
+    <system:String x:Key="MFG_MsgUpdateConflictsDetected">Update blocked for {0} model(s): contradictory values were entered on several occurrences of the same Creo model.
+No value was chosen automatically. Please fix the grid before retrying.
+
+{1}</system:String>
+    <system:String x:Key="MFG_MsgUpdateUnresolvedDetected">{0} modified line(s) reference a Creo model that could not be identified and were excluded from the update.</system:String>
+    <system:String x:Key="MFG_MsgUpdateCopyFailed">The local working copy of the assembly could not be created or verified. The update was cancelled; the active Creo session was not cleared.</system:String>
+    <system:String x:Key="MFG_MsgUpdateReopenFailed">The main assembly could not be reopened from the local working folder. The update was cancelled.</system:String>
+    <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">The main assembly could not be saved after updating the components.</system:String>
+    <system:String x:Key="MFG_MsgUpdateSummaryTitle">Update summary</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Updated">Updated</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Unchanged">Unchanged</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignored (conflict)</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_NotFound">Not found</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Error">Error</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderFailed">The local working folder could not be prepared: {0}
+The update was cancelled; the active Creo session was not cleared.</system:String>
+    <system:String x:Key="MFG_MsgUpdateBackupFailed">The local copy of model '{0}' failed: {1}
+The update was cancelled; the active Creo session was not cleared.</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Working folder used: {0}</system:String>
+    <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
 </ResourceDictionary>

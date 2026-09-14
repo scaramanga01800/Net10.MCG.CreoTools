@@ -48,6 +48,12 @@ namespace MCG.CREO_Tools.MiscTools.View.Manufacturing
 
         bool IsModified { get; }
 
+        /// <summary>Vrai si REFERENCE differe de la baseline (derniere lecture Creo).</summary>
+        bool HasReferenceChanged { get; }
+
+        /// <summary>Vrai si DESCRIPTION_MTH differe de la baseline (derniere lecture Creo).</summary>
+        bool HasDescriptionMthChanged { get; }
+
         /// <summary>
         /// Vrai si le modele reference par ce composant a deja ete rencontre ailleurs dans la
         /// nomenclature (a un autre endroit de l'arbre, hors ascendance directe).

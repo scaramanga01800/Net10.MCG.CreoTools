@@ -488,11 +488,19 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         /// A appeler juste apres chaque lecture reelle depuis Creo (et apres application du
         /// calcul automatique). Ne modifie jamais <see cref="Status"/> : le statut refletant le
         /// resultat du calcul (ou la saisie manuelle) reste inchange par cette capture.
+        ///
+        /// Important : la baseline de DESCRIPTION_MTH est <see cref="InitialDescriptionMth"/>,
+        /// c'est-a-dire la valeur reellement stockee dans Creo lors de la derniere lecture, et non
+        /// la valeur actuellement affichee. Si un calcul automatique a produit une valeur
+        /// differente de celle stockee dans Creo, la ligne doit etre consideree comme modifiee
+        /// (surbrillance + inclusion dans le plan de "Mise a jour"), meme si l'utilisateur n'a
+        /// lui-meme rien saisi manuellement : c'est justement le but de la mise a jour que
+        /// d'ecrire cette nouvelle valeur calculee dans Creo.
         /// </summary>
         public void CaptureBaseline()
         {
             _BaselineReference = _Reference;
-            _BaselineDescriptionMth = _DescriptionMth;
+            _BaselineDescriptionMth = _InitialDescriptionMth;
 
             // L'etat de reference vient d'etre recale : la ligne n'est plus consideree
             // comme modifiee et le surlignage doit disparaitre.
@@ -516,6 +524,14 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
         /// <summary>Expose <see cref="HasPendingChange"/> a la vue : la ligne est surlignee en jaune pale.</summary>
         public bool IsModified => HasPendingChange;
+
+        /// <summary>Vrai si REFERENCE differe de la baseline (derniere lecture Creo).</summary>
+        public bool HasReferenceChanged =>
+            !string.Equals(_Reference, _BaselineReference, StringComparison.Ordinal);
+
+        /// <summary>Vrai si DESCRIPTION_MTH differe de la baseline (derniere lecture Creo).</summary>
+        public bool HasDescriptionMthChanged =>
+            !string.Equals(_DescriptionMth, _BaselineDescriptionMth, StringComparison.Ordinal);
 
         private void NotifyPendingChange()
         {

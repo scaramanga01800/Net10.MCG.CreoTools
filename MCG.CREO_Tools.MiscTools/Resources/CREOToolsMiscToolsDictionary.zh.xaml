@@ -531,4 +531,40 @@
     <system:String x:Key="MFG_MsgModelNotModifiable">当前装配在会话中不可修改。&#x0a;请先在 Windchill 中检出，然后再更新制造参数。</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">“更新”操作尚未实现。</system:String>
     <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">“创建 PVZ”操作尚未实现。</system:String>
+    <system:String x:Key="MFG_Column_DescriptionMthStatus">状态</system:String>
+    <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">组件“{0}”：手动输入的 DESCRIPTION_MTH 值（“{1}”）与新计算的值（“{2}”）不同。
+是否要用计算得到的值替换？</system:String>
+    <system:String x:Key="MFG_Status_Unchanged">未变</system:String>
+    <system:String x:Key="MFG_Status_Calculated">已计算</system:String>
+    <system:String x:Key="MFG_Status_ManuallyModified">已手动修改</system:String>
+    <system:String x:Key="MFG_Status_UpdateRequired">需要更新</system:String>
+    <system:String x:Key="MFG_Status_CalculationImpossible">无法计算</system:String>
+    <system:String x:Key="MFG_Status_WebtermError">Webterm 错误</system:String>
+
+    <!-- “更新”操作的流程 -->
+    <system:String x:Key="MFG_MsgNoPendingChanges">未检测到任何已修改的行。没有需要更新的内容。</system:String>
+    <system:String x:Key="MFG_MsgUpdateAlreadyRunning">“更新”操作已在进行中。</system:String>
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">将从本地工作副本更新 {0} 个 Creo 模型（REFERENCE 和/或 DESCRIPTION_MTH）。
+一旦验证了该本地副本，当前的 Creo 会话将被清空。
+是否继续？</system:String>
+    <system:String x:Key="MFG_MsgUpdateConflictsDetected">{0} 个模型的更新已被阶止：同一 Creo 模型的多个实例输入了矛盾的值。
+未自动选择任何值。请在重试之前修正表格。
+
+{1}</system:String>
+    <system:String x:Key="MFG_MsgUpdateUnresolvedDetected">{0} 行已修改的行引用了无法识别的 Creo 模型，已从更新中排除。</system:String>
+    <system:String x:Key="MFG_MsgUpdateCopyFailed">无法创建或验证装配体的本地工作副本。更新已取消；当前 Creo 会话未被清空。</system:String>
+    <system:String x:Key="MFG_MsgUpdateReopenFailed">无法从本地工作文件夹重新打开主装配体。更新已取消。</system:String>
+    <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">更新组件后无法保存主装配体。</system:String>
+    <system:String x:Key="MFG_MsgUpdateSummaryTitle">更新摘要</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Updated">已更新</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Unchanged">未变</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Ignored">已忽略（冲突）</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_NotFound">未找到</system:String>
+    <system:String x:Key="MFG_UpdateOutcome_Error">错误</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderFailed">无法准备本地工作文件夹：{0}
+更新已取消；当前 Creo 会话未被清空。</system:String>
+    <system:String x:Key="MFG_MsgUpdateBackupFailed">模型“{0}”的本地副本失败：{1}
+更新已取消；当前 Creo 会话未被清空。</system:String>
+    <system:String x:Key="MFG_MsgUpdateWorkFolderPath">使用的工作文件夹：{0}</system:String>
+    <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
 </ResourceDictionary>
