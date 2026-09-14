@@ -575,4 +575,8 @@ L'aggiornamento è stato annullato; la sessione Creo attiva non è stata svuotat
 L'aggiornamento è stato annullato; la sessione Creo attiva non è stata svuotata.</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Cartella di lavoro utilizzata: {0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">Svuotamento della sessione Creo non riuscito: {0}
+L'aggiornamento e' stato annullato. La copia locale creata prima di questa fase rimane disponibile su disco.</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">Non e' stato possibile svuotare completamente la sessione Creo: {0} modello/i ancora presenti ({1}).
+L'aggiornamento e' stato annullato per evitare di utilizzare riferimenti obsoleti o di sola lettura.</system:String>
 </ResourceDictionary>

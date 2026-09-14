@@ -551,8 +551,12 @@ Do you want to overwrite it?</system:String>
     <!-- "Update" action workflow -->
     <system:String x:Key="MFG_MsgNoPendingChanges">No modified line was detected. There is nothing to update.</system:String>
     <system:String x:Key="MFG_MsgUpdateAlreadyRunning">The "Update" action is already running.</system:String>
-    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} Creo model(s) will be updated (REFERENCE and/or DESCRIPTION_MTH) from a local working copy.
-The active Creo session will be cleared once this local copy has been verified.
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} Creo model(s) will be updated (REFERENCE and/or DESCRIPTION_MTH).
+
+WARNING: ALL models currently in the Creo session will be removed from the session (assemblies, parts, drawings, whether displayed or not). Any unsaved changes will be lost.
+
+The main assembly will first be saved to the local working folder, then the session will be cleared and the assembly reopened from that local copy.
+
 Do you want to continue?</system:String>
     <system:String x:Key="MFG_MsgUpdateConflictsDetected">Update blocked for {0} model(s): contradictory values were entered on several occurrences of the same Creo model.
 No value was chosen automatically. Please fix the grid before retrying.
@@ -574,4 +578,8 @@ The update was cancelled; the active Creo session was not cleared.</system:Strin
 The update was cancelled; the active Creo session was not cleared.</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Working folder used: {0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">Clearing the Creo session failed: {0}
+The update was cancelled. The local backup created before this step remains available on disk.</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">The Creo session could not be fully cleared: {0} model(s) are still present ({1}).
+The update was cancelled to avoid working with stale or read-only model handles.</system:String>
 </ResourceDictionary>

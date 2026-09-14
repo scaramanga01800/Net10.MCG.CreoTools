@@ -575,4 +575,8 @@
 更新已取消；当前 Creo 会话未被清空。</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">使用的工作文件夹：{0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">清空 Creo 会话失败：{0}
+更新已取消。此步骤之前创建的本地备份仍保存在磁盘上。</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">无法完全清空 Creo 会话：仍有 {0} 个模型存在（{1}）。
+为避免使用过期或只读的模型引用，更新已被取消。</system:String>
 </ResourceDictionary>

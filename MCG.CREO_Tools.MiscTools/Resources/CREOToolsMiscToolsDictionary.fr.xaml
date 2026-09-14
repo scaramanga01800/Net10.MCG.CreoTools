@@ -551,8 +551,12 @@ Voulez-vous l'écraser ?</system:String>
     <!-- Workflow de l'action "Mise a jour" -->
     <system:String x:Key="MFG_MsgNoPendingChanges">Aucune ligne modifiee n'a ete detectee. Il n'y a rien a mettre a jour.</system:String>
     <system:String x:Key="MFG_MsgUpdateAlreadyRunning">L'action "Mise a jour" est deja en cours d'execution.</system:String>
-    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} modele(s) Creo vont etre mis a jour (REFERENCE et/ou DESCRIPTION_MTH) a partir d'une copie locale de travail.
-La session Creo active sera videe une fois cette copie locale verifiee.
+    <system:String x:Key="MFG_MsgUpdateConfirmGlobal">{0} modele(s) Creo vont etre mis a jour (REFERENCE et/ou DESCRIPTION_MTH).
+
+ATTENTION : TOUS les modeles actuellement presents dans la session Creo seront supprimes de la session (assemblages, pieces, dessins, affiches ou non). Toute modification non sauvegardee sera perdue.
+
+L'assemblage principal sera d'abord sauvegarde dans le dossier local de travail, puis la session sera videe et l'assemblage sera rouvert depuis cette copie locale.
+
 Voulez-vous continuer ?</system:String>
     <system:String x:Key="MFG_MsgUpdateConflictsDetected">Mise a jour bloquee pour {0} modele(s) : des valeurs contradictoires ont ete saisies sur plusieurs occurrences du meme modele Creo.
 Aucune valeur n'a ete choisie automatiquement. Veuillez corriger la grille avant de reessayer.
@@ -574,4 +578,8 @@ La mise a jour a ete annulee ; la session Creo active n'a pas ete videe.</system
 La mise a jour a ete annulee ; la session Creo active n'a pas ete videe.</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Dossier de travail utilise : {0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">Le videment de la session Creo a echoue : {0}
+La mise a jour a ete annulee. La sauvegarde locale creee avant cette etape reste disponible sur le disque.</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">La session Creo n'a pas pu etre completement videe : {0} modele(s) sont encore presents ({1}).
+La mise a jour a ete annulee pour eviter de travailler avec des references perimees ou en lecture seule.</system:String>
 </ResourceDictionary>

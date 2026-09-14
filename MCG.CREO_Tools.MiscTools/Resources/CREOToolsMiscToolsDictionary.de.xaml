@@ -575,4 +575,8 @@ Die Aktualisierung wurde abgebrochen; die aktive Creo-Sitzung wurde nicht geleer
 Die Aktualisierung wurde abgebrochen; die aktive Creo-Sitzung wurde nicht geleert.</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Verwendeter Arbeitsordner: {0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">Das Leeren der Creo-Sitzung ist fehlgeschlagen: {0}
+Die Aktualisierung wurde abgebrochen. Die vor diesem Schritt erstellte lokale Sicherung bleibt auf der Festplatte verfuegbar.</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">Die Creo-Sitzung konnte nicht vollstaendig geleert werden: {0} Modell(e) sind noch vorhanden ({1}).
+Die Aktualisierung wurde abgebrochen, um die Verwendung veralteter oder schreibgeschuetzter Modellverweise zu vermeiden.</system:String>
 </ResourceDictionary>

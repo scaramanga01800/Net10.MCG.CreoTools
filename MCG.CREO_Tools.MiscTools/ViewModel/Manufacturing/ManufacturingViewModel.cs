@@ -646,10 +646,13 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
                 // --------------------------------------------------------------
                 // Etape 3 : la copie locale est verifiee (tous les Backup ont
-                // reussi) : on peut maintenant fermer la fenetre source et vider
-                // la session en toute securite.
+                // reussi) : on peut maintenant vider completement la session Creo
+                // en toute securite (assemblages, pieces, dessins, affiches ou non).
+                // En cas d'echec de la purge, le traitement est interrompu : on ne
+                // rouvre jamais depuis une session partiellement videe.
                 // --------------------------------------------------------------
-                CloseAssemblyAndClearSession();
+                if (!ClearSessionCompletelyOrReportFailure())
+                    return;
 
                 // --------------------------------------------------------------
                 // Etape 4 : reouverture de l'assemblage principal puis de chaque
@@ -781,33 +784,68 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         }
 
         /// <summary>
-        /// Ferme la fenetre de l'assemblage source (si affichee) puis vide les modeles non
-        /// affiches de la session, en deux passages de securite - meme mecanisme deja verifie
-        /// dans <c>CreoModelService.OpenBackupReloadAndPurgeTempDetailed</c>.
+        /// Vide completement la session Creo via <see cref="ICreoModelService.ClearSessionCompletely"/> :
+        /// toutes les fenetres sont fermees puis les modeles non affiches sont erases (deux
+        /// passages de securite), avant verification finale que la session est reellement vide
+        /// (assemblages, pieces, dessins, affiches ou non). Chaque etape est journalisee.
+        ///
+        /// Limitation Creo documentee : si un modele reste affiche au moment de l'appel,
+        /// <c>Erase()</c>/<c>EraseUndisplayedModels()</c> ne l'efface pas immediatement (report a
+        /// la reprise de main de l'IHM Creo). C'est pourquoi toutes les fenetres sont fermees en
+        /// premier lieu. Aucune API Creo VB ne garantit un vidage total en un seul appel ; en cas
+        /// d'echec de la verification finale, le traitement est interrompu explicitement plutot
+        /// que de poursuivre sur une session partiellement videe.
         /// </summary>
-        private void CloseAssemblyAndClearSession()
+        /// <returns>True si la session est verifiee vide ; false si la purge a echoue.</returns>
+        private bool ClearSessionCompletelyOrReportFailure()
         {
+            TraceLog.AddTraceLog("Manufacturing View : debut du videment complet de la session Creo.");
+
+            SessionClearResult result;
+
             try
             {
-                var window = _creoModelService.GetCadDocWindow(_activeModel);
-                window?.Close();
+                result = _creoModelService.ClearSessionCompletely();
             }
-            catch
+            catch (Exception ex)
             {
-                // Non bloquant : la fenetre peut deja etre fermee ou introuvable.
+                TraceLog.AddTraceLog($"Manufacturing View : echec du videment de la session Creo ({ex.Message}).");
+
+                MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("MFG_MsgSessionClearFailed"), ex.Message),
+                    McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error));
+
+                return false;
             }
 
-            for (int pass = 0; pass < 2; pass++)
+            foreach (var logLine in result.Logs)
             {
-                try
-                {
-                    _creoSessionProvider.Session.EraseUndisplayedModels();
-                }
-                catch
-                {
-                    // Non bloquant : conforme au mecanisme deja utilise ailleurs (best effort).
-                }
+                TraceLog.AddTraceLog($"Manufacturing View : {logLine}");
             }
+
+            if (!result.SessionIsEmpty)
+            {
+                var remainingNames = string.Join(", ", result.RemainingModelFileNames);
+
+                TraceLog.AddTraceLog(
+                    $"Manufacturing View : videment de session incomplet, {result.RemainingModelsCount} " +
+                    $"modele(s) restant(s) : {remainingNames}.");
+
+                MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("MFG_MsgSessionNotEmpty"), result.RemainingModelsCount, remainingNames),
+                    McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error));
+
+                return false;
+            }
+
+            TraceLog.AddTraceLog(
+                $"Manufacturing View : session Creo videe avec succes ({result.ClosedWindowsCount} fenetre(s) fermee(s)).");
+
+            return true;
         }
 
         /// <summary>

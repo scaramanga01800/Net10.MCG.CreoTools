@@ -575,4 +575,8 @@ A atualização foi cancelada; a sessão Creo ativa não foi limpa.</system:Stri
 A atualização foi cancelada; a sessão Creo ativa não foi limpa.</system:String>
     <system:String x:Key="MFG_MsgUpdateWorkFolderPath">Pasta de trabalho utilizada: {0}</system:String>
     <system:String x:Key="MFG_UpdateOutcomeLine">{0} [{1}] : {2}{3}</system:String>
+    <system:String x:Key="MFG_MsgSessionClearFailed">Falha ao limpar a sessao do Creo: {0}
+A atualizacao foi cancelada. A copia local criada antes desta etapa permanece disponivel no disco.</system:String>
+    <system:String x:Key="MFG_MsgSessionNotEmpty">Nao foi possivel limpar completamente a sessao do Creo: {0} modelo(s) ainda presente(s) ({1}).
+A atualizacao foi cancelada para evitar o uso de referencias desatualizadas ou somente leitura.</system:String>
 </ResourceDictionary>
