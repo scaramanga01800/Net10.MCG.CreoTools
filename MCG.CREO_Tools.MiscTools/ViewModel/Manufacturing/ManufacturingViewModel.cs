@@ -10,6 +10,7 @@ using MCG.CREO_Tools.MiscTools.View.Manufacturing;
 using pfcls;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -998,20 +999,187 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         }
 
         /// <summary>
-        /// Commande "Creation du PVZ" : la commande, son activation et son raccordement au ruban
-        /// sont en place. L'export sera realise dans une etape dediee.
+        /// Commande "Creation du PVZ" : exporte l'assemblage actif au format ProductView (.pvz)
+        /// via l'API VB Creo officielle (<see cref="ICreoModelService.ExportModelToPvz"/>).
+        ///
+        /// L'export est realise a partir d'une copie locale de travail (Backup), jamais du
+        /// modele extrait/gere directement dans Windchill : le mecanisme de copie locale suit le
+        /// meme pattern deja verifie dans <see cref="ExecuteUpdateParameters"/> / <see cref="TryBackupModel"/>.
         /// </summary>
         private void ExecuteCreatePvz()
         {
             try
             {
+                if (CurrentDataContext.IsPvzRunning)
+                {
+                    ShowWarning("MFG_MsgPvzAlreadyRunning");
+                    return;
+                }
+
                 if (!EnsureActiveModelIsModifiable()) return;
 
-                ShowInformation("MFG_MsgCreatePvzNotYetImplemented");
+                if (_activeModel == null)
+                {
+                    ShowWarning("MFG_MsgNoActiveModel");
+                    return;
+                }
+
+                string modelFileName = _activeModel.FileName;
+                string suggestedName = Path.GetFileNameWithoutExtension(modelFileName);
+
+                var saveDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Title = McgWpfTools.GetStringResource("MFG_MsgPvzSelectDestination"),
+                    FileName = suggestedName,
+                    DefaultExt = ".pvz",
+                    Filter = "ProductView PVZ (*.pvz)|*.pvz",
+                    AddExtension = true,
+                    OverwritePrompt = true
+                };
+
+                bool? dialogResult = saveDialog.ShowDialog();
+                if (dialogResult != true)
+                    return;
+
+                string destinationFullPath = saveDialog.FileName;
+                string destinationFolder = Path.GetDirectoryName(destinationFullPath) ?? string.Empty;
+                string destinationFileNameWithoutExtension = Path.GetFileNameWithoutExtension(destinationFullPath);
+
+                if (string.IsNullOrWhiteSpace(destinationFolder) || !Directory.Exists(destinationFolder))
+                {
+                    ShowWarning("MFG_MsgUpdateWorkFolderFailed");
+                    return;
+                }
+
+                CurrentDataContext.IsPvzRunning = true;
+                CurrentDataContext.IsPleaseWaitShown = true;
+
+                var pvzModel = _activeModel;
+                var pvzModelFileName = modelFileName;
+
+                Thread pvzThread = new Thread(() => CreatePvzAsynch(pvzModel, pvzModelFileName, destinationFolder, destinationFileNameWithoutExtension));
+                pvzThread.IsBackground = true;
+                pvzThread.Start();
             }
             catch (Exception ex)
             {
+                CurrentDataContext.IsPvzRunning = false;
+                CurrentDataContext.IsPleaseWaitShown = false;
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        /// <summary>
+        /// Execution en tache de fond de la creation du PVZ : copie locale (Backup) de
+        /// l'assemblage actif puis export ProductView (.pvz) via
+        /// <see cref="ICreoModelService.ExportModelToPvz"/>. La reussite n'est declaree que si le
+        /// fichier PVZ existe reellement sur disque a l'issue de l'export.
+        /// </summary>
+        private void CreatePvzAsynch(IpfcModel model, string modelFileName, string destinationFolder, string destinationFileNameWithoutExtension)
+        {
+            string operationStart = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            TraceLog.AddTraceLog($"Manufacturing View : debut creation PVZ pour '{modelFileName}' -> '{destinationFolder}\\{destinationFileNameWithoutExtension}.pvz' ({operationStart}).");
+
+            try
+            {
+                // --------------------------------------------------------------
+                // Etape 1 : dossier de travail local dedie (meme mecanisme que la
+                // mise a jour des parametres), verifie avant toute action Creo.
+                // --------------------------------------------------------------
+                var workFolder = ManufacturingUpdateWorkFolder.PrepareWorkFolder();
+                if (!workFolder.Success)
+                {
+                    TraceLog.AddTraceLog($"Manufacturing View : creation PVZ annulee, echec preparation dossier de travail ({workFolder.Detail}).");
+
+                    MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgPvzBackupFailed"), workFolder.Detail),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error));
+
+                    return;
+                }
+
+                // --------------------------------------------------------------
+                // Etape 2 : copie locale (Backup) du modele source avant tout export,
+                // afin de ne jamais operer directement sur le modele gere en session.
+                // --------------------------------------------------------------
+                if (!TryBackupModel(model, workFolder.FolderPath, out var backupFileName, out var backupError))
+                {
+                    TraceLog.AddTraceLog($"Manufacturing View : creation PVZ annulee, echec de la copie locale de '{modelFileName}' : {backupError}.");
+
+                    MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgPvzBackupFailed"), backupError),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error));
+
+                    return;
+                }
+
+                var backupModel = _creoModelService.RetrieveModelFromLocalDir(workFolder.FolderPath, backupFileName);
+                if (backupModel == null)
+                {
+                    TraceLog.AddTraceLog("Manufacturing View : creation PVZ annulee, impossible de recharger la copie locale.");
+
+                    MainDispatcher.Invoke(() => ShowWarning("MFG_MsgUpdateReopenFailed"));
+                    return;
+                }
+
+                // --------------------------------------------------------------
+                // Etape 3 : export ProductView (.pvz) via l'API VB Creo officielle.
+                // --------------------------------------------------------------
+                string exportedFullPath;
+                try
+                {
+                    exportedFullPath = _creoModelService.ExportModelToPvz(backupModel, destinationFolder, destinationFileNameWithoutExtension);
+                }
+                catch (Exception ex)
+                {
+                    TraceLog.AddTraceLog($"Manufacturing View : echec de l'export PVZ pour '{modelFileName}' : {ex.Message}.");
+
+                    MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("MFG_MsgPvzExportFailed"), ex.Message),
+                        McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error));
+
+                    return;
+                }
+
+                // --------------------------------------------------------------
+                // Etape 4 : la reussite n'est declaree que si le fichier existe
+                // reellement sur disque a l'issue de l'appel Export().
+                // --------------------------------------------------------------
+                if (!File.Exists(exportedFullPath))
+                {
+                    TraceLog.AddTraceLog($"Manufacturing View : creation PVZ en echec, fichier attendu introuvable ('{exportedFullPath}').");
+
+                    MainDispatcher.Invoke(() => ShowWarning("MFG_MsgPvzFileNotCreated"));
+                    return;
+                }
+
+                string operationEnd = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                TraceLog.AddTraceLog($"Manufacturing View : creation PVZ reussie pour '{modelFileName}' -> '{exportedFullPath}' ({operationEnd}).");
+
+                MainDispatcher.Invoke(() => System.Windows.MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("MFG_MsgPvzExportSuccess"), exportedFullPath),
+                    McgWpfTools.GetStringResource("MFG_WindowTitle"),
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Information));
+            }
+            catch (Exception ex)
+            {
+                TraceLog.AddTraceLog($"Manufacturing View : exception non geree pendant la creation PVZ : {ex.Message}.");
+                MainDispatcher.Invoke(() => MiscToolsException.SendMessageBox(this.GetType().Name, ex));
+            }
+            finally
+            {
+                MainDispatcher.Invoke(() =>
+                {
+                    CurrentDataContext.IsPvzRunning = false;
+                    CurrentDataContext.IsPleaseWaitShown = false;
+                });
             }
         }
         #endregion

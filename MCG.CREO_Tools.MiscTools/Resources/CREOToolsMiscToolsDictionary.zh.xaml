@@ -530,7 +530,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">模型已成功保存。</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">当前装配在会话中不可修改。&#x0a;请先在 Windchill 中检出，然后再更新制造参数。</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">“更新”操作尚未实现。</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">“创建 PVZ”操作尚未实现。</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">“创建 PVZ”操作已在运行中。</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">请选择 PVZ 文件的目标文件夹。</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">文件 '{0}' 已存在。
+是否要覆盖它？</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">无法创建装配体的本地工作副本：{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">PVZ 导出失败：{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">PVZ 文件已成功创建：
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">导出操作已完成且未报错，但在磁盘上未找到预期的 PVZ 文件。该操作被视为失败。</system:String>
     <system:String x:Key="MFG_Column_DescriptionMthStatus">状态</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">组件“{0}”：手动输入的 DESCRIPTION_MTH 值（“{1}”）与新计算的值（“{2}”）不同。
 是否要用计算得到的值替换？</system:String>

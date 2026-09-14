@@ -111,7 +111,27 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         /// mise a jour) : combine <see cref="IsPleaseWaitShown"/> et <see cref="IsUpdateRunning"/>
         /// afin de desactiver les commandes incompatibles pendant toute operation longue.
         /// </summary>
-        public bool IsBusy => _IsPleaseWaitShown || _IsUpdateRunning;
+        public bool IsBusy => _IsPleaseWaitShown || _IsUpdateRunning || _IsPvzRunning;
+
+        private bool _IsPvzRunning;
+        /// <summary>
+        /// Vrai pendant l'execution de l'action "Creation du PVZ" (copie locale, export
+        /// ProductView). Empeche un double lancement de la commande et desactive les commandes
+        /// incompatibles (lecture, sauvegarde, mise a jour) le temps de l'operation.
+        /// </summary>
+        public bool IsPvzRunning
+        {
+            get { return _IsPvzRunning; }
+            set
+            {
+                if (this._IsPvzRunning != value)
+                {
+                    this._IsPvzRunning = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
+        }
 
         private string _ActiveModelName = string.Empty;
         public string ActiveModelName

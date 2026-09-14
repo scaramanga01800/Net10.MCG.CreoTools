@@ -530,7 +530,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">Il modello è stato salvato con successo.</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">L'assieme attivo non è modificabile nella sessione.&#x0a;Eseguire il check-out in Creo prima di aggiornare i parametri di produzione.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'azione "Aggiorna" non è ancora implementata.</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'azione "Crea PVZ" non è ancora implementata.</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">L'azione "Crea PVZ" è già in corso di esecuzione.</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">Selezionare la cartella di destinazione per il file PVZ.</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">Il file '{0}' esiste già.
+Vuoi sovrascriverlo?</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">Impossibile creare la copia di lavoro locale dell'assieme: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">L'esportazione PVZ non è riuscita: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">Il file PVZ è stato creato con successo:
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">L'operazione di esportazione è terminata senza errori, ma il file PVZ previsto non è stato trovato sul disco. L'operazione è considerata fallita.</system:String>
     <system:String x:Key="MFG_Column_DescriptionMthStatus">Stato</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Componente "{0}": il valore DESCRIPTION_MTH inserito manualmente ("{1}") differisce dal valore appena calcolato ("{2}").
 Si desidera sostituirlo con il valore calcolato?</system:String>

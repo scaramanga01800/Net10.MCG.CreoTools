@@ -531,7 +531,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">Le modèle a été sauvegardé avec succès.</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">L'assemblage actif n'est pas modifiable en session.&#x0a;Récupérez-le (check-out) dans Windchill avant de mettre à jour les paramètres de fabrication.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">L'action "Mise à jour" n'est pas encore implémentée.</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">L'action "Création du PVZ" n'est pas encore implémentée.</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">L'action "Création du PVZ" est déjà en cours d'exécution.</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">Sélectionnez le dossier de destination du fichier PVZ.</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">Le fichier '{0}' existe déjà.
+Voulez-vous l'écraser ?</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">La copie de travail locale de l'assemblage n'a pas pu être créée : {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">L'export PVZ a échoué : {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">Le fichier PVZ a été créé avec succès :
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">L'opération d'export s'est terminée sans erreur, mais le fichier PVZ attendu est introuvable sur le disque. L'opération est considérée en échec.</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Composant "{0}" : la valeur DESCRIPTION_MTH saisie manuellement ("{1}") diffère de la valeur recalculée ("{2}").&#x0a;Voulez-vous la remplacer par la valeur recalculée ?</system:String>
     <system:String x:Key="MFG_Status_Unchanged">Inchangé</system:String>
     <system:String x:Key="MFG_Status_Calculated">Calculé</system:String>

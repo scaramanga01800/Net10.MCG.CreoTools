@@ -531,7 +531,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">The model has been saved successfully.</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">The active assembly is not modifiable in session.&#x0a;Check it out in Windchill before updating manufacturing parameters.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">The "Update" action is not yet implemented.</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">The "Create PVZ" action is not yet implemented.</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">The "Create PVZ" action is already running.</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">Select the destination folder for the PVZ file.</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">The file '{0}' already exists.
+Do you want to overwrite it?</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">The local working copy of the assembly could not be created: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">The PVZ export failed: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">The PVZ file was created successfully:
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">The export operation completed without error, but the expected PVZ file was not found on disk. The operation is considered failed.</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Component "{0}" : the manually entered DESCRIPTION_MTH value ("{1}") differs from the newly computed value ("{2}").&#x0a;Do you want to replace it with the computed value?</system:String>
     <system:String x:Key="MFG_Status_Unchanged">Unchanged</system:String>
     <system:String x:Key="MFG_Status_Calculated">Calculated</system:String>

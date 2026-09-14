@@ -93,8 +93,11 @@
                         </Fluent:Button.ToolTip>
                     </Fluent:Button>
 
-                    <!-- Commande "Creation du PVZ" : commande, activation et raccordement au
-                         ruban en place. L'export sera realise dans une etape dediee. -->
+                    <!-- Commande "Creation du PVZ" : export ProductView (.pvz) du modele actif
+                         via IpfcModel.Export/IpfcProductViewExportInstructions. Desactivee
+                         pendant l'execution (CurrentDataContext.IsPvzRunning) pour empecher tout
+                         lancement simultane, en plus de la desactivation globale du groupe
+                         pendant IsPleaseWaitShown. -->
                     <Fluent:Button Command="{Binding CommandCreatePvz}"
                                    Header="{DynamicResource MFG_BtCreatePvz}"
                                    LargeIcon="{StaticResource MFG_PVZ}"

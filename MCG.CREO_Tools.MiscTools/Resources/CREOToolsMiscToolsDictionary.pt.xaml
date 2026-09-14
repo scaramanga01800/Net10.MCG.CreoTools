@@ -530,7 +530,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">O modelo foi salvo com sucesso.</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">A montagem ativa não é modificável na sessão.&#x0a;Faça o check-out no Windchill antes de atualizar os parâmetros de fabricação.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">A ação "Atualizar" ainda não está implementada.</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">A ação "Criar PVZ" ainda não está implementada.</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">A ação "Criar PVZ" já está em execução.</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">Selecione a pasta de destino para o arquivo PVZ.</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">O arquivo '{0}' já existe.
+Deseja substituí-lo?</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">Não foi possível criar a cópia de trabalho local do conjunto: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">Falha na exportação do PVZ: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">O arquivo PVZ foi criado com sucesso:
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">A operação de exportação foi concluída sem erros, mas o arquivo PVZ esperado não foi encontrado no disco. A operação é considerada uma falha.</system:String>
     <system:String x:Key="MFG_Column_DescriptionMthStatus">Estado</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Componente "{0}": o valor DESCRIPTION_MTH inserido manualmente ("{1}") difere do valor recém-calculado ("{2}").
 Deseja substituí-lo pelo valor calculado?</system:String>

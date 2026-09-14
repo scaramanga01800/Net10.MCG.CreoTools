@@ -530,7 +530,15 @@
     <system:String x:Key="MFG_MsgSaveSuccess">Das Modell wurde erfolgreich gespeichert.</system:String>
     <system:String x:Key="MFG_MsgModelNotModifiable">Die aktive Baugruppe ist in der Sitzung nicht änderbar.&#x0a;Checken Sie sie in Windchill aus, bevor Sie die Fertigungsparameter aktualisieren.</system:String>
     <system:String x:Key="MFG_MsgUpdateNotYetImplemented">Die Aktion "Aktualisieren" ist noch nicht implementiert.</system:String>
-    <system:String x:Key="MFG_MsgCreatePvzNotYetImplemented">Die Aktion "PVZ erstellen" ist noch nicht implementiert.</system:String>
+    <system:String x:Key="MFG_MsgPvzAlreadyRunning">Die Aktion "PVZ erstellen" wird bereits ausgeführt.</system:String>
+    <system:String x:Key="MFG_MsgPvzSelectDestination">Wählen Sie den Zielordner für die PVZ-Datei aus.</system:String>
+    <system:String x:Key="MFG_MsgPvzConfirmOverwrite">Die Datei '{0}' existiert bereits.
+Möchten Sie sie überschreiben?</system:String>
+    <system:String x:Key="MFG_MsgPvzBackupFailed">Die lokale Arbeitskopie der Baugruppe konnte nicht erstellt werden: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportFailed">Der PVZ-Export ist fehlgeschlagen: {0}</system:String>
+    <system:String x:Key="MFG_MsgPvzExportSuccess">Die PVZ-Datei wurde erfolgreich erstellt:
+{0}</system:String>
+    <system:String x:Key="MFG_MsgPvzFileNotCreated">Der Exportvorgang wurde ohne Fehler abgeschlossen, aber die erwartete PVZ-Datei wurde auf der Festplatte nicht gefunden. Der Vorgang gilt als fehlgeschlagen.</system:String>
     <system:String x:Key="MFG_Column_DescriptionMthStatus">Status</system:String>
     <system:String x:Key="MFG_MsgConfirmDescriptionMthUpdate">Komponente "{0}": Der manuell eingegebene DESCRIPTION_MTH-Wert ("{1}") weicht vom neu berechneten Wert ("{2}") ab.
 Möchten Sie ihn durch den berechneten Wert ersetzen?</system:String>
