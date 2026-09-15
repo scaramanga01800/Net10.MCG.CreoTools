@@ -92,6 +92,22 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 }
             }
         }
+
+        // Format d'export sélectionné. Valeur par défaut Dxf : garantit la non-régression
+        // du comportement existant si l'utilisateur ne change pas explicitement le format.
+        private ExportFormatType _SelectedExportFormat = ExportFormatType.Dxf;
+        public ExportFormatType SelectedExportFormat
+        {
+            get { return this._SelectedExportFormat; }
+            set
+            {
+                if (this._SelectedExportFormat != value)
+                {
+                    this._SelectedExportFormat = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         #endregion
     }
 }

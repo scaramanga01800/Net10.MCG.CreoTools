@@ -252,8 +252,12 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             try
             {
                 using var _ = _busyService.BeginOperation();
-                if (CurrentJpgExportDataContext.CurrentFileName == null || CurrentJpgExportDataContext.CurrentFileName.Trim() == "" || CurrentJpgExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("JPG_TbExportFile") ||
-                    CurrentJpgExportDataContext.CurrentFolder == null || CurrentJpgExportDataContext.CurrentFolder.Trim() == "" || CurrentJpgExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("JPG_TbExportFolder"))
+                bool NoFileSelected = CurrentJpgExportDataContext.CurrentFileName == null || CurrentJpgExportDataContext.CurrentFileName.Trim() == "" || CurrentJpgExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("JPG_TbExportFile");
+                bool NoFolderSelected = CurrentJpgExportDataContext.CurrentFolder == null || CurrentJpgExportDataContext.CurrentFolder.Trim() == "" || CurrentJpgExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("JPG_TbExportFolder");
+                bool NoItemsInList = CurrentJpgExportDataContext.ListItems == null || CurrentJpgExportDataContext.ListItems.Count == 0;
+
+                // A file/folder import OR a manually pasted list (ListItems already populated) are both valid entry points.
+                if ((NoFileSelected && NoItemsInList) || NoFolderSelected)
                     MessageBox.Show(McgWpfTools.GetStringResource("JPG_ErrorMsgDxfFileFolder"), McgWpfTools.GetStringResource("JPG_ErrorMsgTitleDxfFileFolder"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
                 {

@@ -12,5 +12,6 @@ namespace MCG.CREO_Tools.DxfExport.View
         bool IsCreoEnable { get; set; }
         DxfExportItem SelectedItem { get; set; }
         bool IsFlatSelected { get; set; }
+        ExportFormatType SelectedExportFormat { get; set; }
     }
 }

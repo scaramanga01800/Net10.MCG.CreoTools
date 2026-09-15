@@ -221,8 +221,12 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             try
             {
                 using var _ = _busyService.BeginOperation();
-                if (CurrentDxfExportDataContext.CurrentFileName == null || CurrentDxfExportDataContext.CurrentFileName.Trim() == "" || CurrentDxfExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("DXF_TbExportFile") ||
-                    CurrentDxfExportDataContext.CurrentFolder == null || CurrentDxfExportDataContext.CurrentFolder.Trim() == "" || CurrentDxfExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("DXF_TbExportFolder"))
+                bool NoFileSelected = CurrentDxfExportDataContext.CurrentFileName == null || CurrentDxfExportDataContext.CurrentFileName.Trim() == "" || CurrentDxfExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("DXF_TbExportFile");
+                bool NoFolderSelected = CurrentDxfExportDataContext.CurrentFolder == null || CurrentDxfExportDataContext.CurrentFolder.Trim() == "" || CurrentDxfExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("DXF_TbExportFolder");
+                bool NoItemsInList = CurrentDxfExportDataContext.ListItems == null || CurrentDxfExportDataContext.ListItems.Count == 0;
+
+                // A file/folder import OR a manually pasted list (ListItems already populated) are both valid entry points.
+                if ((NoFileSelected && NoItemsInList) || NoFolderSelected)
                     MessageBox.Show(McgWpfTools.GetStringResource("DXF_ErrorMsgDxfFileFolder"), McgWpfTools.GetStringResource("DXF_ErrorMsgTitleDxfFileFolder"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
                 {
@@ -325,11 +329,12 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 _creoSessionProvider.Session.EraseUndisplayedModels();
 
-                // Check dxf file
+                // Check export file
                 var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
 
-                string FinalDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}_{currentBackupModel.ReleaseLevel}_{currentBackupModel.Revision}.dxf";
-                string TempDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}.dxf";
+                string exportExtension = GetExportExtension(CurrentDxfExportDataContext.SelectedExportFormat);
+                string FinalDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}_{currentBackupModel.ReleaseLevel}_{currentBackupModel.Revision}{exportExtension}";
+                string TempDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}{exportExtension}";
 
                 if (File.Exists(TempDXFFileName))
                     File.Delete(TempDXFFileName);
@@ -421,8 +426,20 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 _creoMacroService.RegenDrawingInSession(drwModel);
                 Thread.Sleep(1000);
 
-                // Export DXF
-                _creoMacroService.ExportDxf(TempDXFFileName);
+                // Export selon le format sélectionné (Dxf : comportement historique inchangé)
+                switch (CurrentDxfExportDataContext.SelectedExportFormat)
+                {
+                    case ExportFormatType.Iges:
+                        _creoMacroService.ExportIges(TempDXFFileName);
+                        break;
+                    case ExportFormatType.Step:
+                        _creoMacroService.ExportStep(TempDXFFileName);
+                        break;
+                    case ExportFormatType.Dxf:
+                    default:
+                        _creoMacroService.ExportDxf(TempDXFFileName);
+                        break;
+                }
 
                 // Wait for complete creation
                 int TotalWait = 0;
@@ -448,9 +465,15 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 if (File.Exists(TempDXFFileName))
                 {
-                    FileInfo Fi = new FileInfo(TempDXFFileName);
-                    if (Fi.Length < 10350)
-                        ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status07")}";
+                    // Le contrôle de taille minimale ci-dessous est une heuristique calibrée
+                    // spécifiquement pour le format DXF ; elle n'est pas appliquée aux autres
+                    // formats tant qu'un seuil équivalent n'aura pas été validé pour IGES/STEP.
+                    if (CurrentDxfExportDataContext.SelectedExportFormat == ExportFormatType.Dxf)
+                    {
+                        FileInfo Fi = new FileInfo(TempDXFFileName);
+                        if (Fi.Length < 10350)
+                            ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status07")}";
+                    }
                     if (File.Exists(FinalDXFFileName))
                         File.Delete(FinalDXFFileName);
                     File.Move(TempDXFFileName, FinalDXFFileName);
@@ -465,6 +488,22 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             catch (Exception ex)
             {
                 return McgWpfTools.GetStringResource("DXF_Status10");
+            }
+        }
+
+        // Détermine l'extension de fichier associée au format d'export sélectionné.
+        // Valeur par défaut (Dxf) alignée sur le comportement historique.
+        private static string GetExportExtension(ExportFormatType format)
+        {
+            switch (format)
+            {
+                case ExportFormatType.Iges:
+                    return ".igs";
+                case ExportFormatType.Step:
+                    return ".stp";
+                case ExportFormatType.Dxf:
+                default:
+                    return ".dxf";
             }
         }
 
