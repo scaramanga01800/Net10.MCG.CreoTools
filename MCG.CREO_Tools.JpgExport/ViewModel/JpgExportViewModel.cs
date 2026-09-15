@@ -64,6 +64,7 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
         public ICommand CommandOpenModelInCreo { get => new RelayCommand(() => ExecuteOpenModelInCreo()); }
         public ICommand CommandPaste { get => new RelayCommand<System.Windows.Input.KeyEventArgs>((e) => ExecuteCommandPaste(e)); }
         public ICommand CommandMenuItemPasteCodes { get => new RelayCommand(() => ExecuteMenuItemPasteCodes()); }
+        public ICommand CommandResetList { get => new RelayCommand(() => ExecuteResetList()); }
         #endregion
 
         #region [REGION] Init
@@ -238,6 +239,27 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
             try
             {
                 AddItemsFromClipboard();
+            }
+            catch (Exception ex)
+            {
+                JpgExportException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void ExecuteResetList()
+        {
+            try
+            {
+                if (isInProgress)
+                    return;
+
+                if (CurrentJpgExportDataContext.ListItems != null && CurrentJpgExportDataContext.ListItems.Count > 0 &&
+                    MessageBox.Show(McgWpfTools.GetStringResource("JPG_MsgConfirmResetList"), McgWpfTools.GetStringResource("JPG_MsgTitleConfirmResetList"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    CurrentJpgExportDataContext.ListItems.Clear();
+                    CurrentJpgExportDataContext.SelectedItem = null;
+                    UpdateStatusBar();
+                }
             }
             catch (Exception ex)
             {

@@ -60,4 +60,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="DXF_FormatDxf">DXF</system:String>
     <system:String x:Key="DXF_FormatIges">IGES</system:String>
     <system:String x:Key="DXF_FormatStep">STEP</system:String>
+
+    <system:String x:Key="DXF_MsgConfirmResetList">Are you sure you want to clear the entire list?</system:String>
+    <system:String x:Key="DXF_MsgTitleConfirmResetList">Reset list</system:String>
 </ResourceDictionary>

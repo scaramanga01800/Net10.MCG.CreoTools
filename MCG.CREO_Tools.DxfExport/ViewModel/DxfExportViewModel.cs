@@ -64,6 +64,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         public ICommand CommandOpenModelInCreo { get => new RelayCommand(() => ExecuteOpenModelInCreo()); }
         public ICommand CommandPaste { get => new RelayCommand<System.Windows.Input.KeyEventArgs>((e) => ExecuteCommandPaste(e)); }
         public ICommand CommandMenuItemPasteCodes { get => new RelayCommand(() => ExecuteMenuItemPasteCodes()); }
+        public ICommand CommandResetList { get => new RelayCommand(() => ExecuteResetList()); }
         #endregion
 
         #region [REGION] Init
@@ -207,6 +208,27 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             try
             {
                 AddItemsFromClipboard();
+            }
+            catch (Exception ex)
+            {
+                DxfExportException.SendMessageBox(this.GetType().Name, ex);
+            }
+        }
+
+        private void ExecuteResetList()
+        {
+            try
+            {
+                if (isInProgress)
+                    return;
+
+                if (CurrentDxfExportDataContext.ListItems != null && CurrentDxfExportDataContext.ListItems.Count > 0 &&
+                    MessageBox.Show(McgWpfTools.GetStringResource("DXF_MsgConfirmResetList"), McgWpfTools.GetStringResource("DXF_MsgTitleConfirmResetList"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    CurrentDxfExportDataContext.ListItems.Clear();
+                    CurrentDxfExportDataContext.SelectedItem = null;
+                    UpdateStatusBar();
+                }
             }
             catch (Exception ex)
             {
