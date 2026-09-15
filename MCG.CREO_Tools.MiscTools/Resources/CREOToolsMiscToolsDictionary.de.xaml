@@ -564,6 +564,7 @@ Es wurde kein Wert automatisch ausgewählt. Bitte korrigieren Sie die Tabelle, b
     <system:String x:Key="MFG_MsgUpdateReopenFailed">Die Hauptbaugruppe konnte nicht aus dem lokalen Arbeitsordner erneut geöffnet werden. Die Aktualisierung wurde abgebrochen.</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Die Hauptbaugruppe konnte nach der Aktualisierung der Komponenten nicht gespeichert werden.</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">Zusammenfassung der Aktualisierung</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotSavedReminder">Hinweis: Diese Anderungen wurden noch nicht in Creo gespeichert. Verwenden Sie die Schaltflache Speichern, um sie dauerhaft zu ubernehmen.</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">Aktualisiert</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Unchanged">Unverändert</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignoriert (Konflikt)</system:String>

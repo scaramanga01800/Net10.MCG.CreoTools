@@ -235,6 +235,16 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
             // du parcours de toute la nomenclature.
             var descriptionMthCalculationService = new DescriptionMthCalculationService(_webtermTools);
 
+            // ------------------------------------------------------------
+            // Niveau 0 : l'assemblage de plus haut niveau lui-meme. Son
+            // DESCRIPTION_MTH doit pouvoir etre mis a jour au meme titre que
+            // celui de ses composants, il est donc ajoute en premiere ligne
+            // de la grille avec Level = 0, avant tous ses enfants directs
+            // (qui restent numerotes a partir de Level = 1 par le service de
+            // parcours, inchange).
+            // ------------------------------------------------------------
+            AddRootAssemblyRow(assemblyModel, descriptionMthCalculationService);
+
             foreach (var visit in visitResults)
             {
                 _treeIndexCounter++;
@@ -303,6 +313,95 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                     CurrentDataContext.NbModels++;
                     CurrentDataContext.NbModelsInProgress++;
                 });
+            }
+        }
+
+        /// <summary>
+        /// Ajoute, en premiere ligne de la grille, l'assemblage de plus haut niveau lui-meme
+        /// (Level = 0), afin que son parametre DESCRIPTION_MTH puisse etre modifie et mis a jour
+        /// au meme titre que celui de ses composants. REFERENCE reste egalement modifiable, comme
+        /// pour toute autre ligne, meme si seul DESCRIPTION_MTH est demande pour ce niveau.
+        ///
+        /// La cle <see cref="ManufacturingComponentItem.ModelKey"/> de cette ligne est construite
+        /// a partir de <c>IpfcModel.FileName</c> (propriete verifiee : "The object name or
+        /// pathname."), en majuscules pour rester cohérente avec le format retourne par
+        /// <c>CreoSimpRepService.BuildModelKey</c> (base sur IpfcModelDescriptor.GetFullName()).
+        /// Cette cle est ensuite enregistree dans <see cref="_modelsByKey"/> afin que le mecanisme
+        /// de mise a jour existant (ecriture de parametre + sauvegarde par ModelKey) fonctionne
+        /// pour ce niveau exactement comme pour tout autre composant.
+        /// </summary>
+        private void AddRootAssemblyRow(IpfcModel assemblyModel, DescriptionMthCalculationService descriptionMthCalculationService)
+        {
+            _treeIndexCounter++;
+
+            string rootModelKey = BuildRootModelKey(assemblyModel);
+
+            if (!string.IsNullOrWhiteSpace(rootModelKey))
+                _modelsByKey[rootModelKey] = assemblyModel;
+
+            var reference = GetModelParameter(assemblyModel, "REFERENCE");
+            var ptcCommonName = GetModelParameter(assemblyModel, "PTC_COMMON_NAME");
+            var description2 = GetModelParameter(assemblyModel, "DESCRIPTION_2");
+            var description2_1 = GetModelParameter(assemblyModel, "DESCRIPTION2_1");
+            var description2_2 = GetModelParameter(assemblyModel, "DESCRIPTION2_2");
+            var descriptionMthFromCreo = GetModelParameter(assemblyModel, "DESCRIPTION_MTH");
+
+            var rootItem = new ManufacturingComponentItem
+            {
+                TreeIndex = _treeIndexCounter,
+                Level = 0,
+                HierarchicalNumber = "0",
+                ComponentId = 0,
+                Name = assemblyModel.FileName ?? string.Empty,
+                ModelKey = rootModelKey,
+                Reference = reference,
+                PtcCommonName = ptcCommonName,
+                Description2 = description2,
+                Description2_1 = description2_1,
+                Description2_2 = description2_2,
+                IsDuplicateModel = false,
+                IsCycleDetected = false,
+            };
+
+            rootItem.LoadDescriptionMthFromCreo(descriptionMthFromCreo);
+
+            var calculationInput = new DescriptionMthCalculationInput
+            {
+                PtcCommonName = ptcCommonName,
+                Description2 = description2,
+                Description2_1 = description2_1,
+                Description2_2 = description2_2,
+            };
+
+            var calculationResult = descriptionMthCalculationService.Calculate(calculationInput);
+            rootItem.ApplyCalculatedDescriptionMth(calculationResult);
+
+            rootItem.CaptureBaseline();
+
+            MainDispatcher.Invoke(() =>
+            {
+                SubscribeToPendingChange(rootItem);
+                CurrentDataContext.ListItem.Add(rootItem);
+                CurrentDataContext.NbModels++;
+                CurrentDataContext.NbModelsInProgress++;
+            });
+        }
+
+        /// <summary>
+        /// Construit la cle d'identite de l'assemblage racine, sur le meme format que
+        /// <c>CreoSimpRepService.BuildModelKey</c> (nom de fichier en majuscules), a partir de la
+        /// propriete verifiee <c>IpfcModel.FileName</c> ("The object name or pathname.").
+        /// </summary>
+        private static string BuildRootModelKey(IpfcModel assemblyModel)
+        {
+            try
+            {
+                var fileName = assemblyModel.FileName;
+                return string.IsNullOrWhiteSpace(fileName) ? string.Empty : fileName.ToUpperInvariant();
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
 
@@ -701,36 +800,21 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                 }
 
                 // --------------------------------------------------------------
-                // Etape 6 : sauvegarde de l'assemblage principal (meme mecanisme
-                // que SimplifiedRep).
+                // Etape 6 : la sauvegarde Creo n'est plus automatique ici. Les
+                // parametres sont ecrits en memoire sur les modeles rouverts, mais
+                // seule la commande explicite "Sauvegarder" (ExecuteSaveModel /
+                // SaveModelAsynch) declenche desormais un SaveOwnerModel, a la
+                // demande de l'utilisateur.
                 // --------------------------------------------------------------
-                bool mainAssemblySaved;
-                try
-                {
-                    mainAssemblySaved = _creoSimpRepService.SaveOwnerModel(reopenedMainAssembly);
-                }
-                catch (Exception ex)
-                {
-                    mainAssemblySaved = false;
-                    TraceLog.AddTraceLog($"Manufacturing View : exception a la sauvegarde de l'assemblage principal : {ex.Message}.");
-                }
-
-                if (!mainAssemblySaved)
-                {
-                    MainDispatcher.Invoke(() => ShowWarning("MFG_MsgUpdateAssemblySaveFailed"));
-                    TraceLog.AddTraceLog("Manufacturing View : echec de la sauvegarde de l'assemblage principal.");
-                }
-
                 _activeModel = reopenedMainAssembly;
 
                 // --------------------------------------------------------------
-                // Etape 7 : bilan detaille, uniquement apres confirmation reelle
-                // de chaque sauvegarde.
+                // Etape 7 : bilan detaille des ecritures de parametres.
                 // --------------------------------------------------------------
                 MainDispatcher.Invoke(() =>
                 {
                     ApplyOutcomesToGrid(outcomes);
-                    ShowUpdateSummary(outcomes, mainAssemblySaved);
+                    ShowUpdateSummary(outcomes);
                 });
             }
             catch (Exception ex)
@@ -929,40 +1013,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
                     }
                 }
 
-                // Le modele principal sera sauvegarde une seule fois, apres tous les composants
-                // (voir etape 6 de UpdateParametersAsynch) : ne pas le sauvegarder ici en double.
-                if (!ReferenceEquals(model, reopenedMainAssembly))
-                {
-                    bool saved;
-                    try
-                    {
-                        saved = _creoSimpRepService.SaveOwnerModel(model);
-                    }
-                    catch (Exception ex)
-                    {
-                        outcomes.Add(new ManufacturingUpdateOutcome
-                        {
-                            ModelKey = entry.ModelKey,
-                            ComponentNames = entry.ComponentNames,
-                            Status = ManufacturingUpdateOutcomeStatus.Error,
-                            Detail = $"Exception a la sauvegarde : {ex.Message}."
-                        });
-                        return;
-                    }
-
-                    if (!saved)
-                    {
-                        outcomes.Add(new ManufacturingUpdateOutcome
-                        {
-                            ModelKey = entry.ModelKey,
-                            ComponentNames = entry.ComponentNames,
-                            Status = ManufacturingUpdateOutcomeStatus.Error,
-                            Detail = "La sauvegarde Creo a echoue (SaveOwnerModel a retourne false)."
-                        });
-                        return;
-                    }
-                }
-
+                // La sauvegarde Creo n'est plus effectuee automatiquement ici : les
+                // parametres restent ecrits en memoire sur le modele rouvert, et ne
+                // seront persistes que si l'utilisateur declenche explicitement la
+                // commande "Sauvegarder" (ExecuteSaveModel / SaveModelAsynch).
                 outcomes.Add(new ManufacturingUpdateOutcome
                 {
                     ModelKey = entry.ModelKey,
@@ -1013,7 +1067,13 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
             RefreshPendingChangesState();
         }
 
-        private static void ShowUpdateSummary(IReadOnlyList<ManufacturingUpdateOutcome> outcomes, bool mainAssemblySaved)
+        /// <summary>
+        /// Affiche le bilan des ecritures de parametres. La sauvegarde Creo n'etant plus
+        /// automatique, ce bilan ne porte que sur l'ecriture en memoire des parametres ; la
+        /// persistance effective necessite un declenchement explicite de la commande
+        /// "Sauvegarder" par l'utilisateur.
+        /// </summary>
+        private static void ShowUpdateSummary(IReadOnlyList<ManufacturingUpdateOutcome> outcomes)
         {
             var lines = outcomes.Select(o => string.Format(
                 McgWpfTools.GetStringResource("MFG_UpdateOutcomeLine"),
@@ -1024,16 +1084,20 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
             var summary = string.Join(Environment.NewLine, lines);
 
+            bool hasErrors = outcomes.Any(o => o.Status == ManufacturingUpdateOutcomeStatus.Error
+                                             || o.Status == ManufacturingUpdateOutcomeStatus.NotFound);
+
             TraceLog.AddTraceLog($"Manufacturing View : bilan de mise a jour - {outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Updated)} mis a jour, " +
                                   $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Error)} en erreur, " +
-                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.NotFound)} introuvable(s), " +
-                                  $"assemblage principal sauvegarde : {mainAssemblySaved}.");
+                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.NotFound)} introuvable(s). " +
+                                  "Rappel : ces mises a jour ne sont pas encore sauvegardees dans Creo, seule la commande Sauvegarder persiste les modifications.");
 
             System.Windows.MessageBox.Show(
-                summary,
+                summary + Environment.NewLine + Environment.NewLine +
+                McgWpfTools.GetStringResource("MFG_MsgUpdateNotSavedReminder"),
                 McgWpfTools.GetStringResource("MFG_MsgUpdateSummaryTitle"),
                 System.Windows.MessageBoxButton.OK,
-                mainAssemblySaved ? System.Windows.MessageBoxImage.Information : System.Windows.MessageBoxImage.Warning);
+                hasErrors ? System.Windows.MessageBoxImage.Warning : System.Windows.MessageBoxImage.Information);
         }
 
         /// <summary>

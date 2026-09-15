@@ -567,6 +567,7 @@ Aucune valeur n'a ete choisie automatiquement. Veuillez corriger la grille avant
     <system:String x:Key="MFG_MsgUpdateReopenFailed">L'assemblage principal n'a pas pu etre reouvert depuis le dossier local de travail. La mise a jour a ete annulee.</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">L'assemblage principal n'a pas pu etre sauvegarde apres la mise a jour des composants.</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">Bilan de la mise a jour</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotSavedReminder">Rappel : ces modifications n'ont pas encore ete sauvegardees dans Creo. Utilisez le bouton Sauvegarder pour les persister.</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">Mis a jour</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Unchanged">Inchange</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignore (conflit)</system:String>

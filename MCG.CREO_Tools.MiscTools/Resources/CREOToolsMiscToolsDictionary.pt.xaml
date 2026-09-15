@@ -564,6 +564,7 @@ Nenhum valor foi escolhido automaticamente. Corrija a tabela antes de tentar nov
     <system:String x:Key="MFG_MsgUpdateReopenFailed">Não foi possível reabrir o conjunto principal a partir da pasta de trabalho local. A atualização foi cancelada.</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Não foi possível salvar o conjunto principal após a atualização dos componentes.</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">Resumo da atualização</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotSavedReminder">Lembrete: essas alterações ainda não foram salvas no Creo. Use o botão Salvar para torná-las permanentes.</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">Atualizado</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Unchanged">Inalterado</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignorado (conflito)</system:String>

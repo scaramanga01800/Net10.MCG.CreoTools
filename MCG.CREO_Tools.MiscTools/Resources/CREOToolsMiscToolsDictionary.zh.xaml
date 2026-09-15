@@ -564,6 +564,7 @@
     <system:String x:Key="MFG_MsgUpdateReopenFailed">无法从本地工作文件夹重新打开主装配体。更新已取消。</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">更新组件后无法保存主装配体。</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">更新摘要</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotSavedReminder">提示：这些更改尚未保存到 Creo。请使用“保存”按钮以永久保存。</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">已更新</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Unchanged">未变</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Ignored">已忽略（冲突）</system:String>

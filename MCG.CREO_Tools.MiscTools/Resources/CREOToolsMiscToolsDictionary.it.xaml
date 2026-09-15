@@ -564,6 +564,7 @@ Nessun valore è stato scelto automaticamente. Correggere la tabella prima di ri
     <system:String x:Key="MFG_MsgUpdateReopenFailed">Impossibile riaprire l'assieme principale dalla cartella di lavoro locale. L'aggiornamento è stato annullato.</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">Impossibile salvare l'assieme principale dopo l'aggiornamento dei componenti.</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">Riepilogo dell'aggiornamento</system:String>
+    <system:String x:Key="MFG_MsgUpdateNotSavedReminder">Promemoria: queste modifiche non sono ancora state salvate in Creo. Usare il pulsante Salva per renderle permanenti.</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">Aggiornato</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Unchanged">Invariato</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Ignored">Ignorato (conflitto)</system:String>
