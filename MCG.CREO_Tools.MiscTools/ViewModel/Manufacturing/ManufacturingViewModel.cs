@@ -645,8 +645,10 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
 
                 // ------------------------------------------------------------
                 // 3) Lancement en tache de fond : desactive les commandes concurrentes
+                // et affiche le gif de patientage.
                 // ------------------------------------------------------------
                 CurrentDataContext.IsUpdateRunning = true;
+                CurrentDataContext.IsPleaseWaitShown = true;
 
                 Thread updateThread = new Thread(() => UpdateParametersAsynch(plan));
                 updateThread.IsBackground = true;
@@ -655,6 +657,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
             catch (Exception ex)
             {
                 CurrentDataContext.IsUpdateRunning = false;
+                CurrentDataContext.IsPleaseWaitShown = false;
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
             }
         }
@@ -824,6 +827,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
             finally
             {
                 CurrentDataContext.IsUpdateRunning = false;
+                CurrentDataContext.IsPleaseWaitShown = false;
             }
         }
 

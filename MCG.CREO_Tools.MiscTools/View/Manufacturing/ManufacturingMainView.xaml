@@ -7,6 +7,7 @@
                      xmlns:Fluent="urn:fluent-ribbon"
                      xmlns:conv="clr-namespace:MCG.Converters;assembly=MCG.Converters"
                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                     xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
                      mc:Ignorable="d"
                      Title="{DynamicResource MFG_WindowTitle}"
                      Icon="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CreoSimpRep.png"
@@ -193,6 +194,14 @@
                                         IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Image Visibility="{Binding CurrentDataContext.IsPleaseWaitShown, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=False}"
+                   Stretch="Fill"
+                   gif:AnimationBehavior.SourceUri="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/wait.gif"
+                   ForceCursor="True"
+                   Cursor="Hand"
+                   Opacity="0.4"
+                   IsHitTestVisible="False"></Image>
         </Grid>
     </DockPanel>
 </Fluent:RibbonWindow>
