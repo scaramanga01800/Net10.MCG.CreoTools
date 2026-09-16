@@ -273,7 +273,6 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
         {
             try
             {
-                using var _ = _busyService.BeginOperation();
                 bool NoFileSelected = CurrentJpgExportDataContext.CurrentFileName == null || CurrentJpgExportDataContext.CurrentFileName.Trim() == "" || CurrentJpgExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("JPG_TbExportFile");
                 bool NoFolderSelected = CurrentJpgExportDataContext.CurrentFolder == null || CurrentJpgExportDataContext.CurrentFolder.Trim() == "" || CurrentJpgExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("JPG_TbExportFolder");
                 bool NoItemsInList = CurrentJpgExportDataContext.ListItems == null || CurrentJpgExportDataContext.ListItems.Count == 0;
@@ -296,9 +295,11 @@ namespace MCG.CREO_Tools.JpgExport.ViewModel
                     else
                     {
                         isInProgress = true;
-                        Thread aThread = new Thread(new ThreadStart(ExportAllJpgAsync));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        // L'état "occupé" (et donc le gif d'attente lié à IsPleaseWaitShown) doit
+                        // couvrir toute la durée du traitement en arrière-plan, pas uniquement le
+                        // démarrage du thread. RunBusy englobe donc BeginOperation() et l'exécution
+                        // de ExportAllJpgAsync sur le même thread de fond.
+                        RunBusy(ExportAllJpgAsync);
                     }
                 }
             }

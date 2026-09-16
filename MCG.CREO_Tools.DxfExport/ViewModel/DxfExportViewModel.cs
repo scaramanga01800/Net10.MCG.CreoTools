@@ -110,6 +110,22 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 throw new DxfExportException(this.GetType().Name, ex);
             }
         }
+
+        // Exécute l'action sur un thread de fond en englobant toute sa durée dans
+        // une opération IBusyService : le gif d'attente (IsPleaseWaitShown) reste donc
+        // affiché pendant toute la durée réelle du traitement, pas seulement au démarrage.
+        private void RunBusy(Action action)
+        {
+            Thread thread = new Thread(() =>
+            {
+                using var _ = _busyService.BeginOperation();
+
+                action();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
         #endregion
 
         #region [REGION] Execution Command Methods
@@ -242,7 +258,6 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         {
             try
             {
-                using var _ = _busyService.BeginOperation();
                 bool NoFileSelected = CurrentDxfExportDataContext.CurrentFileName == null || CurrentDxfExportDataContext.CurrentFileName.Trim() == "" || CurrentDxfExportDataContext.CurrentFileName == McgWpfTools.GetStringResource("DXF_TbExportFile");
                 bool NoFolderSelected = CurrentDxfExportDataContext.CurrentFolder == null || CurrentDxfExportDataContext.CurrentFolder.Trim() == "" || CurrentDxfExportDataContext.CurrentFolder == McgWpfTools.GetStringResource("DXF_TbExportFolder");
                 bool NoItemsInList = CurrentDxfExportDataContext.ListItems == null || CurrentDxfExportDataContext.ListItems.Count == 0;
@@ -265,9 +280,11 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                     else
                     {
                         isInProgress = true;
-                        Thread aThread = new Thread(new ThreadStart(ExportAllDxfAsync));
-                        aThread.IsBackground = true;
-                        aThread.Start();
+                        // L'état "occupé" (et donc le gif d'attente lié à IsPleaseWaitShown) doit
+                        // couvrir toute la durée du traitement en arrière-plan, pas uniquement le
+                        // démarrage du thread. RunBusy englobe donc BeginOperation() et l'exécution
+                        // de ExportAllDxfAsync sur le même thread de fond.
+                        RunBusy(ExportAllDxfAsync);
                     }
                 }
             }
