@@ -284,25 +284,28 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             {
                 string msgReturn;
 
+                string formatLabel = GetExportFormatLabel(CurrentDxfExportDataContext.SelectedExportFormat);
+                string successMessage = string.Format(McgWpfTools.GetStringResource("DXF_Status02"), formatLabel);
+
                 foreach (DxfExportItem CurrentItem in CurrentDxfExportDataContext.ListItems)
                 {
                     if (!CurrentItem.DxfCreated && !StopCurrentExport)
                     {
                         MainDispatcher.Invoke(new Action(() => UpdateStatusBar(TotalDxfToCreate)));
 
-                        CurrentItem.Status = McgWpfTools.GetStringResource("DXF_Status01");
+                        CurrentItem.Status = string.Format(McgWpfTools.GetStringResource("DXF_Status01"), formatLabel);
                         CurrentItem.Comment = "";
                         msgReturn = ExportOneDxf(CurrentItem.CurrentEpmDocument);
                         CurrentItem.Comment = msgReturn;
 
-                        if (msgReturn == McgWpfTools.GetStringResource("DXF_Status02"))
+                        if (msgReturn == successMessage)
                         {
-                            CurrentItem.Status = McgWpfTools.GetStringResource("DXF_Status02");
+                            CurrentItem.Status = successMessage;
                             CurrentItem.DxfCreated = true;
                         }
                         else
                         {
-                            CurrentItem.Status = McgWpfTools.GetStringResource("DXF_Status03");
+                            CurrentItem.Status = string.Format(McgWpfTools.GetStringResource("DXF_Status03"), formatLabel);
                             CurrentItem.DxfCreated = false;
                         }
                         TotalDxfToCreate--;
@@ -313,11 +316,11 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 if (StopCurrentExport)
                 {
-                    MainDispatcher.Invoke(new Action(() => UpdateStatusBar(0, McgWpfTools.GetStringResource("DXF_Status04"))));
+                    MainDispatcher.Invoke(new Action(() => UpdateStatusBar(0, string.Format(McgWpfTools.GetStringResource("DXF_Status04"), formatLabel))));
                     StopCurrentExport = false;
                 }
                 else
-                    MainDispatcher.Invoke(new Action(() => UpdateStatusBar(0, McgWpfTools.GetStringResource("DXF_Status05"))));
+                    MainDispatcher.Invoke(new Action(() => UpdateStatusBar(0, string.Format(McgWpfTools.GetStringResource("DXF_Status05"), formatLabel))));
             }
             catch (Exception ex)
             {
@@ -336,7 +339,8 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 if (!_creoSessionProvider.CheckConnection())
                     return McgWpfTools.GetStringResource("DXF_Status10");
 
-                string ReturnMessage = McgWpfTools.GetStringResource("DXF_Status02");
+                string exportFormatLabel = GetExportFormatLabel(CurrentDxfExportDataContext.SelectedExportFormat);
+                string ReturnMessage = string.Format(McgWpfTools.GetStringResource("DXF_Status02"), exportFormatLabel);
 
                 string TempNumber;
                 if (CurrentEpmDoc.PartNumber.LastIndexOf('.') < 1)
@@ -405,6 +409,52 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 _creoSessionProvider.Session.GetModelWindow(ThreeDmodel).Activate();
 
+                // Formats STEP/IGES : export direct du solide 3D, sans création de mise en plan.
+                // Les étapes spécifiques au DXF (cotes moyennes, vue "9_DECOUPE", création/régénération
+                // du plan) ne s'appliquent qu'au format Dxf.
+                if (CurrentDxfExportDataContext.SelectedExportFormat == ExportFormatType.Step
+                    || CurrentDxfExportDataContext.SelectedExportFormat == ExportFormatType.Iges)
+                {
+                    try
+                    {
+                        switch (CurrentDxfExportDataContext.SelectedExportFormat)
+                        {
+                            case ExportFormatType.Iges:
+                                // Passage en cotes moyennes avant export IGES (macro Creo vérifiée,
+                                // identique à celle utilisée pour le flux DXF). Le modèle 3D exporté
+                                // ici est une copie temporaire (backup rechargé, renommée "DXF_3D")
+                                // qui n'est jamais enregistrée puis est purgée par FinalizeExport :
+                                // aucune restauration explicite de l'état initial n'est donc requise,
+                                // le fichier source restant inchangé sur disque.
+                                _creoMacroService.ChangeDimensionToAverage();
+                                Thread.Sleep(1000);
+                                _creoMacroService.ExportIges(TempDXFFileName);
+                                break;
+                            case ExportFormatType.Step:
+                                _creoMacroService.ExportStep(TempDXFFileName);
+                                break;
+                        }
+                    }
+                    catch (NotImplementedException)
+                    {
+                        // Nettoyage de session avant de remonter le message : le format n'est pas
+                        // encore disponible (mapkey Creo non implémenté/vérifié pour ce format).
+                        ThreeDmodel.Erase();
+                        _creoSessionProvider.Session.EraseUndisplayedModels();
+                        return string.Format(McgWpfTools.GetStringResource("DXF_StatusNotImplemented"), exportFormatLabel);
+                    }
+                    catch (Exception)
+                    {
+                        // Échec du passage en cotes moyennes ou de l'export IGES : nettoyage de la
+                        // session (copie temporaire non enregistrée) avant de remonter l'erreur.
+                        ThreeDmodel.Erase();
+                        _creoSessionProvider.Session.EraseUndisplayedModels();
+                        throw;
+                    }
+
+                    return FinalizeExport(ThreeDmodel, null, TempDXFFileName, FinalDXFFileName, ReturnMessage, exportFormatLabel);
+                }
+
                 // Change 3D model dimensions to "average"
                 _creoMacroService.ChangeDimensionToAverage();
                 Thread.Sleep(1000);
@@ -436,7 +486,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                         {
                             ThreeDmodel.Erase();
                             _creoSessionProvider.Session.EraseUndisplayedModels();
-                            return $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status03")}";
+                            return string.Format(McgWpfTools.GetStringResource("DXF_Status03"), exportFormatLabel);
                         }
                     }
                 }
@@ -448,60 +498,10 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 _creoMacroService.RegenDrawingInSession(drwModel);
                 Thread.Sleep(1000);
 
-                // Export selon le format sélectionné (Dxf : comportement historique inchangé)
-                switch (CurrentDxfExportDataContext.SelectedExportFormat)
-                {
-                    case ExportFormatType.Iges:
-                        _creoMacroService.ExportIges(TempDXFFileName);
-                        break;
-                    case ExportFormatType.Step:
-                        _creoMacroService.ExportStep(TempDXFFileName);
-                        break;
-                    case ExportFormatType.Dxf:
-                    default:
-                        _creoMacroService.ExportDxf(TempDXFFileName);
-                        break;
-                }
+                // Export DXF (comportement historique inchangé)
+                _creoMacroService.ExportDxf(TempDXFFileName);
 
-                // Wait for complete creation
-                int TotalWait = 0;
-                while (!File.Exists(TempDXFFileName) && TotalWait < 11)
-                {
-                    Thread.Sleep(1000);
-                    TotalWait++;
-                }
-
-                if (TotalWait > 10)
-                    ReturnMessage = McgWpfTools.GetStringResource("DXF_Status06");
-
-                // delete from session DRW
-                drwModel.Erase();
-                Thread.Sleep(1000);
-
-                // erase from session 3D model
-                IpfcWindow CurrentWindow = _creoModelService.GetCadDocWindow(ThreeDmodel);
-                if (CurrentWindow != null)
-                    CurrentWindow.Close();
-                //ThreeDmodel.Erase();
-                _creoSessionProvider.Session.EraseUndisplayedModels();
-
-                if (File.Exists(TempDXFFileName))
-                {
-                    // Le contrôle de taille minimale ci-dessous est une heuristique calibrée
-                    // spécifiquement pour le format DXF ; elle n'est pas appliquée aux autres
-                    // formats tant qu'un seuil équivalent n'aura pas été validé pour IGES/STEP.
-                    if (CurrentDxfExportDataContext.SelectedExportFormat == ExportFormatType.Dxf)
-                    {
-                        FileInfo Fi = new FileInfo(TempDXFFileName);
-                        if (Fi.Length < 10350)
-                            ReturnMessage = $"{ReturnMessage} - {McgWpfTools.GetStringResource("DXF_Status07")}";
-                    }
-                    if (File.Exists(FinalDXFFileName))
-                        File.Delete(FinalDXFFileName);
-                    File.Move(TempDXFFileName, FinalDXFFileName);
-                }
-
-                return ReturnMessage;
+                return FinalizeExport(ThreeDmodel, drwModel, TempDXFFileName, FinalDXFFileName, ReturnMessage, exportFormatLabel);
             }
             catch (CREORetrieveModelException ex)
             {
@@ -511,6 +511,54 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
             {
                 return McgWpfTools.GetStringResource("DXF_Status10");
             }
+        }
+
+        // Finalise l'export : attend la création du fichier temporaire, nettoie la session Creo
+        // (mise en plan éventuelle + modèle 3D), applique le contrôle de taille minimale
+        // spécifique au DXF, puis renomme le fichier temporaire vers son nom final.
+        private string FinalizeExport(IpfcModel ThreeDmodel, IpfcModel drwModel, string TempDXFFileName, string FinalDXFFileName, string ReturnMessage, string exportFormatLabel)
+        {
+            // Wait for complete creation
+            int TotalWait = 0;
+            while (!File.Exists(TempDXFFileName) && TotalWait < 11)
+            {
+                Thread.Sleep(1000);
+                TotalWait++;
+            }
+
+            if (TotalWait > 10)
+                ReturnMessage = string.Format(McgWpfTools.GetStringResource("DXF_Status06"), exportFormatLabel);
+
+            // delete from session DRW (le cas échéant)
+            if (drwModel != null)
+            {
+                drwModel.Erase();
+                Thread.Sleep(1000);
+            }
+
+            // erase from session 3D model
+            IpfcWindow CurrentWindow = _creoModelService.GetCadDocWindow(ThreeDmodel);
+            if (CurrentWindow != null)
+                CurrentWindow.Close();
+            _creoSessionProvider.Session.EraseUndisplayedModels();
+
+            if (File.Exists(TempDXFFileName))
+            {
+                // Le contrôle de taille minimale ci-dessous est une heuristique calibrée
+                // spécifiquement pour le format DXF ; elle n'est pas appliquée aux autres
+                // formats tant qu'un seuil équivalent n'aura pas été validé pour IGES/STEP.
+                if (CurrentDxfExportDataContext.SelectedExportFormat == ExportFormatType.Dxf)
+                {
+                    FileInfo Fi = new FileInfo(TempDXFFileName);
+                    if (Fi.Length < 10350)
+                        ReturnMessage = $"{ReturnMessage} - {string.Format(McgWpfTools.GetStringResource("DXF_Status07"), exportFormatLabel)}";
+                }
+                if (File.Exists(FinalDXFFileName))
+                    File.Delete(FinalDXFFileName);
+                File.Move(TempDXFFileName, FinalDXFFileName);
+            }
+
+            return ReturnMessage;
         }
 
         // Détermine l'extension de fichier associée au format d'export sélectionné.
@@ -526,6 +574,23 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 case ExportFormatType.Dxf:
                 default:
                     return ".dxf";
+            }
+        }
+
+        // Détermine le libellé (utilisé dans les messages de statut/commentaires) associé
+        // au format d'export sélectionné, à partir des ressources déjà utilisées par le
+        // sélecteur de format dans l'interface (DXF_FormatDxf/Iges/Step).
+        private static string GetExportFormatLabel(ExportFormatType format)
+        {
+            switch (format)
+            {
+                case ExportFormatType.Iges:
+                    return McgWpfTools.GetStringResource("DXF_FormatIges");
+                case ExportFormatType.Step:
+                    return McgWpfTools.GetStringResource("DXF_FormatStep");
+                case ExportFormatType.Dxf:
+                default:
+                    return McgWpfTools.GetStringResource("DXF_FormatDxf");
             }
         }
 
