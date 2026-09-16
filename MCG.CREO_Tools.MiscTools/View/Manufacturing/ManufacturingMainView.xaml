@@ -19,6 +19,7 @@
             <BitmapImage x:Key="MFG_UPDATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Update.png"/>
             <BitmapImage x:Key="MFG_SAVE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Save_32x32.png"/>
             <BitmapImage x:Key="MFG_PVZ" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/document_part.ico"/>
+            <BitmapImage x:Key="MFG_HELP" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/help.ico"/>
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConv"></conv:BoolToVisibilityConverter>
             <conv:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter"></conv:BoolToInverseBoolConverter>
             <conv:LevelConverter x:Key="LevelConv" />
@@ -109,6 +110,12 @@
                                               Text="{DynamicResource MFG_ToolTipCreatePvz}"/>
                         </Fluent:Button.ToolTip>
                     </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button LargeIcon="{StaticResource MFG_HELP}"
+                                   Command="{Binding CommandOpenHelp}"
+                                   Margin="5,0,5,0" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

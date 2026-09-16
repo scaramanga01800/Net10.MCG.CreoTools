@@ -52,6 +52,12 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         /// seuls la commande, son etat d'activation et son raccordement au ruban sont en place.
         /// </summary>
         public ICommand CommandCreatePvz { get => new RelayCommand(() => ExecuteCreatePvz()); }
+
+        /// <summary>
+        /// Commande "Aide" : ouvre la documentation d'utilisation (meme mecanisme que
+        /// <see cref="SimplifiedRep.SimplifiedRepViewModel.CommandOpenHelp"/>).
+        /// </summary>
+        public ICommand CommandOpenHelp { get => new RelayCommand(() => ExecuteOpenHelp()); }
         #endregion
 
         #region [REGION] Init
@@ -448,6 +454,24 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         {
             return !string.IsNullOrWhiteSpace(modelKey)
                 && modelKey.EndsWith(".ASM", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Commande "Aide" : ouvre la documentation d'utilisation depuis SharePoint, meme
+        /// mecanisme que <see cref="SimplifiedRep.SimplifiedRepViewModel"/> (ExecuteOpenHelp).
+        /// Le nom du document est resolu via la ressource localisee "MFG_UserGuide"
+        /// (APP038FR.PDF en francais, APP038EN.PDF pour les autres langues).
+        /// </summary>
+        private void ExecuteOpenHelp()
+        {
+            try
+            {
+                McgFileAndSystemTools.OpenSharePointDocument(McgWpfTools.GetStringResource("MFG_UserGuide"));
+            }
+            catch (Exception ex)
+            {
+                MiscToolsException.SendMessageBox(this.GetType().Name, ex);
+            }
         }
 
         /// <summary>
