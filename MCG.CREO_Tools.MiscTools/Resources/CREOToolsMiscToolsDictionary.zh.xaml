@@ -564,6 +564,7 @@
     <system:String x:Key="MFG_MsgUpdateCopyFailed">无法创建或验证装配体的本地工作副本。更新已取消；当前 Creo 会话未被清空。</system:String>
     <system:String x:Key="MFG_MsgUpdateReopenFailed">无法从本地工作文件夹重新打开主装配体。更新已取消。</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">更新组件后无法保存主装配体。</system:String>
+    <system:String x:Key="MFG_MsgUpdateDone">更新已完成。</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">更新摘要</system:String>
     <system:String x:Key="MFG_MsgUpdateNotSavedReminder">提示：这些更改尚未保存到 Creo。请使用“保存”按钮以永久保存。</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">已更新</system:String>

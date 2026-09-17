@@ -567,6 +567,7 @@ No value was chosen automatically. Please fix the grid before retrying.
     <system:String x:Key="MFG_MsgUpdateCopyFailed">The local working copy of the assembly could not be created or verified. The update was cancelled; the active Creo session was not cleared.</system:String>
     <system:String x:Key="MFG_MsgUpdateReopenFailed">The main assembly could not be reopened from the local working folder. The update was cancelled.</system:String>
     <system:String x:Key="MFG_MsgUpdateAssemblySaveFailed">The main assembly could not be saved after updating the components.</system:String>
+    <system:String x:Key="MFG_MsgUpdateDone">The update has been completed.</system:String>
     <system:String x:Key="MFG_MsgUpdateSummaryTitle">Update summary</system:String>
     <system:String x:Key="MFG_MsgUpdateNotSavedReminder">Reminder: these changes have not been saved to Creo yet. Use the Save button to persist them.</system:String>
     <system:String x:Key="MFG_UpdateOutcome_Updated">Updated</system:String>

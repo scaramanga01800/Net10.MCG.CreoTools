@@ -1101,27 +1101,44 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.Manufacturing
         /// persistance effective necessite un declenchement explicite de la commande
         /// "Sauvegarder" par l'utilisateur.
         /// </summary>
+        /// <summary>
+        /// Affiche le bilan des ecritures de parametres. Pour eviter une fenetre demesurement
+        /// haute lorsque de nombreux composants sont mis a jour, seul un resume condense (nombre
+        /// de lignes par statut) est affiche a l'utilisateur ; le detail ligne par ligne (nom de
+        /// composant, statut, message d'erreur eventuel) reste consigne dans le TraceLog pour
+        /// investigation si necessaire.
+        /// </summary>
         private static void ShowUpdateSummary(IReadOnlyList<ManufacturingUpdateOutcome> outcomes)
         {
-            var lines = outcomes.Select(o => string.Format(
-                McgWpfTools.GetStringResource("MFG_UpdateOutcomeLine"),
-                string.Join(", ", o.ComponentNames),
-                McgWpfTools.GetStringResource($"MFG_UpdateOutcome_{o.Status}"),
-                o.Detail,
-                string.IsNullOrEmpty(o.Detail) ? string.Empty : Environment.NewLine));
+            int updatedCount = outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Updated);
+            int unchangedCount = outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Unchanged);
+            int ignoredCount = outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Ignored);
+            int notFoundCount = outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.NotFound);
+            int errorCount = outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Error);
 
-            var summary = string.Join(Environment.NewLine, lines);
+            bool hasErrors = errorCount > 0 || notFoundCount > 0;
 
-            bool hasErrors = outcomes.Any(o => o.Status == ManufacturingUpdateOutcomeStatus.Error
-                                             || o.Status == ManufacturingUpdateOutcomeStatus.NotFound);
+            // Le detail complet (une ligne par composant) reste trace ici, meme s'il n'est plus
+            // affiche dans la MessageBox, pour permettre un diagnostic ulterieur en cas de besoin.
+            foreach (var outcome in outcomes)
+            {
+                var line = string.Format(
+                    McgWpfTools.GetStringResource("MFG_UpdateOutcomeLine"),
+                    string.Join(", ", outcome.ComponentNames),
+                    McgWpfTools.GetStringResource($"MFG_UpdateOutcome_{outcome.Status}"),
+                    outcome.Detail,
+                    string.IsNullOrEmpty(outcome.Detail) ? string.Empty : Environment.NewLine);
 
-            TraceLog.AddTraceLog($"Manufacturing View : bilan de mise a jour - {outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Updated)} mis a jour, " +
-                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.Error)} en erreur, " +
-                                  $"{outcomes.Count(o => o.Status == ManufacturingUpdateOutcomeStatus.NotFound)} introuvable(s). " +
+                TraceLog.AddTraceLog($"Manufacturing View : {line}");
+            }
+
+            TraceLog.AddTraceLog($"Manufacturing View : bilan de mise a jour - {updatedCount} mis a jour, " +
+                                  $"{errorCount} en erreur, " +
+                                  $"{notFoundCount} introuvable(s). " +
                                   "Rappel : ces mises a jour ne sont pas encore sauvegardees dans Creo, seule la commande Sauvegarder persiste les modifications.");
 
             System.Windows.MessageBox.Show(
-                summary + Environment.NewLine + Environment.NewLine +
+                McgWpfTools.GetStringResource("MFG_MsgUpdateDone") + Environment.NewLine + Environment.NewLine +
                 McgWpfTools.GetStringResource("MFG_MsgUpdateNotSavedReminder"),
                 McgWpfTools.GetStringResource("MFG_MsgUpdateSummaryTitle"),
                 System.Windows.MessageBoxButton.OK,
