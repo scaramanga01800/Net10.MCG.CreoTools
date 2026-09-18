@@ -34,6 +34,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="DXF_Status10">Erreur à l’ouverture de la pièce</system:String>
     <system:String x:Key="DXF_Status11">9-DECOUPE non trouvée</system:String>
     <system:String x:Key="DXF_Status12">1_TOP utilisée à la place</system:String>
+    <system:String x:Key="DXF_StatusBulkItem">Bulk Item</system:String>
+    <system:String x:Key="DXF_StatusBulkItemComment">{0} non créé</system:String>
     <system:String x:Key="DXF_Status20">En cours</system:String>
     <system:String x:Key="DXF_Status21">Export effectué</system:String>
     <system:String x:Key="DXF_Status22">Plan / 3D inexistant</system:String>

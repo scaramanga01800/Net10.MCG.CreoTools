@@ -71,11 +71,13 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
         private readonly ICreoSessionProvider _creoSessionProvider;
         private readonly ICreoModelService _creoModelService;
         private readonly ICreoMacroService _creoMacroService;
+        private readonly ICreoFeatureService _creoFeatureService;
         private readonly IBusyService _busyService;
 
         public DxfExportViewModel(ICreoSessionProvider creoSessionProvider,
                                   ICreoModelService creoModelService,
                                   ICreoMacroService creoMacroService,
+                                  ICreoFeatureService creoFeatureService,
                                   IBusyService busyService)
         {
             try
@@ -83,6 +85,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                 _creoSessionProvider = creoSessionProvider;
                 _creoModelService = creoModelService;
                 _creoMacroService = creoMacroService;
+                _creoFeatureService = creoFeatureService;
                 _busyService = busyService;
 
                 CurrentDxfExportDataContext = new DxfExportDataContext();
@@ -303,6 +306,7 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 string formatLabel = GetExportFormatLabel(CurrentDxfExportDataContext.SelectedExportFormat);
                 string successMessage = string.Format(McgWpfTools.GetStringResource("DXF_Status02"), formatLabel);
+                string bulkItemMessage = string.Format(McgWpfTools.GetStringResource("DXF_StatusBulkItemComment"), formatLabel);
 
                 foreach (DxfExportItem CurrentItem in CurrentDxfExportDataContext.ListItems)
                 {
@@ -319,6 +323,13 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
                         {
                             CurrentItem.Status = successMessage;
                             CurrentItem.DxfCreated = true;
+                        }
+                        else if (msgReturn == bulkItemMessage)
+                        {
+                            // Mod\u00e8le sans g\u00e9om\u00e9trie exploitable (bulk item) : le mod\u00e8le n\u0027a jamais
+                            // \u00e9t\u00e9 ouvert en fen\u00eatre Creo, statut d\u00e9di\u00e9 sans \u00eatre consid\u00e9r\u00e9 comme une erreur.
+                            CurrentItem.Status = McgWpfTools.GetStringResource("DXF_StatusBulkItem");
+                            CurrentItem.DxfCreated = false;
                         }
                         else
                         {
@@ -372,8 +383,28 @@ namespace MCG.CREO_Tools.DxfExport.ViewModel
 
                 _creoSessionProvider.Session.EraseUndisplayedModels();
 
+                // Contrôle "bulk item" AVANT tout backup/reload/affichage : la séquence exacte a
+                // été confirmée via trail file Creo 12.4.3.0 : l'ouverture du modèle (ProCmdModelOpen)
+                // déclenche la fenêtre "Conflits" (storage_conflicts, attribut PDM MASS non propageable),
+                // puis, comme le bulk item n'a pas de géométrie, la fenêtre "Relations" (relation_dlg),
+                // puis une confirmation (0_std_confirm). MapkeyRetrieveModelFromStdDirBulkItemSafe
+                // ferme automatiquement ces 3 fenêtres via un mapkey (widgets validés par trail file),
+                // évitant tout blocage de l'appel COM RetrieveModelWithOpts.
+                IpfcModel? probeModel = CurrentEpmDoc.MapkeyRetrieveModelFromStdDirBulkItemSafe(_creoSessionProvider, _creoModelService, _creoMacroService);
+                if (probeModel is null)
+                {
+                    return string.Format(McgWpfTools.GetStringResource("DXF_StatusBulkItemComment"), exportFormatLabel);
+                }
+                bool isBulkItem = _creoFeatureService.IsBulkItem(probeModel);
+                if (isBulkItem)
+                {
+                    probeModel.Erase();
+                    _creoSessionProvider.Session.EraseUndisplayedModels();
+                    return string.Format(McgWpfTools.GetStringResource("DXF_StatusBulkItemComment"), exportFormatLabel);
+                }
+
                 // Check export file
-                var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(CurrentEpmDoc.FileName);
+                var currentBackupModel = _creoModelService.OpenBackupReloadAndPurgeTempDetailed(probeModel, CurrentEpmDoc.FileName);
 
                 string exportExtension = GetExportExtension(CurrentDxfExportDataContext.SelectedExportFormat);
                 string FinalDXFFileName = $"{CurrentDxfExportDataContext.CurrentFolder}\\{TempNumber}_{currentBackupModel.ReleaseLevel}_{currentBackupModel.Revision}{exportExtension}";

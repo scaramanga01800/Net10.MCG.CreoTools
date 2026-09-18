@@ -42,6 +42,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="JPG_Status08">La pièce n’existe pas</system:String>
     <system:String x:Key="JPG_Status09">Non exporté</system:String>
     <system:String x:Key="JPG_Status10">Erreur à l’ouverture de la pièce</system:String>
+    <system:String x:Key="JPG_StatusBulkItem">Bulk Item</system:String>
+    <system:String x:Key="JPG_StatusBulkItemComment">JPG non créé</system:String>
     <system:String x:Key="JPG_ErrorMsgDxfFileOpen">Le fichier {0} ne peut pas être ouvert. Veuillez en sélectionner un autre.</system:String>
     <system:String x:Key="JPG_TtHelpJpgExport">Aide Export JPG</system:String>
     <system:String x:Key="JPG_LinkHelpJpgExport">APP015FR.PDF</system:String>

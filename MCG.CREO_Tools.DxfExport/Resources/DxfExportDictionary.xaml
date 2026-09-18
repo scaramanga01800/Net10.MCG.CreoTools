@@ -34,6 +34,8 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="DXF_Status10">Error opening part</system:String>
     <system:String x:Key="DXF_Status11">9-DECOUPE not found</system:String>
     <system:String x:Key="DXF_Status12">1_TOP used instead</system:String>
+    <system:String x:Key="DXF_StatusBulkItem">Bulk Item</system:String>
+    <system:String x:Key="DXF_StatusBulkItemComment">{0} not created</system:String>
     <system:String x:Key="DXF_Status20">In progress</system:String>
     <system:String x:Key="DXF_Status21">Export completed</system:String>
     <system:String x:Key="DXF_Status22">Drawing/3D not found</system:String>
