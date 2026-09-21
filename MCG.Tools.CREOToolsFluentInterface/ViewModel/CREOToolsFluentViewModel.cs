@@ -694,7 +694,7 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         {
             try
             {
-                CurrentDataContext.ScrollingText = $@"Welcome to CREO Tools. {DateTime.Today,0:dd/MM/yyyy} at {DateTime.Now.TimeOfDay.Hours.ToString("00")}:{DateTime.Now.TimeOfDay.Minutes.ToString("00")}|[Google link<http:\\google.fr>]|[Consulter le nouvelle méthodologie<file:\\O:\CREO_Config\TWR\application\ProE_Methodologies\PDM\PDM000EN.pdf>]";
+                CurrentDataContext.ScrollingText = $@"Welcome to Engineering Hub. {DateTime.Today,0:dd/MM/yyyy} at {DateTime.Now.TimeOfDay.Hours.ToString("00")}:{DateTime.Now.TimeOfDay.Minutes.ToString("00")}|[Google link<http:\\google.fr>]|[Consulter le nouvelle méthodologie<file:\\O:\CREO_Config\TWR\application\ProE_Methodologies\PDM\PDM000EN.pdf>]";
             }
             catch (Exception ex)
             {

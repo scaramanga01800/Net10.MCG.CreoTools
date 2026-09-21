@@ -37,8 +37,8 @@ namespace MCG.Tools.CREOToolsFluentInterface
         {
             TraceLog.InitTraceLog("CreoToolsLogFile.log", 5);
             TraceLog.AddTraceLog("******************************************************************");
-            TraceLog.AddTraceLog("Start Main Application CREO Tools - Engineering Hub");
-            TraceLog.AddTraceLog($"CREO Tools Version:{CREOToolsConstants.Version}");
+            TraceLog.AddTraceLog("Start Main Application Engineering Hub");
+            TraceLog.AddTraceLog($"Engineering Hub Version:{CREOToolsConstants.Version}");
             TraceLog.AddTraceLog("******************************************************************");
 
             TraceLog.StartTimer("SetupGlobalExceptionHandling");

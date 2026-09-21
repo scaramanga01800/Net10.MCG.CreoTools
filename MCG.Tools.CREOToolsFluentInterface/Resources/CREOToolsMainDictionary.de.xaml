@@ -57,9 +57,9 @@
     <system:String x:Key="CT_MenuAppConvertToPdf">Convert To PDF</system:String>
     <system:String x:Key="CT_MenuAppPurchaseOrderFollowUp">Purchase Order Follow Up</system:String>
 
-    <system:String x:Key="CT_MenuAppHelp">Help CREO Tools</system:String>
+    <system:String x:Key="CT_MenuAppHelp">Help Engineering Hub</system:String>
     <system:String x:Key="CT_MenuUtilitiesOverview">Utilities Overview</system:String>
-    <system:String x:Key="CT_MenuAppAbout">About CREO Tools</system:String>
+    <system:String x:Key="CT_MenuAppAbout">About Engineering Hub</system:String>
     <system:String x:Key="CT_MenuAppDisplay">Display</system:String>
     <system:String x:Key="CT_MenuAppExit">Exit</system:String>
     <system:String x:Key="CT_MenuAppChangeWindchillLogin">Change Windchill Login</system:String>
@@ -69,8 +69,8 @@
     <system:String x:Key="CT_MenuAppAboutVisuTools">About Visualization Tools</system:String>
 
     <system:String x:Key="CT_AboutTextTitleVisu">MCG Visualization Tool Information</system:String>
-    <system:String x:Key="CT_AboutTextTitle">MCG CREO Tools Information</system:String>
-    <system:String x:Key="CT_AboutText">MCG CREO Tools{0}Version {1}{0}© {2} Manitowoc Crane Group.{0}All rights reserved.{0}{0}This application is the exclusive property of Manitowoc Crane Group. It is intended for internal use only.{0}Any unauthorized reproduction, distribution, modification, or use, in whole or in part, is strictly prohibited and may result in legal action in accordance with applicable laws.</system:String>
+    <system:String x:Key="CT_AboutTextTitle">MCG Engineering Hub Information</system:String>
+    <system:String x:Key="CT_AboutText">MCG Engineering Hub{0}Version {1}{0}© {2} Manitowoc Crane Group.{0}All rights reserved.{0}{0}This application is the exclusive property of Manitowoc Crane Group. It is intended for internal use only.{0}Any unauthorized reproduction, distribution, modification, or use, in whole or in part, is strictly prohibited and may result in legal action in accordance with applicable laws.</system:String>
     <system:String x:Key="CT_AboutTextVisu">MCG Visualization Tool {0}Version {1} {0}© {2} Manitowoc Crane Group. {0}All rights reserved.</system:String>
     <system:String x:Key="CT_LinkHelpCreoTools">APP019EN.PDF</system:String>
     <system:String x:Key="CT_LinkHelpCreoToolsVisu">APP019EN.PDF</system:String>

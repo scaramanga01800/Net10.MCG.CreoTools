@@ -108,7 +108,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.CadAutoColr
                 ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);
                 if (ListAppearances != null && ListAppearances.Count > 0)
                 {
-                    CurrentDataContext.ColorPalette02 = new CadAutoColorPalette() { IsSelected = false, Name = "CREO Tools", ColorPaletteFile = AppearanceFileName };
+                    CurrentDataContext.ColorPalette02 = new CadAutoColorPalette() { IsSelected = false, Name = "Engineering Hub", ColorPaletteFile = AppearanceFileName };
                     foreach (var item in ListAppearances.OrderBy(color => color.Name))
                         CurrentDataContext.ColorPalette02.ListColor.Add(CadAutoColorCreoColor.GetCadAutoColorCreoColor(item));
                 }

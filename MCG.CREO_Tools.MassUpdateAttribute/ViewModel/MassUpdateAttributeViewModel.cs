@@ -233,7 +233,7 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 ListAppearances = McgBusinessTools.GetListAppearancesFromFile(AppearanceFileName);
                 if (ListAppearances != null && ListAppearances.Count > 0)
                 {
-                    CurrentMassUpdAttribDataContext.ColorPalette02 = new CadAutoColorPalette() { IsSelected = false, Name = "CREO Tools", ColorPaletteFile = AppearanceFileName };
+                    CurrentMassUpdAttribDataContext.ColorPalette02 = new CadAutoColorPalette() { IsSelected = false, Name = "Engineering Hub", ColorPaletteFile = AppearanceFileName };
                     foreach (var item in ListAppearances.OrderBy(color => color.Name))
                         CurrentMassUpdAttribDataContext.ColorPalette02.ListColor.Add(CadAutoColorCreoColor.GetCadAutoColorCreoColor(item));
                 }
