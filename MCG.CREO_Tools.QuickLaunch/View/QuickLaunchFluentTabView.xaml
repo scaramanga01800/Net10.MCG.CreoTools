@@ -44,6 +44,7 @@
             <BitmapImage x:Key="SimplifiedRep" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/CreoSimpRep.png" />
             <BitmapImage x:Key="ManufacturingWorkInstruction" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/Plant.ico" />
             <BitmapImage x:Key="SERVICENOW" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/servicenow.ico" />
+            <BitmapImage x:Key="INVGATE" UriSource="pack://application:,,,/MCG.CommonLib.Resources;component/Resources/InvGate.ico" />
             <conv:BoolToVisibilityConverter x:Key="BoolConv"/>
             <conv:BoolToVisibilityMultiAndConverter x:Key="MultiAndBoolConv"/>
             <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolConv"/>
