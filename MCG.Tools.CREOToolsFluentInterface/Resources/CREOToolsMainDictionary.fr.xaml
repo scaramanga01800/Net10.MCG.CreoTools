@@ -27,6 +27,7 @@
     <system:String x:Key="CT_MenuAppSaveCadDoc">Sauvegarder Document CAO</system:String>
     <system:String x:Key="CT_MenuMcgHelpOnline">Aide en ligne</system:String>
     <system:String x:Key="CT_MenuMcgEngTime">Engineering Time</system:String>
+    <system:String x:Key="CT_MenuMcgServiceDesk">Service Desk</system:String>
     <system:String x:Key="CT_MenuAppMechanismAnalysis">Mechanism Analysis</system:String>
     <system:String x:Key="CT_MenuAppCreateUpdateWtDocPart">Créer/Metter à jour Document/Article</system:String>
     <system:String x:Key="CT_MenuAppCadDocAutoColor">CAD Document AutoColor</system:String>
@@ -41,6 +42,7 @@
     <system:String x:Key="CT_MenuAppSapBomExportAllLevel">SAP BOM Export Tous Niveaux</system:String>
     <system:String x:Key="CT_MenuAppQuickChange">Quick Change</system:String>
     <system:String x:Key="CT_MenuAppCadDocumentRename">CAD Document Rename</system:String>
+    <system:String x:Key="CT_MenuAppBomEnvirConfig">BOM Environment Configuration</system:String>
     <system:String x:Key="CT_MenuAppUpdateRelationsParameters">Update Relations and Parameters</system:String>
 
     <system:String x:Key="CT_MenuAppTabVisualizationFile">Visualization File</system:String>

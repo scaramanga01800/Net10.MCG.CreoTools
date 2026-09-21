@@ -736,30 +736,46 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlSapFertBom, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlSapFertBom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCraneSearch}"
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSimplifiedRep}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlCraneSearch, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlCraneSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppExportDrwDxfDwg}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlExportDwgDxf, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlExportDwgDxf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSaveCadDoc}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlBackupCadDocument, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlBackupCadDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppMechanismAnalysis}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlMechanismAnalysis, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlMechanismAnalysis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppQuickChange}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlQuickChange, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlQuickChange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlSimplifiedRep, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlSimplifiedRep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCadDocumentRename}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlCadDocumentRename, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlCadDocumentRename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppBomEnvirConfig}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlBomEnvirConfig, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlBomEnvirConfig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppQuickChange}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlQuickChange, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlQuickChange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCadDocAutoColor}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlCadDocAutoColor, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlCadDocAutoColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSaveCadDoc}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlBackupCadDocument, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlBackupCadDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppExportDrwDxfDwg}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlExportDwgDxf, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlExportDwgDxf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppMechanismAnalysis}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlMechanismAnalysis, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlMechanismAnalysis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppManufacturingWorkInstruction}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlManufacturingWorkInstruction, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlManufacturingWorkInstruction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCraneSearch}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlCraneSearch, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlCraneSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppUpdateRelationsParameters}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlUpdateRelationsParameters, Converter={StaticResource BoolConv}}"
@@ -768,10 +784,6 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlCreateUpdateWtDocPart, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlCreateUpdateWtDocPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppCadDocAutoColor}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlCadDocAutoColor, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlCadDocAutoColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppNumberCumulation}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlNumberCumulation, Converter={StaticResource BoolConv}}"
@@ -780,14 +792,6 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlWebtermRequest, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlWebtermRequest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppSimplifiedRep}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlSimplifiedRep, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlSimplifiedRep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppManufacturingWorkInstruction}"
-                                                                     Command="{Binding CommandUpdateUserSetting}"
-                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlManufacturingWorkInstruction, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlManufacturingWorkInstruction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppKillCreoPrecesses}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlKillCreoPrecesses, Converter={StaticResource BoolConv}}"
@@ -826,6 +830,10 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.QlEngTime, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.QlEngTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuMcgServiceDesk}"
+                                                                     Command="{Binding CommandUpdateUserSetting}"
+                                                                     Visibility="{Binding CurrentDataContext.AppAvailable.QlServiceDesk, Converter={StaticResource BoolConv}}"
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.QlServiceDesk, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </ItemsControl>
                                             </StackPanel>
                                         </Border>
@@ -859,10 +867,10 @@
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.AppECNDataCheck, Converter={StaticResource BoolConv}}"
                                                                      IsChecked="{Binding CurrentDataContext.AppVisible.AppECNDataCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                    <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabCadDocQualityCheck}"
+                                                    <!--<Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabCadDocQualityCheck}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.AppCadDocQualityCheck, Converter={StaticResource BoolConv}}"
-                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.AppCadDocQualityCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                     IsChecked="{Binding CurrentDataContext.AppVisible.AppCadDocQualityCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                                                     <Fluent:CheckBox Header="{DynamicResource CT_MenuAppTabUpdateAttribute}"
                                                                      Command="{Binding CommandUpdateUserSetting}"
                                                                      Visibility="{Binding CurrentDataContext.AppAvailable.AppMassUpdateAttribute, Converter={StaticResource BoolConv}}"

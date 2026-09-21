@@ -763,8 +763,8 @@
             </Fluent:Button.CommandParameter>
             <Fluent:Button.Visibility>
                 <MultiBinding Converter="{StaticResource MultiAndBoolConv}">
-                    <Binding Path="AppVisible.QlOpenCall" />
-                    <Binding Path="AppAvailable.QlOpenCall" />
+                    <Binding Path="AppVisible.QlServiceDesk" />
+                    <Binding Path="AppAvailable.QlServiceDesk" />
                 </MultiBinding>
             </Fluent:Button.Visibility>
             <Fluent:Button.ToolTip>
