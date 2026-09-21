@@ -83,6 +83,8 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
 
                 McgWpfTools.UpdateMergeDictionaries();
 
+                UpdateMaxRestoreButtonGlyph();
+
                 //MainRibbon.SelectedTabChanged += MainRibbon_SelectionChanged;
             }
             catch (Exception ex)
@@ -227,6 +229,31 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             Close();
         }
 
+        private void UpdateMaxRestoreButtonGlyph()
+        {
+            if (BtnMax == null)
+                return;
+
+            if (WindowState == WindowState.Maximized)
+            {
+                // Segoe MDL2 Assets : "Restaurer"
+                BtnMax.Content = "\uE923";
+                BtnMax.ToolTip = "Restaurer";
+            }
+            else
+            {
+                // Segoe MDL2 Assets : "Agrandir"
+                BtnMax.Content = "\uE922";
+                BtnMax.ToolTip = "Agrandir";
+            }
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+            UpdateMaxRestoreButtonGlyph();
+        }
+
         private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Double-clic = maximize / restore
@@ -241,6 +268,22 @@ namespace MCG.Tools.CREOToolsFluentInterface.View
             // Simple drag
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                if (WindowState == WindowState.Maximized)
+                {
+                    // Restaure la fenêtre avant de la déplacer, en repositionnant
+                    // la fenêtre sous le curseur pour un comportement naturel
+                    // (comme les fenêtres Windows standard).
+                    Point mouseScreenPos = PointToScreen(e.GetPosition(this));
+
+                    double targetLeft = mouseScreenPos.X - (RestoreBounds.Width * (e.GetPosition(this).X / ActualWidth));
+                    double targetTop = mouseScreenPos.Y - (e.GetPosition(this).Y);
+
+                    WindowState = WindowState.Normal;
+
+                    Left = targetLeft;
+                    Top = targetTop < 0 ? 0 : targetTop;
+                }
+
                 DragMove();
             }
         }
