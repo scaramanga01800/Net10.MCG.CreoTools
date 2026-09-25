@@ -286,8 +286,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
 
                 var dialogResult = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel(McgWpfTools.GetStringResource("EFU_WTitleCreateDashboard"),
                                                                                         "",
-                                                                                        500,
                                                                                         100,
+                                                                                        500,
                                                                                         15);
                 if (dialogResult.DialogValue == MessageBoxResult.OK)
                 {
@@ -313,8 +313,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 EFU_SearchTemplate currentSearch = GetCurrentSearch();
                 var dialogResult = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel(McgWpfTools.GetStringResource("EFU_WTitleSaveSearch"),
                                                                                         currentSearch.Name,
-                                                                                        500,
                                                                                         100,
+                                                                                        500,
                                                                                         15);
 
                 if (dialogResult.DialogValue == MessageBoxResult.OK)
@@ -584,8 +584,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 {
                     var dialogResult = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel(McgWpfTools.GetStringResource("EFU_WTitleSaveSearch"),
                                                                         eFU_SearchTemplate.Name,
-                                                                        500,
                                                                         100,
+                                                                        500,
                                                                         15);
 
                     if (dialogResult.DialogValue == MessageBoxResult.OK)
@@ -782,8 +782,8 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
 
                     var dialogResult = _mcgCommonLibWindowService.ShowDialogMcgWindowOkCancel(McgWpfTools.GetStringResource("EFU_WTitleCreateDashboard"),
                                                                                             Dashboard.DashboardItem.Name,
-                                                                                            500,
                                                                                             100,
+                                                                                            500,
                                                                                             15);
 
                     if (dialogResult.DialogValue == MessageBoxResult.OK)
