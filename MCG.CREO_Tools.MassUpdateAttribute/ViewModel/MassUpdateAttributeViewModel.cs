@@ -1185,7 +1185,12 @@ namespace MCG.CREO_Tools.MassUpdateAttribute.ViewModel
                 CurrentMassUpdAttribDataContext.MessageModelsInSessionInProgress = McgWpfTools.GetStringResource("MUA_SearchCadDocInProgressMsg");
                 CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = true;
 
-                _creoSessionProvider.CheckConnection();
+                if (!_creoSessionProvider.CheckConnection())
+                {
+                    CurrentMassUpdAttribDataContext.IsSearchCadModelInProgress = false;
+                    CurrentMassUpdAttribDataContext.TextStatusBar = "";
+                    return;
+                }
                 _creoModelService.SearchModelsInSession();
 
                 List<object> ListModels;

@@ -667,7 +667,11 @@ namespace MCG.CREO_Tools.CadDocQualityCheck.ViewModel
                 CurrentDataContext.TextStatusBar = McgWpfTools.GetStringResource("CQC_SearchCadDocInProgress");
                 CurrentDataContext.IsSearchCadModelInProgress = true;
 
-                _creoSessionProvider.CheckConnection();
+                if (!_creoSessionProvider.CheckConnection())
+                {
+                    CurrentDataContext.IsSearchCadModelInProgress = false;
+                    return;
+                }
                 _creoModelService.SearchModelsInSession();
 
                 List<object> ListModels;

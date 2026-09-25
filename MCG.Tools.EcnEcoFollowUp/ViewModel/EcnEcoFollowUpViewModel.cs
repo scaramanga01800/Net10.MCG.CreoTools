@@ -1175,7 +1175,7 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
                 if (WindchillNetworkCredential == null)
                 {
                     WindchillCredentialItem WindchillCredential = _windchillCredentialService.GetWindchillCredential(CommonLibConstants.WindchillUrl, CommonLibConstants.WindchillUrl);
-                    if (!WindchillCredential.IsCredentialOk) return false;
+                    if (WindchillCredential == null || !WindchillCredential.IsCredentialOk) return false;
                     WindchillNetworkCredential = WindchillCredential.WindchillCredential;
                     //WindchillNetworkCredential = new NetworkCredential();
                     //WindchillNetworkCredential.UserName = WindchillCredential.Login;
