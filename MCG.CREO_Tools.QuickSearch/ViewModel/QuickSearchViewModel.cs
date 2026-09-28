@@ -151,8 +151,18 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
 
                 CurrentQuickSearchDataContext = new QuickSearchDataContext();
 
-                var creoConnectionStatus = _creoSessionProvider.Connect(false);
-                CurrentQuickSearchDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
+                try
+                {
+                    var creoConnectionStatus = _creoSessionProvider.Connect(false);
+                    CurrentQuickSearchDataContext.IsCreoEnable = creoConnectionStatus == CreoConnectionStatus.OK;
+                }
+                catch (Exception ex)
+                {
+                    // Creo peut ne pas encore être prêt au démarrage de l'application :
+                    // on ne doit pas interrompre l'initialisation du ViewModel pour autant.
+                    TraceLog.AddTraceLog($"QuickSearchViewModel: CREO connection failed: {ex.Message}");
+                    CurrentQuickSearchDataContext.IsCreoEnable = false;
+                }
                 _creoSessionProvider.ConnectionStateChanged += (sender, e) => CurrentQuickSearchDataContext.IsCreoEnable = e;
 
                 CurrentMcgLanguage = _sharedAppContext.CurrentLanguage?.Language;
