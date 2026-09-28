@@ -329,10 +329,9 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
         {
             try
             {
-                if (ThreadSearchBom != null)
-                    ThreadSearchBom.Abort();
-                if (ThreadSearchSapInfo != null)
-                    ThreadSearchSapInfo.Abort();
+                // Thread.Abort() n'est pas supporté sur .NET Core/.NET 10 (PlatformNotSupportedException).
+                // Les threads sont créés en IsBackground = true : ils se terminent automatiquement
+                // avec l'application sans bloquer sa fermeture, il n'y a donc rien de plus à faire ici.
             }
             catch (Exception ex)
             {
@@ -634,7 +633,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
 
                     RaiseActionInProgressEvent();
 
-                    ThreadSearchBom = new Thread(() => SearchBomAsynch());
+                    ThreadSearchBom = new Thread(() => SearchBomAsynch()) { IsBackground = true };
                     ThreadSearchBom.Start();
                 }
 
@@ -740,7 +739,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
                 {
                     CurrentBomExportWindowDataContext.IsActionProgress = true;
                     ListComp = AllComponent.Where((item) => CurrentBomExportConfiguration.UnapprovedState.Contains(item.MainWindchillObject.State)).ToList();
-                    ThreadSearchSapInfo = new Thread((obj) => SearchEcnInformationAsynch(ListComp));
+                    ThreadSearchSapInfo = new Thread((obj) => SearchEcnInformationAsynch(ListComp)) { IsBackground = true };
                     ThreadSearchSapInfo.Start();
                 }
             }
@@ -1354,7 +1353,7 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomExport
                     if (CurrentBomExportWindowDataContext.ShowSapCostVolumeInfo && LastUpdate)
                     {
                         IsSapInformationSearched = false;
-                        ThreadSearchSapInfo = new Thread(() => UpdateSapCostVolumeInformation());
+                        ThreadSearchSapInfo = new Thread(() => UpdateSapCostVolumeInformation()) { IsBackground = true };
                         ThreadSearchSapInfo.Start();
                     }
                 }
