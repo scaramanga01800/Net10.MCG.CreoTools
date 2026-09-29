@@ -1145,12 +1145,12 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
         {
             try
             {
-                var ListExtraCompParam = CurrentQuickSearchDataContext.SelectedSubClassItem.AllPartSubClassParam.Where((param) => param.CurrentPartSubClassParam.Extracomp.ToUpper() == "TRUE").ToList();
+                var ListExtraCompParam = CurrentQuickSearchDataContext.SelectedSubClassItem.AllPartSubClassParam.Where((param) => string.Equals(param.CurrentPartSubClassParam.Extracomp, "TRUE", StringComparison.OrdinalIgnoreCase)).ToList();
                 QuickSearchExtraCompMenu CurrentMenu;
                 currentQuickSearchPart.ListExtraMenu = new List<QuickSearchExtraCompMenu>();
                 foreach (var ExtraCompParam in ListExtraCompParam)
                 {
-                    var CurrentProperty = typeof(Part).GetProperty(ExtraCompParam.CurrentPartSubClassParam.Idparamtable);
+                    var CurrentProperty = typeof(Part).GetProperty(McgBusinessTools.Capitalize(ExtraCompParam.CurrentPartSubClassParam.Idparamtable));
                     if (CurrentProperty != null)
                     {
                         string CadDocName = (string)CurrentProperty.GetValue(currentQuickSearchPart.CurrentPart);
@@ -1637,7 +1637,7 @@ namespace MCG.CREO_Tools.QuickSearch.ViewModel
                     var SubClass = CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass;
                     //SetCurrentPicture($"{MainAppFolder}\\{CommonLibConstants.PictureFolder}\\{SubClass.Subclasspicture}");
                     CurrentQuickSearchDataContext.RefDocument = SubClass.Subclassrefdoc;
-                    CurrentQuickSearchDataContext.IsExtraComponentPossible = SubClass.Showcontextmenu.ToUpper() == "TRUE";
+                    CurrentQuickSearchDataContext.IsExtraComponentPossible = string.Equals(SubClass.Showcontextmenu, "TRUE", StringComparison.OrdinalIgnoreCase);
 
                     if (CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Showhyperlink != null && CurrentQuickSearchDataContext.SelectedSubClassItem.CurrentPartSubClass.Showhyperlink.Value)
                         CurrentQuickSearchDataContext.IsRefDocHtmlLink = true;
