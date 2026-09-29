@@ -8,6 +8,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Interfaces.Models
 
         string WfTaskName { get; set; }
         string WfTaskOwner { get; set; }
+        string WfTaskUserComment { get; set; }
         string Vote { get; set; }
 
         DateTime? WfTaskCreatedOn { get; set; }

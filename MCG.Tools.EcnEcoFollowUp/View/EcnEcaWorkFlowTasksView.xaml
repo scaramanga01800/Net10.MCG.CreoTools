@@ -103,6 +103,13 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
+                <DataGridTextColumn  Binding="{Binding WfTaskUserComment}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelWfTaskUserComment}" Background="#FF538DD5" ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+
                 <DataGridTextColumn  Binding="{Binding Vote}" IsReadOnly="True">
                     <DataGridTextColumn.Header>
                         <Label Content="{DynamicResource EFU_LabelWfTaskStatus}" Background="#FF538DD5" ></Label>
@@ -181,6 +188,12 @@
                 <DataGridTextColumn  Binding="{Binding WfTaskOwner}" IsReadOnly="True">
                     <DataGridTextColumn.Header>
                         <Label Content="{DynamicResource EFU_LabelWfTaskOwner}" Background="#FFC4D79B" ></Label>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn  Binding="{Binding WfTaskUserComment}" IsReadOnly="True">
+                    <DataGridTextColumn.Header>
+                        <Label Content="{DynamicResource EFU_LabelWfTaskUserComment}" Background="#FFC4D79B" ></Label>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 

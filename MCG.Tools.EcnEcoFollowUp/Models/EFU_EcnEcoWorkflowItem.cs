@@ -49,6 +49,21 @@ namespace MCG.Tools.EcnEcoFollowUp.Models
             }
         }
 
+        private string _WfTaskUserComment;
+        public string WfTaskUserComment
+        {
+            get { return _WfTaskUserComment; }
+            set
+            {
+                if (this._WfTaskUserComment != value)
+                {
+                    this._WfTaskUserComment = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
         private string _Vote = "Unknown";
         public string Vote
         {
@@ -150,7 +165,9 @@ namespace MCG.Tools.EcnEcoFollowUp.Models
                         WfTaskName = item.Name,
                         WfTaskOwner = item.Owner,
                         WfTaskRole = item.Role,
-                        WfTaskStatus = item.Status };
+                        WfTaskStatus = item.Status,
+                        WfTaskUserComment = item.UserComment
+                    };
 
                     if (currentWfTask.WfTaskStatus == "Potential")
                     {

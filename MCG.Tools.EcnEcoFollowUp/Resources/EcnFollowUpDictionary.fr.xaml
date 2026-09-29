@@ -99,6 +99,7 @@ xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="EFU_LabelEcnDescription">Description</system:String>
     <system:String x:Key="EFU_LabelWfTaskName">Nom de la tâche</system:String>
     <system:String x:Key="EFU_LabelWfTaskOwner">Propriétaire de la tâche</system:String>
+    <system:String x:Key="EFU_LabelWfTaskUserComment">Commentaire</system:String>
     <system:String x:Key="EFU_LabelWfTaskStatus">Statut de la tâche</system:String>
     <system:String x:Key="EFU_LabelWfTaskCreatedDate">Créée le</system:String>
     <system:String x:Key="EFU_LabelWfTaskCompletedDate">Complétée le</system:String>
