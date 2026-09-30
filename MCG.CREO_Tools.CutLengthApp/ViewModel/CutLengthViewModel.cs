@@ -600,8 +600,28 @@ namespace MCG.CREO_Tools.CutLengthApp.ViewModel
                 IpfcFeature NewIpfcFeature = null;
                 IpfcModel BulkModel = null;
 
-                BulkModel = _creoModelService.RetrieveModel($"{CurrentDataContext.SelectedCutLengthPart.PartNumber}_BULK.PRT", EpfcModelType.EpfcMDL_PART);
-                NewIpfcFeature = ((IpfcAssembly)CurrentDataContext.ActiveModel).AssembleComponent((IpfcSolid)BulkModel, null);
+                string BulkFileName = $"{CurrentDataContext.SelectedCutLengthPart.PartNumber}_BULK.PRT";
+
+                try
+                {
+                    BulkModel = _creoModelService.RetrieveModel(BulkFileName, EpfcModelType.EpfcMDL_PART);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(String.Concat(ex.Message, $" - CutLengthViewModel.InsertBulkItem - RetrieveModel Issue - BulkFileName: {BulkFileName}."));
+                }
+
+                if (BulkModel == null)
+                    throw new Exception($"CutLengthViewModel.InsertBulkItem - RetrieveModel returned null - BulkFileName: {BulkFileName}.");
+
+                try
+                {
+                    NewIpfcFeature = ((IpfcAssembly)CurrentDataContext.ActiveModel).AssembleComponent((IpfcSolid)BulkModel, null);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(String.Concat(ex.Message, $" - CutLengthViewModel.InsertBulkItem - AssembleComponent Issue - BulkFileName: {BulkFileName}, ActiveModel: {CurrentDataContext.ActiveModelFileName}."));
+                }
 
                 // Update BOM_REPORT_QUANTITY
                 CMpfcModelItem aCMpfcModelItem = new CMpfcModelItem();

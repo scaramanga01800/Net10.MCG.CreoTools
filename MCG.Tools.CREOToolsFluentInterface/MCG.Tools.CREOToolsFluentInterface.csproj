@@ -60,4 +60,23 @@
     <ProjectReference Include="..\MCG.WindchillTools.ManageWTObject\MCG.WindchillTools.ManageWTObject.csproj" />
   </ItemGroup>
 
+	<Target Name="CopyResourcesAfterPublish" AfterTargets="Publish">
+		 
+		<ItemGroup>
+			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.xml" />
+			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.xaml" />
+			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.xls*" />
+			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.txt" />
+			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.dmt" />
+		</ItemGroup>
+		 
+		<Message Importance="high"
+		Text="Copying @(ResourceFiles->Count()) resource files..." />
+		 
+		<Copy
+		SourceFiles="@(ResourceFiles)"
+		DestinationFolder="D:\Programme\MCG_Tools_Net10\Resources_E-Hub"
+		SkipUnchangedFiles="true" />
+	</Target>
+
 </Project>
