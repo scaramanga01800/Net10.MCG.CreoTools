@@ -106,16 +106,33 @@ namespace MCG.Tools.EcnEcoFollowUp.ViewModel
         #endregion
 
         #region [REGION] Execution Command Methods
+        /// <summary>
+        /// Converts a user-friendly search pattern (supporting '*' and '?' wildcards, like a standard file search)
+        /// into a safe, escaped Regex instance. Any Regex special character typed by the user is escaped so it
+        /// is treated as plain text, preventing invalid pattern exceptions (e.g. a lone '*' or '+').
+        /// </summary>
+        private static Regex BuildSearchRegex(string SearchPattern)
+        {
+            if (string.IsNullOrEmpty(SearchPattern))
+                SearchPattern = string.Empty;
+
+            string EscapedPattern = Regex.Escape(SearchPattern)
+                                          .Replace(@"\*", ".*")
+                                          .Replace(@"\?", ".");
+
+            return new Regex(EscapedPattern, RegexOptions.IgnoreCase);
+        }
+
         private void ExecuteSearchDashboard()
         {
             try
             {
                 ListSearchedDashboard.Clear();
 
-                Regex DashboardNameRegex = new Regex(DashboardName, RegexOptions.IgnoreCase);
-                Regex CreatedByIdRegex = new Regex(CreatedById, RegexOptions.IgnoreCase);
-                Regex CreatedByFullNameRegex = new Regex(CreatedByFullName, RegexOptions.IgnoreCase);
-                Regex DashboardIDRegex = new Regex(DashboardID, RegexOptions.IgnoreCase);
+                Regex DashboardNameRegex = BuildSearchRegex(DashboardName);
+                Regex CreatedByIdRegex = BuildSearchRegex(CreatedById);
+                Regex CreatedByFullNameRegex = BuildSearchRegex(CreatedByFullName);
+                Regex DashboardIDRegex = BuildSearchRegex(DashboardID);
 
                 var ListDashboard = _ecnEcoFollowUpService.GetAllActiveEcnEcoDashboard();
                 //var ListDashboard = CreoEntities.ECNECODASHBOARD.Where((item) => item.ISACTIVE.Value).ToList();
