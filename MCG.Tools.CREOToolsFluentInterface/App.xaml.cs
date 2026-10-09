@@ -214,6 +214,13 @@ namespace MCG.Tools.CREOToolsFluentInterface
             };
             TaskScheduler.UnobservedTaskException += (sender, args) =>
             {
+                // Problème de connexion ponctuel (réseau / base de données) : déjà signalé à l'utilisateur, on log seulement.
+                if (DatabaseConnectionHelper.IsConnectionProblem(args.Exception))
+                {
+                    TraceLog.AddTraceLog($"Unobserved connection issue ignored: {args.Exception.GetBaseException().Message}");
+                    args.SetObserved();
+                    return;
+                }
                 msgEx = $"An unexpected error occurred. Please contact support..\n\n{args.Exception.Message}\n\nFrom :{args.Exception.StackTrace}";
                 //MessageBox.Show(msgEx, "Erreur Critique", MessageBoxButton.OK, MessageBoxImage.Error);
                 TraceLog.Error(args.Exception, msgEx);

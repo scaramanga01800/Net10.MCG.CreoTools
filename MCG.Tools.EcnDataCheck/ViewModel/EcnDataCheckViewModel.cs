@@ -837,6 +837,12 @@ namespace MCG.Tools.EcnDataCheck.ViewModel
                 ResetInterface();
 
             }
+            catch (Exception ex) when (DatabaseConnectionHelper.IsConnectionProblem(ex))
+            {
+                ResetInterface();
+                TraceLog.AddTraceLog($"Database connection issue in {this.GetType().Name}.StartCompleteEcnCheckAsynch : {ex.Message}");
+                MessageBox.Show(McgWpfTools.GetStringResource("EDC_DbConnectionIssueMsg"), McgWpfTools.GetStringResource("EDC_DbConnectionIssueTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             catch (Exception ex)
             {
                 ResetInterface();

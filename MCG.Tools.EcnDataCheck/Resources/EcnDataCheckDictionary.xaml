@@ -265,4 +265,6 @@
     <system:String x:Key="EDC_PdmCompWindowTitle">CAD Document / Part BOM Comparison</system:String>
     <system:String x:Key="EDC_ErpCompWindowTitle">Part / ERP BOM Comparison</system:String>
     <system:String x:Key="EDC_ExportXlsIssue">Unable to create file: {0}. Please contact your CAD administrator.</system:String>
+    <system:String x:Key="EDC_DbConnectionIssueMsg">Unable to connect to the database. This is probably a temporary connection issue. Please try again later. If the problem persists, contact your CAD administrator.</system:String>
+    <system:String x:Key="EDC_DbConnectionIssueTitle">Database connection issue</system:String>
 </ResourceDictionary>
