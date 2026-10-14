@@ -207,7 +207,7 @@
                                 </DiffuseMaterial>
                             </GeometryModel3D.Material>
                         </GeometryModel3D>
-                        
+
                         <!--<GeometryModel3D>
                             <GeometryModel3D.Geometry>
                                 <MeshGeometry3D Positions="-1,-1,-1  1,-1,-1  1,-1,1  -1,-1,1"
