@@ -21,6 +21,7 @@ using MCG.CommonLib.WpfComponent.ViewModel.Mail;
 using MCG.Tools.PurchaseOrderFollowUp.Configuration;
 using MCG.Tools.PurchaseOrderFollowUp.Exceptions;
 using MCG.Tools.PurchaseOrderFollowUp.Interfaces;
+using MCG.Tools.PurchaseOrderFollowUp.Models;
 using MCG.Tools.PurchaseOrderFollowUp.View;
 using System.Data;
 using System.Diagnostics;
@@ -326,6 +327,8 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         #endregion
 
         #region [REGION] Init
+        private readonly IPurchaseOrderSapSyncService _sapSyncService;
+
         public PurchaseOrderFollowUpViewModel(ISapPurchasingService sapPurchasingService,
                                               IXmlSerializeTools xmlSerializeTools,
                                               ISapHupService sapHupService,
@@ -333,10 +336,12 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                                               IPurchaseOrderService purchaseOrderService,
                                               IOracleMiscTools oracleMiscTools,
                                               IPurchaseOrderFollowWindowService purchaseOrderFollowWindowService,
-                                              IMcgCommonLibWindowService mcgCommonLibWindowService)
+                                              IMcgCommonLibWindowService mcgCommonLibWindowService,
+                                              IPurchaseOrderSapSyncService sapSyncService)
         {
             try
             {
+                _sapSyncService = sapSyncService ?? throw new ArgumentNullException(nameof(sapSyncService));
                 _sapPurchasingService = sapPurchasingService;
                 _xmlSerializeTools = xmlSerializeTools;
                 _userAuthorizationService = userAuthorizationService;
@@ -913,7 +918,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                     if (!IsSearchDbDone) // && (CurrentDataContext.SelectedRequest.Status == PurchaseOrderStatus.NEW || CurrentDataContext.SelectedRequest.Status == PurchaseOrderStatus.SENT))
                         SearchAllDefaultListFromAllRequest();
 
-                    UpdateRequestItemAttachment(CurrentDataContext.SelectedRequest);
+                    _sapSyncService.LoadRequestDetails(CurrentDataContext.SelectedRequest, CreateReferenceDataSnapshot());
 
                     CurrentDataContext.CurrentRequest = CurrentDataContext.SelectedRequest.Clone();
                     CurrentDataContext.CurrentRequest.IsAdminUpdate = isAdminUpdate;
@@ -1021,7 +1026,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                CreateUpdateRequestOnDataBase(CurrentDataContext.CurrentRequest);
+                _sapSyncService.SaveRequest(CurrentDataContext.CurrentRequest);
 
                 PurchaseOrderRequest CurrentRequest = CurrentDataContext.ListAllRequest.FirstOrDefault(item => item.ID == CurrentDataContext.CurrentRequest.ID);
 
@@ -1804,7 +1809,13 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             try
             {
                 CurrentDataContext.ListSearchedRequest.Clear();
-                var ListReq = SearchSapHubRequestFromPurchaseRequestFromDates(CurrentDataContext.PoCreatedAfter.Value.ToDateTime(new TimeOnly(0, 0)), CurrentDataContext.PoCreatedBefore.Value.ToDateTime(new TimeOnly(0, 0)));
+                List<PurchaseOrderRequest> ListReq = new List<PurchaseOrderRequest>();
+                if (CurrentDataContext.PoCreatedAfter != null && CurrentDataContext.PoCreatedBefore != null && CurrentDataContext.PoCreatedAfter <= CurrentDataContext.PoCreatedBefore)
+                {
+                    ListReq = _sapSyncService.SearchRequestsFromSap(CurrentDataContext.PoCreatedAfter.Value.ToDateTime(new TimeOnly(0, 0)), CurrentDataContext.PoCreatedBefore.Value.ToDateTime(new TimeOnly(0, 0)), CreateReferenceDataSnapshot());
+                    foreach (var req in ListReq)
+                        req.IsAlreadyExist = CurrentDataContext.ListAllRequest.Any(item => item.SapPurchaseOrder == req.SapPurchaseOrder || (item.SapPurchaseRequest != null && item.SapPurchaseRequest == req.SapPurchaseRequest));
+                }
                 if (ListReq != null)
                 {
                     foreach (var req in ListReq)
@@ -1853,14 +1864,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             try
             {
                 if (CurrentDataContext.CurrentRequest != null)
-                {
-                    UpdateRequestFromSapHubPurchaseRequest(CurrentDataContext.CurrentRequest);
-                    if (!string.IsNullOrEmpty(CurrentDataContext.CurrentRequest.SapPurchaseOrder))
-                    {
-                        UpdateRequestFromSapHubPurchaseOrder(CurrentDataContext.CurrentRequest);
-                        UpdateRequestFromSapHubPurchaseOrderGoodsInvoiceReceipt(CurrentDataContext.CurrentRequest);
-                    }
-                }
+                    _sapSyncService.RefreshRequestFromSap(CurrentDataContext.CurrentRequest, CreateReferenceDataSnapshot(), includePurchaseRequest: true);
             }
             catch (Exception ex)
             {
@@ -1873,10 +1877,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             try
             {
                 if (CurrentDataContext.CurrentRequest != null && !string.IsNullOrEmpty(CurrentDataContext.CurrentRequest.SapPurchaseOrder))
-                {
-                    UpdateRequestFromSapHubPurchaseOrder(CurrentDataContext.CurrentRequest);
-                    UpdateRequestFromSapHubPurchaseOrderGoodsInvoiceReceipt(CurrentDataContext.CurrentRequest);
-                }
+                    _sapSyncService.RefreshRequestFromSap(CurrentDataContext.CurrentRequest, CreateReferenceDataSnapshot(), includePurchaseRequest: false);
             }
             catch (Exception ex)
             {
@@ -1980,7 +1981,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 {
                     CurrentRequest = CurrentDataContext.SelectedRequest;
                     if (CurrentRequest != null && CurrentRequest.ListItem.Count == 0)
-                        UpdateRequestItemAttachment(CurrentRequest);
+                        _sapSyncService.LoadRequestDetails(CurrentRequest, CreateReferenceDataSnapshot());
                 }
                 List<string> ListParts = CurrentRequest.UpdatedListItem.Where(item => item != null && item.MaterialNumber != null && !string.IsNullOrEmpty(item.MaterialNumber.Number)).Select(item => item.MaterialNumber.Number).ToList();
 
@@ -2363,47 +2364,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
         }
 
-        private void UpdateRequestItemAttachment(PurchaseOrderRequest CurrentRequest)
-        {
-            try
-            {
-                if (CurrentRequest != null)
-                {
-                    CurrentRequest.ListItem.Clear();
-                    CurrentRequest.UpdatedListItem.Clear();
-                    CurrentRequest.ListAttachment.Clear();
-                    CurrentRequest.UpdatedListAttachment.Clear();
-
-                    var ListItem = _purchaseOrderService.GetAllPoItems(CurrentRequest.ID);
-
-                    PurchaseOrderItem CurrentItem = null;
-                    foreach (var item in ListItem)
-                    {
-                        CurrentItem = PurchaseOrderItem.GetFromDbItem(item);
-                        if (CurrentRequest.RequestType == PurchaseOrderType.ZRMI && !string.IsNullOrEmpty(CurrentItem.Material))
-                            CurrentItem.SelectedMaterial = CurrentDataContext.ListDienNlagMaterial.FirstOrDefault(mat => mat.Number == CurrentItem.Material);
-
-                        CurrentItem.Vendor = PurchaseOrderVendor.GetVendorFromDbItem(_purchaseOrderService.GetPoVendorById(item.Idvendor.Value).FirstOrDefault());
-                        CurrentItem.InternalOrder = PurchaseOrderInternalOrder.GetInternalOrderFromDbItem(_purchaseOrderService.GetPoInternalOrderById(item.Idio.Value).FirstOrDefault());
-                        CurrentRequest.ListItem.Add(CurrentItem);
-                        CurrentRequest.UpdatedListItem.Add(CurrentItem);
-                        CurrentItem.DeliveryAdress = CurrentDataContext.ListDeliveryLocation.FirstOrDefault(add => add.Name == CurrentItem.DeliveryAdress.Name);
-                    }
-
-                    var ListAttachement = _purchaseOrderService.GetAllPoAttachments(CurrentRequest.ID);
-                    foreach (var attachment in ListAttachement)
-                    {
-                        CurrentRequest.ListAttachment.Add(PurchaseOrderAttachment.GetFromDbAttachement(attachment));
-                        CurrentRequest.UpdatedListAttachment.Add(PurchaseOrderAttachment.GetFromDbAttachement(attachment));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
         private void SearchAllDefaultListFromAllRequest()
         {
             try
@@ -2444,108 +2404,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
             catch (Exception ex)
             {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private void CreateUpdateRequestOnDataBase(PurchaseOrderRequest CurrentRequestToSave)
-        {
-            try
-            {
-                TraceLog.AddTraceLog($"start CreateUpdateRequestOnDataBase: Request:{CurrentRequestToSave.ID}");
-                CurrentRequestToSave.ListAttachment.Clear();
-                CurrentRequestToSave.ListItem.Clear();
-                foreach (var item in CurrentRequestToSave.UpdatedListAttachment)
-                {
-                    CurrentRequestToSave.ListAttachment.Add(item);
-                }
-                foreach (var item in CurrentRequestToSave.UpdatedListItem)
-                {
-                    CurrentRequestToSave.ListItem.Add(item);
-                }
-
-                // Update Vendor DB
-                PoVendor dbVendor = null;
-                if (CurrentRequestToSave.Vendor != null && CurrentRequestToSave.Vendor.Number != null)
-                    dbVendor = _purchaseOrderService.UpsertVendor(CurrentRequestToSave.Vendor.Number, CurrentRequestToSave.Vendor.Description, CurrentRequestToSave.Vendor.Location);
-
-                if (dbVendor != null)
-                {
-                    CurrentRequestToSave.Vendor.IdVendor = dbVendor.Idvendor;
-                    foreach (var item in CurrentRequestToSave.ListItem)
-                        if (item.Vendor == null)
-                            item.Vendor = new PurchaseOrderVendor() { IdVendor = dbVendor.Idvendor };
-                        else
-                            item.Vendor.IdVendor = dbVendor.Idvendor;
-                }
-
-                // Update Internal Order
-                if (CurrentRequestToSave.InternalOrder != null)
-                {
-                    foreach (var item in CurrentRequestToSave.ListItem)
-                        if (item.InternalOrder == null)
-                            item.InternalOrder = new PurchaseOrderInternalOrder() { IdIo = CurrentRequestToSave.InternalOrder.IdIo };
-                        else
-                            item.InternalOrder.IdIo = CurrentRequestToSave.InternalOrder.IdIo;
-                }
-
-                // Create/update Request
-                PoRequest dbRequestToSave = CurrentRequestToSave.GetDbrequest();
-                if (dbRequestToSave.Idio == 0)
-                    dbRequestToSave.Idio = _purchaseOrderService.GetPoInternalOrderByNumber(CurrentRequestToSave.InternalOrder.Number).FirstOrDefault()?.Idio ?? 0;
-
-                var dbResult = _purchaseOrderService.UpsertRequest(dbRequestToSave);
-                PoRequest DbRequest = dbResult.DbRequest;
-                bool isNew = dbResult.IsNew;
-
-                if (CurrentRequestToSave.Status == PurchaseOrderStatus.NEW || CurrentRequestToSave.Status == PurchaseOrderStatus.SENT)
-                {
-                    double TotalOrdered = 0;
-                    foreach (var item in CurrentRequestToSave.ListItem)
-                    {
-                        TotalOrdered += item.Quantity * item.Price;
-                        item.Total_Ordered = item.Quantity * item.Price;
-                    }
-                    CurrentRequestToSave.Total_Ordered = TotalOrdered;
-                }
-
-                if (isNew)
-                    CurrentRequestToSave.ID = DbRequest.Idrequest;
-
-                // Update List Attachment
-                List<PurchaseOrderAttachment> CurrentListAttachement = CurrentRequestToSave.ListAttachment.ToList();
-                foreach (var item in CurrentListAttachement)
-                    item.IsDbSaved = false;
-
-                List<PoAttachment> ListDbAttachment = _purchaseOrderService.GetAllPoAttachmentsForUpdate(CurrentRequestToSave.ID);
-
-                foreach (var DbAttachement in ListDbAttachment)
-                {
-                    PurchaseOrderAttachment attachment = CurrentListAttachement.FirstOrDefault(item => DbAttachement.Idattachment == item.IdAttachment);
-                    if (attachment != null)
-                    {
-                        attachment.UpdateDbAttachment(DbAttachement);
-                        attachment.IsDbSaved = true;
-                    }
-                    else
-                    {
-                        _purchaseOrderService.DeletePoAttachment(DbAttachement.Idattachment);
-                    }
-                }
-                foreach (var attachment in CurrentListAttachement.Where(item => !item.IsDbSaved))
-                {
-                    _purchaseOrderService.AddPoAttachment(attachment.GetDbAttachment(DbRequest.Idrequest));
-                }
-
-                // Update List Item 
-                List<PoItem> listDbItemForUpdate = CurrentRequestToSave.ListItem.Select(item => item.GetDbItem(CurrentRequestToSave.ID)).ToList();
-                _purchaseOrderService.ReplaceItemsForRequest(CurrentRequestToSave.ID, listDbItemForUpdate);
-
-                TraceLog.AddTraceLog("End CreateUpdateRequestOnDataBase");
-            }
-            catch (Exception ex)
-            {
-                TraceLog.AddTraceLog("issue CreateUpdateRequestOnDataBase");
                 throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
             }
         }
@@ -2885,468 +2743,6 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
         }
 
-        private List<PurchaseOrderRequest> SearchSapHubRequestFromPurchaseRequestFromDates(DateTime FromDate, DateTime ToDate)
-        {
-            try
-            {
-                TraceLog.AddTraceLog("start SearchSapHubRequestFromPurchaseRequestFromDates");
-                List<PurchaseOrderRequest> ListRequest = new List<PurchaseOrderRequest>();
-
-                if (CurrentDataContext.PoCreatedAfter != null && CurrentDataContext.PoCreatedBefore != null && CurrentDataContext.PoCreatedAfter <= CurrentDataContext.PoCreatedBefore)
-                {
-                    TraceLog.AddTraceLog($"start request:  GetPurchaseOrderBetweenDates(DateTime startDate, DateTime endDate)");
-
-                    var tempListPo = _sapHupService.GetPurchaseOrderBetweenDates(FromDate, ToDate);
-                    if (tempListPo == null || tempListPo.Count == 0)
-                    {
-                        TraceLog.AddTraceLog($"no purchase order found between dates: {FromDate.ToString("dd-MM-yyyy")} and {ToDate.ToString("dd-MM-yyyy")}");
-                        return ListRequest;
-                    }
-                    foreach (var item in tempListPo)
-                    {
-                        string SapPurchaseOrder = item.EBELN;
-
-                        PurchaseOrderRequest CurrentRequest = ListRequest.FirstOrDefault(x => x.SapPurchaseOrder == SapPurchaseOrder);
-                        string vendorNumber = (!string.IsNullOrWhiteSpace(item.FLIEF)) ? item.FLIEF : item.LIFNR;
-
-                        PurchaseOrderItem CurrentItem = new PurchaseOrderItem()
-                        {
-                            AccountAssignementCategory = item.KNTTP,
-                            CostCenter = GetPurchaseOrderCostCenterFromNumber(item.KOSTL),
-                            InternalOrder = GetPurchaseOrderInternalOrderFromNumber(item.AUFNR),
-                            Number = Convert.ToInt32(item.BNFPO),
-                            Material = item.MATNR,
-                            MaterialNumber = GetPurchaseOrderMaterialFromNumber(item.MATNR),
-                            Description = item.TXZ01,
-                            DeliveryDate = item.LFDAT.HasValue ? DateOnly.FromDateTime(item.LFDAT.Value) : (DateOnly?)null,
-                            DeliveryPlant = new SapPlant() { Number = item.BERID },
-                            DeliveryAdress = GetPurchaseOrderLocationFromNumber(item.BERID),
-                            Price = item.PREIS.HasValue ? (double)item.PREIS.Value : 0,
-                            Quantity = item.MENGE.HasValue ? (double)item.MENGE.Value : 0,
-                            RequestedBy = item.AFNAM,
-                            Vendor = GetPurchaseOrderVendorFromNumber(vendorNumber),
-                        };
-
-
-                        if (CurrentRequest == null)
-                        {
-                            CurrentRequest = new PurchaseOrderRequest() { SapPurchaseOrder = SapPurchaseOrder };
-                            ListRequest.Add(CurrentRequest);
-
-                            CurrentRequest.SapCreatedBy = item.ERNAM;
-                            CurrentRequest.Status = PurchaseOrderStatus.PO_CREATED;
-                            CurrentRequest.SapPurchaseRequest = item.BANFN;
-                            CurrentRequest.CostCenter = CurrentItem.CostCenter;
-                            CurrentRequest.Vendor = CurrentItem.Vendor;
-                            CurrentRequest.InternalOrder = CurrentItem.InternalOrder;
-                            CurrentRequest.RequestedBy = CurrentItem.RequestedBy;
-                            CurrentRequest.CreatedBy = CurrentItem.RequestedBy;
-                            CurrentRequest.RequestType = GetPurchaseOrderTypeFromPrPoType(item.EBAN_BSART, item.EKKO_BSART, item.FLIEF);
-                            if (!CurrentRequest.IsAlreadyExist)
-                                TraceLog.AddTraceLog($"request type found: {item.EBAN_BSART}. return:{CurrentRequest.RequestType}");
-                            CurrentRequest.SapCreatedOn = item.AEDAT.HasValue ? DateOnly.FromDateTime(item.AEDAT.Value) : (DateOnly?)null;
-                            CurrentRequest.CreatedOn = item.AEDAT.HasValue ? DateOnly.FromDateTime(item.AEDAT.Value) : (DateOnly?)null;
-                            CurrentRequest.IsAlreadyExist = CurrentDataContext.ListAllRequest.Any(item => item.SapPurchaseOrder == CurrentRequest.SapPurchaseOrder || (item.SapPurchaseRequest != null && item.SapPurchaseRequest == CurrentRequest.SapPurchaseRequest));
-                        }
-
-                        if (CurrentRequest.RequestType == PurchaseOrderType.ZRMI)
-                        {
-                            PurchaseOrderMaterial CurrentMaterial = CurrentDataContext.ListDienNlagMaterial.FirstOrDefault(mat => mat.Number == CurrentItem.Material);
-                            if (CurrentMaterial == null)
-                                CurrentItem.SelectedMaterial = CurrentItem.MaterialNumber;
-                            else
-                                CurrentItem.SelectedMaterial = CurrentMaterial;
-                        }
-
-                        CurrentRequest.ListItem.Add(CurrentItem);
-                        CurrentRequest.UpdatedListItem.Add(CurrentItem);
-                    }
-                }
-                TraceLog.AddTraceLog("end SearchSapHubRequestFromPurchaseRequestFromDates");
-
-                return ListRequest;
-            }
-            catch (Exception ex)
-            {
-                TraceLog.AddTraceLog("issue SearchSapHubRequestFromPurchaseRequestFromDates");
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private List<PurchaseOrderRequest> SearchSapHubRequestFromPurchaseOrderFromDates(DateTime FromDate, DateTime ToDate)
-        {
-            try
-            {
-                List<PurchaseOrderRequest> ListRequest = new List<PurchaseOrderRequest>();
-
-                if (!(CurrentDataContext.PoCreatedAfter == null) && !(CurrentDataContext.PoCreatedBefore == null) && (CurrentDataContext.PoCreatedAfter <= CurrentDataContext.PoCreatedBefore))
-                {
-                    PurchaseOrderRequest CurrentRequest;
-
-                    PurchaseOrderItem CurrentItem = null;
-
-                    string SapPurchaseOrder;
-
-                    var tempListPo = _sapHupService.GetSearchPurchaseOrderBetweenDates(FromDate, ToDate);
-
-                    foreach (var dbItem in tempListPo)
-                    {
-                        SapPurchaseOrder = dbItem.EBELN;
-                        CurrentRequest = ListRequest.FirstOrDefault(x => x.SapPurchaseOrder == SapPurchaseOrder);
-
-                        CurrentItem = new PurchaseOrderItem()
-                        {
-                            AccountAssignementCategory = dbItem.KNTTP,
-                            CostCenter = GetPurchaseOrderCostCenterFromNumber(dbItem.KOSTL),
-                            InternalOrder = GetPurchaseOrderInternalOrderFromNumber(dbItem.AUFNR),
-                            Number = Convert.ToInt32(dbItem.EBELP),
-                            Material = dbItem.MATNR,
-                            MaterialNumber = GetPurchaseOrderMaterialFromNumber(dbItem.MATNR),
-                            Description = dbItem.TXZ01,
-                            DeliveryDate = dbItem.AEDAT.HasValue ? DateOnly.FromDateTime(dbItem.AEDAT.Value) : (DateOnly?)null,
-                            DeliveryPlant = new SapPlant() { Number = dbItem.BERID },
-                            DeliveryAdress = GetPurchaseOrderLocationFromNumber(dbItem.BERID),
-                            Price = dbItem.NETPR.HasValue ? (double)dbItem.NETPR.Value : 0,
-                            Quantity = dbItem.MENGE.HasValue ? (double)dbItem.MENGE.Value : 0,
-                            RequestedBy = dbItem.AFNAM,
-                            Vendor = GetPurchaseOrderVendorFromNumber(dbItem.LIFNR),
-                        };
-
-                        if (CurrentRequest == null)
-                        {
-                            CurrentRequest = new PurchaseOrderRequest() { SapPurchaseOrder = SapPurchaseOrder };
-                            CurrentRequest.IsAlreadyExist = CurrentDataContext.ListAllRequest.Any(item => item.SapPurchaseOrder == CurrentRequest.SapPurchaseOrder);
-                            ListRequest.Add(CurrentRequest);
-
-                            CurrentRequest.SapCreatedBy = dbItem.ERNAM;
-                            CurrentRequest.Status = PurchaseOrderStatus.PO_CREATED;
-                            CurrentRequest.SapPurchaseRequest = dbItem.BANFN;
-                            CurrentRequest.CostCenter = CurrentItem.CostCenter;
-                            CurrentRequest.Vendor = CurrentItem.Vendor;
-                            CurrentRequest.InternalOrder = CurrentItem.InternalOrder;
-                            CurrentRequest.RequestedBy = CurrentItem.RequestedBy;
-                            CurrentRequest.CreatedBy = CurrentItem.RequestedBy;
-                            CurrentRequest.RequestType = GetPurchaseOrderTypeFromPrPoType("", dbItem.EKKO_BSART, dbItem.FLIEF);
-                            CurrentRequest.SapCreatedOn = dbItem.AEDAT.HasValue ? DateOnly.FromDateTime(dbItem.AEDAT.Value) : (DateOnly?)null;
-                            CurrentRequest.CreatedOn = dbItem.AEDAT.HasValue ? DateOnly.FromDateTime(dbItem.AEDAT.Value) : (DateOnly?)null;
-                        }
-                        CurrentRequest.ListItem.Add(CurrentItem);
-                        CurrentRequest.UpdatedListItem.Add(CurrentItem);
-                    }
-                }
-                return ListRequest;
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private void UpdateRequestFromSapHubPurchaseRequest(PurchaseOrderRequest currentRequest)
-        {
-            if (currentRequest == null || string.IsNullOrEmpty(currentRequest.SapPurchaseRequest))
-                return;
-            try
-            {
-                TraceLog.AddTraceLog($"SAP Request PR: SqlRequestAllItemsFromPR");
-
-                int itemNumber = 0;
-                double totalOrdered = 0;
-                bool firstItem = true;
-                string site;
-
-                var dbResult = _sapHupService.GetAllItemsFromPR(currentRequest.SapPurchaseRequest);
-
-                foreach (var dbItem in dbResult)
-                {
-                    itemNumber = Convert.ToInt32(dbItem.BNFPO);
-                    PurchaseOrderItem currentItem = currentRequest.ListItem.FirstOrDefault(item => item.Number == itemNumber);
-                    if (currentItem != null)
-                    {
-                        if (currentItem.DeliveryAdress == null)
-                        {
-                            site = dbItem.BERID;
-                            currentItem.DeliveryAdress = GetSiteLocation(site);
-                        }
-                        currentItem.Total_Ordered = dbItem.RLWRT.HasValue ? (double)dbItem.RLWRT.Value : 0;
-                        currentItem.Price = dbItem.PREIS.HasValue ? (double)dbItem.PREIS.Value : 0;
-                        currentItem.Quantity = dbItem.MENGE.HasValue ? (double)dbItem.MENGE.Value : 0;
-
-                        currentItem.CostCenter = GetPurchaseOrderCostCenterFromNumber(dbItem.KOSTL);
-                        currentItem.InternalOrder = GetPurchaseOrderInternalOrderFromNumber(dbItem.AUFNR);
-                        string vendorNumber = (!string.IsNullOrWhiteSpace(dbItem.FLIEF)) ? dbItem.FLIEF : dbItem.LIFNR;
-                        currentItem.Vendor = GetPurchaseOrderVendorFromNumber(vendorNumber);
-                        totalOrdered += currentItem.Total_Ordered;
-                    }
-
-                    if (firstItem)
-                    {
-                        currentRequest.SapCreatedBy = dbItem.ERNAM;
-                        currentRequest.SapCreatedOn = dbItem.ERDAT.HasValue ? DateOnly.FromDateTime(dbItem.ERDAT.Value) : (DateOnly?)null;
-                        currentRequest.CostCenter = GetPurchaseOrderCostCenterFromNumber(dbItem.KOSTL);
-                        currentRequest.InternalOrder = GetPurchaseOrderInternalOrderFromNumber(dbItem.AUFNR);
-                        string vendorNumber = (!string.IsNullOrWhiteSpace(dbItem.FLIEF)) ? dbItem.FLIEF : dbItem.LIFNR;
-                        currentRequest.Vendor = GetPurchaseOrderVendorFromNumber(vendorNumber);
-                        if (string.IsNullOrEmpty(currentRequest.SapPurchaseOrder))
-                            currentRequest.Status = PurchaseOrderStatus.PR_CREATED;
-                        else
-                            currentRequest.Status = PurchaseOrderStatus.PO_CREATED;
-
-                        firstItem = false;
-                    }
-
-                    if (string.IsNullOrEmpty(currentRequest.SapPurchaseOrder?.Trim()) && !string.IsNullOrEmpty(dbItem.EBELN?.Trim()))
-                    {
-                        currentRequest.SapPurchaseOrder = dbItem.EBELN;
-                    }
-                }
-                currentRequest.Total_Ordered = totalOrdered;
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private PurchaseOrderLocation GetSiteLocation(string siteLocationNumber)
-        {
-            try
-            {
-                switch (siteLocationNumber)
-                {
-                    case "1011":
-                        return new PurchaseOrderLocation() { Name = "MLS", Number = siteLocationNumber };
-                    case "1012":
-                        return new PurchaseOrderLocation() { Name = "CHL", Number = siteLocationNumber };
-                    case "1015":
-                        return new PurchaseOrderLocation() { Name = "LSY-PVC", Number = siteLocationNumber };
-                    case "1050":
-                        return new PurchaseOrderLocation() { Name = "NIE", Number = siteLocationNumber };
-                    case "1000":
-                        return new PurchaseOrderLocation() { Name = "PTO", Number = siteLocationNumber };
-                    case "2010":
-                        return new PurchaseOrderLocation() { Name = "SPC", Number = siteLocationNumber };
-                    case "1070":
-                        return new PurchaseOrderLocation() { Name = "CHINA", Number = siteLocationNumber };
-                    case "8010":
-                        return new PurchaseOrderLocation() { Name = "DDY", Number = siteLocationNumber };
-                    default:
-                        return new PurchaseOrderLocation() { Name = "UNKNOWN", Number = siteLocationNumber };
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private void UpdateRequestFromSapHubPurchaseOrder(PurchaseOrderRequest currentRequest)
-        {
-            if (currentRequest == null || string.IsNullOrEmpty(currentRequest.SapPurchaseOrder))
-                return;
-
-            try
-            {
-                TraceLog.AddTraceLog($"SAP Request PO: SqlRequestAllItemsFromPO");
-
-                int itemNumber = 0;
-                double totalOrdered = 0;
-                bool firstItem = true;
-                string site;
-
-                var dbResult = _sapHupService.GetAllItemsFromPO(currentRequest.SapPurchaseOrder);
-
-                foreach (var dbItem in dbResult)
-                {
-                    itemNumber = Convert.ToInt32(dbItem.EBELP);
-                    PurchaseOrderItem currentItem = currentRequest.ListItem.FirstOrDefault(item => item.Number == itemNumber);
-                    if (currentItem != null)
-                    {
-                        if (currentItem.DeliveryAdress == null)
-                        {
-                            site = dbItem.BERID;
-                            currentItem.DeliveryAdress = GetSiteLocation(site);
-                        }
-                        currentItem.Total_Ordered = dbItem.NETWR.HasValue ? (double)dbItem.NETWR.Value : 0;
-                        currentItem.Price = dbItem.PREIS.HasValue ? (double)dbItem.PREIS.Value : 0;
-                        currentItem.Quantity = dbItem.MENGE.HasValue ? (double)dbItem.MENGE.Value : 0;
-                        totalOrdered += currentItem.Total_Ordered;
-                    }
-
-                    if (firstItem)
-                    {
-                        currentRequest.Status = PurchaseOrderStatus.PO_CREATED;
-                        firstItem = false;
-                    }
-                }
-
-                if (totalOrdered > 0)
-                    currentRequest.Total_Ordered = totalOrdered;
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private void UpdateRequestFromSapHubPurchaseOrderGoodsInvoiceReceipt(PurchaseOrderRequest currentRequest)
-        {
-            if (currentRequest == null || string.IsNullOrEmpty(currentRequest.SapPurchaseOrder))
-                return;
-
-            try
-            {
-                TraceLog.AddTraceLog($"SAP Request GR: SqlRequestUpdateRequestFromPO");
-
-                var sapItemList = new List<PurchaseOrderItemSapHubInformation>();
-
-                var dbResult = _sapHupService.GetUpdateRequestFromPO(currentRequest.SapPurchaseOrder);
-                foreach (var dbItem in dbResult)
-                {
-                    var currentSapItem = new PurchaseOrderItemSapHubInformation()
-                    {
-                        OperationStatus = GetOperationStatusFromNumber(dbItem.VGABE),
-                        Number = Convert.ToInt32(dbItem.EBELP),
-                        SapPurchaseOrder = dbItem.EBELN,
-                        Quantity_GR = dbItem.MENG_GR.HasValue ? (double)dbItem.MENG_GR.Value : 0,
-                        Quantity_Ordered = dbItem.MENGE_ORDER.HasValue ? (double)dbItem.MENGE_ORDER.Value : 0,
-                        Price_GR = dbItem.DMBTR.HasValue ? (double)dbItem.DMBTR.Value : 0,
-                        Price_Ordered = dbItem.NETWR.HasValue ? (double)dbItem.NETWR.Value : 0,
-                        Price_Paid = dbItem.DMBTR.HasValue ? (double)dbItem.DMBTR.Value : 0,
-                        CreditDebit_Info = dbItem.SHKZG,
-                        Canceled_Value = dbItem.AREWR.HasValue ? (double)dbItem.AREWR.Value : 0,
-                        Mouvement_Type = dbItem.BEWTP,
-                        Closed_Check = GetCheckValue(dbItem.ELIKZ),
-                    };
-                    if (currentSapItem.CreditDebit_Info == "H")
-                        currentSapItem.Price_Paid = currentSapItem.Price_Paid * -1;
-                    sapItemList.Add(currentSapItem);
-                }
-
-                currentRequest.Total_Invoice = 0;
-                currentRequest.Total_Goods = 0;
-                currentRequest.Total_Real_Goods = 0;
-
-                foreach (var item in currentRequest.ListItem)
-                {
-                    item.GoodReceiptStatus = PurchaseOrderStatus.CREATED;
-
-                    var tempGoodsReceiptList = sapItemList.Where(info => info.Number == item.Number && info.OperationStatus == PurchaseOrderStatus.GOODS_RECEIPT).ToList();
-                    if (tempGoodsReceiptList.Count > 0)
-                    {
-                        item.Total_Ordered = tempGoodsReceiptList.FirstOrDefault().Price_Ordered;
-                        item.Total_Goods = tempGoodsReceiptList.Where(info => info.CreditDebit_Info == "S").Sum(info => info.Price_GR) - tempGoodsReceiptList.Where(info => info.CreditDebit_Info == "H").Sum(info => info.Price_GR);
-
-                        if (tempGoodsReceiptList.FirstOrDefault(obj => obj.Closed_Check) != null)
-                            item.Closed_Check = true;
-
-                        if (item.Total_Goods >= tempGoodsReceiptList.FirstOrDefault().Price_Ordered || item.Closed_Check)
-                            item.GoodReceiptStatus = PurchaseOrderStatus.GOODS_RECEIPT;
-                        else
-                            item.GoodReceiptStatus = PurchaseOrderStatus.PARTIAL_GOODS_RECEIPT;
-                    }
-
-                    var tempInvoiceReceiptList = sapItemList.Where(info => info.Number == item.Number && info.OperationStatus == PurchaseOrderStatus.INVOICE_RECEIPT).ToList();
-                    if (tempInvoiceReceiptList.Count > 0)
-                    {
-                        item.Total_Ordered = tempInvoiceReceiptList.FirstOrDefault().Price_Ordered;
-                        item.Total_Invoice = tempInvoiceReceiptList.Sum(info => info.Price_Paid);
-                        item.Total_Real_Goods = item.Total_Goods - tempInvoiceReceiptList.Where(obj => obj.Mouvement_Type == "K").Sum(info => info.Canceled_Value);
-
-                        if (item.Total_Invoice >= item.Total_Real_Goods && item.Closed_Check)
-                            //if (item.Total_Invoice >= item.Total_Real_Goods)
-                            item.GoodReceiptStatus = PurchaseOrderStatus.INVOICE_RECEIPT;
-                        else
-                            item.GoodReceiptStatus = PurchaseOrderStatus.PARTIAL_INVOICE_RECEIPT;
-                    }
-                }
-
-                currentRequest.Total_Goods = currentRequest.ListItem.Sum(obj => obj.Total_Goods);
-                currentRequest.Total_Real_Goods = currentRequest.ListItem.Sum(obj => obj.Total_Real_Goods);
-                currentRequest.Total_Invoice = currentRequest.ListItem.Sum(obj => obj.Total_Invoice);
-
-                UdpateRequestStatus(currentRequest);
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private void UdpateRequestStatus(PurchaseOrderRequest CurrentRequest)
-        {
-            try
-            {
-                PurchaseOrderStatus CurrentStatus = CurrentRequest.Status;
-                if (CurrentRequest.ListItem.Count == CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.INVOICE_RECEIPT))
-                    CurrentRequest.Status = PurchaseOrderStatus.CLOSED;
-                else if (CurrentRequest.ListItem.Count == CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.GOODS_RECEIPT))
-                    CurrentRequest.Status = PurchaseOrderStatus.GOODS_RECEIPT;
-                else if (CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.INVOICE_RECEIPT) > 0)
-                    CurrentRequest.Status = PurchaseOrderStatus.PARTIAL_INVOICE_RECEIPT;
-                else if (CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.PARTIAL_INVOICE_RECEIPT) > 0)
-                    CurrentRequest.Status = PurchaseOrderStatus.PARTIAL_INVOICE_RECEIPT;
-                else if (CurrentRequest.ListItem.Count == CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.GOODS_RECEIPT))
-                    CurrentRequest.Status = PurchaseOrderStatus.GOODS_RECEIPT;
-                else if (CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.GOODS_RECEIPT) > 0)
-                    CurrentRequest.Status = PurchaseOrderStatus.PARTIAL_GOODS_RECEIPT;
-                else if (CurrentRequest.ListItem.Count(item => item.GoodReceiptStatus == PurchaseOrderStatus.PARTIAL_GOODS_RECEIPT) > 0)
-                    CurrentRequest.Status = PurchaseOrderStatus.PARTIAL_GOODS_RECEIPT;
-
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private PurchaseOrderStatus GetOperationStatusFromNumber(string v)
-        {
-            try
-            {
-                switch (v)
-                {
-                    case "1":
-                        return PurchaseOrderStatus.GOODS_RECEIPT;
-
-                    case "2":
-                        return PurchaseOrderStatus.INVOICE_RECEIPT;
-
-                    default:
-                        return PurchaseOrderStatus.UNKNOWN;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
-        private bool GetCheckValue(string v)
-        {
-            try
-            {
-                switch (v)
-                {
-                    case "X":
-                        return true;
-
-                    case "":
-                        return false;
-
-                    case " ":
-                        return false;
-
-                    default:
-                        return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
-            }
-        }
-
         public void CreateSapRequestFromDate(DateTime? from = null, DateTime? to = null)
         {
             try
@@ -3354,17 +2750,12 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 DateTime fromDate = from ?? DateTime.Today.AddDays(-15);
                 DateTime toDate = to ?? DateTime.Today;
 
-
-                //fromDate = DateTime.Today.AddDays(-7);
-                var listReq = SearchSapHubRequestFromPurchaseRequestFromDates(fromDate, toDate)
-                    .Where(item => !item.IsAlreadyExist)
-                    .ToList();
-                foreach (var item in listReq)
-                {
-                    UpdateListFromRequest(item);
-                    CreateUpdateRequestOnDataBase(item);
-                }
-
+                PurchaseOrderSapSyncResult result = _sapSyncService.CreateRequestsFromSap(fromDate, toDate, CreateReferenceDataSnapshot());
+                HandleSapSyncResult(result);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -3378,7 +2769,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                UpdateRequestItemAttachment(CurrentDataContext.SelectedRequest);
+                _sapSyncService.LoadRequestDetails(CurrentDataContext.SelectedRequest, CreateReferenceDataSnapshot());
 
                 var listFromDb = _sapHupService.GetListMaterialMasterViewsByPlant(CurrentDataContext.SelectedRequest.ListItem.Select(item => item.MaterialNumber?.Number).ToList());
                 List<SAPMaterialMaster> list = listFromDb.Select(r => new SAPMaterialMaster(r)).ToList();
@@ -3835,6 +3226,46 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             }
         }
 
+        /// <summary>Instantané immuable des listes de référence chargées, transmis au service headless.</summary>
+        internal PurchaseOrderReferenceData CreateReferenceDataSnapshot()
+        {
+            return new PurchaseOrderReferenceData(
+                CurrentDataContext.ListDeliveryLocation.ToList(),
+                CurrentDataContext.ListCostCenter.ToList(),
+                CurrentDataContext.ListDienNlagMaterial.ToList());
+        }
+
+        /// <summary>Journalise le résultat, met à jour les listes UI et affiche une notification consolidée en cas d'échecs.</summary>
+        private void HandleSapSyncResult(PurchaseOrderSapSyncResult result)
+        {
+            TraceLog.AddTraceLog($"Purchase Order SAP sync: {result}");
+            foreach (PurchaseOrderSapSyncError error in result.Errors)
+                TraceLog.AddTraceLog($"Purchase Order SAP sync error: operation={error.Operation}, request={error.RequestId}, PR={error.SapPurchaseRequest}, PO={error.SapPurchaseOrder}, exception={error.Exception}");
+
+            void ApplyToUi()
+            {
+                foreach (PurchaseOrderRequest request in result.SavedNewSapRequests)
+                    UpdateListFromRequest(request);
+
+                if (result.HasFailures)
+                    MessageBox.Show($"{result.Errors.Count} demande(s) en échec pendant la synchronisation SAP. Consulter le journal pour le détail.",
+                        McgWpfTools.GetStringResource("POF_TitleSapIssue"), MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            var dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+                dispatcher.Invoke(ApplyToUi);
+            else
+                ApplyToUi();
+        }
+
+        private sealed class SapSyncProgressReporter : IProgress<PurchaseOrderSapSyncProgress>
+        {
+            private readonly Action<PurchaseOrderSapSyncProgress> _handler;
+            public SapSyncProgressReporter(Action<PurchaseOrderSapSyncProgress> handler) => _handler = handler;
+            public void Report(PurchaseOrderSapSyncProgress value) => _handler(value);
+        }
+
         private void UpdateListFromRequest(PurchaseOrderRequest Request)
         {
             try
@@ -3907,30 +3338,20 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
             try
             {
                 TraceLog.AddTraceLog("Start StartUpdateAllRequestFromSapAcynch");
-                List<PurchaseOrderRequest> ListFromPrToUpdate = new List<PurchaseOrderRequest>();
-                List<PurchaseOrderRequest> ListFromPoToUpdate = new List<PurchaseOrderRequest>();
                 CurrentDataContext.CurrentStep = 0;
 
-                foreach (var dbReq in _purchaseOrderService.GetOpenSapPrRequests())
-                    ListFromPrToUpdate.Add(PurchaseOrderRequest.GetRequestFromDb(dbReq));
-                foreach (var dbReq in _purchaseOrderService.GetOpenRequestsWithSapPoWithoutSapPr())
-                    ListFromPoToUpdate.Add(PurchaseOrderRequest.GetRequestFromDb(dbReq));
-
-                CurrentDataContext.TotalStep = ListFromPrToUpdate.Count + ListFromPoToUpdate.Count;
-                foreach (var req in ListFromPrToUpdate)
+                var progress = new SapSyncProgressReporter(p =>
                 {
-                    TraceLog.AddTraceLog($"Current Step: {CurrentDataContext.CurrentStep}/{CurrentDataContext.TotalStep} Request {req.ID}");
-                    UpdateRequestItemAttachment(req);
-                    UpdateRequestFromSapHubPurchaseRequest(req);
-                    if (!string.IsNullOrEmpty(req.SapPurchaseOrder))
-                    {
-                        UpdateRequestFromSapHubPurchaseOrder(req);
-                        UpdateRequestFromSapHubPurchaseOrderGoodsInvoiceReceipt(req);
-                    }
-                    CreateUpdateRequestOnDataBase(req);
-                    CurrentDataContext.CurrentStep++;
-                }
+                    CurrentDataContext.TotalStep = p.TotalStep;
+                    CurrentDataContext.CurrentStep = p.CurrentStep;
+                });
+                PurchaseOrderSapSyncResult result = _sapSyncService.UpdateOpenRequestsFromSap(CreateReferenceDataSnapshot(), CancellationToken.None, progress);
+                HandleSapSyncResult(result);
                 TraceLog.AddTraceLog("End StartUpdateAllRequestFromSapAcynch");
+            }
+            catch (OperationCanceledException)
+            {
+                TraceLog.AddTraceLog("StartUpdateAllRequestFromSapAcynch annulé");
             }
             catch (Exception ex)
             {

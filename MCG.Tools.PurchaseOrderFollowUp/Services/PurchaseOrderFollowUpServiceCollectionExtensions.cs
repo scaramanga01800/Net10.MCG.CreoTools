@@ -18,6 +18,10 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
             services.AddTransient<IPurchaseOrderFollowWindowService, PurchaseOrderFollowWindowService>();
 
+            // Services métier sans dépendance UI (synchronisation SAP HUP)
+            services.AddTransient<IPurchaseOrderReferenceDataProvider, PurchaseOrderReferenceDataProvider>();
+            services.AddTransient<IPurchaseOrderSapSyncService, PurchaseOrderSapSyncService>();
+
             services.AddTransient<PurchaseOrderFollowCreateUpdateView>();
             services.AddTransient<PurchaseOrderFollowListRequestView>();
             services.AddTransient<PurchaseOrderFollowUpCreateUpdateVendorView>();
