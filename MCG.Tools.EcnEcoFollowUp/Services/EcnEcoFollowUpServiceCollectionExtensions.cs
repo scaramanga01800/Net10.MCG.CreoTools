@@ -22,6 +22,10 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             services.AddTransient<IEcoSapHupSyncRepository, EcoSapHupSyncRepository>();
             services.AddTransient<IEcoSapHupSyncService, EcoSapHupSyncService>();
 
+            // Synchronisation PDM context headless (BatchModeUpdatePdmContext)
+            services.AddTransient<IPdmContextSyncRepository, PdmContext.PdmContextSyncRepository>();
+            services.AddTransient<IPdmContextSyncService, PdmContext.PdmContextSyncService>();
+
             services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
 
             services.AddTransient<EcnEcoFollowUpDashboardSearchWindow>();
