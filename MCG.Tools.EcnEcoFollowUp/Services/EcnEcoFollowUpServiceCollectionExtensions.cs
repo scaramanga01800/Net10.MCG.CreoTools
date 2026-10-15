@@ -16,6 +16,35 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             
             services.AddSingleton<IEcnEcoFollowUpWindowService, EcnEcoFollowUpWindowService>();
 
+            services.AddEcnEcoFollowUpBatchServices();
+
+            services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
+
+            services.AddTransient<EcnEcoFollowUpDashboardSearchWindow>();
+            services.AddTransient<EcnEcoFollowUpDashboardSearchWindowViewModel>();
+
+            services.AddTransient<EcnEcoFollowUpDashboardViewModel>();
+            services.AddTransient<EcnEcoFollowUpDashboardView>();
+
+            services.AddSingleton<EcnEcoFollowUpFluentTabView>();
+            services.AddSingleton<EcnEcoFollowUpViewModel>();
+
+            services.AddTransient<EcoWorkFlowTasksViewModel>();
+
+            services.AddTransient<EcnEcaWorkFlowTasksView>();
+            services.AddTransient<EcoWorkFlowTasksView>();
+
+            TraceLog.StopTimer("AddEcnEcoFollowUpServices");
+            return services;
+        }
+
+        /// <summary>
+        /// Headless ECN/ECO batch services only (no View/ViewModel/Window). Infrastructure
+        /// (CreoToolsDbContext, ISapHupService, IWindchillBatchCredentialProvider, Windchill request services)
+        /// must be registered by the host via AddMcgDataBaseAccessServices and AddMCGWindchillRequestToolServices.
+        /// </summary>
+        public static IServiceCollection AddEcnEcoFollowUpBatchServices(this IServiceCollection services)
+        {
             // Synchronisation SAP HUP ECO headless
             services.TryAddSingleton(TimeProvider.System);
             services.AddSingleton<IEcoSapHupStepCalculator, EcoSapHupStepCalculator>();
@@ -33,23 +62,9 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             services.AddTransient<IEcnFollowUpSyncRepository, EcnFollowUp.EcnFollowUpSyncRepository>();
             services.AddTransient<IEcnFollowUpSyncService, EcnFollowUp.EcnFollowUpSyncService>();
 
-            services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
+            // Orchestrateur ECN/ECO headless (PdmContext -> EcnFollowUp -> EcoSapHup)
+            services.AddTransient<IEcnEcoFollowUpBatchService, EcnEcoBatch.EcnEcoFollowUpBatchService>();
 
-            services.AddTransient<EcnEcoFollowUpDashboardSearchWindow>();
-            services.AddTransient<EcnEcoFollowUpDashboardSearchWindowViewModel>();
-
-            services.AddTransient<EcnEcoFollowUpDashboardViewModel>();
-            services.AddTransient<EcnEcoFollowUpDashboardView>();
-
-            services.AddSingleton<EcnEcoFollowUpFluentTabView>();
-            services.AddSingleton<EcnEcoFollowUpViewModel>();
-            
-            services.AddTransient<EcoWorkFlowTasksViewModel>();
-
-            services.AddTransient<EcnEcaWorkFlowTasksView>();
-            services.AddTransient<EcoWorkFlowTasksView>();
-            
-            TraceLog.StopTimer("AddEcnEcoFollowUpServices");
             return services;
         }
     }
