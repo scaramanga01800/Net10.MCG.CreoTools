@@ -2,7 +2,9 @@
 using MCG.Tools.EcnEcoFollowUp.Interfaces;
 using MCG.Tools.EcnEcoFollowUp.View;
 using MCG.Tools.EcnEcoFollowUp.ViewModel;
+using MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MCG.Tools.EcnEcoFollowUp.Services
 {
@@ -13,6 +15,12 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             TraceLog.StartTimer("AddEcnEcoFollowUpServices");
             
             services.AddSingleton<IEcnEcoFollowUpWindowService, EcnEcoFollowUpWindowService>();
+
+            // Synchronisation SAP HUP ECO headless
+            services.TryAddSingleton(TimeProvider.System);
+            services.AddSingleton<IEcoSapHupStepCalculator, EcoSapHupStepCalculator>();
+            services.AddTransient<IEcoSapHupSyncRepository, EcoSapHupSyncRepository>();
+            services.AddTransient<IEcoSapHupSyncService, EcoSapHupSyncService>();
 
             services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
 
