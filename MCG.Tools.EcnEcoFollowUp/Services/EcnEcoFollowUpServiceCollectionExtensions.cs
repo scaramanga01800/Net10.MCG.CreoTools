@@ -22,9 +22,16 @@ namespace MCG.Tools.EcnEcoFollowUp.Services
             services.AddTransient<IEcoSapHupSyncRepository, EcoSapHupSyncRepository>();
             services.AddTransient<IEcoSapHupSyncService, EcoSapHupSyncService>();
 
+            // Calcul pur des dates workflow ECN (ExtractPdmWfTaskDate), sans état
+            services.AddSingleton<IEcnWorkflowDateCalculator, Workflow.EcnWorkflowDateCalculator>();
+
             // Synchronisation PDM context headless (BatchModeUpdatePdmContext)
             services.AddTransient<IPdmContextSyncRepository, PdmContext.PdmContextSyncRepository>();
             services.AddTransient<IPdmContextSyncService, PdmContext.PdmContextSyncService>();
+
+            // Synchronisation ECN headless (BatchModeAddAllNewEcn + BatchModeUpdateEcnWfDate)
+            services.AddTransient<IEcnFollowUpSyncRepository, EcnFollowUp.EcnFollowUpSyncRepository>();
+            services.AddTransient<IEcnFollowUpSyncService, EcnFollowUp.EcnFollowUpSyncService>();
 
             services.AddTransient<EcnEcaWorkFlowTasksViewModel>();
 
