@@ -401,6 +401,99 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             Assert.Contains("db", _calls);
         }
 
+        private void SetupAll(List<WindchillContextTeamMember> dp, List<WindchillContextTeamMember> dl, List<WindchillContextTeamMember> cp, List<WindchillContextTeamMember> cl)
+        {
+            SetupWc(true, "DESIGNER", dp); SetupWc(false, "DESIGNER", dl);
+            SetupWc(true, "CHANGE ADMINISTRATOR III", cp); SetupWc(false, "CHANGE ADMINISTRATOR III", cl);
+        }
+
+        private static List<WindchillContextTeamMember> NoContext(int n) =>
+            Enumerable.Range(0, n).Select(i => Pdm.M(string.Empty, "u" + i)).ToList();
+
+        [Fact]
+        public void Run1Case_AllDesignerLibraryWithoutContextName_ThrowsExplicitDiagnostic_NoWrite()
+        {
+            SetupAll(Pdm.Empty, NoContext(643), Pdm.Empty, NoContext(168));
+            var ex = Assert.Throws<PdmContextSyncException>(() => Svc().Synchronize());
+            Assert.Contains("Library DESIGNER: received=643, withoutContextName=643, withContextName=0", ex.Message);
+            Assert.DoesNotContain("db", _calls);
+            _repo.Verify(r => r.Synchronize(It.IsAny<IReadOnlyList<PdmContextMemberSnapshot>>(), It.IsAny<IReadOnlyList<PdmContextMemberSnapshot>>(), It.IsAny<CancellationToken>()), Times.Never);
+            Assert.DoesNotContain(Secret, ex.ToString());
+            Assert.DoesNotContain("svc_user", ex.Message);
+        }
+
+        [Fact]
+        public void BothDesignerPopulationsEmpty_ThrowsWithoutWrite()
+        {
+            SetupAll(Pdm.Empty, Pdm.Empty, Pdm.Empty, Pdm.Empty);
+            var ex = Assert.Throws<PdmContextSyncException>(() => Svc().Synchronize());
+            Assert.Contains("aucune affectation", ex.Message);
+            Assert.DoesNotContain("db", _calls);
+        }
+
+        [Fact]
+        public void ProductEmpty_WithValidLibrary_ProceedsNormally()
+        {
+            SetupAll(Pdm.Empty, Pdm.L(Pdm.M("LIB_C", "d")), Pdm.Empty, Pdm.L(Pdm.M("LIB_C", "caC", "CHANGE ADMINISTRATOR III")));
+            var r = Svc().Synchronize();
+            Assert.False(r.HasFailures);
+            Assert.Contains("db", _calls);
+        }
+
+        [Fact]
+        public void ProductDesignerWithContextName_IsMapped()
+        {
+            SetupAll(Pdm.L(Pdm.M("TWR_A", "d")), Pdm.Empty, Pdm.Empty, Pdm.Empty);
+            Svc().Synchronize();
+            Assert.Equal("TWR_A", Assert.Single(_all!).ContextName);
+        }
+
+        [Fact]
+        public void LibraryDesignerWithContextName_IsMapped()
+        {
+            SetupAll(Pdm.Empty, Pdm.L(Pdm.M("LIB_C", "d")), Pdm.Empty, Pdm.Empty);
+            Svc().Synchronize();
+            var s = Assert.Single(_all!);
+            Assert.Equal("LIB_C", s.ContextName);
+            Assert.Equal("LIBRARY", s.ContextType);
+        }
+
+        [Theory]
+        [InlineData("P:DESIGNER")]
+        [InlineData("L:DESIGNER")]
+        [InlineData("P:CHANGE ADMINISTRATOR III")]
+        [InlineData("L:CHANGE ADMINISTRATOR III")]
+        public void AnyOfFourQueriesFailing_PreventsWrites(string failing)
+        {
+            var inner = new HttpRequestException("down");
+            bool product = failing.StartsWith("P:");
+            SetupWc(product, failing[2..], Pdm.Empty, inner);
+            var ex = Assert.Throws<PdmContextSyncException>(() => Svc().Synchronize());
+            Assert.Same(inner, ex.InnerException);
+            Assert.DoesNotContain("db", _calls);
+        }
+
+        [Fact]
+        public void PartiallyMissingContextNames_ErrorsAreSampled_NotDuplicated()
+        {
+            var items = NoContext(50); items.Add(Pdm.M("LIB_C", "d"));
+            SetupAll(Pdm.Empty, items, Pdm.Empty, Pdm.Empty);
+            var r = Svc().Synchronize();
+            Assert.True(r.HasFailures);
+            Assert.Contains("db", _calls);
+        }
+
+        [Fact]
+        public void ServiceAndRepositorySources_ContainNoDeleteOperation()
+        {
+            var dir = Path.GetDirectoryName(typeof(PdmContextSyncService).Assembly.Location)!;
+            var src = typeof(PdmContextSyncService).Assembly.GetTypes().Where(t => t.Namespace == "MCG.Tools.EcnEcoFollowUp.Services.PdmContext")
+                .SelectMany(t => t.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.DeclaredOnly))
+                .Select(m => m.Name);
+            Assert.DoesNotContain(src, n => n.Contains("Delete", StringComparison.OrdinalIgnoreCase) || n.Contains("Remove", StringComparison.OrdinalIgnoreCase));
+            Assert.NotNull(dir);
+        }
+
         [Fact]
         public void CancelledBeforeCredentials()
         {

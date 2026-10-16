@@ -69,13 +69,13 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
         }
 
         [Fact]
-        public void SeveralAndDuplicateSecondaryPlants_DistinctFirstAppearanceOrder()
+        public void SeveralAndDuplicateSecondaryPlants_DistinctOrdinalOrder()
         {
             var r = _calculator.Calculate(new[]
             {
                 Task("P3", "P1", "A"), Task("P2", "P1", "C", created: D2), Task("P3", "P1", "B"), Task("P2", "P1", "A")
             });
-            Assert.Equal("P3,P2", r.SecondaryPlants);
+            Assert.Equal("P2,P3", r.SecondaryPlants);
             Assert.Equal("C", r.SecondaryNextStep);
             Assert.Equal(D2, r.SecondaryLastWiCreatedOn);
         }

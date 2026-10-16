@@ -132,6 +132,34 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             Assert.Equal("", EcoSapHupStepCalculator.FormatSecondaryPlants(Array.Empty<string>()));
         }
 
+        [Theory]
+        [InlineData("DE01,FR02,US03", "US03", "DE01", "FR02", "US03")]
+        [InlineData("DE01,FR02,US03", "FR02", "US03", "DE01")]
+        [InlineData("DE01,FR02,US03", "DE01", "FR02", "US03")]
+        [InlineData("A,B", "B", "A")]
+        [InlineData("A", "A")]
+        [InlineData("B,a", "a", "B")]
+        public void FormatSecondaryPlants_SameSet_SameOrdinalString(string expected, params string[] plants)
+        {
+            Assert.Equal(expected, EcoSapHupStepCalculator.FormatSecondaryPlants(plants));
+            Assert.Equal(expected, EcoSapHupStepCalculator.FormatSecondaryPlants(plants));
+        }
+
+        [Fact]
+        public void FormatSecondaryPlants_DoesNotMutateInput()
+        {
+            var input = new[] { "US03", "DE01", "US03" };
+            EcoSapHupStepCalculator.FormatSecondaryPlants(input);
+            Assert.Equal(new[] { "US03", "DE01", "US03" }, input);
+        }
+
+        [Fact]
+        public void FormatSecondaryPlants_EmptyStrings_KeepPreviousBehavior()
+        {
+            Assert.Equal(",A", EcoSapHupStepCalculator.FormatSecondaryPlants(new[] { "A", "" }));
+            Assert.Equal(" ,A", EcoSapHupStepCalculator.FormatSecondaryPlants(new[] { "A", " " }));
+        }
+
         [Fact]
         public void TmlpseWiClose_IsPreserved_UnresolvedSource()
             => Assert.Equal(42, Apply(1).EcoTmlpseWiClose);

@@ -163,7 +163,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
         private static void AddError(EcoSapHupSyncResult result, EcoSapHupCandidate candidate, EcoSapHupSyncPhase phase, string message, Exception ex)
         {
             result.AddError(new EcoSapHupSyncError(candidate.Id, candidate.EcnNumber, phase, message, ex));
-            TraceLog.AddTraceLog($"EcoSapHupSync ECO {candidate.EcnNumber} ({phase}) : {ex}");
+            TraceLog.Error(ex, $"EcoSapHupSync item failure: ECO={candidate.EcnNumber}, id={candidate.Id}, phase={phase}");
         }
     }
 }

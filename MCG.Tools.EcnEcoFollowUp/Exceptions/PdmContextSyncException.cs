@@ -6,6 +6,11 @@ namespace MCG.Tools.EcnEcoFollowUp.Exceptions
     /// </summary>
     public sealed class PdmContextSyncException : Exception
     {
+        public PdmContextSyncException(string message)
+            : base(message)
+        {
+        }
+
         public PdmContextSyncException(string message, Exception innerException)
             : base(message, innerException)
         {

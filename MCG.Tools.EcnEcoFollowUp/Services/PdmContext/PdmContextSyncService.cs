@@ -77,9 +77,13 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.PdmContext
                 result.NormalizedContexts = plan.AllContexts.Count;
                 result.ContextsWithoutChangeAdministrator = plan.ContextsWithoutChangeAdministrator;
                 result.SkippedMissingParticipantId = plan.SkippedMissingParticipantId;
+                EnsureSourceIsConsistent(designerProducts, designerLibraries, caiiiProducts, caiiiLibraries, plan);
+
                 result.AddErrors(plan.Errors);
-                foreach (var error in plan.Errors)
-                    TraceLog.AddTraceLog($"PdmContextSync {error.ContextName} ({error.Phase}) : {error.Exception}");
+                foreach (var error in plan.Errors.Take(MaxLoggedErrors))
+                    TraceLog.Error(error.Exception, $"PdmContextSync item failure: context={error.ContextName}, phase={error.Phase}");
+                if (plan.Errors.Count > MaxLoggedErrors)
+                    TraceLog.Warn($"PdmContextSync {plan.Errors.Count - MaxLoggedErrors} additional errors not logged individually (total={plan.Errors.Count}).");
 
                 TraceLog.AddTraceLog($"PdmContextSync normalized={plan.AllContexts.Count}, pdmContext={plan.PdmContexts.Count}, excludedCoordinators={plan.ExcludedCoordinatorAssignments}");
 
@@ -112,6 +116,44 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.PdmContext
                 TraceLog.AddTraceLog($"PdmContextSync global failure : {ex.GetType().Name} - {ex.Message}");
                 throw;
             }
+        }
+
+        private const int MaxLoggedErrors = 5;
+
+        /// <summary>
+        /// Objective invariants checked before any persistence: invalid or empty source => no transaction, no write.
+        /// </summary>
+        private static void EnsureSourceIsConsistent(
+            IReadOnlyList<WindchillContextTeamMember> designerProducts,
+            IReadOnlyList<WindchillContextTeamMember> designerLibraries,
+            IReadOnlyList<WindchillContextTeamMember> caiiiProducts,
+            IReadOnlyList<WindchillContextTeamMember> caiiiLibraries,
+            PdmContextSyncPlan plan)
+        {
+            var populations = new (string Name, IReadOnlyList<WindchillContextTeamMember> Items)[]
+            {
+                ("Product DESIGNER", designerProducts),
+                ("Library DESIGNER", designerLibraries),
+                ("Product CHANGE ADMINISTRATOR III", caiiiProducts),
+                ("Library CHANGE ADMINISTRATOR III", caiiiLibraries)
+            };
+
+            var summary = string.Join("; ", populations.Select(p =>
+            {
+                int missing = p.Items.Count(m => string.IsNullOrWhiteSpace(m.ContextName));
+                return $"{p.Name}: received={p.Items.Count}, withoutContextName={missing}, withContextName={p.Items.Count - missing}";
+            }));
+
+            int totalReceived = populations.Sum(p => p.Items.Count);
+            if (totalReceived == 0)
+                throw new PdmContextSyncException($"Source PDM invalide : aucune affectation Windchill recue. {summary}");
+
+            var allMissing = populations.Where(p => p.Items.Count > 0 && p.Items.All(m => string.IsNullOrWhiteSpace(m.ContextName))).Select(p => p.Name).ToList();
+            if (allMissing.Count > 0)
+                throw new PdmContextSyncException($"Source PDM invalide : toutes les affectations sans ContextName pour [{string.Join(", ", allMissing)}]. {summary}");
+
+            if (plan.AllContexts.Count == 0)
+                throw new PdmContextSyncException($"Source PDM invalide : affectations recues mais aucun contexte normalisable. {summary}");
         }
 
         private static IReadOnlyList<WindchillContextTeamMember> Retrieve(

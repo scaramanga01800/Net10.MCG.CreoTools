@@ -51,9 +51,13 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
         private static DmEcoViewWfEcoTask SelectMaxTypeItem(List<DmEcoViewWfEcoTask> tasks)
             => tasks.OrderBy(t => N(t.TypeItem), StringComparer.Ordinal).Last();
 
-        /// <summary>Historical: distinct plants in first-appearance order, separated by ",".</summary>
+        /// <summary>
+        /// Distinct plants (ordinal), sorted ordinally so the persisted value does not depend on the order returned by Oracle
+        /// (the SAP HUP query has no stable ORDER BY). Separator "," unchanged; no trimming, casing preserved.
+        /// Plant order carries no business meaning: the column is only displayed as text.
+        /// </summary>
         public static string FormatSecondaryPlants(IEnumerable<string> plants)
-            => string.Join(",", plants.Distinct(StringComparer.Ordinal));
+            => string.Join(",", plants.Distinct(StringComparer.Ordinal).OrderBy(p => p, StringComparer.Ordinal));
 
         private static string N(string? value) => value ?? string.Empty;
     }

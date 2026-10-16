@@ -221,7 +221,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
         {
             result.NewEcnFailures++;
             result.AddError(new EcnFollowUpSyncError(ecnNumber, phase, message, ex));
-            TraceLog.AddTraceLog($"EcnFollowUpSync {ecnNumber} ({phase}) : {ex}");
+            TraceLog.Error(ex, $"EcnFollowUpSync item failure: ECN={ecnNumber}, phase={phase}, operation=NewEcn");
         }
 
         #endregion
@@ -345,7 +345,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
         {
             result.WorkflowFailures++;
             result.AddError(new EcnFollowUpSyncError(ecnNumber, phase, message, ex));
-            TraceLog.AddTraceLog($"EcnFollowUpSync {ecnNumber} ({phase}) : {ex}");
+            TraceLog.Error(ex, $"EcnFollowUpSync item failure: ECN={ecnNumber}, phase={phase}, operation=Workflow");
         }
 
         #endregion
