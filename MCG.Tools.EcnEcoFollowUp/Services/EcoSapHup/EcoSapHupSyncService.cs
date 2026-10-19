@@ -100,6 +100,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             if (main is null)
             {
                 result.NotFoundInSapHup++;
+                TraceLog.AddTraceLog($"EcoSapHupSync warning phase=MainStatusRetrieval classification=NotFoundInSapHup eco={eco} id={candidate.Id}");
                 result.AddWarning(new EcoSapHupSyncWarning(candidate.Id, eco, EcoSapHupSyncWarningKind.NotFoundInSapHup,
                     "ECO absent de SAP HUP : donnees conservees."));
                 return;

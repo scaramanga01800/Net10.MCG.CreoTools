@@ -133,6 +133,23 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
         }
 
         [Theory]
+        [InlineData("2079,2099", "2099", "2079")]
+        [InlineData("2079,2099", "2079", "2099")]
+        [InlineData("2079,2099", "2079,2099")]
+        [InlineData("1030,1050,1070", "1070", "1050", "1030")]
+        [InlineData("1030,1050,1070", "1030", "1070", "1050")]
+        [InlineData("1030,1050,1070", "1050", "1030", "1070", "1030")]
+        [InlineData("1010,1030,1050,1070", "1070", "1010", "1050", "1030")]
+        [InlineData("1010,1030,1050,1070", "1030", "1070", "1010", "1050")]
+        [InlineData("1010,1030,1050,1070,2079,2099", "2099", "1070", "2079", "1010", "1050", "1030")]
+        [InlineData("1010,1030,1050,1070,2079,2099", "1010", "1030", "1050", "1070", "2079", "2099")]
+        [InlineData("1010,1030,1050,1070,2079,2099", "1050", "2099", "1030", "2079", "1010", "1070", "1050")]
+        public void FormatSecondaryPlants_Characterization_Anonymized(string expected, params string[] plants)
+        {
+            Assert.Equal(expected, EcoSapHupStepCalculator.FormatSecondaryPlants(plants));
+        }
+
+        [Theory]
         [InlineData("DE01,FR02,US03", "US03", "DE01", "FR02", "US03")]
         [InlineData("DE01,FR02,US03", "FR02", "US03", "DE01")]
         [InlineData("DE01,FR02,US03", "DE01", "FR02", "US03")]

@@ -100,7 +100,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
             db.SaveChanges();
         }
 
-        public bool UpdateExistingEcn(string ecnNumber, Action<Ecnecofollowup> apply, CancellationToken cancellationToken)
+        public EcnUpdateOutcome UpdateExistingEcn(string ecnNumber, Action<Ecnecofollowup> apply, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(apply);
             cancellationToken.ThrowIfCancellationRequested();
@@ -111,11 +111,14 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
                 .OrderBy(e => e.Id)
                 .FirstOrDefault();
             if (row is null)
-                return false;
+                return EcnUpdateOutcome.NotFound;
             apply(row);
             cancellationToken.ThrowIfCancellationRequested();
+            db.ChangeTracker.DetectChanges();
+            if (!db.ChangeTracker.HasChanges())
+                return EcnUpdateOutcome.Unchanged;
             db.SaveChanges();
-            return true;
+            return EcnUpdateOutcome.Changed;
         }
     }
 }

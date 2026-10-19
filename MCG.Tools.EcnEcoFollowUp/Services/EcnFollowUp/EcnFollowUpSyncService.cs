@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.EcnEcoFollowUp.Exceptions;
@@ -259,7 +259,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            TraceLog.AddTraceLog($"EcnFollowUpSync workflow updated={result.WorkflowEcnsUpdated}, notFound={result.WorkflowEcnsNotFoundInWindchill}, failures={result.WorkflowFailures}");
+            TraceLog.AddTraceLog($"EcnFollowUpSync workflow found={result.WorkflowEcnsFoundInWindchill}, changed={result.WorkflowEcnsChanged}, unchanged={result.WorkflowEcnsUnchanged}, notFound={result.WorkflowEcnsNotFoundInWindchill}, failures={result.WorkflowFailures}");
         }
 
         private void ProcessWorkflowEcn(string ecnNumber, NetworkCredential credential, DateOnly processingDate, EcnFollowUpSyncResult result, CancellationToken cancellationToken)
@@ -321,17 +321,20 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
                 var pdm = _repository.FindPdmContext(snapshot.PdmContext, cancellationToken);
                 bool noUpdateRequired = false;
                 cancellationToken.ThrowIfCancellationRequested();
-                bool updated = _repository.UpdateExistingEcn(
+                var outcome = _repository.UpdateExistingEcn(
                     ecnNumber,
                     row => noUpdateRequired = EcnFollowUpMapper.ApplyWorkflowUpdate(row, snapshot, pdm, workflow, processingDate),
                     cancellationToken);
 
-                if (!updated)
+                if (outcome == EcnUpdateOutcome.NotFound)
                 {
                     result.AddWarning($"ECN {ecnNumber} n'existe plus dans ECNECOFOLLOWUP au moment de la mise a jour.");
                     return;
                 }
-                result.WorkflowEcnsUpdated++;
+                if (outcome == EcnUpdateOutcome.Changed)
+                    result.WorkflowEcnsChanged++;
+                else
+                    result.WorkflowEcnsUnchanged++;
                 if (noUpdateRequired)
                     result.WorkflowEcnsSetNoUpdateRequired++;
             }

@@ -18,6 +18,17 @@ namespace MCG.Tools.EcnEcoFollowUp.Interfaces
     /// DI scope (fresh CreoToolsDbContext) so that a failed SaveChanges never poisons later items.
     /// No Windchill access, no credentials, no workflow-date calculation.
     /// </summary>
+    /// <summary>Resultat d'une mise a jour d'ECN existante.</summary>
+    public enum EcnUpdateOutcome
+    {
+        /// <summary>Aucune ligne ECNECOFOLLOWUP pour ce numero.</summary>
+        NotFound = 0,
+        /// <summary>Ligne trouvee, aucune valeur modifiee, SaveChanges non appele.</summary>
+        Unchanged = 1,
+        /// <summary>Ligne trouvee, au moins une valeur modifiee, SaveChanges appele.</summary>
+        Changed = 2
+    }
+
     public interface IEcnFollowUpSyncRepository
     {
         LastPdmEcnSearchMarker ReadLastPdmEcnSearch(CancellationToken cancellationToken);
@@ -38,7 +49,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Interfaces
 
         void InsertEcn(MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb.Ecnecofollowup row, CancellationToken cancellationToken);
 
-        /// <summary>Applies the mutation to the first row (by ID) with this ECN number and saves. False when no row exists.</summary>
-        bool UpdateExistingEcn(string ecnNumber, Action<MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb.Ecnecofollowup> apply, CancellationToken cancellationToken);
+        /// <summary>Applies the mutation to the first row (by ID) with this ECN number. SaveChanges is called only when the entity really changed.</summary>
+        EcnUpdateOutcome UpdateExistingEcn(string ecnNumber, Action<MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb.Ecnecofollowup> apply, CancellationToken cancellationToken);
     }
 }

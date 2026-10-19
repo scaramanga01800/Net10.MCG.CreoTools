@@ -1,4 +1,4 @@
-using MCG.CommonLib.DataBaseAccess.Interfaces;
+﻿using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
 using MCG.Tools.EcnEcoFollowUp.Exceptions;
 using MCG.Tools.EcnEcoFollowUp.Interfaces;
@@ -62,16 +62,21 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             Rows.Add(row);
         }
 
-        public bool UpdateExistingEcn(string ecnNumber, Action<Ecnecofollowup> apply, CancellationToken ct)
+        public EcnUpdateOutcome UpdateExistingEcn(string ecnNumber, Action<Ecnecofollowup> apply, CancellationToken ct)
         {
             if (FailUpdateFor.Contains(ecnNumber)) throw new IOException("update " + ecnNumber);
             var row = Rows.Where(r => r.EcnNumber == ecnNumber).OrderBy(r => r.Id).FirstOrDefault();
-            if (row == null) return false;
+            if (row == null) return EcnUpdateOutcome.NotFound;
             var copy = Clone(row);
             apply(copy);
+            if (!HasDifferences(row, copy)) return EcnUpdateOutcome.Unchanged;
             Rows[Rows.IndexOf(row)] = copy;
-            return true;
+            return EcnUpdateOutcome.Changed;
         }
+
+        private static bool HasDifferences(Ecnecofollowup a, Ecnecofollowup b) =>
+            typeof(Ecnecofollowup).GetProperties().Where(p => p.GetIndexParameters().Length == 0 && p.CanRead)
+                .Any(p => !Equals(p.GetValue(a), p.GetValue(b)));
 
         private static Ecnecofollowup Clone(Ecnecofollowup r) => (Ecnecofollowup)typeof(object)
             .GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
@@ -563,7 +568,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             var input = Assert.Single(h.CalculatorInputs);
             Assert.Equal(new[] { "ECN-1", "ECA-1", "ECA-2" }, input.Select(t => t.WfTaskName));
             Assert.Equal(1, r.WorkflowCalculationsPerformed);
-            Assert.Equal(1, r.WorkflowEcnsUpdated);
+            Assert.Equal(1, r.WorkflowEcnsChanged + r.WorkflowEcnsUnchanged);
         }
 
         [Fact]
@@ -655,7 +660,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             var e = Assert.Single(r.Errors);
             Assert.Equal(EcnFollowUpSyncPhase.WorkflowTaskRetrieval, e.Phase);
             Assert.IsType<HttpRequestException>(e.Exception);
-            Assert.Equal(1, r.WorkflowEcnsUpdated);
+            Assert.Equal(1, r.WorkflowEcnsChanged + r.WorkflowEcnsUnchanged);
             Assert.True(r.HasFailures);
         }
 
@@ -670,7 +675,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             var r = h.Create().Synchronize();
             Assert.Equal(EcnFollowUpSyncPhase.WorkflowPersistence, Assert.Single(r.Errors).Phase);
             Assert.IsType<IOException>(r.Errors[0].Exception);
-            Assert.Equal(1, r.WorkflowEcnsUpdated);
+            Assert.Equal(1, r.WorkflowEcnsChanged + r.WorkflowEcnsUnchanged);
             Assert.True(r.LastPdmEcnSearchUpdated); // workflow failures do not affect phase A marker
         }
 

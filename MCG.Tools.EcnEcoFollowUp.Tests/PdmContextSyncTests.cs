@@ -163,6 +163,18 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
         [Theory]
         [InlineData("GMK_5150", "5150")]
         [InlineData("OTHER", "STANDARD")]
+        [InlineData("LIBRARY ETUDES", "ETUDES")]
+        [InlineData("LIBRARY CHINA", "CHINA")]
+        [InlineData("LIBRARY_LEGACY_ECN_FR", "LEGACY_ECN_FR")]
+        [InlineData("LIBRARY ADMIN DOCUMENTATION", "ADMIN DOCUMENTATION")]
+        [InlineData("LIBRARY TIA-20090608", "TIA-20090608")]
+        [InlineData("LIBRARY  DOUBLE", "DOUBLE")]
+        [InlineData("LIBRARY __X", "__X")]
+        [InlineData("library etudes", "etudes")]
+        [InlineData("LIBRARY", "")]
+        [InlineData("TWR_MDT1609", "MDT1609")]
+        [InlineData("TWR_A_B", "A_B")]
+        [InlineData("WI_ MY", " MY")]
         public void Product_UsesExtractProduct(string ctx, string expected)
         {
             var plan = Build(dp: Pdm.L(Pdm.M(ctx, "d")));

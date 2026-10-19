@@ -132,7 +132,9 @@ namespace MCG.Tools.EcnEcoFollowUp.Tests
             _sap.Setup(s => s.GetEcoViewStatusData("E-1")).Returns(new List<DmEcoViewStatusDate>());
             var r = CreateService().Synchronize();
             Assert.Equal(1, r.NotFoundInSapHup);
-            Assert.Single(r.Warnings, w => w.Kind == EcoSapHupSyncWarningKind.NotFoundInSapHup);
+            Assert.Single(r.Warnings, w => w.Kind == EcoSapHupSyncWarningKind.NotFoundInSapHup && w.EcoNumber == "E-1" && w.EcoId == 1);
+            Assert.NotEmpty(r.Warnings);
+            Assert.False(r.HasFailures);
             _sap.Verify(s => s.GetEcoWfTaskData(It.IsAny<string>()), Times.Never);
             _repo.Verify(s => s.UpdateEco(It.IsAny<int>(), It.IsAny<Action<Ecnecofollowup>>()), Times.Never);
         }

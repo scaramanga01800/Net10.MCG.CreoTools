@@ -150,6 +150,25 @@ namespace MCG.Tools.EcnEcoFollowUp.Models
             }
         }
 
+        private static bool IsLibraryPrefix(Regex prefix)
+        {
+            return string.Equals(prefix.ToString(), "^LIBRARY", StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Le prefixe LIBRARY n'inclut pas son separateur (espace ou underscore) :
+        /// un seul separateur structurel est retire, puis les espaces de bord.
+        /// Les underscores internes ou supplementaires appartiennent au nom.
+        /// </summary>
+        private static string RemoveLibrarySeparator(string remainder)
+        {
+            if (string.IsNullOrEmpty(remainder))
+                return remainder;
+            if (remainder[0] == ' ' || remainder[0] == '_')
+                remainder = remainder.Substring(1);
+            return remainder.Trim();
+        }
+
         public static string ExtractProduct(string Pdm_Context)
         {
             try
@@ -172,7 +191,10 @@ namespace MCG.Tools.EcnEcoFollowUp.Models
 
                 Regex MatchRegex = ListRegex.FirstOrDefault((item) => item.IsMatch(Pdm_Context));
                 if (MatchRegex != null)
-                    return MatchRegex.Split(Pdm_Context).LastOrDefault();
+                {
+                    string product = MatchRegex.Split(Pdm_Context).LastOrDefault();
+                    return IsLibraryPrefix(MatchRegex) ? RemoveLibrarySeparator(product) : product;
+                }
 
                 return "STANDARD";
             }

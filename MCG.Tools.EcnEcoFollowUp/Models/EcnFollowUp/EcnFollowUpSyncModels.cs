@@ -1,4 +1,4 @@
-namespace MCG.Tools.EcnEcoFollowUp.Models.EcnFollowUp
+﻿namespace MCG.Tools.EcnEcoFollowUp.Models.EcnFollowUp
 {
     /// <summary>Processing phase in which an item-level failure occurred.</summary>
     public enum EcnFollowUpSyncPhase
@@ -64,7 +64,10 @@ namespace MCG.Tools.EcnEcoFollowUp.Models.EcnFollowUp
         public int WorkflowEcnsWithoutWorkflowTasks { get; internal set; }
         public int WorkflowEcnsFoundInWindchill { get; internal set; }
         public int WorkflowEcnsNotFoundInWindchill { get; internal set; }
-        public int WorkflowEcnsUpdated { get; internal set; }
+        /// <summary>ECN trouvees dans Windchill dont la ligne a reellement change (SaveChanges appele).</summary>
+        public int WorkflowEcnsChanged { get; internal set; }
+        /// <summary>ECN trouvees dans Windchill dont la ligne existe mais n'a pas change (aucune ecriture).</summary>
+        public int WorkflowEcnsUnchanged { get; internal set; }
         public int WorkflowEcnsSetNoUpdateRequired { get; internal set; }
         public int WorkflowFailures { get; internal set; }
 
@@ -77,6 +80,6 @@ namespace MCG.Tools.EcnEcoFollowUp.Models.EcnFollowUp
 
         public override string ToString() =>
             $"discovery[from={DiscoveryStartDate:yyyy-MM-dd}, returned={EcnsReturnedByWindchill}, duplicates={DuplicateCandidates}, existing={EcnsAlreadyExisting}, inserted={EcnsInserted}, notFound={NewEcnsNotFoundInWindchill}, failures={NewEcnFailures}, markerUpdated={LastPdmEcnSearchUpdated}] " +
-            $"workflow[candidates={WorkflowDatabaseCandidates}, unique={WorkflowDeduplicatedEcns}, calculated={WorkflowCalculationsPerformed}, noTasks={WorkflowEcnsWithoutWorkflowTasks}, notFound={WorkflowEcnsNotFoundInWindchill}, updated={WorkflowEcnsUpdated}, noUpdateRequired={WorkflowEcnsSetNoUpdateRequired}, failures={WorkflowFailures}]";
+            $"workflow[candidates={WorkflowDatabaseCandidates}, unique={WorkflowDeduplicatedEcns}, calculated={WorkflowCalculationsPerformed}, noTasks={WorkflowEcnsWithoutWorkflowTasks}, found={WorkflowEcnsFoundInWindchill}, notFound={WorkflowEcnsNotFoundInWindchill}, changed={WorkflowEcnsChanged}, unchanged={WorkflowEcnsUnchanged}, noUpdateRequired={WorkflowEcnsSetNoUpdateRequired}, failures={WorkflowFailures}]";
     }
 }
