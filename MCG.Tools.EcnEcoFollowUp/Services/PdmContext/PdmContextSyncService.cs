@@ -161,6 +161,8 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.PdmContext
         {
             cancellationToken.ThrowIfCancellationRequested();
             List<WindchillContextTeamMember>? list;
+            TraceLog.AddTraceLog($"Windchill request [PdmContext] start: {population}");
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 list = call();
@@ -173,6 +175,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.PdmContext
                 throw new PdmContextSyncException($"Echec de la recuperation Windchill ({population}).",
                     new InvalidOperationException("Windchill returned a null list."));
 
+            TraceLog.AddTraceLog($"Windchill request [PdmContext] end: {population}, rows={list.Count}, duration={watch.ElapsedMilliseconds} ms");
             TraceLog.AddTraceLog($"PdmContextSync {population} : {list.Count}");
             cancellationToken.ThrowIfCancellationRequested();
             return list;

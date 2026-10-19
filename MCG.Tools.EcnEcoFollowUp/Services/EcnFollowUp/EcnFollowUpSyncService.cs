@@ -111,8 +111,11 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
             List<WindchillChangeNotice>? discovered;
             try
             {
+                TraceLog.AddTraceLog($"Windchill request [EcnDiscovery] start: createdFrom={EcnFollowUpMapper.FormatLastPdmEcnSearch(fromDate)}, filter={EcnNumberFilter ?? "(none)"}");
+                var discoveryWatch = System.Diagnostics.Stopwatch.StartNew();
                 discovered = _reporting.GetQueryBuilderEcnCreatedFromDate<WindchillChangeNotice>(
                     credential, EcnFollowUpMapper.FormatLastPdmEcnSearch(fromDate), EcnNumberFilter);
+                TraceLog.AddTraceLog($"Windchill request [EcnDiscovery] end: rows={discovered?.Count ?? 0}, duration={discoveryWatch.ElapsedMilliseconds} ms");
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -269,9 +272,15 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
+                var taskWatch = System.Diagnostics.Stopwatch.StartNew();
+                TraceLog.AddTraceLog($"Windchill request [EcaWorkflowTask] start: ECN={ecnNumber}");
                 var ecaTasks = _reporting.GetQueryBuilderEcaWorkflowTask<WindchillObjectWorkflowTask>(credential, ecnNumber) ?? new List<WindchillObjectWorkflowTask>();
+                TraceLog.AddTraceLog($"Windchill request [EcaWorkflowTask] end: ECN={ecnNumber}, rows={ecaTasks.Count}, duration={taskWatch.ElapsedMilliseconds} ms");
                 cancellationToken.ThrowIfCancellationRequested();
+                taskWatch.Restart();
+                TraceLog.AddTraceLog($"Windchill request [EcnWorkflowTask] start: ECN={ecnNumber}");
                 var ecnTasks = _reporting.GetQueryBuilderEcnWorkflowTask<WindchillObjectWorkflowTask>(credential, ecnNumber) ?? new List<WindchillObjectWorkflowTask>();
+                TraceLog.AddTraceLog($"Windchill request [EcnWorkflowTask] end: ECN={ecnNumber}, rows={ecnTasks.Count}, duration={taskWatch.ElapsedMilliseconds} ms");
                 tasks = EcnFollowUpMapper.MapWorkflowTasks(ecnTasks, ecaTasks);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
@@ -356,8 +365,11 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcnFollowUp
         /// <summary>Historical GetChangeNoticeWithAllResultingObject(credential, number, false); null when value is empty.</summary>
         private EcnChangeNoticeSnapshot? RetrieveChangeNotice(string ecnNumber, NetworkCredential credential)
         {
+            TraceLog.AddTraceLog($"Windchill request [ChangeNotice] start: ECN={ecnNumber}");
+            var changeNoticeWatch = System.Diagnostics.Stopwatch.StartNew();
             RestOdataChangeNoticeUpper? upper = _changeManagement.GetChangeNoticeWithAllResultingObject(credential, ecnNumber, false);
             RestOdataChangeNotice? restEcn = upper?.value?.FirstOrDefault();
+            TraceLog.AddTraceLog($"Windchill request [ChangeNotice] end: ECN={ecnNumber}, found={restEcn is not null}, duration={changeNoticeWatch.ElapsedMilliseconds} ms");
             if (restEcn is null)
                 return null;
 

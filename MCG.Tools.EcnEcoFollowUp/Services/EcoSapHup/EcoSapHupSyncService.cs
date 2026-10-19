@@ -87,7 +87,10 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             List<DmEcoViewStatusDate> mainRows;
             try
             {
+                TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] start: ECO={eco}, id={candidate.Id}");
+                var hupWatch = System.Diagnostics.Stopwatch.StartNew();
                 mainRows = _sapHupService.GetEcoViewStatusData(eco);
+                TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] end: ECO={eco}, rows={mainRows?.Count ?? 0}, duration={hupWatch.ElapsedMilliseconds} ms");
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -134,7 +137,10 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             List<DmEcoViewWfEcoTask> tasks;
             try
             {
+                TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] start: ECO={eco}, id={candidate.Id}");
+                var hupTaskWatch = System.Diagnostics.Stopwatch.StartNew();
                 tasks = _sapHupService.GetEcoWfTaskData(eco);
+                TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] end: ECO={eco}, rows={tasks?.Count ?? 0}, duration={hupTaskWatch.ElapsedMilliseconds} ms");
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
