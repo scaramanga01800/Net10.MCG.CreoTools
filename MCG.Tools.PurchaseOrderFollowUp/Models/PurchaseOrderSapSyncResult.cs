@@ -56,6 +56,17 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Models
 
         internal void AddSavedNewSapRequest(ViewModel.PurchaseOrderRequest request) => _savedNewSapRequests.Add(request);
 
+        /// <summary>
+        /// Résumé final de log, calculé exclusivement à partir des compteurs internes.
+        /// Updated = upserts signalés comme existants + demandes ouvertes mises à jour ;
+        /// Skipped = PO sans PR non traitées ; Failed = échecs.
+        /// </summary>
+        public string ToSummaryLog() =>
+            "Purchase Order summary | " +
+            $"RequestsAnalyzed={SapRequestsAnalyzed + OpenRequestsAnalyzed} | Created={RequestsCreated} | " +
+            $"Updated={NewSapRequestsUpsertedAsExisting + OpenRequestsUpdated} | AlreadyExists={ExistingRequestsSkipped} | " +
+            $"Skipped={OpenRequestsWithSapPoWithoutSapPrNotProcessed} | Failed={Failures}";
+
         public override string ToString() =>
             $"SAP analysées={SapRequestsAnalyzed}, créées={RequestsCreated}, upsert existantes={NewSapRequestsUpsertedAsExisting}, " +
             $"existantes ignorées={ExistingRequestsSkipped}, ouvertes analysées={OpenRequestsAnalyzed}, ouvertes mises à jour={OpenRequestsUpdated}, " +

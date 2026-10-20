@@ -35,6 +35,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
             var result = new PurchaseOrderSapSyncResult();
             CreateRequestsFromSapCore(fromDate, toDate, referenceData, result, cancellationToken);
+            LogSummary(result);
             return result;
         }
 
@@ -44,6 +45,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
             var result = new PurchaseOrderSapSyncResult();
             UpdateOpenRequestsFromSapCore(referenceData, result, cancellationToken, progress);
+            LogSummary(result);
             return result;
         }
 
@@ -90,6 +92,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             var result = new PurchaseOrderSapSyncResult();
             CreateRequestsFromSapCore(fromDate, toDate, referenceData, result, cancellationToken);
             UpdateOpenRequestsFromSapCore(referenceData, result, cancellationToken, null);
+            LogSummary(result);
             return result;
         }
 
@@ -143,6 +146,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
                 {
                     request.IsAlreadyExist = true;
                     result.ExistingRequestsSkipped++;
+                    LogRequestLine(PurchaseOrderLogStatus.AlreadyExists, request);
                     TraceLog.AddTraceLog($"Demande SAP dÃ©jÃ  existante ({existence}) : PO={request.SapPurchaseOrder} PR={request.SapPurchaseRequest}, ignorÃ©e.");
                     continue;
                 }
@@ -154,6 +158,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
                         result.RequestsCreated++;
                     else
                         result.NewSapRequestsUpsertedAsExisting++;
+                    LogRequestLine(isNew ? PurchaseOrderLogStatus.Created : PurchaseOrderLogStatus.Updated, request);
                     result.AddSavedNewSapRequest(request);
                 }
                 catch (Exception ex) when (!IsFatal(ex))
@@ -172,6 +177,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
             var listFromPrToUpdate = new List<PurchaseOrderRequest>();
             int openRequestsWithSapPoWithoutSapPr;
+            List<PoRequest> skippedPoWithoutPr;
             try
             {
                 foreach (var dbReq in _purchaseOrderService.GetOpenSapPrRequests())
@@ -179,7 +185,8 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
                 // Dette technique conservÃ©e volontairement : la liste est chargÃ©e comme dans le comportement historique,
                 // mais ses Ã©lÃ©ments ne sont pas traitÃ©s.
-                openRequestsWithSapPoWithoutSapPr = _purchaseOrderService.GetOpenRequestsWithSapPoWithoutSapPr().Count;
+                skippedPoWithoutPr = _purchaseOrderService.GetOpenRequestsWithSapPoWithoutSapPr().ToList();
+                openRequestsWithSapPoWithoutSapPr = skippedPoWithoutPr.Count;
             }
             catch (Exception ex) when (!IsFatal(ex))
             {
@@ -188,6 +195,8 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
 
             result.OpenRequestsAnalyzed += listFromPrToUpdate.Count;
             result.OpenRequestsWithSapPoWithoutSapPrNotProcessed += openRequestsWithSapPoWithoutSapPr;
+            foreach (var skipped in skippedPoWithoutPr)
+                TraceLog.AddTraceLog($"PO|RequestId={skipped.Idrequest}|PR=-|PO={(string.IsNullOrWhiteSpace(skipped.Sappoid) ? "-" : skipped.Sappoid)}|Status={PurchaseOrderLogStatus.Skipped}");
             TraceLog.AddTraceLog($"Demandes ouvertes avec PO SAP sans PR SAP trouvÃ©es mais non traitÃ©es (dette technique) : {openRequestsWithSapPoWithoutSapPr}");
 
             int currentStep = 0;
@@ -209,6 +218,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
                     }
                     CreateUpdateRequestOnDataBase(req);
                     result.OpenRequestsUpdated++;
+                    LogRequestLine(PurchaseOrderLogStatus.Updated, req);
                 }
                 catch (Exception ex) when (!IsFatal(ex))
                 {
@@ -226,8 +236,23 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
         {
             var error = new PurchaseOrderSapSyncError(operation, request.ID, request.SapPurchaseRequest, request.SapPurchaseOrder, ex);
             result.AddError(error);
+            LogRequestLine(PurchaseOrderLogStatus.Failed, request);
             TraceLog.AddTraceLog($"Ã‰chec [{operation}] Request={request.ID} PR={request.SapPurchaseRequest} PO={request.SapPurchaseOrder} : {ex}");
         }
+
+        private static void LogRequestLine(string status, PurchaseOrderRequest request)
+        {
+            string requestId = request.ID > 0 ? request.ID.ToString() : "n/a";
+            string pr = string.IsNullOrWhiteSpace(request.SapPurchaseRequest) ? "-" : request.SapPurchaseRequest;
+            string po = string.IsNullOrWhiteSpace(request.SapPurchaseOrder) ? "-" : request.SapPurchaseOrder;
+            string line = $"PO|RequestId={requestId}|PR={pr}|PO={po}|Status={status}";
+            if (!string.IsNullOrWhiteSpace(request.Vendor?.Number))
+                line += $"|Vendor={request.Vendor.Number}";
+            TraceLog.AddTraceLog(line);
+        }
+
+        private static void LogSummary(PurchaseOrderSapSyncResult result) =>
+            TraceLog.AddTraceLog(result.ToSummaryLog());
 
         private static bool IsFatal(Exception ex) =>
             ex is OperationCanceledException
