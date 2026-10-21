@@ -1,5 +1,6 @@
 ﻿using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
+using MCG.CommonLib.DataBaseAccess.Shadow;
 using MCG.CommonLib.Models.SAP;
 using MCG.CommonLib.SapTools.ViewModel;
 using MCG.CommonLib.Services.Statics;
@@ -19,11 +20,26 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
     {
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly ISapHupService _sapHupService;
+        private readonly IOracleShadowRecorder? _shadowRecorder;
 
-        public PurchaseOrderSapSyncService(IPurchaseOrderService purchaseOrderService, ISapHupService sapHupService)
+        public PurchaseOrderSapSyncService(IPurchaseOrderService purchaseOrderService, ISapHupService sapHupService, IOracleShadowRecorder? shadowRecorder = null)
         {
             _purchaseOrderService = purchaseOrderService ?? throw new ArgumentNullException(nameof(purchaseOrderService));
             _sapHupService = sapHupService ?? throw new ArgumentNullException(nameof(sapHupService));
+            _shadowRecorder = shadowRecorder;
+        }
+
+        /// <summary>Observation shadow : jamais d'impact sur le traitement historique, exceptions absorbées.</summary>
+        private static void NotifyShadow(Action notify)
+        {
+            try
+            {
+                notify();
+            }
+            catch (Exception)
+            {
+                // Le shadow mode est purement observationnel.
+            }
         }
 
         #region Public API
@@ -372,7 +388,10 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             double totalOrdered = 0;
             bool firstItem = true;
 
+            var prWatch = System.Diagnostics.Stopwatch.StartNew();
             var dbResult = _sapHupService.GetAllItemsFromPR(currentRequest.SapPurchaseRequest);
+            prWatch.Stop();
+            NotifyShadow(() => _shadowRecorder?.RecordPurchaseRequestItems(currentRequest.SapPurchaseRequest, dbResult, prWatch.ElapsedMilliseconds));
 
             foreach (var dbItem in dbResult)
             {
@@ -425,7 +444,10 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             double totalOrdered = 0;
             bool firstItem = true;
 
+            var poWatch = System.Diagnostics.Stopwatch.StartNew();
             var dbResult = _sapHupService.GetAllItemsFromPO(currentRequest.SapPurchaseOrder);
+            poWatch.Stop();
+            NotifyShadow(() => _shadowRecorder?.RecordPurchaseOrderItems(currentRequest.SapPurchaseOrder, dbResult, poWatch.ElapsedMilliseconds));
 
             foreach (var dbItem in dbResult)
             {

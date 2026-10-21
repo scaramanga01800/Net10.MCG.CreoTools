@@ -225,7 +225,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Tests
         {
             var type = typeof(PurchaseOrderSapSyncService);
             var ctorParameters = type.GetConstructors().Single().GetParameters().Select(p => p.ParameterType).ToList();
-            Assert.Equal(new[] { typeof(IPurchaseOrderService), typeof(ISapHupService) }, ctorParameters);
+            Assert.Equal(new[] { typeof(IPurchaseOrderService), typeof(ISapHupService), typeof(MCG.CommonLib.DataBaseAccess.Shadow.IOracleShadowRecorder) }, ctorParameters);
 
             var fieldTypes = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Select(f => f.FieldType);
             Assert.DoesNotContain(fieldTypes, t => (t.Namespace ?? string.Empty).StartsWith("System.Windows", StringComparison.Ordinal));

@@ -1,5 +1,6 @@
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.SapHupDb;
+using MCG.CommonLib.DataBaseAccess.Shadow;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.EcnEcoFollowUp.Exceptions;
 using MCG.Tools.EcnEcoFollowUp.Interfaces;
@@ -16,17 +17,20 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
         private readonly ISapHupService _sapHupService;
         private readonly IEcoSapHupStepCalculator _stepCalculator;
         private readonly TimeProvider _timeProvider;
+        private readonly IOracleShadowRecorder? _shadowRecorder;
 
         public EcoSapHupSyncService(
             IEcoSapHupSyncRepository repository,
             ISapHupService sapHupService,
             IEcoSapHupStepCalculator stepCalculator,
-            TimeProvider timeProvider)
+            TimeProvider timeProvider,
+            IOracleShadowRecorder? shadowRecorder = null)
         {
             _repository = repository;
             _sapHupService = sapHupService;
             _stepCalculator = stepCalculator;
             _timeProvider = timeProvider;
+            _shadowRecorder = shadowRecorder;
         }
 
         public EcoSapHupSyncResult Synchronize(CancellationToken cancellationToken = default)
@@ -91,6 +95,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
                 var hupWatch = System.Diagnostics.Stopwatch.StartNew();
                 mainRows = _sapHupService.GetEcoViewStatusData(eco);
                 TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] end: ECO={eco}, rows={mainRows?.Count ?? 0}, duration={hupWatch.ElapsedMilliseconds} ms");
+                NotifyShadow(() => _shadowRecorder?.RecordEcoStatus(eco, mainRows, hupWatch.ElapsedMilliseconds));
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -141,6 +146,7 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
                 var hupTaskWatch = System.Diagnostics.Stopwatch.StartNew();
                 tasks = _sapHupService.GetEcoWfTaskData(eco);
                 TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] end: ECO={eco}, rows={tasks?.Count ?? 0}, duration={hupTaskWatch.ElapsedMilliseconds} ms");
+                NotifyShadow(() => _shadowRecorder?.RecordEcoWorkflow(eco, tasks, hupTaskWatch.ElapsedMilliseconds));
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -164,6 +170,19 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 AddError(result, candidate, EcoSapHupSyncPhase.Persistence, "Echec de mise a jour ECNECOFOLLOWUP.", ex);
+            }
+        }
+
+        /// <summary>Observation shadow : ne modifie jamais le traitement historique, toute exception est absorbée.</summary>
+        private static void NotifyShadow(Action notify)
+        {
+            try
+            {
+                notify();
+            }
+            catch (Exception)
+            {
+                // Le shadow mode est purement observationnel.
             }
         }
 
