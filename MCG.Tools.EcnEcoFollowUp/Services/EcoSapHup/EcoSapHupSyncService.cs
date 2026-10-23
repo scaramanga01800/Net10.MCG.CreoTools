@@ -1,5 +1,6 @@
 using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.SapHupDb;
+using MCG.CommonLib.DataBaseAccess.OracleQuery;
 using MCG.CommonLib.DataBaseAccess.Shadow;
 using MCG.CommonLib.Services.Statics;
 using MCG.Tools.EcnEcoFollowUp.Exceptions;
@@ -18,14 +19,17 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
         private readonly IEcoSapHupStepCalculator _stepCalculator;
         private readonly TimeProvider _timeProvider;
         private readonly IOracleShadowRecorder? _shadowRecorder;
+        private readonly IOracleQueryRouter? _queryRouter;
 
         public EcoSapHupSyncService(
             IEcoSapHupSyncRepository repository,
             ISapHupService sapHupService,
             IEcoSapHupStepCalculator stepCalculator,
             TimeProvider timeProvider,
-            IOracleShadowRecorder? shadowRecorder = null)
+            IOracleShadowRecorder? shadowRecorder = null,
+            IOracleQueryRouter? queryRouter = null)
         {
+            _queryRouter = queryRouter;
             _repository = repository;
             _sapHupService = sapHupService;
             _stepCalculator = stepCalculator;
@@ -63,6 +67,15 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            // Mode Batch : cles regroupees par lots (sans effet en Legacy). Les echecs techniques sont traites par cle.
+            if (_queryRouter != null)
+            {
+                _queryRouter.LogModes();
+                var ecoKeys = candidates.Select(c => c.EcnNumber).Where(e => !string.IsNullOrWhiteSpace(e)).ToList();
+                _queryRouter.Prepare(OracleShadowApi.EcoStatus, ecoKeys);
+                _queryRouter.Prepare(OracleShadowApi.EcoWorkflow, ecoKeys);
+            }
+
             foreach (var candidate in candidates)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -93,9 +106,17 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             {
                 TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] start: ECO={eco}, id={candidate.Id}");
                 var hupWatch = System.Diagnostics.Stopwatch.StartNew();
-                mainRows = _sapHupService.GetEcoViewStatusData(eco);
-                TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] end: ECO={eco}, rows={mainRows?.Count ?? 0}, duration={hupWatch.ElapsedMilliseconds} ms");
-                NotifyShadow(() => _shadowRecorder?.RecordEcoStatus(eco, mainRows, hupWatch.ElapsedMilliseconds));
+                if (UseBatch(OracleShadowApi.EcoStatus))
+                {
+                    mainRows = _queryRouter!.GetEcoStatus(eco);
+                    TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] end: ECO={eco}, rows={mainRows?.Count ?? 0}, duration={hupWatch.ElapsedMilliseconds} ms (Batch)");
+                }
+                else
+                {
+                    mainRows = _sapHupService.GetEcoViewStatusData(eco);
+                    TraceLog.AddTraceLog($"SAP HUP request [EcoViewStatus] end: ECO={eco}, rows={mainRows?.Count ?? 0}, duration={hupWatch.ElapsedMilliseconds} ms");
+                    NotifyShadow(() => _shadowRecorder?.RecordEcoStatus(eco, mainRows, hupWatch.ElapsedMilliseconds));
+                }
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -144,9 +165,17 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             {
                 TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] start: ECO={eco}, id={candidate.Id}");
                 var hupTaskWatch = System.Diagnostics.Stopwatch.StartNew();
-                tasks = _sapHupService.GetEcoWfTaskData(eco);
-                TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] end: ECO={eco}, rows={tasks?.Count ?? 0}, duration={hupTaskWatch.ElapsedMilliseconds} ms");
-                NotifyShadow(() => _shadowRecorder?.RecordEcoWorkflow(eco, tasks, hupTaskWatch.ElapsedMilliseconds));
+                if (UseBatch(OracleShadowApi.EcoWorkflow))
+                {
+                    tasks = _queryRouter!.GetEcoWorkflow(eco);
+                    TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] end: ECO={eco}, rows={tasks?.Count ?? 0}, duration={hupTaskWatch.ElapsedMilliseconds} ms (Batch)");
+                }
+                else
+                {
+                    tasks = _sapHupService.GetEcoWfTaskData(eco);
+                    TraceLog.AddTraceLog($"SAP HUP request [EcoWfTask] end: ECO={eco}, rows={tasks?.Count ?? 0}, duration={hupTaskWatch.ElapsedMilliseconds} ms");
+                    NotifyShadow(() => _shadowRecorder?.RecordEcoWorkflow(eco, tasks, hupTaskWatch.ElapsedMilliseconds));
+                }
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -173,7 +202,9 @@ namespace MCG.Tools.EcnEcoFollowUp.Services.EcoSapHup
             }
         }
 
-        /// <summary>Observation shadow : ne modifie jamais le traitement historique, toute exception est absorbée.</summary>
+        private bool UseBatch(OracleShadowApi api) => _queryRouter != null && _queryRouter.GetMode(api) == OracleQueryMode.Batch;
+
+        /// <summary>Observation shadow : ne modifie jamais
         private static void NotifyShadow(Action notify)
         {
             try

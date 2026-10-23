@@ -1,5 +1,7 @@
 ﻿using MCG.CommonLib.DataBaseAccess.Interfaces;
 using MCG.CommonLib.DataBaseAccess.Models.CreoToolsDb;
+using MCG.CommonLib.DataBaseAccess.Models.SapHupDbResult;
+using MCG.CommonLib.DataBaseAccess.OracleQuery;
 using MCG.CommonLib.DataBaseAccess.Shadow;
 using MCG.CommonLib.Models.SAP;
 using MCG.CommonLib.SapTools.ViewModel;
@@ -22,8 +24,11 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
         private readonly ISapHupService _sapHupService;
         private readonly IOracleShadowRecorder? _shadowRecorder;
 
-        public PurchaseOrderSapSyncService(IPurchaseOrderService purchaseOrderService, ISapHupService sapHupService, IOracleShadowRecorder? shadowRecorder = null)
+        private readonly IOracleQueryRouter? _queryRouter;
+
+        public PurchaseOrderSapSyncService(IPurchaseOrderService purchaseOrderService, ISapHupService sapHupService, IOracleShadowRecorder? shadowRecorder = null, IOracleQueryRouter? queryRouter = null)
         {
+            _queryRouter = queryRouter;
             _purchaseOrderService = purchaseOrderService ?? throw new ArgumentNullException(nameof(purchaseOrderService));
             _sapHupService = sapHupService ?? throw new ArgumentNullException(nameof(sapHupService));
             _shadowRecorder = shadowRecorder;
@@ -214,6 +219,13 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             foreach (var skipped in skippedPoWithoutPr)
                 TraceLog.AddTraceLog($"PO|RequestId={skipped.Idrequest}|PR=-|PO={(string.IsNullOrWhiteSpace(skipped.Sappoid) ? "-" : skipped.Sappoid)}|Status={PurchaseOrderLogStatus.Skipped}");
             TraceLog.AddTraceLog($"Demandes ouvertes avec PO SAP sans PR SAP trouvÃ©es mais non traitÃ©es (dette technique) : {openRequestsWithSapPoWithoutSapPr}");
+
+            // Mode Batch PO : POs regroupes par lots (sans effet en Legacy). PR et UpdateRequestFromPO restent Legacy.
+            if (_queryRouter != null)
+            {
+                _queryRouter.LogModes();
+                _queryRouter.Prepare(OracleShadowApi.PurchaseOrderItemsFromPo, listFromPrToUpdate.Select(r => r.SapPurchaseOrder).Where(po => !string.IsNullOrEmpty(po)));
+            }
 
             int currentStep = 0;
             int totalStep = listFromPrToUpdate.Count + openRequestsWithSapPoWithoutSapPr;
@@ -445,9 +457,18 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             bool firstItem = true;
 
             var poWatch = System.Diagnostics.Stopwatch.StartNew();
-            var dbResult = _sapHupService.GetAllItemsFromPO(currentRequest.SapPurchaseOrder);
-            poWatch.Stop();
-            NotifyShadow(() => _shadowRecorder?.RecordPurchaseOrderItems(currentRequest.SapPurchaseOrder, dbResult, poWatch.ElapsedMilliseconds));
+            List<AllItemsFromPOResult> dbResult;
+            if (_queryRouter != null && _queryRouter.GetMode(OracleShadowApi.PurchaseOrderItemsFromPo) == OracleQueryMode.Batch)
+            {
+                dbResult = _queryRouter.GetPurchaseOrderItems(currentRequest.SapPurchaseOrder);
+                poWatch.Stop();
+            }
+            else
+            {
+                dbResult = _sapHupService.GetAllItemsFromPO(currentRequest.SapPurchaseOrder);
+                poWatch.Stop();
+                NotifyShadow(() => _shadowRecorder?.RecordPurchaseOrderItems(currentRequest.SapPurchaseOrder, dbResult, poWatch.ElapsedMilliseconds));
+            }
 
             foreach (var dbItem in dbResult)
             {
