@@ -64,6 +64,13 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         private ProfileViewModel _profileViewModel;
         private QuickSearchViewModel _quickSearchViewModel;
         private ShearedTubeViewModel _shearedTubeViewModel;
+        private PdfViewerViewModel _releaseNotesViewModel;
+
+        public PdfViewerViewModel ReleaseNotesViewModelVM =>
+            _releaseNotesViewModel ??= new PdfViewerViewModel
+            {
+                Source = new Uri(McgFileAndSystemTools.GetSharePointDocument(McgWpfTools.GetStringResource("CT_LinkReleaseNotesCreoTools")))
+            };
 
         public QuickLaunchViewModel QuickLaunchViewModelVM
         {
@@ -274,7 +281,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
         public ICommand CommandChangeWindchillCredential { get => new RelayCommand(() => ExecuteChangeWindchillCredential()); }
         public ICommand CommandUpdateUserSetting { get => new RelayCommand(() => UpdateUserConfigXmlFile()); }
         public ICommand CommandUpdateScrollingText { get => new RelayCommand(() => ExecuteUpdateScrollingText()); }
-        public ICommand CommandReleaseNotes { get => new RelayCommand(() => ExecuteReleaseNotes()); }
         public ICommand CommandOpenUtilitiesOverview { get => new RelayCommand(() => ExecuteOpenUtilitiesOverview()); }
         #endregion
 
@@ -695,18 +701,6 @@ namespace MCG.Tools.CREOToolsFluentInterface.ViewModel
             try
             {
                 CurrentDataContext.ScrollingText = $@"Welcome to Engineering Hub. {DateTime.Today,0:dd/MM/yyyy} at {DateTime.Now.TimeOfDay.Hours.ToString("00")}:{DateTime.Now.TimeOfDay.Minutes.ToString("00")}|[Google link<http:\\google.fr>]|[Consulter le nouvelle méthodologie<file:\\O:\CREO_Config\TWR\application\ProE_Methodologies\PDM\PDM000EN.pdf>]";
-            }
-            catch (Exception ex)
-            {
-                CREOToolsException.SendMessageBox(this.GetType().Name, ex);
-            }
-        }
-
-        private void ExecuteReleaseNotes()
-        {
-            try
-            {
-                McgFileAndSystemTools.OpenSharePointDocument(McgWpfTools.GetStringResource("CT_LinkReleaseNotesCreoTools"));
             }
             catch (Exception ex)
             {

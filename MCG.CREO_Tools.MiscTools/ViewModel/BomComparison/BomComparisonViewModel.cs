@@ -295,7 +295,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomComparison
                 MiscToolsException.SendMessageBox(this.GetType().Name, ex);
             }
         }
-
         #endregion
 
         #region [REGION] Misc
@@ -477,7 +476,6 @@ namespace MCG.CREO_Tools.MiscTools.ViewModel.BomComparison
                 RaiseActionDoneEvent();
             }
         }
-
         #endregion
     }
 }

@@ -11,6 +11,7 @@
                      xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:view="clr-namespace:MCG.Tools.CREOToolsFluentInterface.View"
+                     xmlns:vm="clr-namespace:MCG.Tools.CREOToolsFluentInterface.ViewModel"
                      xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
 
                      xmlns:QuickLaunch="clr-namespace:MCG.CREO_Tools.QuickLaunch.View;assembly=MCG.CREO_Tools.QuickLaunch"
@@ -59,6 +60,9 @@
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
+            <DataTemplate DataType="{x:Type vm:PdfViewerViewModel}">
+                <view:PdfViewerView Source="{Binding Source}"/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type QuickLaunchVM:QuickLaunchViewModel}">
                 <QuickLaunch:QuickLaunchFluentTabContentView/>
             </DataTemplate>
@@ -943,9 +947,10 @@
                                        Icon="{StaticResource About}"
                                        Command="{Binding CommandAboutCreoTools}"/>
 
-                        <Fluent:Button Header="{DynamicResource CT_MenuReleaseNotes}" FontSize="17"
-                                       Icon="{StaticResource ReleaseNotes}"
-                                       Command="{Binding CommandReleaseNotes}"/>
+                        <Fluent:BackstageTabItem Header="{DynamicResource CT_MenuReleaseNotes}" FontSize="17"
+                                                 Icon="{StaticResource ReleaseNotes}">
+                            <view:PdfViewerView Source="{Binding ReleaseNotesViewModelVM.Source}"/>
+                        </Fluent:BackstageTabItem>
 
                         <Fluent:SeparatorTabItem/>
 
@@ -1396,6 +1401,7 @@
                             <DataTrigger Binding="{Binding ElementName=TabDownloadVisualizationFileApp, Path=IsSelected}" Value="True">
                                 <Setter Property="Content" Value="{Binding DownloadVisualizationFileViewModelVM}"/>
                             </DataTrigger>
+
                         </Style.Triggers>
                     </Style>
                 </ContentControl.Style>

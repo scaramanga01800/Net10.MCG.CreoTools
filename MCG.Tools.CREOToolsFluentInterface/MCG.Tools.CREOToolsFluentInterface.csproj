@@ -33,6 +33,7 @@
     <PackageReference Include="Fluent.Ribbon" Version="11.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-preview.5.26302.115" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="11.0.0-preview.5.26302.115" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
     <PackageReference Include="XamlAnimatedGif" Version="2.3.2" />
   </ItemGroup>
 
@@ -70,13 +71,9 @@
 			<ResourceFiles Include="$(MSBuildProjectDirectory)\..\..\**\Resources\**\*.dmt" />
 		</ItemGroup>
 		 
-		<Message Importance="high"
-		Text="Copying @(ResourceFiles->Count()) resource files..." />
+		<Message Importance="high" Text="Copying @(ResourceFiles-&gt;Count()) resource files..." />
 		 
-		<Copy
-		SourceFiles="@(ResourceFiles)"
-		DestinationFolder="D:\Programme\MCG_Tools_Net10\Resources_E-Hub"
-		SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(ResourceFiles)" DestinationFolder="D:\Programme\MCG_Tools_Net10\Resources_E-Hub" SkipUnchangedFiles="true" />
 	</Target>
 
 </Project>
