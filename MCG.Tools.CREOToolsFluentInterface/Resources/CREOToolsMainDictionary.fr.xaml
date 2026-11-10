@@ -78,6 +78,8 @@
     <system:String x:Key="CT_LinkHelpCreoToolsVisu">APP019FR.PDF</system:String>
     <system:String x:Key="CT_LinkReleaseNotesCreoTools">Release_Notes_Engineering_Hub_FR.PDF</system:String>
     <system:String x:Key="CT_MenuReleaseNotes">Release Notes</system:String>
+    <system:String x:Key="CT_PdfViewerError">Impossible d'afficher les Release Notes.</system:String>
+    <system:String x:Key="CT_PdfViewerRetry">Réessayer</system:String>
     <system:String x:Key="CT_LinkReleaseNotesVisuTools">Release_Notes_Visualization_Tools_FR.PDF</system:String>
     <system:String x:Key="CT_LinkUtilitiesOverviews">APP034FR.PDF</system:String>
 

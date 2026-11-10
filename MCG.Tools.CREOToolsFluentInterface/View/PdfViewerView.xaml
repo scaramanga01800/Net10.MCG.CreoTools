@@ -10,5 +10,21 @@
         <wv2:WebView2 x:Name="PdfWebView"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch" />
+
+        <StackPanel x:Name="ErrorPanel"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="{DynamicResource CT_PdfViewerError}"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       FontSize="16"
+                       Margin="0,0,0,12" />
+            <Button Content="{DynamicResource CT_PdfViewerRetry}"
+                    HorizontalAlignment="Center"
+                    MinWidth="100"
+                    Padding="12,4"
+                    Click="OnRetryClick" />
+        </StackPanel>
     </Grid>
 </UserControl>

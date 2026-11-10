@@ -76,7 +76,7 @@ namespace MCG.WindchillTools.ManageWTObject.Services
             {
                 if (_CreateUpdateWtDocumentWtPartViewModel != null && _CreateUpdateWtDocumentWtPartViewModel.IsVisible)
                 {
-                    _CreateUpdateWtDocumentWtPartViewModel.Activate();
+                    _CreateUpdateWtDocumentWtPartViewModel.Activate();  
                     return;
                 }
             }
