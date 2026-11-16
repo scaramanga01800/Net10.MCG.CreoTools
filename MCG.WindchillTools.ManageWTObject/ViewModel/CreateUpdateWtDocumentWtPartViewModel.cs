@@ -168,7 +168,12 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                     CurrentDataContext.ListBrand.Add(brand);
 
 
-                CurrentDataContext.SelectedLanguage = _sharedAppContext.CurrentLanguage.Language; 
+                // Le langage du contexte partagé est incomplet (DataTableColonne/SAPCode vides) : on reprend l'instance complète de la configuration.
+                MCGLanguage SharedLanguage = _sharedAppContext.CurrentLanguage?.Language;
+                if (SharedLanguage != null)
+                    CurrentDataContext.SelectedLanguage = CurrentDataContext.ListLanguage.FirstOrDefault((item) =>
+                        (!string.IsNullOrWhiteSpace(SharedLanguage.Language) && string.Equals(item.Language, SharedLanguage.Language, StringComparison.OrdinalIgnoreCase))
+                        || (!string.IsNullOrWhiteSpace(SharedLanguage.CultureInfo) && string.Equals(item.CultureInfo, SharedLanguage.CultureInfo, StringComparison.OrdinalIgnoreCase)));
                 if (CurrentDataContext.SelectedLanguage == null || CurrentDataContext.SelectedLanguage.Language == null)
                     CurrentDataContext.SelectedLanguage = (from elem in CurrentDataContext.ListLanguage where Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToUpper() == elem.SAPCode select elem).FirstOrDefault();
                 if (CurrentDataContext.SelectedLanguage == null || CurrentDataContext.SelectedLanguage.Language == null)
@@ -931,7 +936,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
         {
             try
             {
-                if (CurrentDataContext.SelectedLanguage != null && CurrentDataContext.SelectedLanguage.DataTableColonne != null)
+                if (CurrentDataContext.SelectedLanguage != null && !string.IsNullOrWhiteSpace(CurrentDataContext.SelectedLanguage.DataTableColonne))
                 {
                     CurrentDataContext.ListWebtermLocal.Clear();
                     if (CurrentDataContext.SelectedLanguage?.DataTableColonne.ToUpper() == "ENGLISH")
@@ -943,7 +948,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                         {
                             List<string> TempLocalList = new List<string>();
                             foreach (var term in ListWebterm)
-                                TempLocalList.Add(LangProp.GetValue(term).ToString());
+                                TempLocalList.Add(LangProp.GetValue(term) as string);
                             foreach (var term in TempLocalList.Where((item) => item != null && item.Trim() != "").OrderBy((item) => item))
                                 CurrentDataContext.ListWebtermLocal.Add(term);
                         }

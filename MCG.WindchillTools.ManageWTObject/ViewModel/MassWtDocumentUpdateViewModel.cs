@@ -2043,16 +2043,18 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
             try
             {
                 CurrentDataContext.ListWebtermLocal.Clear();
-                if (CurrentDataContext.SelectedLanguage?.DataTableColonne.ToUpper() == "ENGLISH")
+                if (string.IsNullOrWhiteSpace(CurrentDataContext.SelectedLanguage?.DataTableColonne))
+                    return;
+                if (CurrentDataContext.SelectedLanguage.DataTableColonne.ToUpper() == "ENGLISH")
                     CurrentDataContext.ListWebtermLocal.Add("-");
                 else
                 {
-                    PropertyInfo LangProp = typeof(Webterm).GetProperty(CurrentDataContext.SelectedLanguage?.DataTableColonne);
+                    PropertyInfo LangProp = typeof(Webterm).GetProperty(CurrentDataContext.SelectedLanguage.DataTableColonne);
                     if (LangProp != null)
                     {
                         List<string> TempLocalList = new List<string>();
                         foreach (var term in ListWebterm)
-                            TempLocalList.Add(LangProp.GetValue(term).ToString());
+                            TempLocalList.Add(LangProp.GetValue(term) as string);
                         foreach (var term in TempLocalList.Where((item) => item != null && item.Trim() != "").OrderBy((item) => item))
                             CurrentDataContext.ListWebtermLocal.Add(term);
                     }
