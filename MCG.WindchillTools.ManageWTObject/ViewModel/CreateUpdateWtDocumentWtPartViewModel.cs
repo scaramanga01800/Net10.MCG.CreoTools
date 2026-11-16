@@ -128,6 +128,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                                                      IWindchillPartManagementService windchillPartManagementService,
                                                      IWindchillDataAdminManagementService windchillDataAdminManagementService,
                                                      IMcgCommonLibWindowService mcgCommonLibWindowService,
+                                                     IMcgWindchillToolsManageWTObjectWindowService mcgWindchillToolsManageWTObjectWindowService,
                                                      IWindchillCredentialService windchillCredentialService,
                                                      IWindchillRequestMiscService windchillRequestMiscService,
                                                      ISharedAppContext sharedAppContext)
@@ -141,6 +142,7 @@ namespace MCG.WindchillTools.ManageWTObject.ViewModel
                 _windchillPartManagementService = windchillPartManagementService;
                 _windchillDataAdminManagementService = windchillDataAdminManagementService;
                 _mcgCommonLibWindowService = mcgCommonLibWindowService;
+                _mcgWindchillToolsManageWTObjectWindowService = mcgWindchillToolsManageWTObjectWindowService;
                 _windchillCredentialService = windchillCredentialService;
                 _windchillRequestMiscService = windchillRequestMiscService;
                 _sharedAppContext = sharedAppContext;
