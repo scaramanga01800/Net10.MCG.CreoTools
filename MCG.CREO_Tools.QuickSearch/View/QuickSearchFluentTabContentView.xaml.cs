@@ -84,7 +84,7 @@ namespace MCG.CREO_Tools.QuickSearch.View
                     PictureColumn.Width = 50;
 
                     FrameworkElementFactory imageFactory = new FrameworkElementFactory(typeof(Image));
-                    imageFactory.SetBinding(Image.SourceProperty, new Binding("CurrentPart.PARTPICTUREBIN"));
+                    imageFactory.SetBinding(Image.SourceProperty, new Binding("CurrentPart.Partpicturebin"));
 
                     DataTemplate dataTemplate = new DataTemplate();
                     dataTemplate.VisualTree = imageFactory;
