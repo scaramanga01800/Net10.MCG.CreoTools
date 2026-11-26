@@ -100,6 +100,8 @@
     <system:String x:Key="POF_MsgRemoveItem">Are you sure you want to remove this item?</system:String>
     <system:String x:Key="POF_MsgRemoveAttachement">Are you sure you want to remove this attachment?</system:String>
     <system:String x:Key="POF_MsgTitleRemoveItem">Remove</system:String>
+    <system:String x:Key="POF_MsgAttachmentFileInUse">The following file(s) are open in another application and cannot be attached. Close them and try again:&#x0a;{0}</system:String>
+    <system:String x:Key="POF_MsgTitleAttachmentFileInUse">File in use</system:String>
 
     <system:String x:Key="POF_LabelMaxRow">The maximum number of rows (100) has been reached. Please refine your search.</system:String>
     <system:String x:Key="POF_LabelUpdateNotAllowed">You are not allowed to modify this request. You must be the creator or requestor, and the status must be NEW, SENT, or REWORK.</system:String>

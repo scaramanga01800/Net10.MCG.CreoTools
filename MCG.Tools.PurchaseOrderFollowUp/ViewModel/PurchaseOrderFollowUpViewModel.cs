@@ -1068,16 +1068,8 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                     if (obj != null && obj.Data != null && obj.Data.GetDataPresent(DataFormats.FileDrop))
                     {
                         string[] files = (string[])obj.Data.GetData(DataFormats.FileDrop);
-
-                        foreach (var file in files)
-                        {
-                            if (CurrentDataContext.CurrentRequest.UpdatedListAttachment.FirstOrDefault((item) => item.CompleteFilename != null && item.CompleteFilename == file) == null)
-                            {
-                                CurrentAttachment = new PurchaseOrderAttachment() { CompleteFilename = file };
-                                CurrentAttachment.Update();
-                                CurrentDataContext.CurrentRequest.UpdatedListAttachment.Add(CurrentAttachment);
-                            }
-                        }
+                        List<string> lockedFiles = TryAddFiles(files, CurrentDataContext.CurrentRequest.UpdatedListAttachment);
+                        ShowFilesInUseMessage(lockedFiles);
                     }
                     else if (obj != null && obj.Data != null && obj.Data.GetDataPresent("FileContents"))
                     {
@@ -1126,23 +1118,50 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                 if (obj != null && obj.Data != null && obj.Data.GetDataPresent(DataFormats.FileDrop) && CurrentDataContext.CurrentVendor != null)
                 {
                     string[] files = (string[])obj.Data.GetData(DataFormats.FileDrop);
-                    PurchaseOrderAttachment CurrentAttachment;
-
-                    foreach (var file in files)
-                    {
-                        if (CurrentDataContext.CurrentVendor.ListAttachment.FirstOrDefault((item) => item.CompleteFilename != null && item.CompleteFilename == file) == null)
-                        {
-                            CurrentAttachment = new PurchaseOrderAttachment() { CompleteFilename = file };
-                            CurrentAttachment.Update();
-                            CurrentDataContext.CurrentVendor.ListAttachment.Add(CurrentAttachment);
-                        }
-                    }
+                    List<string> lockedFiles = TryAddFiles(files, CurrentDataContext.CurrentVendor.ListAttachment);
+                    ShowFilesInUseMessage(lockedFiles);
                 }
             }
             catch (Exception ex)
             {
                 PurchaseOrderFollowUpException.SendMessageBox(this.GetType().Name, ex);
             }
+        }
+
+        /// <summary>
+        /// Ajoute les fichiers à la liste de pièces jointes. Retourne les noms des fichiers ignorés car ouverts dans une autre application.
+        /// </summary>
+        private static List<string> TryAddFiles(IEnumerable<string> files, ICollection<PurchaseOrderAttachment> targetList)
+        {
+            List<string> lockedFiles = new List<string>();
+
+            foreach (string file in files)
+            {
+                if (targetList.FirstOrDefault((item) => item.CompleteFilename != null && item.CompleteFilename == file) != null)
+                    continue;
+
+                try
+                {
+                    PurchaseOrderAttachment attachment = new PurchaseOrderAttachment() { CompleteFilename = file };
+                    attachment.Update();
+                    targetList.Add(attachment);
+                }
+                catch (AttachmentFileInUseException lockedEx)
+                {
+                    lockedFiles.Add(lockedEx.FileName);
+                }
+            }
+
+            return lockedFiles;
+        }
+
+        private static void ShowFilesInUseMessage(IReadOnlyCollection<string> lockedFiles)
+        {
+            if (lockedFiles == null || lockedFiles.Count == 0)
+                return;
+
+            string message = String.Format(McgWpfTools.GetStringResource("POF_MsgAttachmentFileInUse"), string.Join(Environment.NewLine, lockedFiles));
+            MessageBox.Show(message, McgWpfTools.GetStringResource("POF_MsgTitleAttachmentFileInUse"), MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void ExecuteRemoveAttachement()

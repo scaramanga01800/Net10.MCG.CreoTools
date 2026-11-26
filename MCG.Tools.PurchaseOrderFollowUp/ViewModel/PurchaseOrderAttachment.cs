@@ -101,6 +101,10 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
                     ReadFile();
                 }
             }
+            catch (AttachmentFileInUseException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
@@ -111,16 +115,28 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                using (FileStream fs = new FileStream(CompleteFilename, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = new FileStream(CompleteFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
                 {
-                    FileContent = new byte[fs.Length];
-                    fs.Read(FileContent, 0, (int)fs.Length);
+                    byte[] content = new byte[fs.Length];
+                    fs.ReadExactly(content, 0, content.Length);
+                    FileContent = content;
                 }
+            }
+            catch (IOException ex) when (IsFileLockedError(ex))
+            {
+                throw new AttachmentFileInUseException(CompleteFilename, ex);
             }
             catch (Exception ex)
             {
                 throw new PurchaseOrderFollowUpException(this.GetType().Name, ex);
             }
+        }
+
+        private static bool IsFileLockedError(IOException ex)
+        {
+            // ERROR_SHARING_VIOLATION (32) et ERROR_LOCK_VIOLATION (33)
+            int win32Error = ex.HResult & 0xFFFF;
+            return win32Error == 32 || win32Error == 33;
         }
 
         public void ReadFileFromMemorystream(MemoryStream MsFileContent)
