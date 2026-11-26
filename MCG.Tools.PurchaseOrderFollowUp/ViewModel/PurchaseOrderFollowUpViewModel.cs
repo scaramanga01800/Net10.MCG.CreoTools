@@ -1770,14 +1770,26 @@ namespace MCG.Tools.PurchaseOrderFollowUp.ViewModel
         {
             try
             {
-                //if (true)
-                //{
+                var newInternalOrder = new PurchaseOrderAddInternalOrderViewModel();
+                if (_purchaseOrderFollowWindowService.ShowDialogPurchaseOrderFollowUpAddInternalOrderView(newInternalOrder) != true || !newInternalOrder.IsValid)
+                    return;
 
-                //}
-                //else
-                //{
-                //    MessageBox.Show(McgWpfTools.GetStringResource("POF_MsgVendorMissingData"), McgWpfTools.GetStringResource("POF_TitleMsgVendorMissingData"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-                //}
+                var dbInternalOrder = _purchaseOrderService.AddInternalOrder(newInternalOrder.Number, newInternalOrder.Description);
+                if (dbInternalOrder == null)
+                {
+                    MessageBox.Show(
+                        string.Format(McgWpfTools.GetStringResource("POF_MsgInternalOrderAlreadyExists"), newInternalOrder.Number.Trim()),
+                        McgWpfTools.GetStringResource("POF_WindowAddInternalOrder"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                MessageBox.Show(
+                    string.Format(McgWpfTools.GetStringResource("POF_MsgInternalOrderAdded"), dbInternalOrder.NumberIo),
+                    McgWpfTools.GetStringResource("POF_WindowAddInternalOrder"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

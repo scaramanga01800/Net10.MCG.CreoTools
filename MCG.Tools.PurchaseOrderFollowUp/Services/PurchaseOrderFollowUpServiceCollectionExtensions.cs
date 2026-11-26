@@ -28,6 +28,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             services.AddTransient<PurchaseOrderFollowUpDuplicate>();
             services.AddTransient<PurchaseOrderFollowUpExtendedPartView>();
             services.AddTransient<PurchaseOrderFollowUpInternalOrderRequestView>();
+            services.AddTransient<PurchaseOrderFollowUpAddInternalOrderView>();
             services.AddTransient<PurchaseOrderFollowUpSelectVendorView>();
             
             TraceLog.StopTimer("AddPurchaseOrderFollowUpServices");

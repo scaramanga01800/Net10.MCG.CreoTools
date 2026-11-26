@@ -21,6 +21,7 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Interfaces
         void ShowDialogPurchaseOrderFollowUpDuplicate(object currentDataContext);
         void ShowDialogPurchaseOrderFollowUpExtendedPartView(object currentDataContext);
         bool? ShowDialogPurchaseOrderFollowUpInternalOrderRequestView(object currentDataContext);
+        bool? ShowDialogPurchaseOrderFollowUpAddInternalOrderView(object addInternalOrderDataContext);
         bool? ShowDialogPurchaseOrderFollowUpSelectVendorView(object currentDataContext);
 
         void ClosePurchaseOrderFollowCreateUpdateView();

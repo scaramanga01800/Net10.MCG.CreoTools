@@ -2,6 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="POF_AppName">Purchase Order Follow Up</system:String>
+    <system:String x:Key="POF_WindowAddInternalOrder">Ajouter un ordre interne</system:String>
+    <system:String x:Key="POF_LabelAddInternalOrderNumber">Numéro</system:String>
+    <system:String x:Key="POF_LabelAddInternalOrderDescription">Description</system:String>
+    <system:String x:Key="POF_MsgInternalOrderAdded">L'ordre interne {0} a été ajouté.</system:String>
+    <system:String x:Key="POF_MsgInternalOrderAlreadyExists">L'ordre interne {0} existe déjà.</system:String>
 
     <system:String x:Key="POF_RibGrpCreate">Créer</system:String>
     <system:String x:Key="POF_RibGrpData">Donnée</system:String>

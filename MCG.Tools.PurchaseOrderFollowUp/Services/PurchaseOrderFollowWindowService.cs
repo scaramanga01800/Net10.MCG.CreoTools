@@ -69,6 +69,13 @@ namespace MCG.Tools.PurchaseOrderFollowUp.Services
             return _PurchaseOrderFollowUpInternalOrderRequestView.DialogResult;
         }
 
+        public bool? ShowDialogPurchaseOrderFollowUpAddInternalOrderView(object addInternalOrderDataContext)
+        {
+            var window = _serviceProvider.GetRequiredService<PurchaseOrderFollowUpAddInternalOrderView>();
+            window.DataContext = addInternalOrderDataContext;
+            return window.ShowDialog();
+        }
+
         public bool? ShowDialogPurchaseOrderFollowUpSelectVendorView(object currentDataContext)
         {
             _PurchaseOrderFollowUpSelectVendorView = _serviceProvider.GetRequiredService<PurchaseOrderFollowUpSelectVendorView>();
